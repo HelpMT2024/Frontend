@@ -1,10 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:help_my_truck/services/router/home_router.dart';
 
+final service = NetworkService();
+
 Route<dynamic>? AppRouter(RouteSettings setting) {
-  var route = HomeRouter(setting);
+  var route = HomeRouter(setting, service);
 
   return route;
 }
