@@ -1,0 +1,15 @@
+2024-04-04 16:02:00.195462  : allImageList = [assets/RR_MEns_jackets_MP.jpg, assets/men_brands_patagonia.jpg]
+2024-04-04 16:02:00.198318  : Start writing records
+2024-04-04 16:02:00.267382  : End writing records 0
+2024-04-04 16:02:30.466813  : allImageList = [assets/RR_MEns_jackets_MP.jpg, assets/meiying-ng-OrwkD-iWgqg-unsplash.jpg, assets/men_brands_patagonia.jpg]
+2024-04-04 16:02:30.467515  : Start writing records
+2024-04-04 16:02:30.471363  : End writing records 0
+2024-04-04 16:06:08.014379  : allImageList = [assets/RR_MEns_jackets_MP.jpg, assets/men_brands_patagonia.jpg]
+2024-04-04 16:06:08.015355  : Start writing records
+2024-04-04 16:06:08.020292  : End writing records 0
+2024-04-04 16:06:12.223196  : allImageList = [assets/RR_MEns_jackets_MP.jpg]
+2024-04-04 16:06:12.223906  : Start writing records
+2024-04-04 16:06:12.227823  : End writing records 0
+2024-04-04 16:06:17.991970  : allImageList = []
+2024-04-04 16:06:17.993642  : Start writing records
+2024-04-04 16:06:17.997224  : End writing records 0

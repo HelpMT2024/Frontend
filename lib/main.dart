@@ -3,7 +3,7 @@ import 'package:help_my_truck/consts/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:help_my_truck/services/router/home_router.dart';
 
-import 'services/router/router';
+import 'services/router/router.dart';
 
 void main() {
   runApp(const MyApp());
