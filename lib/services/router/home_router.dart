@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/ui/main_flow/home_page.dart';
 import 'package:native_page_route/native_page_route.dart';
 
 abstract class HomeRouteKeys {
@@ -14,7 +15,7 @@ Route<dynamic>? HomeRouter(RouteSettings setting, NetworkService service) {
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          return const Placeholder();
+          return const MainPage();
         },
       );
   }
