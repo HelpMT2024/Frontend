@@ -37,3 +37,8 @@
 2024-04-05 17:42:55.815645  : allImageList = []
 2024-04-05 17:42:55.817677  : Start writing records
 2024-04-05 17:42:55.830823  : End writing records 0
+2024-04-05 17:47:18.359371  : Error on line 39, column 10: Expected ':'.
+   ╷
+39 │   gsheets: ^0.5.0
+   │          ^
+   ╵
