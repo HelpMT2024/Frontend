@@ -1,3 +1,4 @@
 project/.vscode
 /build/
 /flutter_build/
+fgen_log.txt

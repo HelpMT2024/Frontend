@@ -72,6 +72,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     return Scaffold(
       key: _scaffoldKey,
+      extendBody: true,
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
@@ -96,44 +97,56 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   }
 
   Widget _buildNavBar(AppLocalizations? l10n) {
-    return PlatformNavBar(
-      backgroundColor: ColorConstants.surfacePrimaryDark,
-      material: (_, __) => MaterialNavBarData(
-        type: BottomNavigationBarType.fixed,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-      ),
-      cupertino: (context, platform) => CupertinoTabBarData(height: 51),
-      items: [
-        _customIcon(
-            asset: R.ASSETS_HOME_SVG,
-            navBarPage: NavBarPage.home,
-            text: 'Home',
+    return SafeArea(
+      child: PlatformNavBar(
+        backgroundColor: ColorConstants.surfacePrimaryDark,
+        material: (_, __) => MaterialNavBarData(
+          type: BottomNavigationBarType.fixed,
+          showSelectedLabels: false,
+          showUnselectedLabels: false,
+          padding: EdgeInsets.zero,
         ),
-        _customIcon(
-            asset: R.ASSETS_PEOPLE_SVG,
-            navBarPage: NavBarPage.people,
-            text: 'People',
+        material3: (context, platform) {
+          return MaterialNavigationBarData(
+            height: 68,
+            elevation: 0,
+            backgroundColor: ColorConstants.surfacePrimaryDark,
+            indicatorColor: ColorConstants.surfacePrimaryDark,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+          );
+        },
+        cupertino: (context, platform) => CupertinoTabBarData(height: 51),
+        items: [
+          _customIcon(
+              asset: R.ASSETS_HOME_SVG,
+              navBarPage: NavBarPage.home,
+              text: 'Home',
           ),
-        _customIcon(
-            icon: Icons.search_rounded,
-            navBarPage: NavBarPage.search,
-            isCenterIcon: true,
-            text: 'Fault Code'
-        ),
-        _customIcon(
-          asset: R.ASSETS_FAVORITE_STAR_SVG,
-          navBarPage: NavBarPage.favorites,
-          text: 'Favorites',
-        ),
-        _customIcon(
-            asset: R.ASSETS_PROFILE_IMAGE_SVG,
-            navBarPage: NavBarPage.profile,
-            text: 'Profile',
-        )
-      ],
-      currentIndex: _selectedPage.indexPage,
-      itemChanged: (int index) => _onItemTapped(index, l10n),
+          _customIcon(
+              asset: R.ASSETS_PEOPLE_SVG,
+              navBarPage: NavBarPage.people,
+              text: 'People',
+            ),
+          _customIcon(
+              icon: Icons.search_rounded,
+              navBarPage: NavBarPage.search,
+              isCenterIcon: true,
+              text: 'Fault Code'
+          ),
+          _customIcon(
+            asset: R.ASSETS_FAVORITE_STAR_SVG,
+            navBarPage: NavBarPage.favorites,
+            text: 'Favorites',
+          ),
+          _customIcon(
+              asset: R.ASSETS_PROFILE_IMAGE_SVG,
+              navBarPage: NavBarPage.profile,
+              text: 'Profile',
+          )
+        ],
+        currentIndex: _selectedPage.indexPage,
+        itemChanged: (int index) => _onItemTapped(index, l10n),
+      ),
     );
   }
 
@@ -149,7 +162,6 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     bool isActive = navBarPage == _selectedPage;
     return BottomNavigationBarItem(
       icon: Container(
-        //margin: EdgeInsets.only(top: Platform.isAndroid ? 53 : 0),
         padding: EdgeInsets.only(top: Platform.isAndroid ? 0 : 5),
         child: GestureDetector(
           behavior: HitTestBehavior.deferToChild,
@@ -164,8 +176,6 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           ),
         ),
       ),
-      //label: null
-      //label: Platform.isAndroid ? '' : null,
     );
   }
 }
