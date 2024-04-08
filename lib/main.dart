@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:help_my_truck/services/router/home_router.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 
 import 'services/router/router.dart';
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.interTextTheme(textTheme()),
       ),
-      initialRoute: HomeRouteKeys.home,
+      initialRoute: VehicleSelectorRouteKeys.truckSelector,
       onGenerateRoute: AppRouter,
     );
   }

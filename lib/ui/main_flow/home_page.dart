@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
-import 'package:help_my_truck/ui/main_flow/nav_bar/main_navigation_bar.dart';
-import 'package:help_my_truck/ui/main_flow/nav_bar/nav_bar_page.dart';
+import 'package:help_my_truck/ui/lib/nav_bar/custom_navigation_bar_icon.dart';
+import 'package:help_my_truck/ui/lib/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/lib/nav_bar/nav_bar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
-import 'nav_bar/custom_navigation_bar_icon.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainPage extends StatefulWidget {
@@ -61,9 +61,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     }
   }
 
-  _showSearch() {
-
-  }
+  _showSearch() {}
 
   @override
   Widget build(BuildContext context) {
@@ -80,12 +78,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: ColorConstants.gradientPrimary
-          )
-        ),
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: ColorConstants.gradientPrimary)),
         child: PageView(
           controller: pageController,
           allowImplicitScrolling: false,
@@ -118,30 +114,29 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
         cupertino: (context, platform) => CupertinoTabBarData(height: 51),
         items: [
           _customIcon(
-              asset: R.ASSETS_HOME_SVG,
-              navBarPage: NavBarPage.home,
-              text: 'Home',
+            asset: R.ASSETS_HOME_SVG,
+            navBarPage: NavBarPage.home,
+            text: 'Home',
           ),
           _customIcon(
-              asset: R.ASSETS_PEOPLE_SVG,
-              navBarPage: NavBarPage.people,
-              text: 'People',
-            ),
+            asset: R.ASSETS_PEOPLE_SVG,
+            navBarPage: NavBarPage.people,
+            text: 'People',
+          ),
           _customIcon(
               icon: Icons.search_rounded,
               navBarPage: NavBarPage.search,
               isCenterIcon: true,
-              text: 'Fault Code'
-          ),
+              text: 'Fault Code'),
           _customIcon(
             asset: R.ASSETS_FAVORITE_STAR_SVG,
             navBarPage: NavBarPage.favorites,
             text: 'Favorites',
           ),
           _customIcon(
-              asset: R.ASSETS_PROFILE_IMAGE_SVG,
-              navBarPage: NavBarPage.profile,
-              text: 'Profile',
+            asset: R.ASSETS_PROFILE_IMAGE_SVG,
+            navBarPage: NavBarPage.profile,
+            text: 'Profile',
           )
         ],
         currentIndex: _selectedPage.indexPage,
@@ -150,15 +145,15 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     );
   }
 
-  BottomNavigationBarItem _customIcon(
-      {String? asset,
-      IconData? icon,
-      bool isCenterIcon = false,
-      NavBarPage navBarPage = NavBarPage.home,
-      String? text,
-      double size = 24,
-      double padding = 0,
-    }) {
+  BottomNavigationBarItem _customIcon({
+    String? asset,
+    IconData? icon,
+    bool isCenterIcon = false,
+    NavBarPage navBarPage = NavBarPage.home,
+    String? text,
+    double size = 24,
+    double padding = 0,
+  }) {
     bool isActive = navBarPage == _selectedPage;
     return BottomNavigationBarItem(
       icon: Container(
