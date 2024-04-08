@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
+import 'package:help_my_truck/ui/lib/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/custom_navigation_bar_icon.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/nav_bar_page.dart';
@@ -77,11 +78,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       ),
       bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: ColorConstants.gradientPrimary)),
+        decoration: appGradientBgDecoration,
         child: PageView(
           controller: pageController,
           allowImplicitScrolling: false,

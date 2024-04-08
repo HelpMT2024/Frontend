@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
-import 'package:help_my_truck/ui/main_flow/home_page.dart';
+import 'package:help_my_truck/ui/vehicle_selector_flow/truck_selector_screen.dart';
 import 'package:native_page_route/native_page_route.dart';
 
 abstract class VehicleSelectorRouteKeys {
@@ -16,7 +16,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          return const MainPage();
+          return const TruckSelectorScreen();
         },
       );
   }
