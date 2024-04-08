@@ -30,4 +30,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get search_fault_code_button => 'Search Fault Code';
+
+  @override
+  String get choose_your_truck => 'Choose Your Truck';
+
+  @override
+  String get next => 'Next';
 }

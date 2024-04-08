@@ -15,7 +15,8 @@ Route<dynamic>? HomeRouter(RouteSettings setting, NetworkService service) {
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          return const MainPage();
+          final config = setting.arguments as MainPageConfig;
+          return MainPage(config: config);
         },
       );
   }

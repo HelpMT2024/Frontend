@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
+import 'package:help_my_truck/data/models/engine.dart';
+import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/ui/lib/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/custom_navigation_bar_icon.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/main_navigation_bar.dart';
@@ -9,8 +11,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+class MainPageConfig {
+  final Engine engine;
+  final Truck truck;
+
+  MainPageConfig({required this.engine, required this.truck});
+}
+
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  final MainPageConfig config;
+
+  const MainPage({super.key, required this.config});
 
   @override
   State<MainPage> createState() => _MainPageState();

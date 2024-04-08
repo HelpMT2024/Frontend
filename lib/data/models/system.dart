@@ -131,3 +131,38 @@ class VideosCollection {
     );
   }
 }
+
+class IDPImage {
+  final String title;
+  final String description;
+  final String contentType;
+  final String fileName;
+  final int size;
+  final String url;
+  final int width;
+  final int height;
+
+  IDPImage({
+    required this.title,
+    required this.description,
+    required this.contentType,
+    required this.fileName,
+    required this.size,
+    required this.url,
+    required this.width,
+    required this.height,
+  });
+
+  factory IDPImage.fromJson(Map<String, dynamic> json) {
+    return IDPImage(
+      title: json['title'],
+      description: json['description'],
+      contentType: json['contentType'],
+      fileName: json['fileName'],
+      size: json['size'],
+      url: json['url'],
+      width: json['width'],
+      height: json['height'],
+    );
+  }
+}
