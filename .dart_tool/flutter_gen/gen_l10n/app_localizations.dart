@@ -93,6 +93,59 @@ abstract class AppLocalizations {
     Locale('uk')
   ];
 
+  /// No description provided for @home_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home_title;
+
+  /// No description provided for @people_title.
+  ///
+  /// In en, this message translates to:
+  /// **'People'**
+  String get people_title;
+
+  /// No description provided for @fault_code_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fault Code'**
+  String get fault_code_title;
+
+  /// No description provided for @favorites_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites'**
+  String get favorites_title;
+
+  /// No description provided for @profile_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile_title;
+
+  /// No description provided for @spn_number_title.
+  ///
+  /// In en, this message translates to:
+  /// **'SPN Number'**
+  String get spn_number_title;
+
+  /// No description provided for @fmi_number_title.
+  ///
+  /// In en, this message translates to:
+  /// **'FMI Number'**
+  String get fmi_number_title;
+
+  /// No description provided for @enter_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter \$1'**
+  String get enter_hint;
+
+  /// No description provided for @search_fault_code_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Search Fault Code'**
+  String get search_fault_code_button;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
