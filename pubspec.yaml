@@ -43,6 +43,7 @@ dependencies:
   flutter_platform_widgets: ^6.1.0
   shared_preferences: ^2.2.2
   graphql_flutter: ^5.2.0-beta.6
+  sliding_up_panel: ^2.0.0+1
   carousel_slider: ^4.2.1
   rxdart: ^0.27.7
   page_view_dot_indicator: ^2.3.0

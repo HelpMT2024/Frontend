@@ -13,6 +13,8 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_view_model.dart';
+import 'package:help_my_truck/ui/search_flow/search_modal_builder.dart';
+import 'package:help_my_truck/ui/search_flow/search_screen.dart';
 
 class MainPageConfig {
   final Engine engine;
@@ -39,6 +41,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   NavBarPage _selectedPage = NavBarPage.home;
+  final SearchModalController searchModalController = SearchModalController();
 
   late final pageController = PageController(
     initialPage: 0,
@@ -86,7 +89,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     }
   }
 
-  _showSearch() {}
+  _showSearch() async {
+    setState(() {
+      final double offset = searchModalController.offset == 0 ? 0.5 : 0;
+      searchModalController.processOffset(offset);
+      searchModalController.panelController.animatePanelToPosition(offset);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -97,13 +106,16 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       key: _scaffoldKey,
       appBar: MainNavigationBar(context: context, styles: styles, title: title),
       bottomNavigationBar: _buildNavBar(l10n),
-      body: Container(
-        decoration: appGradientBgDecoration,
-        child: PageView(
-          controller: pageController,
-          allowImplicitScrolling: false,
-          physics: const NeverScrollableScrollPhysics(),
-          children: _widgetOptions.values.toList(),
+      body: SearchModalBuilder(
+        searchModalController: searchModalController,
+        builder: (context) => Container(
+          decoration: appGradientBgDecoration,
+          child: PageView(
+            controller: pageController,
+            allowImplicitScrolling: false,
+            physics: const NeverScrollableScrollPhysics(),
+            children: _widgetOptions.values.toList(),
+          ),
         ),
       ),
     );
