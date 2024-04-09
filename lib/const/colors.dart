@@ -29,6 +29,8 @@ abstract class ColorConstants {
   static Color statesSuccess = hexToColor('#1EE86F');
   static Color stroke = hexToColor('#45696B');
   static Color appBarColor = hexToColor('#114649');
+  static Color hintTextColor = hexToColor('#A6A9AB');
+  
   static List<Color> gradientPrimary = [
     hexToColor('#114649'),
     hexToColor('#0B1822'),
