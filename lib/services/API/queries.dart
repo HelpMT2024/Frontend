@@ -45,8 +45,10 @@ abstract class Queries {
 }
 ''';
 
-  static String getConfiguration(
-      {required String truckId, required String engineId}) {
+  static String getConfiguration({
+    required String truckId,
+    required String engineId,
+  }) {
     return '''
     query ConfigurationByTruckAndEngineId(\$truckId: String = "$truckId", \$engineId: String = "$engineId") {
   configurationCollection(
@@ -77,6 +79,16 @@ abstract class Queries {
         imageFrontMarkup
         buttonsTemplate
         imageBackMarkup
+        imageFront {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
         description
         descriptionPosition
       } 
@@ -103,7 +115,16 @@ abstract class Queries {
       height
     } 
     imageView {
-      internalName
+      imageFront {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
       imageFrontMarkup
       imageBackMarkup
       buttonsTemplate
@@ -141,9 +162,18 @@ abstract class Queries {
       height
     } 
     imageView {
-      internalName
       imageFrontMarkup
       imageBackMarkup
+      imageFront {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
       buttonsTemplate
       description
       descriptionPosition
@@ -179,7 +209,16 @@ abstract class Queries {
       height
     } 
     imageView {
-      internalName
+      imageFront {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
       imageFrontMarkup
       imageBackMarkup
       buttonsTemplate
@@ -220,7 +259,16 @@ abstract class Queries {
       json
     }
     imageView {
-      internalName
+      imageFront {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
       imageFrontMarkup
       imageBackMarkup
       buttonsTemplate

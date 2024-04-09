@@ -19,7 +19,11 @@ class EngineSelectorViewModel {
 
   void selectEngine(BuildContext context) {
     final engine = engines.value.elementAt(currentEngineIndex);
-    final config = MainPageConfig(engine: engine, truck: truck);
+    final config = MainPageConfig(
+      engine: engine,
+      truck: truck,
+      service: provider.service,
+    );
 
     Navigator.of(context).pushNamedAndRemoveUntil(
       HomeRouteKeys.home,

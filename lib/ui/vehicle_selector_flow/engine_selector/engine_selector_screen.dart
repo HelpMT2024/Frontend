@@ -54,13 +54,17 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
         if (data.isNotEmpty) _carousel(data),
         _indicator(data),
         const Spacer(),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: NextButton(
-            onPressed: () => widget.viewModel.selectEngine(context),
-          ),
-        ),
+        _next(),
       ],
+    );
+  }
+
+  Padding _next() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: NextButton(
+        onPressed: () => widget.viewModel.selectEngine(context),
+      ),
     );
   }
 
@@ -111,7 +115,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
   Widget _header(TextTheme styles) {
     final l10n = AppLocalizations.of(context);
     return Text(
-      l10n!.choose_your_truck,
+      l10n!.choose_your_engine,
       style: styles.headlineSmall?.copyWith(
         color: ColorConstants.surfaceWhite,
       ),

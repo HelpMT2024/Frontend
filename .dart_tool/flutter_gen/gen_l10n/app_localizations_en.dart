@@ -36,4 +36,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get next => 'Next';
+
+  @override
+  String get choose_your_engine => 'Choose Your Engine';
 }

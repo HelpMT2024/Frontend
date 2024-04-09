@@ -156,6 +156,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next'**
   String get next;
+
+  /// No description provided for @choose_your_engine.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your Engine'**
+  String get choose_your_engine;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

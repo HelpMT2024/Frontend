@@ -35,9 +35,9 @@ class MainNavigationBar extends AppBar {
   static Widget _title(String? title, TextTheme styles) {
     return Text(
       title ?? '',
-      style: styles.headline6?.merge(
+      style: styles.titleLarge?.merge(
         TextStyle(
-          color: ColorConstants.onSurfaceHigh,
+          color: ColorConstants.surfaceWhite,
         ),
       ),
     );

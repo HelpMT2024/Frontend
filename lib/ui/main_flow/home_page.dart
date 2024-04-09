@@ -3,6 +3,7 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
+import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:help_my_truck/ui/lib/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/custom_navigation_bar_icon.dart';
 import 'package:help_my_truck/ui/lib/nav_bar/main_navigation_bar.dart';
@@ -10,12 +11,19 @@ import 'package:help_my_truck/ui/lib/nav_bar/nav_bar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_screen.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_view_model.dart';
 
 class MainPageConfig {
   final Engine engine;
   final Truck truck;
+  final NetworkService service;
 
-  MainPageConfig({required this.engine, required this.truck});
+  MainPageConfig({
+    required this.engine,
+    required this.truck,
+    required this.service,
+  });
 }
 
 class MainPage extends StatefulWidget {
@@ -36,8 +44,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     initialPage: 0,
   );
 
+  String get title =>
+      '${widget.config.truck.name} ${widget.config.engine.name}'.toUpperCase();
+
   late final Map<NavBarPage, Widget> _widgetOptions = {
-    NavBarPage.home: const SizedBox(),
+    NavBarPage.home: ConfigurationObserverScreen(
+      viewModel: ConfigurationObserverViewModel(config: widget.config),
+    ),
     NavBarPage.people: const SizedBox(),
     NavBarPage.search: const SizedBox(),
     NavBarPage.favorites: const SizedBox(),
@@ -82,11 +95,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     return Scaffold(
       key: _scaffoldKey,
-      extendBody: true,
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-      ),
+      appBar: MainNavigationBar(context: context, styles: styles, title: title),
       bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
         decoration: appGradientBgDecoration,
