@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/top_and_button_reusable_container.dart';
 
 class ReusableModel {
@@ -16,13 +16,15 @@ class ReusableModel {
 
 class ReusableObserverWidgetConfig {
   final IDPImageView imageView;
-  final List<IDPIcon> buttons;
+  final List<IDPIcon?> buttons;
   final List<ReusableModel> models;
+  final Function(ReusableModel) onModelSelected;
 
   ReusableObserverWidgetConfig({
     required this.imageView,
     required this.buttons,
     required this.models,
+    required this.onModelSelected,
   });
 }
 
@@ -40,7 +42,10 @@ class _ReusableObserverWidgetState extends State<ReusableObserverWidget> {
   Widget build(BuildContext context) {
     switch (widget.config.imageView.buttonsTemplate) {
       case ButtonsPosition.topAndBottom:
-        return TopAndButtonReusableContainer(config: widget.config);
+        return TopAndButtonReusableContainer(
+          config: widget.config,
+          onModelSelected: widget.config.onModelSelected,
+        );
       default:
         return Container();
     }

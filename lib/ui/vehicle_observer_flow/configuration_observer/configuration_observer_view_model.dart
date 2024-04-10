@@ -1,5 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -18,5 +20,15 @@ class ConfigurationObserverViewModel {
     required this.config,
   }) {
     provider = VehicleProvider(config.service);
+  }
+
+  void onModelSelected(String id, BuildContext context) {
+    final model =
+        configuration.value.children.firstWhere((element) => element.id == id);
+
+    Navigator.of(context).pushNamed(
+      VehicleSelectorRouteKeys.unitObserver,
+      arguments: model,
+    );
   }
 }

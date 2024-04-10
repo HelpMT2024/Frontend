@@ -1,18 +1,18 @@
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
-class ChildrenComponent {
+class ChildrenPart {
   final String id;
   final String name;
   final IDPIcon? image;
 
-  ChildrenComponent({
+  ChildrenPart({
     required this.id,
     required this.name,
     required this.image,
   });
 
-  factory ChildrenComponent.fromJson(Map<String, dynamic> json) {
-    return ChildrenComponent(
+  factory ChildrenPart.fromJson(Map<String, dynamic> json) {
+    return ChildrenPart(
       id: json['sys']['id'],
       name: json['name'],
       image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
@@ -20,31 +20,29 @@ class ChildrenComponent {
   }
 }
 
-class System {
-  final String id;
+class Component {
   final String name;
-  final IDPImage icon;
+  final IDPImage? icon;
   final IDPImageView imageView;
-  final List<ChildrenComponent> children;
+  final List<ChildrenPart> children;
 
-  System({
-    required this.id,
+  Component({
     required this.name,
     required this.icon,
     required this.imageView,
     required this.children,
   });
 
-  factory System.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> children = json['childrenCollection']['items'];
-
-    return System(
-      id: json['sys']['id'],
+  factory Component.fromJson(Map<String, dynamic> json) {
+    return Component(
       name: json['name'],
-      icon: IDPImage.fromJson(json['icon']),
+      icon: json['icon'] != null ? IDPImage.fromJson(json['icon']) : null,
       imageView: IDPImageView.fromJson(json['imageView']),
-      children:
-          children.map((child) => ChildrenComponent.fromJson(child)).toList(),
+      children: List<ChildrenPart>.from(
+        json['childrenCollection']['items'].map(
+          (childrenCollection) => ChildrenPart.fromJson(childrenCollection),
+        ),
+      ),
     );
   }
 }

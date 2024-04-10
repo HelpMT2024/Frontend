@@ -6,7 +6,9 @@ class TokenModel {
   TokenModel(this.token, this.type, this.refreshToken);
 
   factory TokenModel.fromJson(
-      Map<String, dynamic> json, Map<String, dynamic> refreshToken) {
+    Map<String, dynamic> json,
+    Map<String, dynamic> refreshToken,
+  ) {
     return TokenModel(
       json['token'],
       json['type'],

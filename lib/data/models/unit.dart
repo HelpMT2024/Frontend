@@ -1,18 +1,18 @@
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
-class ChildrenUnit {
+class ChildrenSystem {
   final String id;
   final String name;
   final IDPIcon image;
 
-  ChildrenUnit({
+  ChildrenSystem({
     required this.id,
     required this.name,
     required this.image,
   });
 
-  factory ChildrenUnit.fromJson(Map<String, dynamic> json) {
-    return ChildrenUnit(
+  factory ChildrenSystem.fromJson(Map<String, dynamic> json) {
+    return ChildrenSystem(
       id: json['sys']['id'],
       name: json['name'],
       image: IDPIcon.fromJson(json['icon']),
@@ -20,24 +20,29 @@ class ChildrenUnit {
   }
 }
 
-class Configuration {
+class Unit {
   final String name;
+  final IDPImage icon;
   final IDPImageView imageView;
-  final List<ChildrenUnit> children;
+  final List<ChildrenSystem> children;
 
-  Configuration({
+  Unit({
     required this.name,
+    required this.icon,
     required this.imageView,
     required this.children,
   });
 
-  factory Configuration.fromJson(Map<String, dynamic> json) {
-    final List<dynamic> children = json['childrenCollection']['items'];
-
-    return Configuration(
+  factory Unit.fromJson(Map<String, dynamic> json) {
+    return Unit(
       name: json['name'],
+      icon: IDPImage.fromJson(json['icon']),
       imageView: IDPImageView.fromJson(json['imageView']),
-      children: children.map((child) => ChildrenUnit.fromJson(child)).toList(),
+      children: List<ChildrenSystem>.from(
+        json['childrenCollection']['items'].map(
+          (childrenCollection) => ChildrenSystem.fromJson(childrenCollection),
+        ),
+      ),
     );
   }
 }

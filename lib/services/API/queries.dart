@@ -116,15 +116,15 @@ abstract class Queries {
     } 
     imageView {
       imageFront {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
-        }
+        title
+        description
+        contentType
+        fileName
+        size
+        url
+        width
+        height
+      }
       imageFrontMarkup
       imageBackMarkup
       buttonsTemplate
@@ -138,6 +138,16 @@ abstract class Queries {
         }
         internalName
         name
+        icon {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        } 
       }
     }
   }
@@ -149,7 +159,9 @@ abstract class Queries {
     return '''
     query System(\$id: String = "$id") {
   system(id: \$id) {
-    internalName
+    sys {
+      id
+    }
     name
     icon {
       title
@@ -185,6 +197,16 @@ abstract class Queries {
         }
         internalName
         name
+        icon {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        } 
       }
     }
   }
@@ -196,6 +218,9 @@ abstract class Queries {
     return '''
     query Component(\$id: String = "$id") {
   component(id: \$id) {
+    sys {
+      id
+    }
     internalName
     name
     icon {
@@ -230,7 +255,16 @@ abstract class Queries {
         sys {
           id
         }
-        internalName
+        icon {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
         name
       }
     }

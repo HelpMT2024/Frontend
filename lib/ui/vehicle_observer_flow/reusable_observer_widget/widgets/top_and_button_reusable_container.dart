@@ -2,18 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/extensions/list_extensions.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 
 class TopAndButtonReusableContainer extends StatelessWidget {
+  final Function(ReusableModel) onModelSelected;
   final ReusableObserverWidgetConfig config;
 
-  const TopAndButtonReusableContainer({super.key, required this.config});
+  const TopAndButtonReusableContainer({
+    super.key,
+    required this.config,
+    required this.onModelSelected,
+  });
 
   @override
   Widget build(BuildContext context) {
-    List<List<IDPIcon>> chunked = config.buttons.chunked(2);
+    List<List<IDPIcon?>> chunked = config.buttons.chunked(2);
     List<List<ReusableModel>> models = config.models.chunked(2);
 
     return Column(
@@ -30,7 +35,7 @@ class TopAndButtonReusableContainer extends StatelessWidget {
   }
 
   Widget _buttons(
-    List<IDPIcon> chunked,
+    List<IDPIcon?> chunked,
     List<ReusableModel> models,
     BuildContext context,
   ) {
@@ -43,38 +48,51 @@ class TopAndButtonReusableContainer extends StatelessWidget {
     );
   }
 
-  Widget _button(IDPIcon button, ReusableModel model, BuildContext context) {
+  Widget _button(IDPIcon? button, ReusableModel model, BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
     return Expanded(
       child: PlatformTextButton(
-        onPressed: () {},
+        onPressed: () => onModelSelected(model),
         padding: const EdgeInsets.symmetric(horizontal: 8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              model.name,
-              style: styles.labelMedium!.copyWith(
-                color: ColorConstants.surfaceWhite,
-              ),
-            ),
+            if (button != null) _text(model, styles),
+            if (button == null) _container(_text(model, styles)),
             const SizedBox(height: 8),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: ColorConstants.onSurfacePrimary,
+            if (button != null)
+              _container(
+                button.contentType == 'image/svg+xml'
+                    ? SvgPicture.network(button.url)
+                    : Image.network(button.url),
               ),
-              child: button.contentType == 'image/svg+xml'
-                  ? SvgPicture.network(button.url)
-                  : Image.network(button.url),
-            ),
           ],
         ),
       ),
+    );
+  }
+
+  Text _text(ReusableModel model, TextTheme styles) {
+    return Text(
+      model.name,
+      textAlign: TextAlign.center,
+      style: styles.labelMedium!.copyWith(
+        color: ColorConstants.surfaceWhite,
+      ),
+    );
+  }
+
+  Container _container(Widget child) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        color: ColorConstants.onSurfacePrimary,
+      ),
+      child: child,
     );
   }
 }

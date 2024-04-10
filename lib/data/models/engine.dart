@@ -1,4 +1,4 @@
-import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
 class Engine {
   final String id;
