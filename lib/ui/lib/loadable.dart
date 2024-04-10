@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/ui/lib/mesure_size.dart';
 
 class Loadable extends StatefulWidget {
@@ -47,8 +48,10 @@ class _LoadableState extends State<Loadable> {
                 ),
                 height: _childSize.height,
                 width: _childSize.width,
-                child: const Center(
-                  child: CircularProgressIndicator(),
+                child: Center(
+                  child: CircularProgressIndicator(
+                    color: ColorConstants.surfaceWhite,
+                  ),
                 ),
               ),
             ]
