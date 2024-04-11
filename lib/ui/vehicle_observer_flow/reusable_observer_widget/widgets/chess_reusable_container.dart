@@ -41,9 +41,14 @@ class ChessReusableContainer extends StatelessWidget {
     );
   }
 
-  Widget _buttons(List<IDPIcon?> chunked, List<ReusableModel> models,
-      BuildContext context, MainAxisAlignment mainAxisAlignment, double space,
-      {bool needSpacer = false}) {
+  Widget _buttons(
+    List<IDPIcon?> chunked,
+    List<ReusableModel> models,
+    BuildContext context,
+    MainAxisAlignment mainAxisAlignment,
+    double space, {
+    bool needSpacer = false,
+  }) {
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       children: [

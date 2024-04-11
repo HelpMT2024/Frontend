@@ -6,11 +6,14 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:help_my_truck/ui/lib/app_gradient_bg_decorator.dart';
-import 'package:help_my_truck/ui/lib/loadable.dart';
-import 'package:help_my_truck/ui/lib/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
+import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
+import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_view_model.dart';
 import 'package:help_my_truck/ui/shared/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
+import 'package:help_my_truck/ui/widgets/warning_button.dart';
 
 class PartScreen extends StatefulWidget {
   final PartViewModel viewModel;
@@ -27,7 +30,12 @@ class _PartScreenState extends State<PartScreen> {
     final styles = Theme.of(context).textTheme;
 
     return Scaffold(
-      appBar: MainNavigationBar(context: context, styles: styles),
+      appBar: MainNavigationBar(
+        context: context,
+        styles: styles,
+        action: const [VehicleNavBarActions()],
+        bottom: _navBarTitle(styles),
+      ),
       body: Container(
         padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
         decoration: appGradientBgDecoration,
@@ -40,6 +48,28 @@ class _PartScreenState extends State<PartScreen> {
               return Loadable(forceLoad: true, child: Container());
             }
           },
+        ),
+      ),
+    );
+  }
+
+  PreferredSize _navBarTitle(TextTheme styles) {
+    return PreferredSize(
+      preferredSize: const Size(double.infinity, 30),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 6),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(width: 16),
+            Text(
+              widget.viewModel.config.name,
+              textAlign: TextAlign.left,
+              style: styles.titleLarge?.merge(
+                TextStyle(color: ColorConstants.onSurfaceWhite),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -59,12 +89,14 @@ class _PartScreenState extends State<PartScreen> {
             _symptomsSection(styles),
             _title(l10n?.fault_code_title, styles),
             _faultCodeSection(styles),
-            if(widget.viewModel.part.value.pdfFilesCollection.items.isNotEmpty) ...{
+            if (widget
+                .viewModel.part.value.pdfFilesCollection.items.isNotEmpty) ...{
               _title(l10n?.instructions_title, styles),
               ..._instructionsSection(styles),
             },
             _commentButton(l10n, styles),
-            if(widget.viewModel.part.value.videosCollection.items.isNotEmpty) ...{
+            if (widget
+                .viewModel.part.value.videosCollection.items.isNotEmpty) ...{
               _title(l10n?.tips_and_hinst_video, styles),
               ..._videoWidget()
             }
@@ -90,7 +122,7 @@ class _PartScreenState extends State<PartScreen> {
           text ?? '',
           textAlign: TextAlign.left,
           style: styles.titleMedium?.merge(
-            TextStyle(color: ColorConstants.onSurfaceWhite)
+            TextStyle(color: ColorConstants.onSurfaceWhite),
           ),
         ),
         const SizedBox(height: 12),
@@ -105,34 +137,35 @@ class _PartScreenState extends State<PartScreen> {
     bool isOutlined = false,
     Widget? leading,
     Widget? trailing,
-    Color? color
+    Color? color,
   }) {
     return CustomButton(
       title: CustomButtonTitle(
         text: null,
-        widget: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if(leading != null) ...{
-              leading,
-              const SizedBox(width: 6),
-            },
-            Text(
-              title,
-              style: styles.labelLarge?.merge(
-                TextStyle(color: ColorConstants.onSurfaceWhite)
+        widget: Expanded(
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (leading != null) ...{
+                leading,
+                const SizedBox(width: 6),
+              },
+              Text(
+                title,
+                style: styles.labelLarge?.copyWith(
+                  color: ColorConstants.onSurfaceWhite,
+                ),
               ),
-            ),
-            if(trailing != null) ...{
-              const SizedBox(width: 6),
-              trailing
-            }
-          ],
-        )
+              if (trailing != null) ...{const SizedBox(width: 6), trailing}
+            ],
+          ),
+        ),
       ),
       mainColor: color ?? ColorConstants.onSurfaceSecondary,
-      state: isOutlined ? CustomButtonStates.outlined : CustomButtonStates.filled,
-      onPressed: onPressed
+      state:
+          isOutlined ? CustomButtonStates.outlined : CustomButtonStates.filled,
+      onPressed: onPressed,
     );
   }
 
@@ -141,32 +174,33 @@ class _PartScreenState extends State<PartScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 32),
-        ContentfulRichText(
-          widget.viewModel.part.value.description,
-        ).documentToWidgetTree,
+        _text(styles),
         const SizedBox(height: 32),
-        _button(
-          leading: Icon(
-            Icons.nearby_error,
-            size: 20,
-            color: ColorConstants.warningColor,
-          ),
-          styles: styles,
-          title: '',
-          onPressed: () {}
-        )
-    ]);
+        _warningButton(styles)
+      ],
+    );
+  }
+
+  Widget _warningButton(TextTheme styles) {
+    return const WarningButton();
+  }
+
+  Widget _text(TextTheme styles) {
+    return DefaultTextStyle.merge(
+      style: styles.labelLarge?.merge(
+        TextStyle(
+          color: ColorConstants.onSurfaceWhite.withAlpha(210),
+        ),
+      ),
+      child: ContentfulRichText(
+        widget.viewModel.part.value.description,
+      ).documentToWidgetTree,
+    );
   }
 
   Widget _faultCodeSection(TextTheme styles) {
-    final images = [
-      Icons.square_rounded,
-      Icons.square_rounded
-    ];
-    final codes = [
-      'SPN 652, FMI 3, 4, 5, 6, 7',
-      'SPN 2798, FMI 3, 4'
-    ];
+    final images = [Icons.square_rounded, Icons.square_rounded];
+    final codes = ['SPN 652, FMI 3, 4, 5, 6, 7', 'SPN 2798, FMI 3, 4'];
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -176,21 +210,22 @@ class _PartScreenState extends State<PartScreen> {
           children: images.map((e) => Icon(e)).toList(),
         ),
         const SizedBox(height: 4),
-        ...codes.map((e) {
-          return Padding(
-            padding: const EdgeInsets.only(top: 8),
-            child: _button(
-              leading: Icon(
-                Icons.error,
-                color: ColorConstants.statesError,
-                size: 20,
-              ),
-              styles: styles,
-              title: e,
-              onPressed: () {}
-            ),
-          );
-        })
+        ...codes.map(
+          (e) {
+            return Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: _button(
+                  leading: Icon(
+                    Icons.error,
+                    color: ColorConstants.statesError,
+                    size: 20,
+                  ),
+                  styles: styles,
+                  title: e,
+                  onPressed: () {}),
+            );
+          },
+        )
       ],
     );
   }
@@ -201,33 +236,22 @@ class _PartScreenState extends State<PartScreen> {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
         child: _button(
-          trailing: SvgPicture.asset(
-            R.ASSETS_PDF_FILE_SVG,
-            height: 20,
-            width: 20,
-          ),
-          styles: styles,
-          title: e.title,
-          onPressed: () => viewModel.openPdf(e)
-        ),
+            trailing: SvgPicture.asset(
+              R.ASSETS_PDF_FILE_SVG,
+              height: 20,
+              width: 20,
+            ),
+            styles: styles,
+            title: e.title,
+            onPressed: () => viewModel.openPdf(e)),
       );
     }).toList();
   }
 
   Widget _commentButton(AppLocalizations? l10n, TextTheme styles) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32),
-      child: _button(
-        title: l10n?.comments_title ?? '',
-        styles: styles,
-        trailing: Icon(
-          Icons.chat_bubble,
-          size: 20,
-          color: ColorConstants.onSurfaceWhite,
-        ),
-        isOutlined: true,
-        onPressed: () {}
-      ),
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 32),
+      child: CommentButton(),
     );
   }
 
@@ -235,9 +259,7 @@ class _PartScreenState extends State<PartScreen> {
     return widget.viewModel.part.value.videosCollection.items.map((e) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
-        child: Chewie(
-          controller: widget.viewModel.getChewieController(e)
-        ),
+        child: Chewie(controller: widget.viewModel.getChewieController(e)),
       );
     }).toList();
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/truck.dart';
-import 'package:help_my_truck/ui/lib/app_gradient_bg_decorator.dart';
-import 'package:help_my_truck/ui/lib/loadable.dart';
-import 'package:help_my_truck/ui/lib/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
+import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_selector_flow/next_button.dart';
 import 'package:help_my_truck/ui/vehicle_selector_flow/truck_selector/truck_selector_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

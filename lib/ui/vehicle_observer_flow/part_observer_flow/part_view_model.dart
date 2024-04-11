@@ -1,6 +1,7 @@
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -9,23 +10,21 @@ import 'package:video_player/video_player.dart';
 
 class PartViewModel {
   final VehicleProvider provider;
-  final String partId;
+  final ChildrenPart config;
 
   late final part = BehaviorSubject<Part>()
-    ..addStream(Stream.fromFuture(provider.part(partId)));
+    ..addStream(Stream.fromFuture(provider.part(config.id)));
 
   int currentTruckIndex = 0;
 
   PartViewModel({
     required this.provider,
-    required this.partId,
+    required this.config,
   });
 
   ChewieController getChewieController(IDPVideo video) {
-    final videoPlayer = VideoPlayerController.networkUrl(
-      Uri.parse(video.url),
-      videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true)
-    );
+    final videoPlayer = VideoPlayerController.networkUrl(Uri.parse(video.url),
+        videoPlayerOptions: VideoPlayerOptions(allowBackgroundPlayback: true));
     return ChewieController(
       videoPlayerController: videoPlayer,
       aspectRatio: 16 / 9,
@@ -43,7 +42,5 @@ class PartViewModel {
     );
   }
 
-  void openPdf(PdfFile file) {
-    
-  }
+  void openPdf(PdfFile file) {}
 }

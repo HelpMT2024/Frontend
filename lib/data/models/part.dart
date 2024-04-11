@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
 class Part {

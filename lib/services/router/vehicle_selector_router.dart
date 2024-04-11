@@ -1,6 +1,7 @@
 // ignore_for_file: body_might_complete_normally_nullable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
@@ -75,7 +76,7 @@ Route<dynamic>? VehicleSelectorRouter(
           return UnitObserverScreen(viewModel: viewModel);
         },
       );
-    
+
     case VehicleSelectorRouteKeys.partObserver:
       return nativePageRoute(
         settings: setting,
@@ -83,7 +84,7 @@ Route<dynamic>? VehicleSelectorRouter(
           final provider = VehicleProvider(service);
           final viewModel = PartViewModel(
             provider: provider,
-            partId: setting.arguments as String,
+            config: setting.arguments as ChildrenPart,
           );
 
           return PartScreen(viewModel: viewModel);

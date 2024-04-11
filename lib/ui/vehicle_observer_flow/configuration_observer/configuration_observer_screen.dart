@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
-import 'package:help_my_truck/ui/lib/app_gradient_bg_decorator.dart';
-import 'package:help_my_truck/ui/lib/loadable.dart';
+import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
+import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
+import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 
 class ConfigurationObserverScreen extends StatefulWidget {
   final ConfigurationObserverViewModel viewModel;
@@ -17,27 +20,54 @@ class ConfigurationObserverScreen extends StatefulWidget {
 
 class _ConfigurationObserverScreenState
     extends State<ConfigurationObserverScreen> {
+  String get title =>
+      '${widget.viewModel.config.truck.name} ${widget.viewModel.config.engine.name}'
+          .toUpperCase();
+
   @override
   Widget build(BuildContext context) {
+    final styles = Theme.of(context).textTheme;
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-        decoration: appGradientBgDecoration,
-        child: StreamBuilder<Configuration>(
-          stream: widget.viewModel.configuration,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _body(snapshot.data!);
-            } else {
-              return Loadable(forceLoad: true, child: Container());
-            }
-          },
-        ),
+      appBar: MainNavigationBar(
+        context: context,
+        styles: styles,
+        title: title,
+        action: const [VehicleNavBarActions(hideBookmark: true)],
+      ),
+      body: Stack(
+        children: [
+          Container(decoration: appGradientBgDecoration),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+            child: StreamBuilder<Configuration>(
+              stream: widget.viewModel.configuration,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return _body(snapshot.data!);
+                } else {
+                  return Loadable(forceLoad: true, child: Container());
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _body(Configuration data) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _content(data),
+          const SizedBox(height: 32),
+          const CommentButton(),
+        ],
+      ),
+    );
+  }
+
+  ReusableObserverWidget _content(Configuration data) {
     final models = data.children
         .map((e) => ReusableModel(id: e.id, name: e.name))
         .toList();

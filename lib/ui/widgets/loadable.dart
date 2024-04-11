@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/ui/lib/mesure_size.dart';
+import 'package:help_my_truck/ui/widgets/mesure_size.dart';
 
 class Loadable extends StatefulWidget {
   final Widget child;

@@ -34,11 +34,14 @@ class MainNavigationBar extends AppBar {
         );
 
   static Widget _title(String? title, TextTheme styles) {
-    return Text(
-      title ?? '',
-      style: styles.titleLarge?.merge(
-        TextStyle(
-          color: ColorConstants.surfaceWhite,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.7),
+      child: Text(
+        title ?? '',
+        style: styles.titleLarge?.merge(
+          TextStyle(
+            color: ColorConstants.surfaceWhite,
+          ),
         ),
       ),
     );
@@ -71,13 +74,12 @@ class MainNavigationBar extends AppBar {
             onTapBack != null ? onTapBack() : Navigator.of(context).pop();
           },
         ),
-        if(bottomTitle != null) ...{
+        if (bottomTitle != null) ...{
           const SizedBox(height: 4),
           Text(
             bottomTitle,
-            style: styles.titleLarge?.merge(
-              TextStyle(color: ColorConstants.onSurfaceWhite)
-            ),
+            style: styles.titleLarge
+                ?.merge(TextStyle(color: ColorConstants.onSurfaceWhite)),
           )
         }
       ],
