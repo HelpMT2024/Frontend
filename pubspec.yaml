@@ -47,6 +47,9 @@ dependencies:
   carousel_slider: ^4.2.1
   rxdart: ^0.27.7
   page_view_dot_indicator: ^2.3.0
+  contentful_rich_text: ^2.1.0
+  chewie: ^1.8.1
+  video_player: ^2.8.5
 
 dev_dependencies:
   flutter_test:

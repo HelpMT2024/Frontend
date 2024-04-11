@@ -162,6 +162,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose Your Engine'**
   String get choose_your_engine;
+
+  /// No description provided for @instructions_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Instructions'**
+  String get instructions_title;
+
+  /// No description provided for @comments_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Comments'**
+  String get comments_title;
+
+  /// No description provided for @tips_and_hinst_video.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips & Hints Videos'**
+  String get tips_and_hinst_video;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

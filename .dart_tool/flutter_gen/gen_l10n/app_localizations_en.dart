@@ -39,4 +39,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get choose_your_engine => 'Choose Your Engine';
+
+  @override
+  String get instructions_title => 'Instructions';
+
+  @override
+  String get comments_title => 'Comments';
+
+  @override
+  String get tips_and_hinst_video => 'Tips & Hints Videos';
 }

@@ -276,24 +276,10 @@ abstract class Queries {
   static String partById({required String id}) {
     return '''
     query Part(\$id: String = "$id") {
-  part(id: \$id) {
-    internalName
-    name
-    icon {
-      title
-      description
-      contentType
-      fileName
-      size
-      url
-      width
-      height
-    } 
-    description {
-      json
-    }
-    imageView {
-      imageFront {
+      part(id: \$id) {
+        internalName
+        name
+        icon {
           title
           description
           contentType
@@ -302,28 +288,86 @@ abstract class Queries {
           url
           width
           height
+        } 
+        description {
+          json
         }
-      imageFrontMarkup
-      imageBackMarkup
-      buttonsTemplate
-      description
-      descriptionPosition
-    }
-    pdfFilesCollection {
-      items {
-        internalName
-        title
+        imageView {
+          imageFront {
+              title
+              description
+              contentType
+              fileName
+              size
+              url
+              width
+              height
+            }
+          imageFrontMarkup
+          imageBackMarkup
+          buttonsTemplate
+          description
+          descriptionPosition
+        }
+        pdfFilesCollection {
+          items {
+            internalName
+            title
+          }
+        }
+        videosCollection {
+          items {
+            internalName
+            title
+            url
+          } 
+        }
+      }
+    } 
+    ''';
+  }
+
+  static String getPartCollection() {
+    return '''
+      query GetPartCollection {
+      partCollection {
+        items {
+          sys {
+            id
+          }
+          internalName
+          name
+          imageView {
+            imageFront {
+              title
+              description
+              contentType
+              fileName
+              size
+              url
+              width
+              height
+            } 
+            internalName
+            imageFrontMarkup
+            imageBackMarkup
+            buttonsTemplate
+            description
+            descriptionPosition
+          }
+          icon {
+            title
+            description
+            contentType
+            fileName
+            size
+            url
+            width
+            height
+          }
+        } 
       }
     }
-    videosCollection {
-      items {
-        internalName
-        title
-        url
-      } 
-    }
-  }
-} 
-''';
+    ''';
   }
 }

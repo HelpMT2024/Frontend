@@ -7,6 +7,8 @@ import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_screen.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/system_observer_screen/system_observer_screen.dart';
@@ -23,6 +25,7 @@ abstract class VehicleSelectorRouteKeys {
   static const String componentObserver = 'componentObserver';
   static const String systemObserver = 'systemObserver';
   static const String unitObserver = 'unitObserver';
+  static const String partObserver = 'partObserver';
   static const String truckSelector = 'truckSelector';
   static const String engineSelector = 'engineSelector';
 }
@@ -72,6 +75,21 @@ Route<dynamic>? VehicleSelectorRouter(
           return UnitObserverScreen(viewModel: viewModel);
         },
       );
+    
+    case VehicleSelectorRouteKeys.partObserver:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final provider = VehicleProvider(service);
+          final viewModel = PartViewModel(
+            provider: provider,
+            partId: setting.arguments as String,
+          );
+
+          return PartScreen(viewModel: viewModel);
+        },
+      );
+
     case VehicleSelectorRouteKeys.engineSelector:
       return nativePageRoute(
         settings: setting,

@@ -10,6 +10,9 @@ class R {
   /// ![preview](file:///Users/anemia/Desktop/development/help-my-truck/assets/home.svg)
   static const String ASSETS_HOME_SVG = 'assets/home.svg';
 
+  /// ![preview](file:///Users/anemia/Desktop/development/help-my-truck/assets/pdf_file.svg)
+  static const String ASSETS_PDF_FILE_SVG = 'assets/pdf_file.svg';
+
   /// ![preview](file:///Users/anemia/Desktop/development/help-my-truck/assets/people.svg)
   static const String ASSETS_PEOPLE_SVG = 'assets/people.svg';
 

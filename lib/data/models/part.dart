@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
 class Part {
   final String internalName;
   final String name;
-  final IDPIcon icon;
-  final String description;
+  final IDPIcon? icon;
+  final Map<String, dynamic> description;
   final IDPImageView imageView;
   final PdfFilesCollection pdfFilesCollection;
   final VideosCollection videosCollection;
@@ -23,8 +25,8 @@ class Part {
     return Part(
       internalName: json['internalName'],
       name: json['name'],
-      icon: IDPIcon.fromJson(json['icon']),
-      description: json['description'],
+      icon: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
+      description: json['description']['json'],
       imageView: IDPImageView.fromJson(json['imageView']),
       pdfFilesCollection:
           PdfFilesCollection.fromJson(json['pdfFilesCollection']),

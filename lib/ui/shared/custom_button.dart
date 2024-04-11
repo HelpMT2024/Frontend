@@ -87,6 +87,7 @@ class CustomButton extends StatelessWidget {
         children: [
           title.text != null
               ? _buttonText(
+                  title.text!,
                   styles,
                   _isOutlined ? buttonColor : ColorConstants.onSurfaceWhite,
                 )
@@ -101,7 +102,7 @@ class CustomButton extends StatelessWidget {
     required VoidCallback? onPressed,
   }) {
     final buttonColor = mainColor ?? ColorConstants.onSurfaceSecondary;
-    
+
     return CupertinoButton(
       padding: EdgeInsets.zero,
       onPressed: onPressed,
@@ -121,18 +122,21 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: Center(
-          child: _buttonText(
-            styles,
-            _isOutlined ? buttonColor : ColorConstants.onSurfaceWhite,
-          ),
+          child: title.text != null
+              ? _buttonText(
+                  title.text!,
+                  styles,
+                  _isOutlined ? buttonColor : ColorConstants.onSurfaceWhite,
+                )
+              : title.widget!
         ),
       ),
     );
   }
 
-  Widget _buttonText(TextTheme styles, Color color) {
+  Widget _buttonText(String title, TextTheme styles, Color color) {
     return Text(
-      title.text!,
+      title,
       style: styles.button?.merge(
         TextStyle(color: textColor ?? color),
       ),

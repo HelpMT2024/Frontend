@@ -7,6 +7,7 @@ class MainNavigationBar extends AppBar {
     required BuildContext context,
     required TextTheme styles,
     String? title,
+    String? bottomTitle,
     Color? bgColor,
     List<Widget>? action,
     bool hasLeading = true,
@@ -25,7 +26,7 @@ class MainNavigationBar extends AppBar {
               ? _backButton(
                   styles,
                   context,
-                  title,
+                  bottomTitle,
                   onTapBack,
                 )
               : null,
@@ -43,29 +44,43 @@ class MainNavigationBar extends AppBar {
     );
   }
 
-  static IconButton? _backButton(
+  static Widget? _backButton(
     TextTheme styles,
     BuildContext context,
-    String? title,
+    String? bottomTitle,
     VoidCallback? onTapBack,
   ) {
     if (ModalRoute.of(context)?.isFirst == true) {
       return null;
     }
 
-    return IconButton(
-      icon: Row(
-        children: [
-          Icon(
-            Icons.arrow_back_ios_new_rounded,
-            size: 24,
-            color: ColorConstants.onSurfaceWhite,
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Row(
+            children: [
+              Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 24,
+                color: ColorConstants.onSurfaceWhite,
+              ),
+            ],
           ),
-        ],
-      ),
-      onPressed: () {
-        onTapBack != null ? onTapBack() : Navigator.of(context).pop();
-      },
+          onPressed: () {
+            onTapBack != null ? onTapBack() : Navigator.of(context).pop();
+          },
+        ),
+        if(bottomTitle != null) ...{
+          const SizedBox(height: 4),
+          Text(
+            bottomTitle,
+            style: styles.titleLarge?.merge(
+              TextStyle(color: ColorConstants.onSurfaceWhite)
+            ),
+          )
+        }
+      ],
     );
   }
 }

@@ -76,6 +76,19 @@ class VehicleProvider {
     return trucks.map((truck) => Truck.fromJson(truck)).toList();
   }
 
+  Future<List<Part>> parts() async {
+    final query = Queries.getPartCollection();
+    final result = await service.callApi(query);
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    final List<dynamic> parts = result.data!['partCollection']['items'];
+
+    return parts.map((truck) => Part.fromJson(truck)).toList();
+  }
+
   Future<List<Engine>> engines() async {
     const query = Queries.getEngines;
     final result = await service.callApi(query);
