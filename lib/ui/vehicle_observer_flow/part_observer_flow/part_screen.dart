@@ -1,4 +1,3 @@
-import 'package:chewie/chewie.dart';
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -36,19 +35,25 @@ class _PartScreenState extends State<PartScreen> {
         action: const [VehicleNavBarActions()],
         bottom: _navBarTitle(styles),
       ),
-      body: Container(
-        padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
-        decoration: appGradientBgDecoration,
-        child: StreamBuilder<Part>(
-          stream: widget.viewModel.part,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return _body(snapshot.data!);
-            } else {
-              return Loadable(forceLoad: true, child: Container());
-            }
-          },
-        ),
+      body: Stack(
+        children: [
+          Container(
+            decoration: appGradientBgDecoration,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
+            child: StreamBuilder<Part>(
+              stream: widget.viewModel.part,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return _body(snapshot.data!);
+                } else {
+                  return Loadable(forceLoad: true, child: Container());
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -108,8 +113,10 @@ class _PartScreenState extends State<PartScreen> {
 
   Widget _image() {
     final part = widget.viewModel.part.value;
-
-    return Image.network(part.imageView.imageFront.url);
+    if (part.imageView == null) {
+      return const SizedBox();
+    }
+    return Image.network(part.imageView!.imageFront.url);
   }
 
   Widget _title(String? text, TextTheme styles) {
@@ -257,10 +264,35 @@ class _PartScreenState extends State<PartScreen> {
 
   List<Widget> _videoWidget() {
     return widget.viewModel.part.value.videosCollection.items.map((e) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 8),
-        child: Chewie(controller: widget.viewModel.getChewieController(e)),
+      return GestureDetector(
+        onTap: () => widget.viewModel.openVideo(e),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 8),
+          child: Stack(
+            alignment: Alignment.center,
+            children: [
+              Image.network(_getYoutubeThumbnail(e.url)!),
+              Align(
+                alignment: Alignment.center,
+                child: Icon(
+                  Icons.play_circle_fill,
+                  color: ColorConstants.onSurfaceWhite,
+                  size: 56,
+                ),
+              ),
+            ],
+          ),
+        ),
       );
     }).toList();
+  }
+
+  String? _getYoutubeThumbnail(String videoUrl) {
+    final uri = Uri.tryParse(videoUrl);
+    if (uri == null) {
+      return null;
+    }
+
+    return 'https://img.youtube.com/vi/${uri.queryParameters['v']}/0.jpg';
   }
 }

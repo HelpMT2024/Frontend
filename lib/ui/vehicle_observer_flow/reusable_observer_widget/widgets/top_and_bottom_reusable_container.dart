@@ -3,6 +3,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/extensions/list_extensions.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_container_button.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
 
 class TopAndBottomReusableContainer extends StatelessWidget {
   final Function(ReusableModel) onModelSelected;
@@ -25,7 +26,7 @@ class TopAndBottomReusableContainer extends StatelessWidget {
         const SizedBox(width: double.infinity),
         if (chunked.isNotEmpty) _buttons(chunked[0], models[0], context),
         const SizedBox(height: 10),
-        Image.network(config.imageView.imageFront.url),
+        VehicleObserverImage(image: config.imageView),
         const SizedBox(height: 10),
         if (chunked.length > 1) _buttons(chunked[1], models[1], context),
       ],
@@ -38,6 +39,7 @@ class TopAndBottomReusableContainer extends StatelessWidget {
     BuildContext context,
   ) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         for (final button in chunked)

@@ -23,7 +23,7 @@ class ChildrenPart {
 class Component {
   final String name;
   final IDPImage? icon;
-  final IDPImageView imageView;
+  final IDPImageView? imageView;
   final List<ChildrenPart> children;
 
   Component({
@@ -37,7 +37,9 @@ class Component {
     return Component(
       name: json['name'],
       icon: json['icon'] != null ? IDPImage.fromJson(json['icon']) : null,
-      imageView: IDPImageView.fromJson(json['imageView']),
+      imageView: json['imageView'] != null
+          ? IDPImageView.fromJson(json['imageView'])
+          : null,
       children: List<ChildrenPart>.from(
         json['childrenCollection']['items'].map(
           (childrenCollection) => ChildrenPart.fromJson(childrenCollection),

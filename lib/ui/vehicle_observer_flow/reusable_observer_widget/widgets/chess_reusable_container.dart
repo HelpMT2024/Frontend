@@ -3,6 +3,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/extensions/list_extensions.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_container_button.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
 
 class ChessReusableContainer extends StatelessWidget {
   final Function(ReusableModel) onModelSelected;
@@ -27,7 +28,7 @@ class ChessReusableContainer extends StatelessWidget {
           _buttons(chunked[0], models[0], context,
               MainAxisAlignment.spaceBetween, 0),
         const SizedBox(height: 10),
-        Image.network(config.imageView.imageFront.url),
+        VehicleObserverImage(image: config.imageView),
         const SizedBox(height: 10),
         if (chunked.length > 1)
           _buttons(

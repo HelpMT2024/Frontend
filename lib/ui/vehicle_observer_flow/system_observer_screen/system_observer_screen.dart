@@ -64,7 +64,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _content(data),
+          if (_content(data) != null) _content(data)!,
           const SizedBox(height: 32),
           const WarningButton(),
           const SizedBox(height: 16),
@@ -74,13 +74,16 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
     );
   }
 
-  ReusableObserverWidget _content(System data) {
+  ReusableObserverWidget? _content(System data) {
+    if (data.imageView == null) {
+      return null;
+    }
     final models = data.children
         .map((e) => ReusableModel(id: e.id, name: e.name))
         .toList();
 
     final config = ReusableObserverWidgetConfig(
-      imageView: data.imageView,
+      imageView: data.imageView!,
       buttons: data.children.map((e) => e.image).toList(),
       models: models,
       onModelSelected: (model) => widget.viewModel.onModelSelected(

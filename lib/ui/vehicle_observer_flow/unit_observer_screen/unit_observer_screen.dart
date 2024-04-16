@@ -63,7 +63,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _content(data),
+          _content(data) ?? const SizedBox(),
           const SizedBox(height: 32),
           const WarningButton(),
           const SizedBox(height: 16),
@@ -73,13 +73,17 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
     );
   }
 
-  ReusableObserverWidget _content(Unit data) {
+  ReusableObserverWidget? _content(Unit data) {
+    if (data.imageView == null) {
+      return null;
+    }
+
     final models = data.children
         .map((e) => ReusableModel(id: e.id, name: e.name))
         .toList();
 
     final config = ReusableObserverWidgetConfig(
-      imageView: data.imageView,
+      imageView: data.imageView!,
       buttons: data.children.map((e) => e.image).toList(),
       models: models,
       onModelSelected: (model) => widget.viewModel.onModelSelected(

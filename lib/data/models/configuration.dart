@@ -3,7 +3,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 class ChildrenUnit {
   final String id;
   final String name;
-  final IDPIcon image;
+  final IDPIcon? image;
 
   ChildrenUnit({
     required this.id,
@@ -15,7 +15,7 @@ class ChildrenUnit {
     return ChildrenUnit(
       id: json['sys']['id'],
       name: json['name'],
-      image: IDPIcon.fromJson(json['icon']),
+      image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
     );
   }
 }

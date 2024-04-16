@@ -4,8 +4,8 @@ class Part {
   final String internalName;
   final String name;
   final IDPIcon? icon;
-  final Map<String, dynamic> description;
-  final IDPImageView imageView;
+  final Map<String, dynamic>? description;
+  final IDPImageView? imageView;
   final PdfFilesCollection pdfFilesCollection;
   final VideosCollection videosCollection;
 
@@ -24,8 +24,10 @@ class Part {
       internalName: json['internalName'],
       name: json['name'],
       icon: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
-      description: json['description']['json'],
-      imageView: IDPImageView.fromJson(json['imageView']),
+      description: json['description'],
+      imageView: json['imageView'] != null
+          ? IDPImageView.fromJson(json['imageView'])
+          : null,
       pdfFilesCollection:
           PdfFilesCollection.fromJson(json['pdfFilesCollection']),
       videosCollection: VideosCollection.fromJson(json['videosCollection']),

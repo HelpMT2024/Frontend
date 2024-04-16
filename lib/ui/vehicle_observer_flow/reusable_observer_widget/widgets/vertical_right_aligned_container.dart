@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_container_button.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
 
 class VerticalRightAlignedReusableContainer extends StatelessWidget {
   final Function(ReusableModel) onModelSelected;
@@ -39,7 +40,7 @@ class VerticalRightAlignedReusableContainer extends StatelessWidget {
         ),
         Flexible(
           flex: 2,
-          child: Image.network(config.imageView.imageFront.url),
+          child: VehicleObserverImage(image: config.imageView),
         ),
       ],
     );

@@ -1,5 +1,35 @@
 abstract class Queries {
-  static const String getTrucks = r'''
+  static const image = '''
+    title
+    description
+    contentType
+    fileName
+    size
+    url
+    width
+    height
+  ''';
+
+  static const imageView = '''
+    imageFront {
+      $image
+    }
+    imageBack {
+      $image
+    }
+    leftImage {
+      $image
+    }
+    rightImage {
+      $image
+    }
+    imageFrontMarkup
+    imageBackMarkup
+    buttonsTemplate
+    description
+    descriptionPosition
+  ''';
+  static const String getTrucks = '''
     query TruckCollection {
   truckCollection {
   	items {
@@ -8,21 +38,14 @@ abstract class Queries {
       }
       name
       image {
-        title
-        description
-        contentType
-        fileName
-        size
-        url
-        width
-        height
+        $image
       }
     }
   }
 }
   ''';
 
-  static const String getEngines = r'''
+  static const String getEngines = '''
     query EngineCollection {
   engineCollection {
   	items {
@@ -31,14 +54,7 @@ abstract class Queries {
       }
       name
       image {
-        title
-        description
-        contentType
-        fileName
-        size
-        url
-        width
-        height
+        $image
       }
     }
   }
@@ -64,33 +80,12 @@ abstract class Queries {
           }
           name
           icon {
-            title
-            description
-            contentType
-            fileName
-            size
-            url
-            width
-            height
+            $image
           }
         }
       }
       imageView {
-        imageFrontMarkup
-        buttonsTemplate
-        imageBackMarkup
-        imageFront {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
-        }
-        description
-        descriptionPosition
+        $imageView
       } 
     }
   }
@@ -105,31 +100,10 @@ abstract class Queries {
     internalName
     name
     icon {
-      title
-      description
-      contentType
-      fileName
-      size
-      url
-      width
-      height
+      $image
     } 
     imageView {
-      imageFront {
-        title
-        description
-        contentType
-        fileName
-        size
-        url
-        width
-        height
-      }
-      imageFrontMarkup
-      imageBackMarkup
-      buttonsTemplate
-      description
-      descriptionPosition
+      $imageView
     }
     childrenCollection {
       items {
@@ -139,14 +113,7 @@ abstract class Queries {
         internalName
         name
         icon {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
+          $image
         } 
       }
     }
@@ -164,31 +131,10 @@ abstract class Queries {
     }
     name
     icon {
-      title
-      description
-      contentType
-      fileName
-      size
-      url
-      width
-      height
+      $image
     } 
     imageView {
-      imageFrontMarkup
-      imageBackMarkup
-      imageFront {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
-        }
-      buttonsTemplate
-      description
-      descriptionPosition
+      $imageView
     }
     childrenCollection {
       items {
@@ -198,14 +144,7 @@ abstract class Queries {
         internalName
         name
         icon {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
+          $image
         } 
       }
     }
@@ -224,31 +163,10 @@ abstract class Queries {
     internalName
     name
     icon {
-      title
-      description
-      contentType
-      fileName
-      size
-      url
-      width
-      height
+      $image
     } 
     imageView {
-      imageFront {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
-        }
-      imageFrontMarkup
-      imageBackMarkup
-      buttonsTemplate
-      description
-      descriptionPosition
+      $imageView
     }
     childrenCollection {
       items {
@@ -256,14 +174,7 @@ abstract class Queries {
           id
         }
         icon {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
+          $image
         }
         name
       }
@@ -280,38 +191,20 @@ abstract class Queries {
         internalName
         name
         icon {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
+          $image
         } 
         description {
           json
         }
         imageView {
-          imageFront {
-              title
-              description
-              contentType
-              fileName
-              size
-              url
-              width
-              height
-            }
-          imageFrontMarkup
-          imageBackMarkup
-          buttonsTemplate
-          description
-          descriptionPosition
+          $imageView
         }
         pdfFilesCollection {
           items {
             internalName
+            asset {
+              url
+            }
             title
           }
         }
@@ -338,32 +231,10 @@ abstract class Queries {
           internalName
           name
           imageView {
-            imageFront {
-              title
-              description
-              contentType
-              fileName
-              size
-              url
-              width
-              height
-            } 
-            internalName
-            imageFrontMarkup
-            imageBackMarkup
-            buttonsTemplate
-            description
-            descriptionPosition
+            $imageView
           }
           icon {
-            title
-            description
-            contentType
-            fileName
-            size
-            url
-            width
-            height
+            $image
           }
         } 
       }

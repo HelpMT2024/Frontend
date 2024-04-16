@@ -24,7 +24,7 @@ class System {
   final String id;
   final String name;
   final IDPImage icon;
-  final IDPImageView imageView;
+  final IDPImageView? imageView;
   final List<ChildrenComponent> children;
 
   System({
@@ -42,7 +42,9 @@ class System {
       id: json['sys']['id'],
       name: json['name'],
       icon: IDPImage.fromJson(json['icon']),
-      imageView: IDPImageView.fromJson(json['imageView']),
+      imageView: json['imageView'] != null
+          ? IDPImageView.fromJson(json['imageView'])
+          : null,
       children:
           children.map((child) => ChildrenComponent.fromJson(child)).toList(),
     );

@@ -22,8 +22,8 @@ class ChildrenSystem {
 
 class Unit {
   final String name;
-  final IDPImage icon;
-  final IDPImageView imageView;
+  final IDPImage? icon;
+  final IDPImageView? imageView;
   final List<ChildrenSystem> children;
 
   Unit({
@@ -36,8 +36,10 @@ class Unit {
   factory Unit.fromJson(Map<String, dynamic> json) {
     return Unit(
       name: json['name'],
-      icon: IDPImage.fromJson(json['icon']),
-      imageView: IDPImageView.fromJson(json['imageView']),
+      icon: json['icon'] != null ? IDPImage.fromJson(json['icon']) : null,
+      imageView: json['imageView'] != null
+          ? IDPImageView.fromJson(json['imageView'])
+          : null,
       children: List<ChildrenSystem>.from(
         json['childrenCollection']['items'].map(
           (childrenCollection) => ChildrenSystem.fromJson(childrenCollection),

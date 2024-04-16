@@ -39,8 +39,6 @@ class IDPPoint {
   final String id;
   final String type;
   final String color;
-  final bool highlighted;
-  final bool editingLabels;
 
   IDPPoint({
     required this.x,
@@ -48,8 +46,6 @@ class IDPPoint {
     required this.id,
     required this.type,
     required this.color,
-    required this.highlighted,
-    required this.editingLabels,
   });
 
   factory IDPPoint.fromJson(Map<String, dynamic> json) {
@@ -59,8 +55,6 @@ class IDPPoint {
       id: json['id'],
       type: json['type'],
       color: json['color'],
-      highlighted: json['highlighted'],
-      editingLabels: json['editingLabels'],
     );
   }
 }
@@ -103,6 +97,9 @@ class IDPImageView {
   final String? description;
   final String descriptionPosition;
   final IDPImage imageFront;
+  final IDPImage? imageBack;
+  final IDPImage? leftImage;
+  final IDPImage? rightImage;
 
   IDPImageView({
     required this.imageFrontMarkup,
@@ -111,6 +108,9 @@ class IDPImageView {
     required this.description,
     required this.descriptionPosition,
     required this.imageFront,
+    required this.imageBack,
+    required this.leftImage,
+    required this.rightImage,
   });
 
   factory IDPImageView.fromJson(Map<String, dynamic> json) {
@@ -133,6 +133,15 @@ class IDPImageView {
       description: json['description'],
       descriptionPosition: json['descriptionPosition'],
       imageFront: IDPImage.fromJson(json['imageFront']),
+      imageBack: json['imageBack'] != null
+          ? IDPImage.fromJson(json['imageBack'])
+          : null,
+      leftImage: json['leftImage'] != null
+          ? IDPImage.fromJson(json['leftImage'])
+          : null,
+      rightImage: json['rightImage'] != null
+          ? IDPImage.fromJson(json['rightImage'])
+          : null,
     );
   }
 }
@@ -140,16 +149,19 @@ class IDPImageView {
 class PdfFile {
   final String internalName;
   final String title;
+  final String? url;
 
   PdfFile({
     required this.internalName,
     required this.title,
+    required this.url,
   });
 
   factory PdfFile.fromJson(Map<String, dynamic> json) {
     return PdfFile(
       internalName: json['internalName'],
       title: json['title'],
+      url: json['asset']['url'],
     );
   }
 }
@@ -164,7 +176,10 @@ class PdfFilesCollection {
   factory PdfFilesCollection.fromJson(Map<String, dynamic> json) {
     return PdfFilesCollection(
       items: List<PdfFile>.from(
-          json['items'].map((pdfFile) => PdfFile.fromJson(pdfFile))),
+        json['items'].map(
+          (pdfFile) => PdfFile.fromJson(pdfFile),
+        ),
+      ),
     );
   }
 }
