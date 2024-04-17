@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 
 class ReusableContainerButton extends StatelessWidget {
-  final IDPIcon? button;
   final ReusableModel model;
   final Function(ReusableModel) onModelSelected;
 
   const ReusableContainerButton({
     super.key,
-    required this.button,
     required this.model,
     required this.onModelSelected,
   });
@@ -28,15 +25,16 @@ class ReusableContainerButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (button != null) _text(model, styles),
-          if (button == null) _container(_text(model, styles)),
-          const SizedBox(height: 8),
-          if (button != null)
+          if (model.icon != null) _text(model, styles),
+          if (model.icon == null) _container(_text(model, styles)),
+          if (model.icon != null) ...{
+            const SizedBox(height: 8),
             _container(
-              button?.contentType == 'image/svg+xml'
-                  ? SvgPicture.network(button!.url)
-                  : Image.network(button!.url),
+              model.icon?.contentType == 'image/svg+xml'
+                  ? SvgPicture.network(model.icon!.url)
+                  : Image.network(model.icon!.url),
             ),
+          }
         ],
       ),
     );
@@ -54,6 +52,8 @@ class ReusableContainerButton extends StatelessWidget {
 
   Container _container(Widget child) {
     return Container(
+      height: 80,
+      alignment: Alignment.center,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(

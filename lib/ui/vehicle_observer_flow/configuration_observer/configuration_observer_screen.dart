@@ -69,12 +69,11 @@ class _ConfigurationObserverScreenState
 
   ReusableObserverWidget _content(Configuration data) {
     final models = data.children
-        .map((e) => ReusableModel(id: e.id, name: e.name))
+        .map((e) => ReusableModel(id: e.id, name: e.name, icon: e.image))
         .toList();
 
     final config = ReusableObserverWidgetConfig(
       imageView: data.imageView,
-      buttons: data.children.map((e) => e.image).toList(),
       models: models,
       onModelSelected: (model) => widget.viewModel.onModelSelected(
         model.id,

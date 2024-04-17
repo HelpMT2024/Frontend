@@ -10,9 +10,14 @@ enum AnimationState {
 }
 
 class VehicleObserverImage extends StatefulWidget {
+  final Function(bool isFron) onSideChanged;
   final IDPImageView image;
 
-  const VehicleObserverImage({super.key, required this.image});
+  const VehicleObserverImage({
+    super.key,
+    required this.image,
+    required this.onSideChanged,
+  });
 
   @override
   State<VehicleObserverImage> createState() => _VehicleObserverImageState();
@@ -22,9 +27,48 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     with TickerProviderStateMixin {
   late final _leftAnimationController = GifController(vsync: this);
   late final _rightAnimationController = GifController(vsync: this);
+
   bool _needHideRight = false;
+  bool get isFront =>
+      _leftAnimationController.value == 0.0 &&
+          _rightAnimationController.value == 1 ||
+      _rightAnimationController.value == 0.0 &&
+          _leftAnimationController.value == 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _leftAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed ||
+          status == AnimationStatus.dismissed) {
+        widget.onSideChanged(!isFront);
+      }
+    });
+
+    _rightAnimationController.addStatusListener((status) {
+      if (status == AnimationStatus.completed ||
+          status == AnimationStatus.dismissed) {
+        widget.onSideChanged(!isFront);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _leftAnimationController.removeStatusListener((status) {});
+    _rightAnimationController.removeStatusListener((status) {});
+    _leftAnimationController.dispose();
+    _rightAnimationController.dispose();
+    super.dispose();
+  }
 
   void _nextAnim(bool isLeft, bool isRight) {
+    if (_leftAnimationController.isAnimating ||
+        _rightAnimationController.isAnimating) {
+      return;
+    }
+
     if (isLeft) {
       if (_leftAnimationController.value == 0.0) {
         _leftAnimationController.forward();
@@ -114,11 +158,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
           color: ColorConstants.onSurfaceSecondary,
           borderRadius: BorderRadius.circular(16),
         ),
-        child: Icon(
-          icon,
-          size: 20,
-          color: ColorConstants.surfaceWhite,
-        ),
+        child: Icon(icon, size: 20, color: ColorConstants.surfaceWhite),
       ),
     );
   }

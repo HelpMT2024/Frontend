@@ -13,22 +13,22 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/
 class ReusableModel {
   final String id;
   final String name;
+  final IDPIcon? icon;
 
   ReusableModel({
     required this.id,
     required this.name,
+    required this.icon,
   });
 }
 
 class ReusableObserverWidgetConfig {
   final IDPImageView imageView;
-  final List<IDPIcon?> buttons;
   final List<ReusableModel> models;
   final Function(ReusableModel) onModelSelected;
 
   ReusableObserverWidgetConfig({
     required this.imageView,
-    required this.buttons,
     required this.models,
     required this.onModelSelected,
   });

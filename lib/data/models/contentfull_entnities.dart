@@ -39,6 +39,7 @@ class IDPPoint {
   final String id;
   final String type;
   final String color;
+  final String parentID;
 
   IDPPoint({
     required this.x,
@@ -46,6 +47,7 @@ class IDPPoint {
     required this.id,
     required this.type,
     required this.color,
+    required this.parentID,
   });
 
   factory IDPPoint.fromJson(Map<String, dynamic> json) {
@@ -55,6 +57,7 @@ class IDPPoint {
       id: json['id'],
       type: json['type'],
       color: json['color'],
+      parentID: json['cls'],
     );
   }
 }
