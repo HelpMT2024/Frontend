@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 
 enum AnimationState {
   idle,
@@ -12,11 +13,13 @@ enum AnimationState {
 class VehicleObserverImage extends StatefulWidget {
   final Function(bool isFron) onSideChanged;
   final IDPImageView image;
+  final VehicleLinesDrawer? lineDrawer;
 
   const VehicleObserverImage({
     super.key,
     required this.image,
     required this.onSideChanged,
+    this.lineDrawer,
   });
 
   @override
@@ -127,6 +130,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
             !_needHideRight,
             widget.image.imageBack?.url ?? '',
           ),
+          _paint(context),
           Align(
             alignment: Alignment.centerLeft,
             child:
@@ -139,8 +143,26 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
           )
         } else ...{
           Image.network(widget.image.imageFront.url, fit: BoxFit.cover),
+          _paint(context),
         },
       ],
+    );
+  }
+
+  Widget _paint(BuildContext context) {
+    if (widget.lineDrawer == null) {
+      return const SizedBox();
+    }
+    return CustomPaint(
+      size: Size(
+        MediaQuery.of(context).size.width - 48,
+        MediaQuery.of(context).size.width - 48,
+      ),
+      painter: VehiclePointsDrawer(
+        layout: widget.image,
+        isFront: !isFront,
+        linesDrawer: widget.lineDrawer!,
+      ),
     );
   }
 

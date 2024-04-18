@@ -43,6 +43,8 @@ class ReusableContainerButton extends StatelessWidget {
   Text _text(ReusableModel model, TextTheme styles) {
     return Text(
       model.name,
+      overflow: TextOverflow.ellipsis,
+      maxLines: 2,
       textAlign: TextAlign.center,
       style: styles.labelMedium!.copyWith(
         color: ColorConstants.surfaceWhite,

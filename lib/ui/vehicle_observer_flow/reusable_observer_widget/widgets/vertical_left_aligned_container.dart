@@ -5,6 +5,7 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_container_button.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_observer_helper.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 
 class VerticalLeftAlignedReusableContainer extends StatefulWidget {
   final Function(ReusableModel) onModelSelected;
@@ -25,6 +26,17 @@ class _VerticalLeftAlignedReusableContainerState
     extends State<VerticalLeftAlignedReusableContainer> {
   bool _isFront = true;
 
+  late final _buttonKeys = widget.config.models
+      .map((e) => GlobalObjectKey(e.id))
+      .toList(growable: false);
+
+  final _imageKey = GlobalKey();
+
+  late final _lineDrawer = VehicleLinesDrawer(
+    buttonKeys: _buttonKeys,
+    imageKey: _imageKey,
+  );
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,10 +47,7 @@ class _VerticalLeftAlignedReusableContainerState
     );
   }
 
-  Row _middle(
-    List<ReusableModel> models,
-    BuildContext context,
-  ) {
+  Row _middle(List<ReusableModel> models, BuildContext context) {
     return Row(
       children: [
         Flexible(flex: 2, child: _image()),
@@ -51,6 +60,8 @@ class _VerticalLeftAlignedReusableContainerState
 
   VehicleObserverImage _image() {
     return VehicleObserverImage(
+      key: _imageKey,
+      lineDrawer: _lineDrawer,
       image: widget.config.imageView,
       onSideChanged: (isFront) {
         setState(() {
@@ -60,10 +71,7 @@ class _VerticalLeftAlignedReusableContainerState
     );
   }
 
-  List<Widget> _buttons(
-    List<ReusableModel> models,
-    BuildContext context,
-  ) {
+  List<Widget> _buttons(List<ReusableModel> models, BuildContext context) {
     final filtered = ReusableObserverHelper.getReusableObserverHelperModel(
       config: widget.config,
       chunkSize: 1,
@@ -75,12 +83,19 @@ class _VerticalLeftAlignedReusableContainerState
     }
 
     return filtered[0].map((button) {
-      return _button(button, context);
+      return Column(
+        children: [
+          _button(button, context),
+          const SizedBox(height: 12),
+        ],
+      );
     }).toList();
   }
 
   Widget _button(ReusableModel model, BuildContext context) {
+    final key = _buttonKeys.firstWhere((element) => element.value == model.id);
     return ReusableContainerButton(
+      key: key,
       model: model,
       onModelSelected: widget.onModelSelected,
     );

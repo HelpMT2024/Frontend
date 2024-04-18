@@ -31,7 +31,8 @@ abstract class ColorConstants {
   static Color appBarColor = hexToColor('#114649');
   static Color hintTextColor = hexToColor('#A6A9AB');
   static Color warningColor = hexToColor('#FAB63A');
-  
+  static Color pointColor = hexToColor('#00FFE0');
+
   static List<Color> gradientPrimary = [
     hexToColor('#114649'),
     hexToColor('#0B1822'),

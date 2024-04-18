@@ -1,16 +1,21 @@
 extension ExtendedList on List {
-  List<List<T>> chunked<T>(int size) {
-    if (size <= 0) {
-      throw ArgumentError('Size must be greater than 0');
+  List<List<T>> chunked<T>(int countOfChunks) {
+    int totalLength = length;
+    int chunkSize = totalLength ~/ countOfChunks;
+    int leftover = totalLength % countOfChunks;
+
+    List<List<T>> result = [];
+    int startIndex = 0;
+
+    for (int i = 0; i < countOfChunks; i++) {
+      int currentChunkSize = chunkSize + (i < leftover ? 1 : 0);
+      List<T> chunk = List<T>.from(
+        sublist(startIndex, startIndex + currentChunkSize),
+      );
+      result.add(chunk);
+      startIndex += currentChunkSize;
     }
 
-    if (isEmpty) {
-      return [];
-    }
-
-    return [
-      for (var i = 0; i < length; i += size)
-        sublist(i, i + size < length ? i + size : length).cast<T>().toList()
-    ];
+    return result;
   }
 }

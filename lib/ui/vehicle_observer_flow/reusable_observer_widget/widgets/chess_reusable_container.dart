@@ -3,6 +3,7 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_container_button.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_observer_helper.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 
 class ChessReusableContainer extends StatefulWidget {
   final Function(ReusableModel) onModelSelected;
@@ -20,6 +21,17 @@ class ChessReusableContainer extends StatefulWidget {
 
 class _ChessReusableContainerState extends State<ChessReusableContainer> {
   bool _isFront = true;
+
+  late final _buttonKeys = widget.config.models
+      .map((e) => GlobalObjectKey(e.id))
+      .toList(growable: false);
+
+  final _imageKey = GlobalKey();
+
+  late final _lineDrawer = VehicleLinesDrawer(
+    buttonKeys: _buttonKeys,
+    imageKey: _imageKey,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +62,8 @@ class _ChessReusableContainerState extends State<ChessReusableContainer> {
 
   VehicleObserverImage _image() {
     return VehicleObserverImage(
+      key: _imageKey,
+      lineDrawer: _lineDrawer,
       image: widget.config.imageView,
       onSideChanged: (isFront) {
         setState(() {
@@ -67,6 +81,7 @@ class _ChessReusableContainerState extends State<ChessReusableContainer> {
     bool needSpacer = false,
   }) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: mainAxisAlignment,
       children: [
         if (needSpacer) const Spacer(),
@@ -81,8 +96,10 @@ class _ChessReusableContainerState extends State<ChessReusableContainer> {
   }
 
   Widget _button(ReusableModel model, BuildContext context) {
+    final key = _buttonKeys.firstWhere((element) => element.value == model.id);
     return Expanded(
       child: ReusableContainerButton(
+        key: key,
         model: model,
         onModelSelected: widget.onModelSelected,
       ),
