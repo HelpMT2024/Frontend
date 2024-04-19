@@ -1,4 +1,15 @@
 abstract class Queries {
+  static const faultsCodesCollection = '''
+faultCodesCollection {
+      items {
+        sys {
+          id
+        }
+        spnCode
+        fmiCodes
+      } 
+    }
+    ''';
   static const image = '''
     title
     description
@@ -161,6 +172,7 @@ abstract class Queries {
       id
     }
     internalName
+    $faultsCodesCollection
     name
     icon {
       $image
@@ -193,6 +205,7 @@ abstract class Queries {
         icon {
           $image
         } 
+        $faultsCodesCollection
         description {
           json
         }
@@ -220,25 +233,95 @@ abstract class Queries {
     ''';
   }
 
-  static String getPartCollection() {
+  static faultById({required String id}) {
     return '''
-      query GetPartCollection {
-      partCollection {
-        items {
-          sys {
-            id
-          }
-          internalName
-          name
-          imageView {
-            $imageView
-          }
-          icon {
-            $image
-          }
-        } 
+    query FaultById(\$id: String = "$id") {
+  faultCode(id: \$id) {
+    sys {
+      id
+    }
+    spnCode
+    fmiCodes
+    image {
+      title
+      description
+      contentType
+      fileName
+      size
+      url
+      width
+      height
+    }
+    description {
+      json
+    }
+    pdfFilesCollection {
+      items {
+        internalName
+        title
+        asset {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
       }
     }
+    videosCollection {
+      items {
+        internalName
+        title
+        url
+      } 
+    }
+  }
+} 
+    ''';
+  }
+
+  static String foundFaults({
+    required String spn,
+    required String fmi,
+  }) {
+    return '''
+    query SearchFaultCode(\$spnCode: String! = "$spn", \$fmiCodes: String! = "$fmi") {
+  faultCodeCollection(
+    where: {spnCode: \$spnCode, fmiCodes_contains_some: [\$fmiCodes]}
+    limit: 1
+  ) {
+    items {
+      sys {
+        id
+      }
+      spnCode
+      fmiCodes
+      linkedFrom {
+        entryCollection(limit: 10, skip: 0) {
+          items {
+            ... on Part {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
+            ... on Component {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
     ''';
   }
 }

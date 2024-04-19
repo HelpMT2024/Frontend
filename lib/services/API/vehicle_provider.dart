@@ -1,6 +1,7 @@
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/engine.dart';
+import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
@@ -76,19 +77,6 @@ class VehicleProvider {
     return trucks.map((truck) => Truck.fromJson(truck)).toList();
   }
 
-  Future<List<Part>> parts() async {
-    final query = Queries.getPartCollection();
-    final result = await service.callApi(query);
-
-    if (result.hasException) {
-      throw Exception(result.exception);
-    }
-
-    final List<dynamic> parts = result.data!['partCollection']['items'];
-
-    return parts.map((truck) => Part.fromJson(truck)).toList();
-  }
-
   Future<List<Engine>> engines() async {
     const query = Queries.getEngines;
     final result = await service.callApi(query);
@@ -111,5 +99,28 @@ class VehicleProvider {
     }
 
     return Part.fromJson(result.data!['part']);
+  }
+
+  Future<Fault> fault(String id) async {
+    final query = Queries.faultById(id: id);
+    final result = await service.callApi(query);
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    return Fault.fromJson(result.data!['faultCode']);
+  }
+
+  Future<SearchFault> searchFault(String spn, String fmi) async {
+    final query = Queries.foundFaults(spn: spn, fmi: fmi);
+    final result = await service.callApi(query);
+
+    if (result.data!['faultCodeCollection']['items'].isEmpty) {
+      throw Exception('Fault not found');
+    }
+    return SearchFault.fromJson(
+      result.data!['faultCodeCollection']['items'][0],
+    );
   }
 }

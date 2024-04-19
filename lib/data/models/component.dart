@@ -1,4 +1,5 @@
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/data/models/fault.dart';
 
 class ChildrenPart {
   final String id;
@@ -25,12 +26,14 @@ class Component {
   final IDPImage? icon;
   final IDPImageView? imageView;
   final List<ChildrenPart> children;
+  final List<ChildFault> faults;
 
   Component({
     required this.name,
     required this.icon,
     required this.imageView,
     required this.children,
+    required this.faults,
   });
 
   factory Component.fromJson(Map<String, dynamic> json) {
@@ -45,6 +48,10 @@ class Component {
           (childrenCollection) => ChildrenPart.fromJson(childrenCollection),
         ),
       ),
+      faults: json['faultCodesCollection']?['items']
+              .map<ChildFault>((e) => ChildFault.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 }

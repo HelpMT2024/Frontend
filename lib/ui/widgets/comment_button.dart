@@ -4,7 +4,8 @@ import 'package:help_my_truck/ui/shared/custom_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentButton extends StatelessWidget {
-  const CommentButton({super.key});
+  final bool disableFlex;
+  const CommentButton({super.key, this.disableFlex = false});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class CommentButton extends StatelessWidget {
       title: CustomButtonTitle(
         text: null,
         widget: Expanded(
+          flex: disableFlex ? 0 : 1,
           child: Row(
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.center,

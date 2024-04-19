@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/component.dart';
+import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
@@ -15,6 +16,9 @@ class ComponentObserverViewModel {
     ..addStream(
       Stream.fromFuture(provider.component(config.id)),
     );
+
+  List<ChildFault> get faults => system.valueOrNull?.faults ?? [];
+  bool get hasFaults => faults.isNotEmpty;
 
   ComponentObserverViewModel({required this.config, required this.provider});
 

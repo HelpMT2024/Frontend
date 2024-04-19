@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';

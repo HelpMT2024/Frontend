@@ -9,10 +9,7 @@ class CustomButtonTitle {
   final String? text;
   final Widget? widget;
 
-  CustomButtonTitle({
-    required this.text,
-    this.widget
-  });
+  CustomButtonTitle({required this.text, this.widget});
 }
 
 class CustomButton extends StatelessWidget {
@@ -122,14 +119,13 @@ class CustomButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(borderRadius),
         ),
         child: Center(
-          child: title.text != null
-              ? _buttonText(
-                  title.text!,
-                  styles,
-                  _isOutlined ? buttonColor : ColorConstants.onSurfaceWhite,
-                )
-              : title.widget!
-        ),
+            child: title.text != null
+                ? _buttonText(
+                    title.text!,
+                    styles,
+                    _isOutlined ? buttonColor : ColorConstants.onSurfaceWhite,
+                  )
+                : title.widget!),
       ),
     );
   }

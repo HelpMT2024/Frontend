@@ -48,4 +48,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get tips_and_hinst_video => 'Tips & Hints Videos';
+
+  @override
+  String get oops => 'Oops';
+
+  @override
+  String get no_result_found => 'No result found';
+
+  @override
+  String get no_search_result_description => 'Please try another SPN/FMI code';
+
+  @override
+  String get open_page_with_fault_code => 'Page with this Fault Code';
 }

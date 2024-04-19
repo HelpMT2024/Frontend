@@ -1,6 +1,7 @@
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
@@ -50,7 +51,10 @@ final mainPageController = MainPageController();
 class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
-  final SearchModalController searchModalController = SearchModalController();
+  late final searchModalController = SearchModalController(
+    provider: VehicleProvider(widget.config.service),
+  );
+
   final controller = mainPageController;
 
   late final pageController = PageController(initialPage: 0);

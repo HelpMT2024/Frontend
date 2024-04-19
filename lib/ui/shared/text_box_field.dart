@@ -17,10 +17,10 @@ class TextBoxField extends FormField<String> {
   final List<TextInputFormatter>? inputFormatters;
 
   TextBoxField({
-    Key? key,
-    required FormFieldSetter<String> onSaved,
+    super.key,
+    required FormFieldSetter<String> super.onSaved,
     required this.title,
-    required FormFieldValidator<String> validator,
+    required FormFieldValidator<String> super.validator,
     this.maxSymbols,
     this.description,
     this.controller,
@@ -33,9 +33,6 @@ class TextBoxField extends FormField<String> {
     this.inputFormatters,
     AutovalidateMode? autovalidate = AutovalidateMode.onUserInteraction,
   }) : super(
-          key: key,
-          onSaved: onSaved,
-          validator: validator,
           initialValue: controller?.text,
           autovalidateMode: autovalidate,
           builder: (FormFieldState<String> state) {
@@ -71,28 +68,27 @@ class _TextBoxField extends StatefulWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
 
-  const _TextBoxField({
-    Key? key,
-    required this.state,
-    required this.title,
-    required this.maxLenght,
-    required this.height,
-    this.description,
-    this.controller,
-    this.maxLines,
-    this.hintText,
-    this.readOnly,
-    this.focusNode,
-    this.keyboardType,
-    this.inputFormatters
-  }) : super(key: key);
+  const _TextBoxField(
+      {Key? key,
+      required this.state,
+      required this.title,
+      required this.maxLenght,
+      required this.height,
+      this.description,
+      this.controller,
+      this.maxLines,
+      this.hintText,
+      this.readOnly,
+      this.focusNode,
+      this.keyboardType,
+      this.inputFormatters})
+      : super(key: key);
 
   @override
   State<_TextBoxField> createState() => _TextBoxFieldState();
 }
 
 class _TextBoxFieldState extends State<_TextBoxField> {
-
   Color _borderColor = ColorConstants.stroke;
 
   @override
@@ -101,6 +97,7 @@ class _TextBoxFieldState extends State<_TextBoxField> {
 
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _title(styles),
         const SizedBox(height: 2),
@@ -128,7 +125,7 @@ class _TextBoxFieldState extends State<_TextBoxField> {
   Widget _errorField(FormFieldState<String> state, TextTheme styles) {
     final hasError = state.hasError;
 
-    return hasError || widget.description != null 
+    return hasError || widget.description != null
         ? SizedBox(
             child: Text(
               hasError ? state.errorText ?? "" : widget.description ?? '',

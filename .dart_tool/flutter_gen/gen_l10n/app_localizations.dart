@@ -180,6 +180,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tips & Hints Videos'**
   String get tips_and_hinst_video;
+
+  /// No description provided for @oops.
+  ///
+  /// In en, this message translates to:
+  /// **'Oops'**
+  String get oops;
+
+  /// No description provided for @no_result_found.
+  ///
+  /// In en, this message translates to:
+  /// **'No result found'**
+  String get no_result_found;
+
+  /// No description provided for @no_search_result_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try another SPN/FMI code'**
+  String get no_search_result_description;
+
+  /// No description provided for @open_page_with_fault_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Page with this Fault Code'**
+  String get open_page_with_fault_code;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

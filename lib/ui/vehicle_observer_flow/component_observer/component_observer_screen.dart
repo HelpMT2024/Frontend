@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/fault_code_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
@@ -9,7 +11,9 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/compon
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
+import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/warning_button.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
@@ -60,17 +64,32 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
   }
 
   Widget _body(Component data) {
+    final l10n = AppLocalizations.of(context);
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (data.imageView != null) _content(data)!,
-          const SizedBox(height: 32),
+          const SizedBox(height: 20),
           const WarningButton(),
-          const SizedBox(height: 12),
+          if (widget.viewModel.hasFaults) ...{
+            const SizedBox(height: 12),
+            VehicleTitle(text: l10n?.fault_code_title),
+            faults(),
+          },
+          const SizedBox(height: 24),
           const CommentButton(),
         ],
       ),
+    );
+  }
+
+  Widget faults() {
+    return Column(
+      children: widget.viewModel.faults
+          .map((e) => FaultCodeButton(fault: e))
+          .toList(),
     );
   }
 

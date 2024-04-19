@@ -22,6 +22,7 @@ class NetworkService {
     int attempts = 0,
   }) async {
     // final token = SharedPreferencesWrapper.getToken();
+    //add proxy to the link
     final link = HttpLink(
       AppConsts.pathToConnectServer,
       defaultHeaders: {
