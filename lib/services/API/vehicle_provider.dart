@@ -119,6 +119,7 @@ class VehicleProvider {
     if (result.data!['faultCodeCollection']['items'].isEmpty) {
       throw Exception('Fault not found');
     }
+
     return SearchFault.fromJson(
       result.data!['faultCodeCollection']['items'][0],
     );

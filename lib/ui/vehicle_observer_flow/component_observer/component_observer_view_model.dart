@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/component.dart';
+import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -12,13 +13,16 @@ class ComponentObserverViewModel {
   final VehicleProvider provider;
   final ChildrenComponent config;
 
-  late final system = BehaviorSubject<Component>()
+  late final component = BehaviorSubject<Component>()
     ..addStream(
       Stream.fromFuture(provider.component(config.id)),
     );
 
-  List<ChildFault> get faults => system.valueOrNull?.faults ?? [];
+  List<ChildFault> get faults => component.valueOrNull?.faults ?? [];
   bool get hasFaults => faults.isNotEmpty;
+  bool get hasImage => component.valueOrNull?.imageView != null;
+  List<IDPVideo> get videos => component.valueOrNull?.videos ?? [];
+  bool get hasVideos => videos.isNotEmpty;
 
   ComponentObserverViewModel({required this.config, required this.provider});
 
@@ -27,7 +31,7 @@ class ComponentObserverViewModel {
   }
 
   void onModelSelected(String id, BuildContext context) {
-    final model = system.value.children.firstWhere(
+    final model = component.value.children.firstWhere(
       (element) => element.id == id,
     );
 

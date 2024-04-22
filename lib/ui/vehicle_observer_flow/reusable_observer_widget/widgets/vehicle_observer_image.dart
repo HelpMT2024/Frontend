@@ -153,9 +153,15 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     if (widget.lineDrawer == null) {
       return const SizedBox();
     }
-    final side = MediaQuery.of(context).size.width - 36;
+    final imageHeight = widget.image.imageFront.height;
+    final imageWidth = widget.image.imageFront.width;
+    final aspectRatio = imageWidth / imageHeight;
+
+    final width = MediaQuery.of(context).size.width;
+    final height = width / aspectRatio;
+
     return CustomPaint(
-      size: Size.fromHeight(side),
+      size: Size(width, height),
       painter: VehiclePointsDrawer(
         layout: widget.image,
         isFront: !isFront,

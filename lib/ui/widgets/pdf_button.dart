@@ -4,7 +4,7 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/ui/shared/custom_button.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:help_my_truck/ui/widgets/web_view_screen.dart';
 
 class PDFButton extends StatelessWidget {
   final PdfFile file;
@@ -23,7 +23,15 @@ class PDFButton extends StatelessWidget {
         ),
         styles: styles,
         title: file.title,
-        onPressed: () => file.url == null ? null : launchUrlString(file.url!),
+        onPressed: () => _pushWebView(context),
+      ),
+    );
+  }
+
+  void _pushWebView(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => WebViewScreen(pdfFile: file),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
 class ChildrenComponent {
@@ -26,13 +27,14 @@ class System {
   final IDPImage icon;
   final IDPImageView? imageView;
   final List<ChildrenComponent> children;
-
+  final List<ChildProblem> problems;
   System({
     required this.id,
     required this.name,
     required this.icon,
     required this.imageView,
     required this.children,
+    required this.problems,
   });
 
   factory System.fromJson(Map<String, dynamic> json) {
@@ -47,6 +49,10 @@ class System {
           : null,
       children:
           children.map((child) => ChildrenComponent.fromJson(child)).toList(),
+      problems: json['problemCasesCollection']['items']
+              .map<ChildProblem>((e) => ChildProblem.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 }

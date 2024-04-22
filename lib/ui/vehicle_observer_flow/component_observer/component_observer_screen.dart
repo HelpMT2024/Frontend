@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -12,6 +11,8 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
+import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
+import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -46,9 +47,14 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+            padding: EdgeInsets.fromLTRB(
+              16,
+              widget.viewModel.hasImage ? 24 : 0,
+              16,
+              24,
+            ),
             child: StreamBuilder<Component>(
-              stream: widget.viewModel.system,
+              stream: widget.viewModel.component,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return _body(snapshot.data!);
@@ -70,8 +76,13 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (data.imageView != null) _content(data)!,
-          const SizedBox(height: 20),
+          if (widget.viewModel.hasImage) ...{
+            const SizedBox(height: 24),
+            _content(data)!,
+          } else ...{
+            VerticalVideoContainer(videos: widget.viewModel.videos),
+          },
+          const SizedBox(height: 24),
           const WarningButton(),
           if (widget.viewModel.hasFaults) ...{
             const SizedBox(height: 12),
@@ -80,6 +91,9 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           },
           const SizedBox(height: 24),
           const CommentButton(),
+          if (widget.viewModel.hasImage) ...{
+            HorizontalVideoContainer(videos: widget.viewModel.videos),
+          },
         ],
       ),
     );

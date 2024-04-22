@@ -1,3 +1,4 @@
+import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 
@@ -10,6 +11,8 @@ class Part {
   final IDPImageView? imageView;
   final PdfFilesCollection pdfFilesCollection;
   final VideosCollection videosCollection;
+  final List<ChildProblem> problems;
+  final List<ChildWarningLight> warningLights;
 
   Part({
     required this.internalName,
@@ -20,6 +23,8 @@ class Part {
     required this.pdfFilesCollection,
     required this.videosCollection,
     required this.faults,
+    required this.problems,
+    required this.warningLights,
   });
 
   factory Part.fromJson(Map<String, dynamic> json) {
@@ -27,7 +32,7 @@ class Part {
       internalName: json['internalName'],
       name: json['name'],
       icon: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
-      description: json['description']['json'],
+      description: json['description']?['json'],
       imageView: json['imageView'] != null
           ? IDPImageView.fromJson(json['imageView'])
           : null,
@@ -36,6 +41,14 @@ class Part {
       videosCollection: VideosCollection.fromJson(json['videosCollection']),
       faults: json['faultCodesCollection']?['items']
               .map<ChildFault>((e) => ChildFault.fromJson(e))
+              .toList() ??
+          [],
+      problems: json['problemCasesCollection']['items']
+              .map<ChildProblem>((e) => ChildProblem.fromJson(e))
+              .toList() ??
+          [],
+      warningLights: json['warningLightsCollection']['items']
+              .map<ChildWarningLight>((e) => ChildWarningLight.fromJson(e))
               .toList() ??
           [],
     );

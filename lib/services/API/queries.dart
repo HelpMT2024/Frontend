@@ -1,4 +1,45 @@
 abstract class Queries {
+  static String warningCollection = '''
+    warningLightsCollection {
+      items {
+        sys {
+          id
+        }
+        name
+        icon {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+      }
+    }
+    ''';
+  static String problemsCollection = '''
+   problemCasesCollection(limit: 50) {
+      items {
+        sys {
+          id
+        }
+        name
+      } 
+    }
+    ''';
+
+  static String videoCollection = '''
+    videosCollection {
+          items {
+            internalName
+            title
+            url
+          } 
+        }
+  ''';
+
   static const faultsCodesCollection = '''
 faultCodesCollection {
       items {
@@ -7,9 +48,11 @@ faultCodesCollection {
         }
         spnCode
         fmiCodes
+        showAsPdf
       } 
     }
     ''';
+
   static const image = '''
     title
     description
@@ -40,6 +83,7 @@ faultCodesCollection {
     description
     descriptionPosition
   ''';
+
   static const String getTrucks = '''
     query TruckCollection {
   truckCollection {
@@ -116,6 +160,7 @@ faultCodesCollection {
     imageView {
       $imageView
     }
+    $problemsCollection
     childrenCollection {
       items {
         sys {
@@ -147,6 +192,7 @@ faultCodesCollection {
     imageView {
       $imageView
     }
+    $problemsCollection
     childrenCollection {
       items {
         sys {
@@ -171,8 +217,11 @@ faultCodesCollection {
     sys {
       id
     }
+    $videoCollection
     internalName
     $faultsCodesCollection
+    $problemsCollection
+    $warningCollection
     name
     icon {
       $image
@@ -205,7 +254,9 @@ faultCodesCollection {
         icon {
           $image
         } 
+        $problemsCollection
         $faultsCodesCollection
+        $warningCollection
         description {
           json
         }
@@ -221,13 +272,7 @@ faultCodesCollection {
             title
           }
         }
-        videosCollection {
-          items {
-            internalName
-            title
-            url
-          } 
-        }
+        $videoCollection
       }
     } 
     ''';
@@ -242,6 +287,7 @@ faultCodesCollection {
     }
     spnCode
     fmiCodes
+    showAsPdf
     image {
       title
       description
@@ -297,6 +343,7 @@ faultCodesCollection {
       sys {
         id
       }
+      showAsPdf
       spnCode
       fmiCodes
       linkedFrom {

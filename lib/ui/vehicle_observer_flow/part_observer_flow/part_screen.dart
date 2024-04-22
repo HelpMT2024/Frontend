@@ -13,7 +13,8 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_v
 import 'package:help_my_truck/ui/widgets/pdf_button.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
-import 'package:help_my_truck/ui/widgets/video_container.dart';
+import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
+import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_button.dart';
 
 class PartScreen extends StatefulWidget {
@@ -39,9 +40,7 @@ class _PartScreenState extends State<PartScreen> {
       ),
       body: Stack(
         children: [
-          Container(
-            decoration: appGradientBgDecoration,
-          ),
+          Container(decoration: appGradientBgDecoration),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
             child: StreamBuilder<Part>(
@@ -73,12 +72,23 @@ class _PartScreenState extends State<PartScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 24, 16, 16),
+        padding: EdgeInsets.fromLTRB(
+          16,
+          widget.viewModel.hasImage ? 24 : 0,
+          16,
+          16,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _image(),
-            _symptomsSection(styles),
+            if (widget.viewModel.hasImage) ...{
+              _image(),
+              _symptomsSection(styles),
+            } else ...{
+              _verticalVideoWidget(),
+            },
+            const SizedBox(height: 32),
+            _warningButton(styles),
             if (widget.viewModel.hasFaults) ...{
               _title(l10n?.fault_code_title, styles),
               _faultCodeSection(),
@@ -88,7 +98,8 @@ class _PartScreenState extends State<PartScreen> {
               ..._instructionsSection(styles),
             },
             _commentButton(l10n, styles),
-            if (widget.viewModel.hasVideos) _videoWidget()
+            if (widget.viewModel.hasVideos && widget.viewModel.hasImage)
+              _horizontalVideoWidget()
           ],
         ),
       ),
@@ -113,8 +124,6 @@ class _PartScreenState extends State<PartScreen> {
       children: [
         const SizedBox(height: 32),
         _text(styles),
-        const SizedBox(height: 32),
-        _warningButton(styles)
       ],
     );
   }
@@ -165,9 +174,15 @@ class _PartScreenState extends State<PartScreen> {
     );
   }
 
-  Widget _videoWidget() {
-    final videos = widget.viewModel.part.value.videosCollection.items;
+  Widget _verticalVideoWidget() {
+    final videos = widget.viewModel.videos;
 
-    return VideoContainer(videos: videos);
+    return VerticalVideoContainer(videos: videos);
+  }
+
+  Widget _horizontalVideoWidget() {
+    final videos = widget.viewModel.videos;
+
+    return HorizontalVideoContainer(videos: videos);
   }
 }

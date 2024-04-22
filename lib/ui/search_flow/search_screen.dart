@@ -184,7 +184,7 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 16, width: double.infinity),
-              _faultButton(l10n, data),
+              if (!data.showAsPdf) _faultButton(l10n, data),
               ..._detailsButtons(data)
             ],
           ),
@@ -230,6 +230,7 @@ class _SearchScreenState extends State<SearchScreen> {
         id: data.id,
         spnCode: data.spnCode,
         fmiCodes: data.fmiCodes,
+        showAsPdf: false,
       );
       Navigator.of(context).pushNamed(
         FaultsRouteKeys.faultScreen,

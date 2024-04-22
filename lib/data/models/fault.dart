@@ -4,6 +4,7 @@ class Fault {
   String id;
   String spnCode;
   List<String> fmiCodes;
+  bool showAsPdf;
   final IDPImage? image;
   final Map<String, dynamic>? description;
   final PdfFilesCollection pdfFilesCollection;
@@ -19,6 +20,7 @@ class Fault {
     required this.description,
     required this.pdfFilesCollection,
     required this.videosCollection,
+    required this.showAsPdf,
   });
 
   factory Fault.fromJson(Map<String, dynamic> json) {
@@ -27,10 +29,11 @@ class Fault {
       spnCode: json['spnCode'],
       fmiCodes: List<String>.from(json['fmiCodes']),
       image: json['image'] != null ? IDPImage.fromJson(json['image']) : null,
-      description: json['description']['json'],
+      description: json['description']?['json'],
       pdfFilesCollection:
           PdfFilesCollection.fromJson(json['pdfFilesCollection']),
       videosCollection: VideosCollection.fromJson(json['videosCollection']),
+      showAsPdf: json['showAsPdf'],
     );
   }
 }
@@ -39,6 +42,7 @@ class ChildFault {
   String id;
   String spnCode;
   List<String> fmiCodes;
+  bool showAsPdf;
 
   String get text => 'SPN $spnCode, FMI ${fmiCodes.join(', ')}';
 
@@ -46,6 +50,7 @@ class ChildFault {
     required this.id,
     required this.spnCode,
     required this.fmiCodes,
+    required this.showAsPdf,
   });
 
   factory ChildFault.fromJson(Map<String, dynamic> json) {
@@ -53,6 +58,7 @@ class ChildFault {
       id: json['sys']['id'],
       spnCode: json['spnCode'],
       fmiCodes: List<String>.from(json['fmiCodes']),
+      showAsPdf: json['showAsPdf'],
     );
   }
 }
@@ -87,6 +93,7 @@ class SearcFaultDetail {
 class SearchFault {
   final String id;
   final String spnCode;
+  final bool showAsPdf;
   final List<String> fmiCodes;
   final List<SearcFaultDetail> linkedFrom;
 
@@ -95,6 +102,7 @@ class SearchFault {
     required this.spnCode,
     required this.fmiCodes,
     required this.linkedFrom,
+    required this.showAsPdf,
   });
 
   factory SearchFault.fromJson(Map<String, dynamic> json) {
@@ -105,6 +113,7 @@ class SearchFault {
       linkedFrom: json['linkedFrom']['entryCollection']['items']
           .map<SearcFaultDetail>((e) => SearcFaultDetail.fromJson(e))
           .toList(),
+      showAsPdf: json['showAsPdf'],
     );
   }
 }
