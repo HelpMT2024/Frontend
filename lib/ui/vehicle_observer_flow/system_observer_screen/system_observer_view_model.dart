@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -15,6 +16,9 @@ class SystemObserverViewModel {
     ..addStream(
       Stream.fromFuture(provider.system(config.id)),
     );
+
+  List<ChildProblem> get problems => system.valueOrNull?.problems ?? [];
+  bool get hasProblems => problems.isNotEmpty;
 
   SystemObserverViewModel({required this.config, required this.provider});
 

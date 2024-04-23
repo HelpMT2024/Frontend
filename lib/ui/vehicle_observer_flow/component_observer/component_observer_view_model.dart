@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
@@ -23,6 +24,11 @@ class ComponentObserverViewModel {
   bool get hasImage => component.valueOrNull?.imageView != null;
   List<IDPVideo> get videos => component.valueOrNull?.videos ?? [];
   bool get hasVideos => videos.isNotEmpty;
+  List<ChildWarningLight> get warnings =>
+      component.valueOrNull?.warningLights ?? [];
+  bool get hasWarnings => warnings.isNotEmpty;
+  List<ChildProblem> get problems => component.valueOrNull?.problems ?? [];
+  bool get hasProblems => problems.isNotEmpty;
 
   ComponentObserverViewModel({required this.config, required this.provider});
 

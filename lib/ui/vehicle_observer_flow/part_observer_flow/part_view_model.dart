@@ -1,3 +1,4 @@
+import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
@@ -13,14 +14,23 @@ class PartViewModel {
     ..addStream(Stream.fromFuture(provider.part(config.id)));
 
   bool get hasImage => part.valueOrNull?.imageView != null;
-  bool get hasPDF =>
-      part.valueOrNull?.pdfFilesCollection.items.isNotEmpty ?? false;
+
+  List<PdfFile> get pdfFiles =>
+      part.valueOrNull?.pdfFilesCollection.items ?? [];
+  bool get hasPDF => pdfFiles.isNotEmpty;
   bool get hasVideos =>
       part.valueOrNull?.videosCollection.items.isNotEmpty ?? false;
+
   bool get hasFaults => part.valueOrNull?.faults.isNotEmpty ?? false;
 
+  List<ChildWarningLight> get warnings => part.valueOrNull?.warningLights ?? [];
+  bool get hasWarnings => warnings.isNotEmpty;
+
   List<IDPVideo> get videos => part.valueOrNull?.videosCollection.items ?? [];
-  List<ChildFault> get faults => part.value.faults;
+  List<ChildFault> get faults => part.valueOrNull?.faults ?? [];
+
+  List<ChildProblem> get problems => part.valueOrNull?.problems ?? [];
+  bool get hasProblems => problems.isNotEmpty;
 
   int currentTruckIndex = 0;
 

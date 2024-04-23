@@ -3,6 +3,7 @@ import 'package:gif/gif.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 
 enum AnimationState {
   idle,
@@ -128,7 +129,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
             widget.image.leftImage!.url,
             _rightAnimationController,
             !_needHideRight,
-            widget.image.imageBack?.url ?? '',
+            widget.image.imageFront.url,
           ),
           _paint(context),
           Align(
@@ -206,7 +207,10 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
         image: NetworkImage(url),
         controller: controller,
         autostart: Autostart.no,
-        placeholder: (context) => Image.network(placeholder),
+        placeholder: (context) => const Loadable(
+          forceLoad: true,
+          child: SizedBox(height: 40, width: 40),
+        ),
         onFetchCompleted: () {},
       ),
     );

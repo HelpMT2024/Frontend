@@ -8,8 +8,8 @@ import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/system_observer_screen/system_observer_view_model.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
+import 'package:help_my_truck/ui/widgets/problems_buttons.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
-import 'package:help_my_truck/ui/widgets/warning_button.dart';
 
 class SystemObserverScreen extends StatefulWidget {
   final SystemObserverViewModel viewModel;
@@ -64,13 +64,19 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (_content(data) != null) _content(data)!,
-          const SizedBox(height: 32),
-          const WarningButton(),
+          if (widget.viewModel.hasProblems) ...{
+            const SizedBox(height: 32),
+            _problemsButtons(),
+          },
           const SizedBox(height: 16),
           const CommentButton(),
         ],
       ),
     );
+  }
+
+  Widget _problemsButtons() {
+    return ProblemsButtons(problems: widget.viewModel.problems);
   }
 
   ReusableObserverWidget? _content(System data) {

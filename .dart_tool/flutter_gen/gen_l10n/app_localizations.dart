@@ -106,7 +106,7 @@ abstract class AppLocalizations {
   /// No description provided for @fault_code_title.
   ///
   /// In en, this message translates to:
-  /// **'Fault Code'**
+  /// **'Fault Codes'**
   String get fault_code_title;
 
   /// No description provided for @favorites_title.

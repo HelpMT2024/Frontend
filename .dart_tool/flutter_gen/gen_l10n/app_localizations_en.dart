@@ -11,7 +11,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get people_title => 'People';
 
   @override
-  String get fault_code_title => 'Fault Code';
+  String get fault_code_title => 'Fault Codes';
 
   @override
   String get favorites_title => 'Favorites';

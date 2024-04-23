@@ -1,15 +1,23 @@
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
+enum ChildrenSystemType {
+  standart,
+  warningLight,
+  search;
+}
+
 class ChildrenComponent {
   final String id;
   final String name;
   final IDPIcon? image;
+  final ChildrenSystemType type;
 
   ChildrenComponent({
     required this.id,
     required this.name,
     required this.image,
+    required this.type,
   });
 
   factory ChildrenComponent.fromJson(Map<String, dynamic> json) {
@@ -17,6 +25,7 @@ class ChildrenComponent {
       id: json['sys']['id'],
       name: json['name'],
       image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
+      type: ChildrenSystemType.standart,
     );
   }
 }
@@ -28,6 +37,7 @@ class System {
   final IDPImageView? imageView;
   final List<ChildrenComponent> children;
   final List<ChildProblem> problems;
+
   System({
     required this.id,
     required this.name,

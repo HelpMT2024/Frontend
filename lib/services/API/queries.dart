@@ -33,7 +33,6 @@ abstract class Queries {
   static String videoCollection = '''
     videosCollection {
           items {
-            internalName
             title
             url
           } 
@@ -152,7 +151,6 @@ faultCodesCollection {
     return '''
     query Unit(\$id: String = "$id") {
   unit(id: \$id) {
-    internalName
     name
     icon {
       $image
@@ -166,7 +164,11 @@ faultCodesCollection {
         sys {
           id
         }
-        internalName
+        childrenCollection {
+          items {
+            type
+          }
+        }
         name
         icon {
           $image
@@ -174,6 +176,42 @@ faultCodesCollection {
       }
     }
   }
+} 
+''';
+  }
+
+  static String problemCase({required String id}) {
+    return '''
+    query ProblemCase(\$id: String = "$id") {
+  problemCase(id: \$id) {
+    name
+    description {
+      json
+    }
+    videosCollection {
+      items {
+        title
+        url
+      }
+    }
+    pdfFilesCollection {
+      items {
+        
+        title
+        asset {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+      }
+    }
+    $warningCollection
+  } 
 } 
 ''';
   }
@@ -198,7 +236,6 @@ faultCodesCollection {
         sys {
           id
         }
-        internalName
         name
         icon {
           $image
@@ -218,7 +255,6 @@ faultCodesCollection {
       id
     }
     $videoCollection
-    internalName
     $faultsCodesCollection
     $problemsCollection
     $warningCollection
@@ -249,7 +285,6 @@ faultCodesCollection {
     return '''
     query Part(\$id: String = "$id") {
       part(id: \$id) {
-        internalName
         name
         icon {
           $image
@@ -265,7 +300,6 @@ faultCodesCollection {
         }
         pdfFilesCollection {
           items {
-            internalName
             asset {
               url
             }
@@ -303,7 +337,6 @@ faultCodesCollection {
     }
     pdfFilesCollection {
       items {
-        internalName
         title
         asset {
           title
@@ -319,7 +352,6 @@ faultCodesCollection {
     }
     videosCollection {
       items {
-        internalName
         title
         url
       } 

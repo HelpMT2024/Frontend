@@ -3,7 +3,6 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 
 class Part {
-  final String internalName;
   final String name;
   final IDPIcon? icon;
   final List<ChildFault> faults;
@@ -15,7 +14,6 @@ class Part {
   final List<ChildWarningLight> warningLights;
 
   Part({
-    required this.internalName,
     required this.name,
     required this.icon,
     required this.description,
@@ -29,7 +27,6 @@ class Part {
 
   factory Part.fromJson(Map<String, dynamic> json) {
     return Part(
-      internalName: json['internalName'],
       name: json['name'],
       icon: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
       description: json['description']?['json'],
@@ -43,11 +40,11 @@ class Part {
               .map<ChildFault>((e) => ChildFault.fromJson(e))
               .toList() ??
           [],
-      problems: json['problemCasesCollection']['items']
+      problems: json['problemCasesCollection']?['items']
               .map<ChildProblem>((e) => ChildProblem.fromJson(e))
               .toList() ??
           [],
-      warningLights: json['warningLightsCollection']['items']
+      warningLights: json['warningLightsCollection']?['items']
               .map<ChildWarningLight>((e) => ChildWarningLight.fromJson(e))
               .toList() ??
           [],

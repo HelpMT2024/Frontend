@@ -150,19 +150,16 @@ class IDPImageView {
 }
 
 class PdfFile {
-  final String internalName;
   final String title;
   final String? url;
 
   PdfFile({
-    required this.internalName,
     required this.title,
     required this.url,
   });
 
   factory PdfFile.fromJson(Map<String, dynamic> json) {
     return PdfFile(
-      internalName: json['internalName'],
       title: json['title'],
       url: json['asset']['url'],
     );
@@ -188,19 +185,16 @@ class PdfFilesCollection {
 }
 
 class IDPVideo {
-  final String internalName;
   final String title;
   final String url;
 
   IDPVideo({
-    required this.internalName,
     required this.title,
     required this.url,
   });
 
   factory IDPVideo.fromJson(Map<String, dynamic> json) {
     return IDPVideo(
-      internalName: json['internalName'],
       title: json['title'],
       url: json['url'],
     );

@@ -16,11 +16,7 @@ class FaultCodeButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: _button(
-        leading: Icon(
-          Icons.error,
-          color: ColorConstants.statesError,
-          size: 20,
-        ),
+        leading: Icon(Icons.error, color: ColorConstants.statesError, size: 20),
         styles: styles,
         title: fault.text,
         onPressed: () {

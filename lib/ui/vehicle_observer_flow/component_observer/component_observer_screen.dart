@@ -9,12 +9,13 @@ import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
+import 'package:help_my_truck/ui/widgets/problems_buttons.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
-import 'package:help_my_truck/ui/widgets/warning_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
@@ -71,6 +72,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
 
   Widget _body(Component data) {
     final l10n = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -82,11 +84,14 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           } else ...{
             VerticalVideoContainer(videos: widget.viewModel.videos),
           },
-          const SizedBox(height: 24),
-          const WarningButton(),
-          if (widget.viewModel.hasFaults) ...{
+          if (widget.viewModel.hasProblems) ...{
+            const SizedBox(height: 24),
+            _problemsButtons()
+          },
+          if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
             const SizedBox(height: 12),
             VehicleTitle(text: l10n?.fault_code_title),
+            _warningIcons(),
             faults(),
           },
           const SizedBox(height: 24),
@@ -96,6 +101,20 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           },
         ],
       ),
+    );
+  }
+
+  Widget _problemsButtons() {
+    return ProblemsButtons(problems: widget.viewModel.problems);
+  }
+
+  Widget _warningIcons() {
+    if (!widget.viewModel.hasWarnings) {
+      return const SizedBox();
+    }
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
+      child: WarningLightsRow(warnings: widget.viewModel.warnings),
     );
   }
 

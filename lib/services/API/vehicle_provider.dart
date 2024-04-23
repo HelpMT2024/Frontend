@@ -3,6 +3,7 @@ import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/part.dart';
+import 'package:help_my_truck/data/models/problem_case.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
@@ -123,5 +124,17 @@ class VehicleProvider {
     return SearchFault.fromJson(
       result.data!['faultCodeCollection']['items'][0],
     );
+  }
+
+  Future<ProblemCase> problemCase(String id) async {
+    final query = Queries.problemCase(id: id);
+
+    final result = await service.callApi(query);
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    return ProblemCase.fromJson(result.data!['problemCase']);
   }
 }
