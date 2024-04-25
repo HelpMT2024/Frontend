@@ -19,6 +19,50 @@ abstract class Queries {
       }
     }
     ''';
+
+  static String getWholeWarningsCollection = '''
+query WarningLights {
+  warningLightCollection {
+    items {
+      sys {
+        id
+      }
+      name
+      linkedFrom {
+        entryCollection(limit: 30, skip: 0) {
+          items {
+            ... on Part {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
+            ... on ProblemCase {
+              __typename
+              sys {
+                id
+              }
+              name
+            }
+            ... on Component {
+              __typename
+              sys {
+                id
+              }
+              name
+              type
+            }
+          }
+        }
+      }
+      icon {
+        $image
+      }
+    }
+  }
+}
+''';
   static String problemsCollection = '''
    problemCasesCollection(limit: 50) {
       items {
@@ -230,12 +274,14 @@ faultCodesCollection {
     imageView {
       $imageView
     }
+    $videoCollection
     $problemsCollection
     childrenCollection {
       items {
         sys {
           id
         }
+        type
         name
         icon {
           $image

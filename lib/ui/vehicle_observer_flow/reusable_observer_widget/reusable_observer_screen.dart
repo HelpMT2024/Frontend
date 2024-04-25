@@ -14,11 +14,15 @@ class ReusableModel {
   final String id;
   final String name;
   final IDPIcon? icon;
+  Color? color;
+  Color? textColor;
 
   ReusableModel({
     required this.id,
     required this.name,
     required this.icon,
+    this.color,
+    this.textColor,
   });
 }
 

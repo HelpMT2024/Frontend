@@ -60,4 +60,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get open_page_with_fault_code => 'Page with this Fault Code';
+
+  @override
+  String get warning_page_title => 'Warning Lights';
+
+  @override
+  String get possible_causes => 'Possible Causes:';
 }

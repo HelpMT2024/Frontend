@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
-
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
@@ -11,7 +10,6 @@ import 'package:help_my_truck/ui/widgets/main_navigation_bar_bottom.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/pdf_button.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/web_view_screen.dart';

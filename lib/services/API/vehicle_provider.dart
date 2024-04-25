@@ -7,6 +7,7 @@ import 'package:help_my_truck/data/models/problem_case.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/data/models/warning.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:help_my_truck/services/API/queries.dart';
 
@@ -136,5 +137,19 @@ class VehicleProvider {
     }
 
     return ProblemCase.fromJson(result.data!['problemCase']);
+  }
+
+  Future<List<Warning>> warnings() async {
+    final query = Queries.getWholeWarningsCollection;
+    final result = await service.callApi(query);
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    final List<dynamic> warnings =
+        result.data!['warningLightCollection']['items'];
+
+    return warnings.map((warning) => Warning.fromJson(warning)).toList();
   }
 }

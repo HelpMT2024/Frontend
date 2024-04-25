@@ -1,17 +1,12 @@
 import 'package:help_my_truck/data/models/child_problem.dart';
+import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
-
-enum ChildrenSystemType {
-  standart,
-  warningLight,
-  search;
-}
 
 class ChildrenComponent {
   final String id;
   final String name;
   final IDPIcon? image;
-  final ChildrenSystemType type;
+  final ChildType type;
 
   ChildrenComponent({
     required this.id,
@@ -25,7 +20,7 @@ class ChildrenComponent {
       id: json['sys']['id'],
       name: json['name'],
       image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
-      type: ChildrenSystemType.standart,
+      type: childTypeFromJson(json['type']),
     );
   }
 }
@@ -37,6 +32,7 @@ class System {
   final IDPImageView? imageView;
   final List<ChildrenComponent> children;
   final List<ChildProblem> problems;
+  final List<IDPVideo>? videos;
 
   System({
     required this.id,
@@ -45,6 +41,7 @@ class System {
     required this.imageView,
     required this.children,
     required this.problems,
+    required this.videos,
   });
 
   factory System.fromJson(Map<String, dynamic> json) {
@@ -61,6 +58,10 @@ class System {
           children.map((child) => ChildrenComponent.fromJson(child)).toList(),
       problems: json['problemCasesCollection']['items']
               .map<ChildProblem>((e) => ChildProblem.fromJson(e))
+              .toList() ??
+          [],
+      videos: json['videosCollection']?['items']
+              .map<IDPVideo>((e) => IDPVideo.fromJson(e))
               .toList() ??
           [],
     );

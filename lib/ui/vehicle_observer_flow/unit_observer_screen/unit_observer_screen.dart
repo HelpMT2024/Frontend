@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
@@ -34,7 +34,11 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
       ),
       bottomNavigationBar: MainBottomBar(
         selectedPage: NavBarPage.home,
-        onItemTapped: (_) => {},
+        onItemTapped: (item) => VehicleNavigationHelper.navigateTo(
+          NavBarPage.fromPage(item),
+          context,
+          false,
+        ),
         hideAllExceptSearch: false,
       ),
       body: Stack(

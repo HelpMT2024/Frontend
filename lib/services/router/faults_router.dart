@@ -9,15 +9,28 @@ import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
 import 'package:help_my_truck/ui/faults_flow/problem_case_screen/problem_case_screen.dart';
 import 'package:help_my_truck/ui/faults_flow/problem_case_screen/problem_case_view_model.dart';
+import 'package:help_my_truck/ui/faults_flow/warning_screen/warning_screen.dart';
+import 'package:help_my_truck/ui/faults_flow/warning_screen/warning_screen_view_model.dart';
 import 'package:native_page_route/native_page_route.dart';
 
 abstract class FaultsRouteKeys {
+  static const String warningScreen = 'warningScreen';
   static const String faultScreen = 'faultScreen';
   static const String problemCaseScreen = 'problemCaseScreen';
 }
 
 Route<dynamic>? FaultsRouter(RouteSettings setting, NetworkService service) {
   switch (setting.name) {
+    case FaultsRouteKeys.warningScreen:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final provider = VehicleProvider(service);
+          final viewModel = WarningScreenViewModel(provider: provider);
+
+          return WarningScreen(viewModel: viewModel);
+        },
+      );
     case FaultsRouteKeys.problemCaseScreen:
       return nativePageRoute(
         settings: setting,

@@ -23,6 +23,10 @@ class UnitObserverViewModel {
   void onModelSelected(String id, BuildContext context) {
     final model = unit.value.children.firstWhere((element) => element.id == id);
     if (model.isDriverDisplay) {
+      Navigator.of(context).pushNamed(
+        VehicleSelectorRouteKeys.driverCabin,
+        arguments: model,
+      );
     } else {
       Navigator.of(context).pushNamed(
         VehicleSelectorRouteKeys.systemObserver,

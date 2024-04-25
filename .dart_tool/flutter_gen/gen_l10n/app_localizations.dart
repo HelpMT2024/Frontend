@@ -204,6 +204,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Page with this Fault Code'**
   String get open_page_with_fault_code;
+
+  /// No description provided for @warning_page_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning Lights'**
+  String get warning_page_title;
+
+  /// No description provided for @possible_causes.
+  ///
+  /// In en, this message translates to:
+  /// **'Possible Causes:'**
+  String get possible_causes;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

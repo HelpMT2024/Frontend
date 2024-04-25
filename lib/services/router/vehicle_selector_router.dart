@@ -8,6 +8,8 @@ import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_screen.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_screen.dart';
@@ -23,6 +25,7 @@ import 'package:help_my_truck/ui/vehicle_selector_flow/truck_selector/truck_sele
 import 'package:native_page_route/native_page_route.dart';
 
 abstract class VehicleSelectorRouteKeys {
+  static const String driverCabin = 'driverCabin';
   static const String componentObserver = 'componentObserver';
   static const String systemObserver = 'systemObserver';
   static const String unitObserver = 'unitObserver';
@@ -36,6 +39,19 @@ Route<dynamic>? VehicleSelectorRouter(
   NetworkService service,
 ) {
   switch (setting.name) {
+    case VehicleSelectorRouteKeys.driverCabin:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final provider = VehicleProvider(service);
+          final viewModel = DriverCabinViewModel(
+            provider: provider,
+            config: setting.arguments as ChildrenSystem,
+          );
+
+          return DriverCabinScreen(viewModel: viewModel);
+        },
+      );
     case VehicleSelectorRouteKeys.componentObserver:
       return nativePageRoute(
         settings: setting,

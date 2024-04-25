@@ -1,17 +1,18 @@
 // ignore_for_file: constant_identifier_names
 // ignore: depend_on_referenced_packages
 import 'package:help_my_truck/data/models/child_problem.dart';
+import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
 class ChildrenSystem {
   final String id;
   final String name;
   final IDPIcon image;
-  final List<ChildrenSystemType> types;
+  final List<ChildType> types;
 
   bool get isDriverDisplay =>
-      types.contains(ChildrenSystemType.search) &&
-      types.contains(ChildrenSystemType.warningLight);
+      types.contains(ChildType.search) &&
+      types.contains(ChildType.warningLight);
 
   ChildrenSystem({
     required this.id,
@@ -25,15 +26,8 @@ class ChildrenSystem {
       id: json['sys']['id'],
       name: json['name'],
       image: IDPIcon.fromJson(json['icon']),
-      types: json['childrenCollection']['items'].map<ChildrenSystemType>((e) {
-        switch (e['type']) {
-          case 'WarningLight':
-            return ChildrenSystemType.warningLight;
-          case 'Search':
-            return ChildrenSystemType.search;
-          default:
-            return ChildrenSystemType.standart;
-        }
+      types: json['childrenCollection']['items'].map<ChildType>((e) {
+        return childTypeFromJson(e['type']);
       }).toList(),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/data/models/warning.dart';
 
 class Fault {
   String id;
@@ -63,39 +64,40 @@ class ChildFault {
   }
 }
 
-enum SearcFaultDetailType {
-  component,
-  part,
-}
+enum SearchFaultDetailType { component, part, problemCase, warningLight }
 
-class SearcFaultDetail {
+class SearchFaultDetail {
   final String id;
   final String name;
-  final SearcFaultDetailType type;
+  final SearchFaultDetailType type;
 
-  SearcFaultDetail({
+  SearchFaultDetail({
     required this.id,
     required this.name,
     required this.type,
   });
 
-  factory SearcFaultDetail.fromJson(Map<String, dynamic> json) {
-    return SearcFaultDetail(
+  factory SearchFaultDetail.fromJson(Map<String, dynamic> json) {
+    return SearchFaultDetail(
       id: json['sys']['id'],
       name: json['name'],
-      type: json['__typename'] == 'Part'
-          ? SearcFaultDetailType.part
-          : SearcFaultDetailType.component,
+      type: json['type'] == 'WarningLight'
+          ? SearchFaultDetailType.warningLight
+          : json['__typename'] == 'Component'
+              ? SearchFaultDetailType.component
+              : json['__typename'] == 'Part'
+                  ? SearchFaultDetailType.part
+                  : SearchFaultDetailType.problemCase,
     );
   }
 }
 
 class SearchFault {
-  final String id;
-  final String spnCode;
+  final String? id;
+  final String? spnCode;
   final bool showAsPdf;
-  final List<String> fmiCodes;
-  final List<SearcFaultDetail> linkedFrom;
+  final List<String>? fmiCodes;
+  final List<SearchFaultDetail> linkedFrom;
 
   SearchFault({
     required this.id,
@@ -105,13 +107,23 @@ class SearchFault {
     required this.showAsPdf,
   });
 
+  factory SearchFault.fromWarning(Warning warning) {
+    return SearchFault(
+      id: null,
+      spnCode: null,
+      fmiCodes: null,
+      linkedFrom: warning.linkedFrom,
+      showAsPdf: false,
+    );
+  }
+
   factory SearchFault.fromJson(Map<String, dynamic> json) {
     return SearchFault(
       id: json['sys']['id'],
       spnCode: json['spnCode'],
       fmiCodes: List<String>.from(json['fmiCodes']),
       linkedFrom: json['linkedFrom']['entryCollection']['items']
-          .map<SearcFaultDetail>((e) => SearcFaultDetail.fromJson(e))
+          .map<SearchFaultDetail>((e) => SearchFaultDetail.fromJson(e))
           .toList(),
       showAsPdf: json['showAsPdf'],
     );

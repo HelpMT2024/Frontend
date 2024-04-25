@@ -47,7 +47,7 @@ class ReusableContainerButton extends StatelessWidget {
       maxLines: 2,
       textAlign: TextAlign.center,
       style: styles.labelMedium!.copyWith(
-        color: ColorConstants.surfaceWhite,
+        color: model.textColor ?? ColorConstants.surfaceWhite,
       ),
     );
   }
@@ -60,7 +60,7 @@ class ReusableContainerButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
-        color: ColorConstants.onSurfacePrimary,
+        color: model.color ?? ColorConstants.onSurfacePrimary,
       ),
       child: child,
     );

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/data/models/child_problem.dart';
+import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
@@ -24,9 +26,10 @@ class SearchModalController {
 
   final ValueNotifier<bool> hasFocus = ValueNotifier<bool>(false);
   final panelController = PanelController();
-
+  final bool needHideBackButton;
   final isInSearch = BehaviorSubject<bool>.seeded(false);
-  final searchResult = PublishSubject<SearchFault?>();
+  final searchResult = BehaviorSubject<SearchFault?>.seeded(null);
+  SearchFault? _initialSearchResult;
 
   double _offset = 0;
   bool _isShowSearch = false;
@@ -35,7 +38,16 @@ class SearchModalController {
   bool get isShowSearch => _isShowSearch;
   bool get isShowMaxSearch => _isShowMaxSearch;
 
-  SearchModalController({required this.provider}) {
+  SearchModalController({
+    required this.provider,
+    SearchFault? searchFault,
+    this.needHideBackButton = false,
+  }) {
+    if (searchFault != null) {
+      _initialSearchResult = searchFault;
+      searchResult.add(searchFault);
+      isInSearch.add(true);
+    }
     spnFocus.addListener(() => _updateFocusValue);
     fmiFocus.addListener(() => _updateFocusValue);
   }
@@ -58,7 +70,10 @@ class SearchModalController {
 
   void search(String spn, String fmi) {
     isInSearch.add(true);
-
+    if (_initialSearchResult != null) {
+      searchResult.add(_initialSearchResult);
+      return;
+    }
     provider
         .searchFault(spn, fmi)
         .then((value) => searchResult.add(value))
@@ -74,19 +89,8 @@ class SearchModalController {
 
 class SearchScreen extends StatefulWidget {
   final SearchModalController searchModalController;
-  final double maxHeight;
-  final double bottom;
-  final bool isShowSearch;
-  final bool isShowMaxSearch;
 
-  const SearchScreen({
-    super.key,
-    required this.maxHeight,
-    required this.bottom,
-    required this.isShowSearch,
-    required this.isShowMaxSearch,
-    required this.searchModalController,
-  });
+  const SearchScreen({super.key, required this.searchModalController});
 
   @override
   State<SearchScreen> createState() => _SearchScreenState();
@@ -110,6 +114,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
+    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -120,25 +126,14 @@ class _SearchScreenState extends State<SearchScreen> {
       body: Stack(
         children: [
           Container(color: ColorConstants.surfacePrimaryDark),
-          LayoutBuilder(
-            builder: (context, constraints) {
-              final maxSearchHeight =
-                  widget.maxHeight - 32 - 36 - (widget.bottom != 1 ? 32 : 16);
-              final dependandHeight =
-                  widget.maxHeight * widget.searchModalController.offset;
-
-              return ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxHeight: widget.isShowMaxSearch
-                      ? maxSearchHeight
-                      : dependandHeight > 0
-                          ? dependandHeight
-                          : 0,
-                ),
+          LayoutBuilder(builder: (context, snapshot) {
+            return SingleChildScrollView(
+              child: SizedBox(
+                height: snapshot.maxHeight + (isKeyboard ? keyboardHeight : 0),
                 child: _loadingStreamBuilder(l10n),
-              );
-            },
-          ),
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -167,9 +162,18 @@ class _SearchScreenState extends State<SearchScreen> {
               ? _successBody(snapshot.data!)
               : snapshot.hasError == true
                   ? _notFound()
-                  : Loadable(forceLoad: true, child: Container()),
+                  : _loader(),
         );
       },
+    );
+  }
+
+  Center _loader() {
+    return const Center(
+      child: Loadable(
+        forceLoad: true,
+        child: SizedBox(height: 40, width: 40),
+      ),
     );
   }
 
@@ -196,40 +200,53 @@ class _SearchScreenState extends State<SearchScreen> {
   Iterable<Widget> _detailsButtons(SearchFault data) {
     return data.linkedFrom.map((e) {
       switch (e.type) {
-        case SearcFaultDetailType.component:
+        case SearchFaultDetailType.problemCase:
+          return _button(e.name, () {
+            final arg = ChildProblem(id: e.id, name: e.name);
+
+            Navigator.of(context).pushNamed(
+              FaultsRouteKeys.problemCaseScreen,
+              arguments: arg,
+            );
+          });
+        case SearchFaultDetailType.component:
           return _button(e.name, () {
             final arg = ChildrenComponent(
               id: e.id,
               name: e.name,
               image: null,
+              type: ChildType.standart,
             );
+
             Navigator.of(context).pushNamed(
               VehicleSelectorRouteKeys.componentObserver,
               arguments: arg,
             );
           });
-        case SearcFaultDetailType.part:
+        case SearchFaultDetailType.part:
           return _button(e.name, () {
-            final arg = ChildrenPart(
-              id: e.id,
-              name: e.name,
-              image: null,
-            );
+            final arg = ChildrenPart(id: e.id, name: e.name, image: null);
             Navigator.of(context).pushNamed(
               VehicleSelectorRouteKeys.partObserver,
               arguments: arg,
             );
           });
+
+        case SearchFaultDetailType.warningLight:
+          return Container();
       }
     });
   }
 
-  LayoutBuilder _faultButton(AppLocalizations? l10n, SearchFault data) {
+  Widget _faultButton(AppLocalizations? l10n, SearchFault data) {
+    if (data.spnCode == null || data.fmiCodes == null || data.id == null) {
+      return Container();
+    }
     return _button(l10n?.open_page_with_fault_code ?? '', () {
       final arg = ChildFault(
-        id: data.id,
-        spnCode: data.spnCode,
-        fmiCodes: data.fmiCodes,
+        id: data.id!,
+        spnCode: data.spnCode!,
+        fmiCodes: data.fmiCodes!,
         showAsPdf: false,
       );
       Navigator.of(context).pushNamed(
@@ -276,29 +293,34 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _title() {
+    final l10n = AppLocalizations.of(context);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        PlatformIconButton(
-          onPressed: () => widget.searchModalController.isInSearch.add(false),
-          icon: Icon(CupertinoIcons.back, color: ColorConstants.onSurfaceWhite),
-        ),
+        if (!widget.searchModalController.needHideBackButton)
+          PlatformIconButton(
+            onPressed: () => widget.searchModalController.isInSearch.add(false),
+            icon:
+                Icon(CupertinoIcons.back, color: ColorConstants.onSurfaceWhite),
+          ),
         const Spacer(),
         Text(
-          'SPN $_spn, FMI $_fmi',
+          _spn == null ? l10n?.possible_causes ?? '' : 'SPN $_spn, FMI $_fmi',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.titleMedium?.copyWith(
                 color: ColorConstants.onSurfaceWhite,
               ),
         ),
         const Spacer(),
-        PlatformIconButton(
-          onPressed: () => widget.searchModalController.isInSearch.add(false),
-          icon: const Icon(
-            CupertinoIcons.battery_empty,
-            color: Colors.transparent,
+        if (!widget.searchModalController.needHideBackButton)
+          PlatformIconButton(
+            onPressed: () => widget.searchModalController.isInSearch.add(false),
+            icon: const Icon(
+              CupertinoIcons.battery_empty,
+              color: Colors.transparent,
+            ),
           ),
-        ),
       ],
     );
   }
@@ -308,7 +330,7 @@ class _SearchScreenState extends State<SearchScreen> {
     final styles = Theme.of(context).textTheme;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _title(),
         const Spacer(),

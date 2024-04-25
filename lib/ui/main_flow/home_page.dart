@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_view_model.dart';
-import 'package:help_my_truck/ui/search_flow/search_modal_builder.dart';
 import 'package:help_my_truck/ui/search_flow/search_screen.dart';
 
 class MainPageConfig {
@@ -102,12 +101,15 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     }
   }
 
-  _showSearch() async {
-    setState(() {
-      final double offset = searchModalController.offset == 0 ? 0.5 : 0;
-      searchModalController.processOffset(offset);
-      searchModalController.panelController.animatePanelToPosition(offset);
-    });
+  void _showSearch() async {
+    final search = SearchScreen(searchModalController: searchModalController);
+
+    showModalBottomSheet(
+      context: context,
+      builder: (_) {
+        return search;
+      },
+    );
   }
 
   @override
@@ -117,16 +119,13 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     return Scaffold(
       key: _scaffoldKey,
       bottomNavigationBar: _buildNavBar(l10n),
-      body: SearchModalBuilder(
-        searchModalController: searchModalController,
-        builder: (context) => Container(
-          decoration: appGradientBgDecoration,
-          child: PageView(
-            controller: pageController,
-            allowImplicitScrolling: false,
-            physics: const NeverScrollableScrollPhysics(),
-            children: _widgetOptions.values.toList(),
-          ),
+      body: Container(
+        decoration: appGradientBgDecoration,
+        child: PageView(
+          controller: pageController,
+          allowImplicitScrolling: false,
+          physics: const NeverScrollableScrollPhysics(),
+          children: _widgetOptions.values.toList(),
         ),
       ),
     );
