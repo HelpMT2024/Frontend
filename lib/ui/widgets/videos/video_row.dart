@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+import 'package:help_my_truck/ui/widgets/videos/video_screen.dart';
 
 class VideoRow extends StatelessWidget {
   final bool isFullWidth;
@@ -15,7 +15,13 @@ class VideoRow extends StatelessWidget {
           color: ColorConstants.onSurfaceWhite,
         );
     return GestureDetector(
-      onTap: () => launchUrlString(video.url),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => VideoScreen(url: video.url),
+          ),
+        );
+      },
       child: Padding(
         padding: EdgeInsets.only(right: !isFullWidth ? 12 : 0),
         child: Stack(
