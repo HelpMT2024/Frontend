@@ -44,7 +44,6 @@ class FaultCodeButton extends StatelessWidget {
         widget: Expanded(
           child: Row(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (leading != null) ...{
                 leading,
