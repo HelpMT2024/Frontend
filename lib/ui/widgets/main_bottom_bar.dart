@@ -24,52 +24,53 @@ class MainBottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return SafeArea(
-      child: PlatformNavBar(
-        backgroundColor: ColorConstants.surfacePrimaryDark,
-        material: (_, __) => MaterialNavBarData(
-          type: BottomNavigationBarType.fixed,
-          showSelectedLabels: false,
-          showUnselectedLabels: false,
-          padding: EdgeInsets.zero,
-        ),
-        material3: (context, platform) {
-          return MaterialNavigationBarData(
-            height: 68,
-            elevation: 0,
-            backgroundColor: ColorConstants.surfacePrimaryDark,
-            indicatorColor: ColorConstants.surfacePrimaryDark,
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-          );
-        },
-        cupertino: (context, platform) => CupertinoTabBarData(height: 51),
-        items: [
-          _customIcon(
-            asset: R.ASSETS_HOME_SVG,
-            navBarPage: NavBarPage.home,
-            text: l10n?.home_title,
-          ),
-          _customIcon(
-            asset: R.ASSETS_PEOPLE_SVG,
-            navBarPage: NavBarPage.people,
-            text: l10n?.people_title,
-          ),
-          if (!hideAllExceptSearch) _faultCodeIcon(l10n),
-          _customIcon(
-            asset: R.ASSETS_FAVORITE_STAR_SVG,
-            navBarPage: NavBarPage.favorites,
-            text: l10n?.favorites_title,
-          ),
-          _customIcon(
-            asset: R.ASSETS_PROFILE_IMAGE_SVG,
-            navBarPage: NavBarPage.profile,
-            text: l10n?.profile_title,
-          ),
-          if (hideAllExceptSearch) _faultCodeIcon(l10n),
-        ],
-        currentIndex: selectedPage.indexPage,
-        itemChanged: (int index) => onItemTapped(index),
+    return PlatformNavBar(
+      backgroundColor: ColorConstants.surfacePrimaryDark,
+      material: (_, __) => MaterialNavBarData(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        padding: EdgeInsets.zero,
       ),
+      material3: (context, platform) {
+        return MaterialNavigationBarData(
+          height: 68,
+          elevation: 0,
+          backgroundColor: ColorConstants.surfacePrimaryDark,
+          indicatorColor: ColorConstants.surfacePrimaryDark,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+        );
+      },
+      cupertino: (context, platform) => CupertinoTabBarData(
+        height: 51,
+        backgroundColor: ColorConstants.surfacePrimaryDark
+      ),
+      items: [
+        _customIcon(
+          asset: R.ASSETS_HOME_SVG,
+          navBarPage: NavBarPage.home,
+          text: l10n?.home_title,
+        ),
+        _customIcon(
+          asset: R.ASSETS_PEOPLE_SVG,
+          navBarPage: NavBarPage.people,
+          text: l10n?.people_title,
+        ),
+        if (!hideAllExceptSearch) _faultCodeIcon(l10n),
+        _customIcon(
+          asset: R.ASSETS_FAVORITE_STAR_SVG,
+          navBarPage: NavBarPage.favorites,
+          text: l10n?.favorites_title,
+        ),
+        _customIcon(
+          asset: R.ASSETS_PROFILE_IMAGE_SVG,
+          navBarPage: NavBarPage.profile,
+          text: l10n?.profile_title,
+        ),
+        if (hideAllExceptSearch) _faultCodeIcon(l10n),
+      ],
+      currentIndex: selectedPage.indexPage,
+      itemChanged: (int index) => onItemTapped(index),
     );
   }
 

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -22,6 +24,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         textTheme: GoogleFonts.interTextTheme(textTheme()),
+        cupertinoOverrideTheme: CupertinoThemeData(
+          barBackgroundColor: ColorConstants.surfacePrimaryDark
+        ),
       ),
       initialRoute: VehicleSelectorRouteKeys.truckSelector,
       onGenerateRoute: AppRouter,
