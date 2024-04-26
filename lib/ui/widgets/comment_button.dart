@@ -38,6 +38,7 @@ class CommentButton extends StatelessWidget {
         ),
       ),
       mainColor: null,
+      borderColor: ColorConstants.onSurfaceWhite64,
       state: CustomButtonStates.outlined,
       onPressed: () => {},
     );

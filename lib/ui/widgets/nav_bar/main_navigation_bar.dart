@@ -64,7 +64,7 @@ class MainNavigationBar extends AppBar {
           icon: Row(
             children: [
               Icon(
-                Icons.arrow_back_ios_new_rounded,
+                Icons.arrow_back_rounded,
                 size: 24,
                 color: ColorConstants.onSurfaceWhite,
               ),
