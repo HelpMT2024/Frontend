@@ -50,7 +50,9 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _header(styles),
-        const Spacer(),
+        const SizedBox(
+          height: 80,
+        ),
         if (data.isNotEmpty) _carousel(data),
         _indicator(data),
         const Spacer(),
@@ -83,7 +85,11 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         final truck = data[index];
         return Column(
           children: [
-            Image.network(truck.image.url),
+            SizedBox(
+              height: 240,
+              width: 240,
+              child: Image.network(truck.image.url),
+            ),
             Text(
               truck.name.toUpperCase(),
               style: styles.titleMedium?.copyWith(
@@ -94,7 +100,7 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         );
       },
       options: CarouselOptions(
-        height: 400,
+        height: 336,
         onPageChanged: (index, reason) {
           setState(() {
             widget.viewModel.currentTruckIndex = index;
@@ -102,7 +108,7 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         },
         enableInfiniteScroll: true,
         enlargeCenterPage: true,
-        viewportFraction: 0.8,
+        viewportFraction: 0.6,
         initialPage: 0,
       ),
     );

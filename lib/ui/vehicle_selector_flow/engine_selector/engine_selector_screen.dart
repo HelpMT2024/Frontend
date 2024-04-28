@@ -85,9 +85,14 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
+        print('<!> ${truck.image.url}');
         return Column(
           children: [
-            Image.network(truck.image.url),
+            SizedBox(
+              height: 240,
+              width: 240,
+              child: Image.network(truck.image.url),
+            ),
             Text(
               truck.name.toUpperCase(),
               style: styles.titleMedium?.copyWith(
@@ -98,7 +103,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
         );
       },
       options: CarouselOptions(
-        height: 400,
+        height: 336,
         onPageChanged: (index, reason) {
           setState(() {
             widget.viewModel.currentEngineIndex = index;
@@ -106,7 +111,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
         },
         enableInfiniteScroll: true,
         enlargeCenterPage: true,
-        viewportFraction: 0.8,
+        viewportFraction: 0.6,
         initialPage: 0,
       ),
     );
