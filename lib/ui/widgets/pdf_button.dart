@@ -56,13 +56,13 @@ class PDFButton extends StatelessWidget {
               leading,
               const SizedBox(width: 6),
             },
+            if (trailing != null) ...{trailing, const SizedBox(width: 6)},
             Text(
               title,
               style: styles.labelLarge?.copyWith(
                 color: ColorConstants.onSurfaceWhite,
               ),
             ),
-            if (trailing != null) ...{const SizedBox(width: 6), trailing}
           ],
         ),
       ),
