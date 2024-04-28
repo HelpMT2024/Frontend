@@ -7,8 +7,8 @@ import 'package:help_my_truck/extensions/list_extensions.dart';
 
 class VehicleLinesDrawer {
   static Paint linePaint = Paint()
-    ..color = ColorConstants.surfaceWhite
-    ..strokeWidth = 2
+    ..color = ColorConstants.onSurfaceWhite
+    ..strokeWidth = 1
     ..style = PaintingStyle.stroke;
 
   final List<GlobalObjectKey> buttonKeys;
@@ -116,7 +116,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 7));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 5));
     });
 
     canvas.drawPath(path, ovalOuterNeon);
@@ -129,7 +129,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 3.5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 2.5));
     });
 
     canvas.drawPath(path, ovalInner);
@@ -143,7 +143,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 6.5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 4.5));
     });
 
     canvas.drawPath(path, ovalOuter);
