@@ -18,8 +18,6 @@ class ReusableContainerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final styles = Theme.of(context).textTheme;
-
     return PlatformTextButton(
       onPressed: () => onModelSelected(model),
       padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -27,18 +25,6 @@ class ReusableContainerButton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: _children(context),
-        // children: [
-        //   if (model.icon != null) _text(model, styles),
-        //   if (model.icon == null) _container(_text(model, styles)),
-        //   if (model.icon != null) ...{
-        //     const SizedBox(height: 8),
-        //     _container(
-        //       model.icon?.contentType == 'image/svg+xml'
-        //           ? SvgPicture.network(model.icon!.url)
-        //           : Image.network(model.icon!.url),
-        //     ),
-        //   }
-        // ],
       ),
     );
   }
