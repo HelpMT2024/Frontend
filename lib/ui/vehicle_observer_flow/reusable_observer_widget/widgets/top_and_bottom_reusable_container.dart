@@ -5,6 +5,11 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 
+enum _Position {
+  top,
+  bottom,
+}
+
 class TopAndBottomReusableContainer extends StatefulWidget {
   final Function(ReusableModel) onModelSelected;
   final ReusableObserverWidgetConfig config;
@@ -47,11 +52,11 @@ class _TopAndBottomReusableContainerState
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const SizedBox(width: double.infinity),
-        if (models.isNotEmpty) _buttons(models[0], context),
+        if (models.isNotEmpty) _buttons(models[0], context, _Position.top),
         const SizedBox(height: 10),
         _image(),
         const SizedBox(height: 10),
-        if (models.length > 1) _buttons(models[1], context),
+        if (models.length > 1) _buttons(models[1], context, _Position.bottom),
       ],
     );
   }
@@ -69,23 +74,29 @@ class _TopAndBottomReusableContainerState
     );
   }
 
-  Widget _buttons(List<ReusableModel> models, BuildContext context) {
+  Widget _buttons(
+    List<ReusableModel> models,
+    BuildContext context,
+    _Position position,
+  ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        for (final button in models) _button(button, context),
+        for (final button in models) _button(button, context, position),
       ],
     );
   }
 
-  Widget _button(ReusableModel model, BuildContext context) {
+  Widget _button(
+      ReusableModel model, BuildContext context, _Position position) {
     final key = _buttonKeys.firstWhere((element) => element.value == model.id);
     return Expanded(
       child: ReusableContainerButton(
         key: key,
         model: model,
         onModelSelected: widget.onModelSelected,
+        isTitleAtBottom: position == _Position.bottom,
       ),
     );
   }

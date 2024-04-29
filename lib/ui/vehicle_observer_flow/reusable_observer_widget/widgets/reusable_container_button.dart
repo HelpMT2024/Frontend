@@ -7,11 +7,13 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/
 class ReusableContainerButton extends StatelessWidget {
   final ReusableModel model;
   final Function(ReusableModel) onModelSelected;
+  final bool isTitleAtBottom;
 
   const ReusableContainerButton({
     super.key,
     required this.model,
     required this.onModelSelected,
+    this.isTitleAtBottom = false,
   });
 
   @override
@@ -24,18 +26,19 @@ class ReusableContainerButton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          if (model.icon != null) _text(model, styles),
-          if (model.icon == null) _container(_text(model, styles)),
-          if (model.icon != null) ...{
-            const SizedBox(height: 8),
-            _container(
-              model.icon?.contentType == 'image/svg+xml'
-                  ? SvgPicture.network(model.icon!.url)
-                  : Image.network(model.icon!.url),
-            ),
-          }
-        ],
+        children: _children(context),
+        // children: [
+        //   if (model.icon != null) _text(model, styles),
+        //   if (model.icon == null) _container(_text(model, styles)),
+        //   if (model.icon != null) ...{
+        //     const SizedBox(height: 8),
+        //     _container(
+        //       model.icon?.contentType == 'image/svg+xml'
+        //           ? SvgPicture.network(model.icon!.url)
+        //           : Image.network(model.icon!.url),
+        //     ),
+        //   }
+        // ],
       ),
     );
   }
@@ -64,5 +67,38 @@ class ReusableContainerButton extends StatelessWidget {
       ),
       child: child,
     );
+  }
+
+  List<Widget> _children(BuildContext context) {
+    final styles = Theme.of(context).textTheme;
+
+    if (isTitleAtBottom) {
+      return [
+        if (model.icon != null)
+          _container(
+            model.icon?.contentType == 'image/svg+xml'
+                ? SvgPicture.network(model.icon!.url)
+                : Image.network(model.icon!.url),
+          ),
+        if (model.icon == null) _container(_text(model, styles)),
+        if (model.icon != null) ...{
+          const SizedBox(height: 8),
+          _text(model, styles),
+        }
+      ];
+    } else {
+      return [
+        if (model.icon != null) _text(model, styles),
+        if (model.icon == null) _container(_text(model, styles)),
+        if (model.icon != null) ...{
+          const SizedBox(height: 8),
+          _container(
+            model.icon?.contentType == 'image/svg+xml'
+                ? SvgPicture.network(model.icon!.url)
+                : Image.network(model.icon!.url),
+          ),
+        }
+      ];
+    }
   }
 }
