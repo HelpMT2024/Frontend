@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
@@ -11,8 +10,8 @@ import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
-import 'package:help_my_truck/ui/shared/custom_button.dart';
-import 'package:help_my_truck/ui/shared/text_box_field.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/text_box_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,7 +29,6 @@ class SearchModalController {
   final isInSearch = BehaviorSubject<bool>.seeded(false);
   final searchResult = BehaviorSubject<SearchFault?>.seeded(null);
   SearchFault? _initialSearchResult;
-
   double _offset = 0;
   bool _isShowSearch = false;
   bool _isShowMaxSearch = false;
@@ -97,6 +95,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final _height = 306.0;
+
   final _formKey = GlobalKey<FormState>();
 
   String? _spn;
@@ -114,27 +114,26 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final isKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(64),
-        child: _topPadding(),
-      ),
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          Container(color: ColorConstants.surfacePrimaryDark),
-          LayoutBuilder(builder: (context, snapshot) {
-            return SingleChildScrollView(
-              child: SizedBox(
-                height: snapshot.maxHeight + (isKeyboard ? keyboardHeight : 0),
+    return SizedBox(
+      height: _height + keyBoardHeight,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(64),
+          child: _topPadding(),
+        ),
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: [
+            Container(color: ColorConstants.surfacePrimaryDark),
+            LayoutBuilder(builder: (context, snapshot) {
+              return SingleChildScrollView(
                 child: _loadingStreamBuilder(l10n),
-              ),
-            );
-          }),
-        ],
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -168,9 +167,11 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Center _loader() {
-    return const Center(
-      child: Loadable(
+  Widget _loader() {
+    return SizedBox(
+      height: _height - 60,
+      width: double.infinity,
+      child: const Loadable(
         forceLoad: true,
         child: SizedBox(height: 40, width: 40),
       ),
@@ -295,32 +296,43 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _title() {
     final l10n = AppLocalizations.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        if (!widget.searchModalController.needHideBackButton)
-          PlatformIconButton(
-            onPressed: () => widget.searchModalController.isInSearch.add(false),
-            icon:
-                Icon(CupertinoIcons.back, color: ColorConstants.onSurfaceWhite),
-          ),
-        const Spacer(),
-        Text(
-          _spn == null ? l10n?.possible_causes ?? '' : 'SPN $_spn, FMI $_fmi',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: ColorConstants.onSurfaceWhite,
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!widget.searchModalController.needHideBackButton)
+              PlatformIconButton(
+                onPressed: () =>
+                    widget.searchModalController.isInSearch.add(false),
+                icon: Icon(
+                  CupertinoIcons.back,
+                  color: ColorConstants.onSurfaceWhite,
+                ),
               ),
-        ),
-        const Spacer(),
-        if (!widget.searchModalController.needHideBackButton)
-          PlatformIconButton(
-            onPressed: () => widget.searchModalController.isInSearch.add(false),
-            icon: const Icon(
-              CupertinoIcons.battery_empty,
-              color: Colors.transparent,
+            const Spacer(),
+            Text(
+              _spn == null
+                  ? l10n?.possible_causes ?? ''
+                  : 'SPN $_spn, FMI $_fmi',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: ColorConstants.onSurfaceWhite,
+                  ),
             ),
-          ),
+            const Spacer(),
+            if (!widget.searchModalController.needHideBackButton)
+              PlatformIconButton(
+                onPressed: () =>
+                    widget.searchModalController.isInSearch.add(false),
+                icon: const Icon(
+                  CupertinoIcons.battery_empty,
+                  color: Colors.transparent,
+                ),
+              ),
+          ],
+        ),
       ],
     );
   }
@@ -362,9 +374,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _body(AppLocalizations? l10n) {
     return Container(
-      decoration: BoxDecoration(
-        color: ColorConstants.surfacePrimaryDark,
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
@@ -373,13 +385,15 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             _spnTextBox(l10n),
             const SizedBox(height: 4),
             _fmiTextBox(l10n),
             const SizedBox(height: 8),
             CustomButton(
+              height: 40,
               title: CustomButtonTitle(
                 text: l10n?.search_fault_code_button ?? 'Search Fault Code',
               ),
@@ -398,6 +412,12 @@ class _SearchScreenState extends State<SearchScreen> {
     return Container(
       decoration: BoxDecoration(
         color: ColorConstants.surfacePrimaryDark,
+        border: Border(
+          bottom: BorderSide(
+            color: ColorConstants.surfacePrimaryDark,
+            width: 2,
+          ),
+        ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -425,7 +445,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _spnTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.spn_number_title ?? 'SPN Number',
-      height: 40,
+      height: 39,
       maxLines: 1,
       focusNode: widget.searchModalController.spnFocus,
       keyboardType: TextInputType.number,
@@ -439,7 +459,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _fmiTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.fmi_number_title ?? 'FMI Number',
-      height: 40,
+      height: 39,
       maxLines: 1,
       focusNode: widget.searchModalController.fmiFocus,
       keyboardType: TextInputType.number,

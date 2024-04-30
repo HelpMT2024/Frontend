@@ -49,9 +49,9 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           Container(decoration: appGradientBgDecoration),
           Padding(
             padding: EdgeInsets.fromLTRB(
-              16,
+              12,
               widget.viewModel.hasImage ? 24 : 0,
-              16,
+              12,
               24,
             ),
             child: StreamBuilder<Component>(

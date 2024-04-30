@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
-import 'package:help_my_truck/ui/shared/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
 
 class ProblemCaseButton extends StatelessWidget {
   final ChildProblem problem;

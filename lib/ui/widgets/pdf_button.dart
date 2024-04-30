@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
-import 'package:help_my_truck/ui/shared/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/web_view_screen.dart';
 
 class PDFButton extends StatelessWidget {
