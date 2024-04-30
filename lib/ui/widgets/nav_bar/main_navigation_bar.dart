@@ -31,6 +31,7 @@ class MainNavigationBar extends AppBar {
                 )
               : null,
           automaticallyImplyLeading: hasLeading,
+          scrolledUnderElevation: 0.0,
         );
 
   static Widget _title(String? title, TextTheme styles) {
