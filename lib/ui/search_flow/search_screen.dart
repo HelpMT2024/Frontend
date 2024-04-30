@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
@@ -120,7 +121,7 @@ class _SearchScreenState extends State<SearchScreen> {
       height: _height + keyBoardHeight,
       child: Scaffold(
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(64),
+          preferredSize: const Size.fromHeight(34),
           child: _topPadding(),
         ),
         backgroundColor: Colors.transparent,
@@ -143,7 +144,9 @@ class _SearchScreenState extends State<SearchScreen> {
       stream: widget.searchModalController.isInSearch,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return snapshot.data == true ? _searchBody() : _body(l10n);
+          return widget.searchModalController.isInSearch.valueOrNull == true
+              ? _searchBody()
+              : _body(l10n);
         } else {
           return Container();
         }
@@ -156,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
       stream: widget.searchModalController.searchResult,
       builder: (context, snapshot) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 95),
+          padding: const EdgeInsets.only(bottom: 0),
           child: snapshot.hasData
               ? _successBody(snapshot.data!)
               : snapshot.hasError == true
@@ -270,14 +273,18 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: ColorConstants.onSurfaceWhite,
-                        ),
+                  Expanded(
+                    child: Text(
+                      text,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: ColorConstants.onSurfaceWhite,
+                          ),
+                    ),
                   ),
                   Icon(
+                    size: 17,
                     CupertinoIcons.right_chevron,
                     color: ColorConstants.onSurfaceWhite,
                   ),
@@ -298,7 +305,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Column(
       children: [
-        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -307,7 +313,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 onPressed: () =>
                     widget.searchModalController.isInSearch.add(false),
                 icon: Icon(
-                  CupertinoIcons.back,
+                  Icons.arrow_back,
                   color: ColorConstants.onSurfaceWhite,
                 ),
               ),
@@ -341,34 +347,37 @@ class _SearchScreenState extends State<SearchScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _title(),
-        const Spacer(),
-        Text(
-          l10n?.oops ?? '',
-          style: styles.headlineSmall?.copyWith(
-            color: ColorConstants.surfaceWhite,
+    return SizedBox(
+      height: _height - 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _title(),
+          const Spacer(),
+          Text(
+            l10n?.oops ?? '',
+            style: styles.headlineSmall?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          l10n?.no_result_found ?? '',
-          style: styles.titleMedium?.copyWith(
-            color: ColorConstants.surfaceWhite,
+          const SizedBox(height: 8),
+          Text(
+            l10n?.no_result_found ?? '',
+            style: styles.titleMedium?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          textAlign: TextAlign.center,
-          l10n?.no_search_result_description ?? '',
-          style: styles.bodyMedium?.copyWith(
-            color: ColorConstants.surfaceWhite,
+          const SizedBox(height: 4),
+          Text(
+            textAlign: TextAlign.center,
+            l10n?.no_search_result_description ?? '',
+            style: styles.bodyMedium?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
           ),
-        ),
-        const Spacer(),
-      ],
+          const Spacer(),
+        ],
+      ),
     );
   }
 

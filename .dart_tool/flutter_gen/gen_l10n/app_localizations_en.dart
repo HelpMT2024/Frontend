@@ -66,4 +66,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get possible_causes => 'Possible Causes:';
+
+  @override
+  String get fault_code_description_title => 'Fault Code Description:';
 }

@@ -21,6 +21,7 @@ abstract class ColorConstants {
   static Color onSurfaceWhite = hexToColor('#FFFFFF');
   static Color onSurfaceWhite64 = hexToColor('#FFFFFF').withAlpha(163);
   static Color onSurfaceWhite80 = hexToColor('#FFFFFF').withAlpha(204);
+  static Color onSurfaceWhite120 = hexToColor('#FFFFFF').withAlpha(204);
   static Color onSurfaceHigh = hexToColor('#070F15');
   static Color onSurfaceMedium = hexToColor('#A5AFB4');
   static Color onSurfaceGray = hexToColor('#EEEEEE');

@@ -216,6 +216,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Possible Causes:'**
   String get possible_causes;
+
+  /// No description provided for @fault_code_description_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Fault Code Description:'**
+  String get fault_code_description_title;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -29,7 +29,6 @@ class MainNavigationBar extends AppBar {
               ? _backButton(styles, context, bottomTitle, onTapBack)
               : null,
           automaticallyImplyLeading: hasLeading,
-          scrolledUnderElevation: 0.0,
         );
 
   static Widget _title(String? title, TextTheme styles) {

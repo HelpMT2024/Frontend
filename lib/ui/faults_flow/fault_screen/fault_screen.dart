@@ -76,12 +76,13 @@ class _FaultScreenState extends State<FaultScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          if (model.image != null) Image.network(model.image!.url),
-          const SizedBox(height: 24),
+          if (model.image != null) ...{
+            Image.network(model.image!.url),
+            const SizedBox(height: 24),
+          },
           _description(styles, model),
           const SizedBox(height: 24),
           _buttons(model, l10n),
-          const SizedBox(height: 16),
           HorizontalVideoContainer(videos: model.videosCollection.items),
         ],
       ),
@@ -98,13 +99,37 @@ class _FaultScreenState extends State<FaultScreen> {
   }
 
   Widget _description(TextTheme styles, Fault model) {
-    return DefaultTextStyle.merge(
-      style: styles.labelLarge?.merge(
-        TextStyle(
-          color: ColorConstants.onSurfaceWhite.withAlpha(210),
+    final l10n = AppLocalizations.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.info_outline,
+              size: 16,
+              color: ColorConstants.onSurfaceWhite,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              l10n?.fault_code_description_title ?? '',
+              style: styles.titleMedium?.copyWith(
+                color: ColorConstants.onSurfaceWhite,
+              ),
+            ),
+          ],
         ),
-      ),
-      child: ContentfulRichText(model.description).documentToWidgetTree,
+        const SizedBox(height: 8),
+        DefaultTextStyle.merge(
+          style: styles.labelLarge?.merge(
+            TextStyle(
+              color: ColorConstants.onSurfaceWhite.withAlpha(210),
+            ),
+          ),
+          child: ContentfulRichText(model.description).documentToWidgetTree,
+        ),
+      ],
     );
   }
 
