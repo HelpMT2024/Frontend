@@ -3,12 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
-import 'package:help_my_truck/extensions/list_extensions.dart';
 
 class VehicleLinesDrawer {
   static Paint linePaint = Paint()
-    ..color = ColorConstants.onSurfaceWhite
-    ..strokeWidth = 1
+    ..color = ColorConstants.surfaceWhite
+    ..strokeWidth = 2
     ..style = PaintingStyle.stroke;
 
   final List<GlobalObjectKey> buttonKeys;
@@ -20,21 +19,17 @@ class VehicleLinesDrawer {
   });
 
   void paint(Canvas canvas, Size size, List<IDPPoint> points) {
-    final chunked = points.chunked(2);
-    final chunkedButtons = buttonKeys
-        .where(
-          (element) => points.map((e) => e.parentID).contains(element.value),
-        )
-        .toList()
-        .chunked(2);
+    final Map<IDPPoint, List<GlobalObjectKey>> grouped = Map.fromEntries(
+      points.map(
+        (e) => MapEntry(
+          e,
+          buttonKeys.where((element) => element.value == e.parentID).toList(),
+        ),
+      ),
+    );
 
-    for (var i = 0; i < chunked.length; i++) {
-      final points = chunked[i];
-      final keys = chunkedButtons[i];
-
-      for (var j = 0; j < points.length; j++) {
-        final point = points[j];
-        final key = keys[j];
+    for (final entry in grouped.entries) {
+      for (final key in entry.value) {
         final imageBox =
             imageKey.currentContext?.findRenderObject() as RenderBox?;
         final imagePosition =
@@ -50,7 +45,8 @@ class VehicleLinesDrawer {
           final double x = max(0, min(size.width, positionX));
 
           final end = Offset(x, y);
-          final start = Offset(point.x * size.width, point.y * size.height);
+          final start =
+              Offset(entry.key.x * size.width, entry.key.y * size.height);
 
           final middlePoint = Offset(
             end.dy == size.height || end.dy == 0
@@ -116,7 +112,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 7));
     });
 
     canvas.drawPath(path, ovalOuterNeon);
@@ -129,7 +125,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 2.5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 3.5));
     });
 
     canvas.drawPath(path, ovalInner);
@@ -143,7 +139,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 4.5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 6.5));
     });
 
     canvas.drawPath(path, ovalOuter);

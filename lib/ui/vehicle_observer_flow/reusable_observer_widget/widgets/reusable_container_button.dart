@@ -20,7 +20,7 @@ class ReusableContainerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return PlatformTextButton(
       onPressed: () => onModelSelected(model),
-      padding: const EdgeInsets.symmetric(horizontal: 2),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -43,10 +43,10 @@ class ReusableContainerButton extends StatelessWidget {
 
   Container _container(Widget child) {
     return Container(
-      height: 80,
+      height: 68,
       alignment: Alignment.center,
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         color: model.color ?? ColorConstants.onSurfacePrimary,

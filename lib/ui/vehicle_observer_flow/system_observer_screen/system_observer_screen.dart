@@ -41,7 +41,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
             child: StreamBuilder<System>(
               stream: widget.viewModel.system,
               builder: (context, snapshot) {

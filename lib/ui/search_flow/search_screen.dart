@@ -11,8 +11,8 @@ import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
-import 'package:help_my_truck/ui/shared/custom_button.dart';
-import 'package:help_my_truck/ui/shared/text_box_field.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/text_box_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:rxdart/rxdart.dart';
@@ -30,7 +30,6 @@ class SearchModalController {
   final isInSearch = BehaviorSubject<bool>.seeded(false);
   final searchResult = BehaviorSubject<SearchFault?>.seeded(null);
   SearchFault? _initialSearchResult;
-
   double _offset = 0;
   bool _isShowSearch = false;
   bool _isShowMaxSearch = false;
@@ -97,6 +96,8 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final _height = 306.0;
+
   final _formKey = GlobalKey<FormState>();
 
   String? _spn;
@@ -114,27 +115,26 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final isKeyboard = MediaQuery.of(context).viewInsets.bottom > 0;
-    final keyboardHeight = MediaQuery.of(context).viewInsets.bottom;
+    final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
 
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(64),
-        child: _topPadding(),
-      ),
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: [
-          Container(color: ColorConstants.surfacePrimaryDark),
-          LayoutBuilder(builder: (context, snapshot) {
-            return SingleChildScrollView(
-              child: SizedBox(
-                height: snapshot.maxHeight + (isKeyboard ? keyboardHeight : 0),
+    return SizedBox(
+      height: _height + keyBoardHeight,
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(34),
+          child: _topPadding(),
+        ),
+        backgroundColor: Colors.transparent,
+        body: Stack(
+          children: [
+            Container(color: ColorConstants.surfacePrimaryDark),
+            LayoutBuilder(builder: (context, snapshot) {
+              return SingleChildScrollView(
                 child: _loadingStreamBuilder(l10n),
-              ),
-            );
-          }),
-        ],
+              );
+            }),
+          ],
+        ),
       ),
     );
   }
@@ -144,7 +144,9 @@ class _SearchScreenState extends State<SearchScreen> {
       stream: widget.searchModalController.isInSearch,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return snapshot.data == true ? _searchBody() : _body(l10n);
+          return widget.searchModalController.isInSearch.valueOrNull == true
+              ? _searchBody()
+              : _body(l10n);
         } else {
           return Container();
         }
@@ -157,7 +159,7 @@ class _SearchScreenState extends State<SearchScreen> {
       stream: widget.searchModalController.searchResult,
       builder: (context, snapshot) {
         return Padding(
-          padding: const EdgeInsets.only(bottom: 95),
+          padding: const EdgeInsets.only(bottom: 0),
           child: snapshot.hasData
               ? _successBody(snapshot.data!)
               : snapshot.hasError == true
@@ -168,9 +170,11 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Center _loader() {
-    return const Center(
-      child: Loadable(
+  Widget _loader() {
+    return SizedBox(
+      height: _height - 60,
+      width: double.infinity,
+      child: const Loadable(
         forceLoad: true,
         child: SizedBox(height: 40, width: 40),
       ),
@@ -269,14 +273,18 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    text,
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: ColorConstants.onSurfaceWhite,
-                        ),
+                  Expanded(
+                    child: Text(
+                      text,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            color: ColorConstants.onSurfaceWhite,
+                          ),
+                    ),
                   ),
                   Icon(
+                    size: 17,
                     CupertinoIcons.right_chevron,
                     color: ColorConstants.onSurfaceWhite,
                   ),
@@ -295,32 +303,42 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _title() {
     final l10n = AppLocalizations.of(context);
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
       children: [
-        if (!widget.searchModalController.needHideBackButton)
-          PlatformIconButton(
-            onPressed: () => widget.searchModalController.isInSearch.add(false),
-            icon:
-                Icon(CupertinoIcons.back, color: ColorConstants.onSurfaceWhite),
-          ),
-        const Spacer(),
-        Text(
-          _spn == null ? l10n?.possible_causes ?? '' : 'SPN $_spn, FMI $_fmi',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: ColorConstants.onSurfaceWhite,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (!widget.searchModalController.needHideBackButton)
+              PlatformIconButton(
+                onPressed: () =>
+                    widget.searchModalController.isInSearch.add(false),
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: ColorConstants.onSurfaceWhite,
+                ),
               ),
-        ),
-        const Spacer(),
-        if (!widget.searchModalController.needHideBackButton)
-          PlatformIconButton(
-            onPressed: () => widget.searchModalController.isInSearch.add(false),
-            icon: const Icon(
-              CupertinoIcons.battery_empty,
-              color: Colors.transparent,
+            const Spacer(),
+            Text(
+              _spn == null
+                  ? l10n?.possible_causes ?? ''
+                  : 'SPN $_spn, FMI $_fmi',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: ColorConstants.onSurfaceWhite,
+                  ),
             ),
-          ),
+            const Spacer(),
+            if (!widget.searchModalController.needHideBackButton)
+              PlatformIconButton(
+                onPressed: () =>
+                    widget.searchModalController.isInSearch.add(false),
+                icon: const Icon(
+                  CupertinoIcons.battery_empty,
+                  color: Colors.transparent,
+                ),
+              ),
+          ],
+        ),
       ],
     );
   }
@@ -329,42 +347,45 @@ class _SearchScreenState extends State<SearchScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _title(),
-        const Spacer(),
-        Text(
-          l10n?.oops ?? '',
-          style: styles.headlineSmall?.copyWith(
-            color: ColorConstants.surfaceWhite,
+    return SizedBox(
+      height: _height - 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          _title(),
+          const Spacer(),
+          Text(
+            l10n?.oops ?? '',
+            style: styles.headlineSmall?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          l10n?.no_result_found ?? '',
-          style: styles.titleMedium?.copyWith(
-            color: ColorConstants.surfaceWhite,
+          const SizedBox(height: 8),
+          Text(
+            l10n?.no_result_found ?? '',
+            style: styles.titleMedium?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          textAlign: TextAlign.center,
-          l10n?.no_search_result_description ?? '',
-          style: styles.bodyMedium?.copyWith(
-            color: ColorConstants.surfaceWhite,
+          const SizedBox(height: 4),
+          Text(
+            textAlign: TextAlign.center,
+            l10n?.no_search_result_description ?? '',
+            style: styles.bodyMedium?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
           ),
-        ),
-        const Spacer(),
-      ],
+          const Spacer(),
+        ],
+      ),
     );
   }
 
   Widget _body(AppLocalizations? l10n) {
     return Container(
-      decoration: BoxDecoration(
-        color: ColorConstants.surfacePrimaryDark,
-        borderRadius: const BorderRadius.only(
+      decoration: const BoxDecoration(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
@@ -373,13 +394,15 @@ class _SearchScreenState extends State<SearchScreen> {
       child: Form(
         key: _formKey,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 24),
+            const SizedBox(height: 20),
             _spnTextBox(l10n),
             const SizedBox(height: 4),
             _fmiTextBox(l10n),
             const SizedBox(height: 8),
             CustomButton(
+              height: 40,
               title: CustomButtonTitle(
                 text: l10n?.search_fault_code_button ?? 'Search Fault Code',
               ),
@@ -398,6 +421,12 @@ class _SearchScreenState extends State<SearchScreen> {
     return Container(
       decoration: BoxDecoration(
         color: ColorConstants.surfacePrimaryDark,
+        border: Border(
+          bottom: BorderSide(
+            color: ColorConstants.surfacePrimaryDark,
+            width: 2,
+          ),
+        ),
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
@@ -425,7 +454,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _spnTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.spn_number_title ?? 'SPN Number',
-      height: 40,
+      height: 39,
       maxLines: 1,
       focusNode: widget.searchModalController.spnFocus,
       keyboardType: TextInputType.number,
@@ -439,7 +468,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _fmiTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.fmi_number_title ?? 'FMI Number',
-      height: 40,
+      height: 39,
       maxLines: 1,
       focusNode: widget.searchModalController.fmiFocus,
       keyboardType: TextInputType.number,

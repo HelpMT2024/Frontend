@@ -89,8 +89,12 @@ class _TopAndBottomReusableContainerState
   }
 
   Widget _button(
-      ReusableModel model, BuildContext context, _Position position) {
+    ReusableModel model,
+    BuildContext context,
+    _Position position,
+  ) {
     final key = _buttonKeys.firstWhere((element) => element.value == model.id);
+
     return Expanded(
       child: ReusableContainerButton(
         key: key,

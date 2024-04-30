@@ -45,7 +45,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
             child: StreamBuilder<Unit>(
               stream: widget.viewModel.unit,
               builder: (context, snapshot) {

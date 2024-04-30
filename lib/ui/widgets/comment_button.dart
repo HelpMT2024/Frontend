@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/ui/shared/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentButton extends StatelessWidget {
@@ -13,6 +13,7 @@ class CommentButton extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return CustomButton(
+      height: 40,
       title: CustomButtonTitle(
         text: null,
         widget: Expanded(

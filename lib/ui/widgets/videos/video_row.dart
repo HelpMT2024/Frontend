@@ -27,13 +27,16 @@ class VideoRow extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            _video(video, style),
+            _video(video, style, context),
             Align(
               alignment: Alignment.center,
-              child: Icon(
-                Icons.play_circle_fill,
-                color: ColorConstants.onSurfaceWhite,
-                size: 56,
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: Icon(
+                  Icons.play_circle_fill,
+                  color: ColorConstants.onSurfaceWhite,
+                  size: 56,
+                ),
               ),
             ),
           ],
@@ -42,19 +45,17 @@ class VideoRow extends StatelessWidget {
     );
   }
 
-  Widget _video(IDPVideo e, TextStyle? style) {
+  Widget _video(IDPVideo e, TextStyle? style, BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
           flex: !isFullWidth ? 2 : 0,
-          child: Image.network(
-            _getYoutubeThumbnail(e.url)!,
-          ),
+          child: _image(e),
         ),
         const SizedBox(height: 8),
         SizedBox(
-          width: 240,
+          width: isFullWidth ? MediaQuery.of(context).size.width : 280,
           child: Text(
             e.title,
             style: style,
@@ -64,6 +65,26 @@ class VideoRow extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Container _image(IDPVideo e) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: ColorConstants.onSurfacePrimary.withAlpha(143),
+          width: 2,
+        ),
+        backgroundBlendMode: BlendMode.darken,
+        borderRadius: BorderRadius.circular(12),
+        color: ColorConstants.onSurfacePrimary,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12),
+        child: Image.network(
+          _getYoutubeThumbnail(e.url)!,
+        ),
+      ),
     );
   }
 

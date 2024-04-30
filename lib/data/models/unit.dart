@@ -7,7 +7,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 class ChildrenSystem {
   final String id;
   final String name;
-  final IDPIcon image;
+  final IDPIcon? image;
   final List<ChildType> types;
 
   bool get isDriverDisplay =>
@@ -25,7 +25,7 @@ class ChildrenSystem {
     return ChildrenSystem(
       id: json['sys']['id'],
       name: json['name'],
-      image: IDPIcon.fromJson(json['icon']),
+      image: json['image'] != null ? IDPIcon.fromJson(json['image']) : null,
       types: json['childrenCollection']['items'].map<ChildType>((e) {
         return childTypeFromJson(e['type']);
       }).toList(),

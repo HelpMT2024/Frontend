@@ -14,24 +14,21 @@ class MainNavigationBar extends AppBar {
     super.bottom,
     VoidCallback? onTapBack,
   }) : super(
-          shadowColor: bgColor ?? ColorConstants.appBarColor,
+          shadowColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
           elevation: 0,
+          scrolledUnderElevation: 0,
           backgroundColor: bgColor ?? ColorConstants.appBarColor,
           titleSpacing:
               hasLeading && ModalRoute.of(context)?.isFirst == false ? 0 : 16,
           centerTitle: false,
           title: _title(title, styles),
           actions: action,
+          leadingWidth: 42,
           leading: hasLeading
-              ? _backButton(
-                  styles,
-                  context,
-                  bottomTitle,
-                  onTapBack,
-                )
+              ? _backButton(styles, context, bottomTitle, onTapBack)
               : null,
           automaticallyImplyLeading: hasLeading,
-          scrolledUnderElevation: 0.0,
         );
 
   static Widget _title(String? title, TextTheme styles) {
@@ -65,7 +62,7 @@ class MainNavigationBar extends AppBar {
           icon: Row(
             children: [
               Icon(
-                Icons.arrow_back_rounded,
+                Icons.arrow_back,
                 size: 24,
                 color: ColorConstants.onSurfaceWhite,
               ),

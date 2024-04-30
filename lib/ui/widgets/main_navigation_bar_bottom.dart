@@ -8,18 +8,18 @@ PreferredSize mainNavigationBarBottom({
   final styles = Theme.of(context).textTheme;
 
   return PreferredSize(
-    preferredSize: const Size(double.infinity, 30),
+    preferredSize: const Size(double.infinity, 35),
     child: Padding(
-      padding: const EdgeInsets.only(bottom: 6),
+      padding: const EdgeInsets.only(bottom: 14),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(width: 16),
+          const SizedBox(width: 12),
           Text(
             title,
             textAlign: TextAlign.left,
-            style: styles.titleLarge?.merge(
-              TextStyle(color: ColorConstants.onSurfaceWhite),
+            style: styles.titleLarge?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
             ),
           ),
         ],
