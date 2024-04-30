@@ -85,7 +85,6 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
-        print('<!> ${truck.image.url}');
         return Column(
           children: [
             SizedBox(
