@@ -222,6 +222,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Fault Code Description:'**
   String get fault_code_description_title;
+
+  /// No description provided for @spn_fmi_title.
+  ///
+  /// In en, this message translates to:
+  /// **'SPN/FMI'**
+  String get spn_fmi_title;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

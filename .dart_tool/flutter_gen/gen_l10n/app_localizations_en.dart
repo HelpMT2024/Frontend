@@ -69,4 +69,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get fault_code_description_title => 'Fault Code Description:';
+
+  @override
+  String get spn_fmi_title => 'SPN/FMI';
 }

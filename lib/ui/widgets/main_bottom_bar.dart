@@ -42,9 +42,7 @@ class MainBottomBar extends StatelessWidget {
         );
       },
       cupertino: (context, platform) => CupertinoTabBarData(
-        height: 51,
-        backgroundColor: ColorConstants.surfacePrimaryDark
-      ),
+          height: 51, backgroundColor: ColorConstants.surfacePrimaryDark),
       items: [
         _customIcon(
           asset: R.ASSETS_HOME_SVG,
@@ -67,7 +65,7 @@ class MainBottomBar extends StatelessWidget {
           navBarPage: NavBarPage.profile,
           text: l10n?.profile_title,
         ),
-        if (hideAllExceptSearch) _faultCodeIcon(l10n),
+        if (hideAllExceptSearch) _spnFmiIcon(l10n),
       ],
       currentIndex: selectedPage.indexPage,
       itemChanged: (int index) => onItemTapped(index),
@@ -80,6 +78,15 @@ class MainBottomBar extends StatelessWidget {
       navBarPage: NavBarPage.search,
       isCenterIcon: true,
       text: l10n?.fault_code_title,
+    );
+  }
+
+  BottomNavigationBarItem _spnFmiIcon(AppLocalizations? l10n) {
+    return _customIcon(
+      icon: Icons.search_rounded,
+      navBarPage: NavBarPage.search,
+      isCenterIcon: true,
+      text: l10n?.spn_fmi_title,
     );
   }
 

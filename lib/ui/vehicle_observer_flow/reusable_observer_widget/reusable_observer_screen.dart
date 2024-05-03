@@ -80,21 +80,31 @@ class _ReusableObserverWidgetState extends State<ReusableObserverWidget>
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
-      children: [
-        _content(_isPreviewProgress, _gif()),
-        _content(!_isPreviewProgress, _body()),
-      ],
+      children: _content(),
     );
   }
 
-  Widget _content(bool isVisible, Widget child) {
-    return Visibility(
-      visible: isVisible,
-      maintainAnimation: true,
-      maintainSize: true,
-      maintainState: true,
-      child: child,
-    );
+  List<Widget> _content() {
+    if (_preview != null) {
+      return [
+        Visibility(
+          visible: _isPreviewProgress,
+          maintainAnimation: true,
+          maintainSize: true,
+          maintainState: true,
+          child: _gif(),
+        ),
+        Visibility(
+          visible: !_isPreviewProgress,
+          maintainAnimation: true,
+          maintainSize: true,
+          maintainState: true,
+          child: _body(),
+        ),
+      ];
+    } else {
+      return [_body()];
+    }
   }
 
   Widget _gif() {

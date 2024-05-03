@@ -40,20 +40,21 @@ class CustomNavigationBarIcon extends StatelessWidget {
         minHeight: isCenterItem ? 50 : 34,
       ),
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(8.0),
-        ),
-        color: bgColor
-      ),
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+          color: bgColor),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 2),
           _image(asset: asset, icon: icon, color: color),
           SizedBox(height: padding),
           Text(
             text ?? '',
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 10,
               fontWeight: FontWeight.w500,
