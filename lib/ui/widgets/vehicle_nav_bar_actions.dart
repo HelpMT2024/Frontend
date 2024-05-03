@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -21,8 +20,6 @@ class VehicleNavBarActions extends StatelessWidget {
     } else {
       stringUrl =
           'https://app.contentful.com/spaces/k5pf3rtqc5px/environments/develop/views/assets';
-      //stringUrl =
-      //'https://apps.apple.com/ua/app/duolingo-languages-more/id570060128';
     }
 
     Uri url = Uri.parse(stringUrl);

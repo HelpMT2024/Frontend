@@ -125,6 +125,16 @@ faultCodesCollection {
     buttonsTemplate
     description
     descriptionPosition
+    previewAnimation {
+      title
+      description
+      contentType
+      fileName
+      size
+      url
+      width
+      height
+    }
   ''';
 
   static const String getTrucks = '''

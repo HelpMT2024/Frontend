@@ -103,6 +103,7 @@ class IDPImageView {
   final IDPImage? imageBack;
   final IDPImage? leftImage;
   final IDPImage? rightImage;
+  final IDPImage? preview;
 
   IDPImageView({
     required this.imageFrontMarkup,
@@ -114,10 +115,14 @@ class IDPImageView {
     required this.imageBack,
     required this.leftImage,
     required this.rightImage,
+    required this.preview,
   });
 
   factory IDPImageView.fromJson(Map<String, dynamic> json) {
     return IDPImageView(
+      preview: json['previewAnimation'] != null
+          ? IDPImage.fromJson(json['previewAnimation'])
+          : null,
       imageFrontMarkup: json['imageFrontMarkup'] != null
           ? List<IDPPoint>.from(
               json['imageFrontMarkup'].map(
