@@ -158,7 +158,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     final imageWidth = widget.image.imageFront.width;
     final aspectRatio = imageWidth / imageHeight;
 
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width - 32.0;
     final height = width / aspectRatio;
 
     return CustomPaint(
