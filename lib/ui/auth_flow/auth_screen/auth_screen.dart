@@ -20,14 +20,6 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  String? _usernameError;
-  String? _emailError;
-
-  String? _username;
-  String? _email;
-  String? _password;
-  String? _passwordRepeat;
-
   bool _acceptTerms = false;
 
   @override
@@ -86,45 +78,30 @@ class _AuthScreenState extends State<AuthScreen> {
   List<Widget> _fields(AppLocalizations? l10n) {
     return [
       AuthorizationField(
-        onSaved: (String? newValue) => _username = newValue,
-        validator: (value) {
-          if (value != _username) {
-            _emailError = null;
-          }
-          return _emailError;
-        },
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.saveUsername,
+        validator: (value) => widget.viewModel.validateUsername(value, l10n),
         title: l10n?.username ?? '',
       ),
       AuthorizationField(
-        onSaved: (String? newValue) => _username = newValue,
-        validator: (value) {
-          if (value != _username) {
-            _emailError = null;
-          }
-          return _emailError;
-        },
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.saveEmail,
+        validator: (value) => widget.viewModel.validateEmail(value, l10n),
         title: l10n?.email ?? '',
       ),
       AuthorizationField(
-        onSaved: (String? newValue) => _username = newValue,
-        validator: (value) {
-          if (value != _username) {
-            _emailError = null;
-          }
-          return _emailError;
-        },
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.savePassword,
+        validator: widget.viewModel.validatePassword,
         title: l10n?.password ?? '',
         obscureText: true,
         hideEye: false,
       ),
       AuthorizationField(
-        onSaved: (String? newValue) => _username = newValue,
-        validator: (value) {
-          if (value != _username) {
-            _emailError = null;
-          }
-          return _emailError;
-        },
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.saveConfirmPassword,
+        validator: (value) =>
+            widget.viewModel.validateConfirmPassword(value, l10n),
         title: l10n?.confirm_password ?? '',
         obscureText: true,
         hideEye: false,
@@ -208,7 +185,12 @@ class _AuthScreenState extends State<AuthScreen> {
       mainColor: ColorConstants.surfaceWhite,
       textColor: ColorConstants.onSurfaceHigh,
       height: 48,
-      onPressed: () => {},
+      onPressed: () {
+        if (_formKey.currentState?.validate() ?? false) {
+          _formKey.currentState?.save();
+          widget.viewModel.submit();
+        }
+      },
     );
   }
 
