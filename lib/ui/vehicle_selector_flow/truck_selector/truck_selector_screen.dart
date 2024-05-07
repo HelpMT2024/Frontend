@@ -4,11 +4,11 @@ import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
-import 'package:help_my_truck/ui/vehicle_selector_flow/next_button.dart';
 import 'package:help_my_truck/ui/vehicle_selector_flow/truck_selector/truck_selector_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
 
 class TruckSelectorScreen extends StatefulWidget {
   final TruckSelectorViewModel viewModel;
@@ -44,6 +44,7 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
   }
 
   Widget _body(List<Truck> data) {
+    final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
     return Column(
@@ -58,7 +59,12 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: NextButton(
+          child: CustomButton(
+            title: CustomButtonTitle(text: l10n?.next ?? ''),
+            state: CustomButtonStates.filled,
+            mainColor: ColorConstants.surfaceWhite,
+            textColor: ColorConstants.onSurfaceHigh,
+            height: 48,
             onPressed: () => widget.viewModel.selectTruck(context),
           ),
         ),

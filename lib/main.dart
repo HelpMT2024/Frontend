@@ -31,9 +31,8 @@ class MyApp extends StatelessWidget {
         cupertinoOverrideTheme: CupertinoThemeData(
             barBackgroundColor: ColorConstants.surfacePrimaryDark),
       ),
-      // initialRoute: VehicleSelectorRouteKeys.truckSelector,
       initialRoute: SharedPreferencesWrapper.getToken() == null
-          ? AuthRouteKeys.authScreen
+          ? AuthRouteKeys.welcomeScreen
           : VehicleSelectorRouteKeys.truckSelector,
       onGenerateRoute: AppRouter,
     );

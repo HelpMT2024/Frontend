@@ -3,8 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:native_page_route/native_page_route.dart';
-import '../../ui/auth_flow/auth_screen.dart';
+import '../../ui/auth_flow/auth_screen/auth_screen.dart';
+import '../../ui/auth_flow/auth_screen/auth_screen_view_model.dart';
 import '../../ui/auth_flow/welcome_screen.dart';
+import '../API/auth_provider.dart';
 
 abstract class AuthRouteKeys {
   static const String welcomeScreen = 'welcomeScreen';
@@ -25,7 +27,11 @@ Route<dynamic>? AuthRouter(RouteSettings setting, NetworkService service) {
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          return const AuthScreen();
+          final provider = AuthProvider(service);
+          final viewModel = AuthScreenViewModel(provider: provider);
+          return AuthScreen(
+            viewModel: viewModel,
+          );
         },
       );
   }

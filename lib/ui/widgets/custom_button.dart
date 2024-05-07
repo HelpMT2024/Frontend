@@ -80,7 +80,7 @@ class CustomButton extends StatelessWidget {
       style: style,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: MainAxisSize.max,
         children: [
           title.text != null
               ? _buttonText(
