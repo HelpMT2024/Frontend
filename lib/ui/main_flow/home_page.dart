@@ -2,6 +2,8 @@ import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
+import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
@@ -64,7 +66,11 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     ),
     NavBarPage.people: const SizedBox(),
     NavBarPage.search: const SizedBox(),
-    NavBarPage.favorites: const SizedBox(),
+    NavBarPage.favorites: FavoritesScreen(
+      viewModel: FavoritesScreenViewModel(
+        provider: VehicleProvider(widget.config.service),
+      ),
+    ),
     NavBarPage.profile: const SizedBox()
   };
 
