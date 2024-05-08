@@ -1,5 +1,7 @@
+import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
+import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -69,6 +71,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
 
   Widget _body(Component data) {
     final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
 
     return SingleChildScrollView(
       child: Column(
@@ -80,6 +83,12 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             _content(data)!,
           } else ...{
             VerticalVideoContainer(videos: widget.viewModel.videos),
+          },
+          if (widget.viewModel.hasDescription) ...{
+            Padding(
+              padding: EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: _descriptionSection(styles, data),
+            ),
           },
           if (widget.viewModel.hasProblems) ...{
             const SizedBox(height: 24),
@@ -98,6 +107,24 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           },
         ],
       ),
+    );
+  }
+
+  Widget _descriptionSection(TextTheme styles, Component data) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 32),
+        _text(styles, data),
+      ],
+    );
+  }
+
+  Widget _text(TextTheme styles, Component data) {
+    return DefaultTextStyle.merge(
+      style: styles.labelLarge?.merge(
+          TextStyle(color: ColorConstants.onSurfaceWhite.withAlpha(210))),
+      child: ContentfulRichText(data.description).documentToWidgetTree,
     );
   }
 

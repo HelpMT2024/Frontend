@@ -29,6 +29,7 @@ class ComponentObserverViewModel {
   bool get hasWarnings => warnings.isNotEmpty;
   List<ChildProblem> get problems => component.valueOrNull?.problems ?? [];
   bool get hasProblems => problems.isNotEmpty;
+  bool get hasDescription => component.valueOrNull?.description != null;
 
   ComponentObserverViewModel({required this.config, required this.provider});
 
