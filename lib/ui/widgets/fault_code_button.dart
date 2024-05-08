@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
+
+import '../../const/resource.dart';
 
 class FaultCodeButton extends StatelessWidget {
   final ChildFault fault;
@@ -16,7 +19,9 @@ class FaultCodeButton extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: _button(
-        leading: Icon(Icons.error, color: ColorConstants.statesError, size: 20),
+        leading: fault.showAsPdf
+            ? SvgPicture.asset(R.ASSETS_PDF_FILE_SVG, height: 20, width: 20)
+            : Icon(Icons.error, color: ColorConstants.statesError, size: 20),
         styles: styles,
         title: fault.text,
         onPressed: () {

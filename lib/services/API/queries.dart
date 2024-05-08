@@ -318,6 +318,7 @@ faultCodesCollection {
     icon {
       $image
     } 
+    description {json}
     imageView {
       $imageView
     }

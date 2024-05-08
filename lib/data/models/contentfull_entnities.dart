@@ -258,3 +258,106 @@ class IDPImage {
     );
   }
 }
+
+class IDPDescription {
+  IDPJson json;
+
+  IDPDescription({
+    required this.json,
+  });
+
+  factory IDPDescription.fromJson(Map<String, dynamic> json) => IDPDescription(
+        json: IDPJson.fromJson(json["json"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "json": json.toJson(),
+      };
+}
+
+class IDPJson {
+  IDPContentData data;
+  List<JsonContent> content;
+  String nodeType;
+
+  IDPJson({
+    required this.data,
+    required this.content,
+    required this.nodeType,
+  });
+
+  factory IDPJson.fromJson(Map<String, dynamic> json) => IDPJson(
+        data: IDPContentData.fromJson(json["data"]),
+        content: List<JsonContent>.from(
+            json["content"].map((x) => JsonContent.fromJson(x))),
+        nodeType: json["nodeType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data.toJson(),
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
+        "nodeType": nodeType,
+      };
+}
+
+class JsonContent {
+  IDPContentData data;
+  List<InnerContent> content;
+  String nodeType;
+
+  JsonContent({
+    required this.data,
+    required this.content,
+    required this.nodeType,
+  });
+
+  factory JsonContent.fromJson(Map<String, dynamic> json) => JsonContent(
+        data: IDPContentData.fromJson(json["data"]),
+        content: List<InnerContent>.from(
+            json["content"].map((x) => InnerContent.fromJson(x))),
+        nodeType: json["nodeType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data.toJson(),
+        "content": List<dynamic>.from(content.map((x) => x.toJson())),
+        "nodeType": nodeType,
+      };
+}
+
+class InnerContent {
+  IDPContentData data;
+  List<dynamic> marks;
+  String value;
+  String nodeType;
+
+  InnerContent({
+    required this.data,
+    required this.marks,
+    required this.value,
+    required this.nodeType,
+  });
+
+  factory InnerContent.fromJson(Map<String, dynamic> json) => InnerContent(
+        data: IDPContentData.fromJson(json["data"]),
+        marks: List<dynamic>.from(json["marks"].map((x) => x)),
+        value: json["value"],
+        nodeType: json["nodeType"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": data.toJson(),
+        "marks": List<dynamic>.from(marks.map((x) => x)),
+        "value": value,
+        "nodeType": nodeType,
+      };
+}
+
+class IDPContentData {
+  IDPContentData();
+
+  factory IDPContentData.fromJson(Map<String, dynamic> json) =>
+      IDPContentData();
+
+  Map<String, dynamic> toJson() => {};
+}

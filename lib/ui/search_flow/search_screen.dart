@@ -191,7 +191,7 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 16, width: double.infinity),
+              const SizedBox(height: 12, width: double.infinity),
               if (!data.showAsPdf) _faultButton(l10n, data),
               ..._detailsButtons(data)
             ],
@@ -284,7 +284,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                   Icon(
-                    size: 17,
+                    size: 14,
                     CupertinoIcons.right_chevron,
                     color: ColorConstants.onSurfaceWhite,
                   ),
@@ -454,7 +454,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _spnTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.spn_number_title ?? 'SPN Number',
-      height: 39,
+      height: 38,
       maxLines: 1,
       focusNode: widget.searchModalController.spnFocus,
       keyboardType: TextInputType.number,
@@ -468,7 +468,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _fmiTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.fmi_number_title ?? 'FMI Number',
-      height: 39,
+      height: 38,
       maxLines: 1,
       focusNode: widget.searchModalController.fmiFocus,
       keyboardType: TextInputType.number,

@@ -25,6 +25,7 @@ class MainNavigationBar extends AppBar {
           title: _title(title, styles),
           actions: action,
           leadingWidth: 42,
+          toolbarHeight: 48,
           leading: hasLeading
               ? _backButton(styles, context, bottomTitle, onTapBack)
               : null,

@@ -24,6 +24,7 @@ class ChildrenPart {
 
 class Component {
   final String name;
+  final IDPDescription? description;
   final IDPImage? icon;
   final IDPImageView? imageView;
   final List<ChildrenPart> children;
@@ -34,6 +35,7 @@ class Component {
 
   Component({
     required this.name,
+    required this.description,
     required this.icon,
     required this.imageView,
     required this.children,
@@ -46,6 +48,9 @@ class Component {
   factory Component.fromJson(Map<String, dynamic> json) {
     return Component(
       name: json['name'],
+      description: json['description'] != null
+          ? IDPDescription.fromJson(json["description"])
+          : null,
       icon: json['icon'] != null ? IDPImage.fromJson(json['icon']) : null,
       imageView: json['imageView'] != null
           ? IDPImageView.fromJson(json['imageView'])
