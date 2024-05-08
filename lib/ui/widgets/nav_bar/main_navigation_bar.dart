@@ -11,6 +11,7 @@ class MainNavigationBar extends AppBar {
     Color? bgColor,
     List<Widget>? action,
     bool hasLeading = true,
+    double toolbarHeight = 48,
     super.bottom,
     VoidCallback? onTapBack,
   }) : super(
@@ -25,7 +26,7 @@ class MainNavigationBar extends AppBar {
           title: _title(title, styles),
           actions: action,
           leadingWidth: 42,
-          toolbarHeight: 48,
+          toolbarHeight: toolbarHeight,
           leading: hasLeading
               ? _backButton(styles, context, bottomTitle, onTapBack)
               : null,

@@ -1,5 +1,6 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -39,6 +40,7 @@ class _PartScreenState extends State<PartScreen> {
         styles: styles,
         action: const [VehicleNavBarActions()],
         bottom: _navBarTitle(styles),
+        toolbarHeight: 52,
       ),
       body: Stack(
         children: [
@@ -74,12 +76,8 @@ class _PartScreenState extends State<PartScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          16,
-          widget.viewModel.hasImage ? 24 : 0,
-          16,
-          16,
-        ),
+        padding: AppConsts.componentObserverPadding(
+            isNeedTop: widget.viewModel.hasImage),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

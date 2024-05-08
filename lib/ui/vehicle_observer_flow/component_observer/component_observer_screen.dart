@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -48,12 +49,8 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: EdgeInsets.fromLTRB(
-              12,
-              widget.viewModel.hasImage ? 24 : 0,
-              12,
-              24,
-            ),
+            padding: AppConsts.componentObserverPadding(
+                isNeedTop: widget.viewModel.hasImage),
             child: StreamBuilder<Component>(
               stream: widget.viewModel.component,
               builder: (context, snapshot) {

@@ -17,7 +17,7 @@ class HorizontalVideoContainer extends StatelessWidget {
         if (videos.isNotEmpty) VehicleTitle(text: l10n?.tips_and_hinst_video),
         if (videos.length > 1)
           SizedBox(
-            height: 240,
+            height: 198,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: videos.map((e) {
