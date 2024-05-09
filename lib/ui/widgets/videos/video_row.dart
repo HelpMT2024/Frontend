@@ -51,7 +51,7 @@ class VideoRow extends StatelessWidget {
       children: [
         Expanded(
           flex: !isFullWidth ? 2 : 0,
-          child: _image(e),
+          child: _image(e, isFullWidth),
         ),
         const SizedBox(height: 8),
         SizedBox(
@@ -71,7 +71,7 @@ class VideoRow extends StatelessWidget {
     );
   }
 
-  Container _image(IDPVideo e) {
+  Container _image(IDPVideo e, bool isFullWidth) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -86,8 +86,8 @@ class VideoRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Image.network(
           _getYoutubeThumbnail(e.url)!,
-          height: 150,
-          width: 260,
+          height: isFullWidth ? null : 150,
+          width: isFullWidth ? null : 260,
           fit: BoxFit.fitWidth,
         ),
       ),

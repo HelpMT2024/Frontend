@@ -322,6 +322,14 @@ faultCodesCollection {
     imageView {
       $imageView
     }
+    pdfFilesCollection {
+          items {
+            asset {
+              url
+            }
+            title
+          }
+        }
     childrenCollection {
       items {
         sys {

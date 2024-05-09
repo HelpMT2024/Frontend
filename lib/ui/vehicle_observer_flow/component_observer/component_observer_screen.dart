@@ -20,6 +20,9 @@ import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 
+import '../../widgets/button_group.dart';
+import '../../widgets/pdf_button.dart';
+
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
 
@@ -86,7 +89,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           },
           if (widget.viewModel.hasDescription) ...{
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              padding: const EdgeInsets.only(bottom: 8),
               child: _descriptionSection(styles, data),
             ),
           },
@@ -100,6 +103,10 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             _warningIcons(),
             faults(),
           },
+          if (widget.viewModel.hasPDF) ...{
+            _title(l10n?.instructions_title, styles),
+          },
+          _instructionsButtons(styles),
           const SizedBox(height: 24),
           const CommentButton(),
           if (widget.viewModel.hasImage) ...{
@@ -148,6 +155,25 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           .map((e) => FaultCodeButton(fault: e))
           .toList(),
     );
+  }
+
+  Widget _instructionsButtons(TextTheme styles) {
+    final viewModel = widget.viewModel;
+    final buttons = viewModel.pdfFiles.map((e) {
+      return PDFButton(file: e);
+    }).toList();
+
+    return ButtonGroup(
+      buttons: [
+        ...buttons,
+        const SizedBox(height: 24),
+        const CommentButton(disableFlex: true)
+      ],
+    );
+  }
+
+  Widget _title(String? text, TextTheme styles) {
+    return VehicleTitle(text: text);
   }
 
   ReusableObserverWidget? _content(Component data) {

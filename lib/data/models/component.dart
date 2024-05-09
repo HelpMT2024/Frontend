@@ -32,6 +32,7 @@ class Component {
   final List<IDPVideo> videos;
   final List<ChildProblem> problems;
   final List<ChildWarningLight> warningLights;
+  final PdfFilesCollection pdfFiles;
 
   Component({
     required this.name,
@@ -43,6 +44,7 @@ class Component {
     required this.videos,
     required this.problems,
     required this.warningLights,
+    required this.pdfFiles,
   });
 
   factory Component.fromJson(Map<String, dynamic> json) {
@@ -74,6 +76,7 @@ class Component {
               .map<ChildWarningLight>((e) => ChildWarningLight.fromJson(e))
               .toList() ??
           [],
+      pdfFiles: PdfFilesCollection.fromJson(json['pdfFilesCollection']),
     );
   }
 }
