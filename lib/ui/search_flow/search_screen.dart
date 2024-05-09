@@ -461,7 +461,17 @@ class _SearchScreenState extends State<SearchScreen> {
       hintText: l10n?.enter_hint.replaceAll('\$1', l10n.spn_number_title) ??
           'Enter SPN Number',
       onSaved: (value) => _spn = value,
-      validator: (value) => value?.isNotEmpty == true ? null : "Can't be empty",
+      validator: (value) {
+        if (!(value?.isNotEmpty == true)) {
+          return "Can't be empty";
+        } else if ((value?.length ?? 0) < 2 || (value?.length ?? 0) > 6) {
+          return "SPN must have min 2 digits, max 6 digits";
+        } else if (!RegExp(r'^\d+$').hasMatch(value ?? '')) {
+          return 'The code must include only numbers';
+        }
+
+        return null;
+      },
     );
   }
 
@@ -475,7 +485,17 @@ class _SearchScreenState extends State<SearchScreen> {
       hintText: l10n?.enter_hint.replaceAll('\$1', l10n.fmi_number_title) ??
           'Enter FMI Number',
       onSaved: (value) => _fmi = value,
-      validator: (value) => value?.isNotEmpty == true ? null : "Can't be empty",
+      validator: (value) {
+        if (!(value?.isNotEmpty == true)) {
+          return "Can't be empty";
+        } else if ((value?.length ?? 0) < 1 || (value?.length ?? 0) > 2) {
+          return "FMI must have min 1 digit, max 2 digits";
+        } else if (!RegExp(r'^\d+$').hasMatch(value ?? '')) {
+          return 'The code must include only numbers';
+        }
+
+        return null;
+      },
     );
   }
 }
