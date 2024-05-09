@@ -20,6 +20,9 @@ import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart'
 import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 
+import '../../widgets/main_bottom_bar.dart';
+import '../../widgets/nav_bar/nav_bar_page.dart';
+
 class PartScreen extends StatefulWidget {
   final PartViewModel viewModel;
 
@@ -41,6 +44,11 @@ class _PartScreenState extends State<PartScreen> {
         action: const [VehicleNavBarActions()],
         bottom: _navBarTitle(styles),
         toolbarHeight: 52,
+      ),
+      bottomNavigationBar: MainBottomBar(
+        selectedPage: NavBarPage.search,
+        onItemTapped: (_) => widget.viewModel.onSearch(context),
+        hideAllExceptSearch: true,
       ),
       body: Stack(
         children: [

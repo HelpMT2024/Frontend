@@ -70,9 +70,6 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         if (widget.viewModel.hasDescription) ...{
           _text(Theme.of(context).textTheme),
         },
-        if (widget.viewModel.hasPDF) ...{
-          VehicleTitle(text: l10n?.instructions_title),
-        },
         _instructionsButtons(),
         if (widget.viewModel.hasVideos) ...{
           HorizontalVideoContainer(videos: widget.viewModel.videos)

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
@@ -5,6 +6,9 @@ import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
+
+import '../../widgets/nav_bar/nav_bar_page.dart';
+import '../vehicle_navigation_helper.dart';
 
 class PartViewModel {
   final VehicleProvider provider;
@@ -38,4 +42,8 @@ class PartViewModel {
     required this.provider,
     required this.config,
   });
+
+  void onSearch(BuildContext context) {
+    VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);
+  }
 }
