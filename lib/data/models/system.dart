@@ -28,7 +28,7 @@ class ChildrenComponent {
 class System {
   final String id;
   final String name;
-  final IDPImage icon;
+  final IDPImage? icon;
   final IDPImageView? imageView;
   final List<ChildrenComponent> children;
   final List<ChildProblem> problems;
@@ -50,7 +50,7 @@ class System {
     return System(
       id: json['sys']['id'],
       name: json['name'],
-      icon: IDPImage.fromJson(json['icon']),
+      icon: json['icon'] != null ? IDPImage.fromJson(json['icon']) : null,
       imageView: json['imageView'] != null
           ? IDPImageView.fromJson(json['imageView'])
           : null,
