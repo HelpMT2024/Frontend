@@ -184,7 +184,7 @@ abstract class AppLocalizations {
   /// No description provided for @oops.
   ///
   /// In en, this message translates to:
-  /// **'Oops'**
+  /// **'Oops..'**
   String get oops;
 
   /// No description provided for @no_result_found.

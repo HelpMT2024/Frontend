@@ -305,40 +305,45 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (!widget.searchModalController.needHideBackButton)
-              PlatformIconButton(
-                onPressed: () =>
-                    widget.searchModalController.isInSearch.add(false),
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: ColorConstants.onSurfaceWhite,
-                ),
-              ),
-            const Spacer(),
-            Text(
-              _spn == null
-                  ? l10n?.possible_causes ?? ''
-                  : 'SPN $_spn, FMI $_fmi',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+        SizedBox(
+          height: 24,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (!widget.searchModalController.needHideBackButton)
+                PlatformIconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () =>
+                      widget.searchModalController.isInSearch.add(false),
+                  icon: Icon(
+                    Icons.arrow_back,
                     color: ColorConstants.onSurfaceWhite,
                   ),
-            ),
-            const Spacer(),
-            if (!widget.searchModalController.needHideBackButton)
-              PlatformIconButton(
-                onPressed: () =>
-                    widget.searchModalController.isInSearch.add(false),
-                icon: const Icon(
-                  CupertinoIcons.battery_empty,
-                  color: Colors.transparent,
                 ),
+              const Spacer(),
+              Text(
+                _spn == null
+                    ? l10n?.possible_causes ?? ''
+                    : 'SPN $_spn, FMI $_fmi',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: ColorConstants.onSurfaceWhite,
+                    ),
               ),
-          ],
+              const Spacer(),
+              if (!widget.searchModalController.needHideBackButton)
+                PlatformIconButton(
+                  onPressed: () =>
+                      widget.searchModalController.isInSearch.add(false),
+                  icon: const Icon(
+                    CupertinoIcons.battery_empty,
+                    color: Colors.transparent,
+                  ),
+                ),
+            ],
+          ),
         ),
+        const SizedBox(height: 12),
       ],
     );
   }
@@ -383,12 +388,8 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Widget _body(AppLocalizations? l10n) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
+      decoration: BoxDecoration(
+        color: ColorConstants.surfacePrimaryDark,
       ),
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
       child: Form(
@@ -433,12 +434,12 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       child: SizedBox(
-        height: 36,
+        height: 44,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: 32,
+              width: 34,
               height: 4,
               decoration: BoxDecoration(
                 color: ColorConstants.onSurfaceMedium.withAlpha(102),
