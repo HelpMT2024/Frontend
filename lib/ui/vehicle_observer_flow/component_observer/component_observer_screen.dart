@@ -98,17 +98,17 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             _problemsButtons()
           },
           if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-            const SizedBox(height: 12),
+            const SizedBox(height: 36),
             VehicleTitle(text: l10n?.fault_code_title),
             _warningIcons(),
             faults(),
           },
+          const SizedBox(height: 24),
           if (widget.viewModel.hasPDF) ...{
             _title(l10n?.instructions_title, styles),
           },
           _instructionsButtons(styles),
-          const SizedBox(height: 24),
-          const CommentButton(),
+          const SizedBox(height: 8),
           if (widget.viewModel.hasImage) ...{
             HorizontalVideoContainer(videos: widget.viewModel.videos),
           },
