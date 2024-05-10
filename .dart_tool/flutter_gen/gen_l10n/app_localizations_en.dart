@@ -50,7 +50,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tips_and_hinst_video => 'Tips & Hints Videos';
 
   @override
-  String get oops => 'Oops';
+  String get oops => 'Oops..';
 
   @override
   String get no_result_found => 'No result found';
