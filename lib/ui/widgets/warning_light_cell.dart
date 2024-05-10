@@ -26,7 +26,7 @@ class WarningLightCell extends StatelessWidget {
           color: ColorConstants.onSurfaceHigh,
         ),
         height: 52,
-        width: 64,
+        width: 80,
         padding: const EdgeInsets.all(4),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

@@ -193,6 +193,9 @@ class _SearchScreenState extends State<SearchScreen> {
             children: [
               const SizedBox(height: 12, width: double.infinity),
               if (!data.showAsPdf) _faultButton(l10n, data),
+              if (data.linkedFrom.length <= 1 &&
+                  (data.fmiCodes?.isEmpty ?? true))
+                _fmiNotFound(),
               ..._detailsButtons(data)
             ],
           ),
@@ -377,6 +380,35 @@ class _SearchScreenState extends State<SearchScreen> {
             textAlign: TextAlign.center,
             l10n?.no_search_result_description ?? '',
             style: styles.bodyMedium?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
+          ),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+
+  Widget _fmiNotFound() {
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    return SizedBox(
+      height: _height - 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 24),
+          Text(
+            l10n?.oops ?? '',
+            style: styles.headlineSmall?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n?.no_result_found ?? '',
+            style: styles.titleMedium?.copyWith(
               color: ColorConstants.surfaceWhite,
             ),
           ),
