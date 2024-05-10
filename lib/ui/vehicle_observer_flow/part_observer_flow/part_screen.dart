@@ -96,15 +96,17 @@ class _PartScreenState extends State<PartScreen> {
               _verticalVideoWidget(),
             },
             if (widget.viewModel.hasProblems) ...{
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
+              const SizedBox(height: 32),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
             },
             if (widget.viewModel.hasPDF) ...{
+              const SizedBox(height: 24),
               _title(l10n?.instructions_title, styles),
             },
             _instructionsButtons(styles),

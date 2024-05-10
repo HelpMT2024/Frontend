@@ -10,19 +10,15 @@ PreferredSize mainNavigationBarBottom({
   return PreferredSize(
     preferredSize: const Size(double.infinity, 35),
     child: Padding(
-      padding: const EdgeInsets.only(bottom: 14),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 12),
-          Text(
-            title,
-            textAlign: TextAlign.left,
-            style: styles.titleLarge?.copyWith(
-              color: ColorConstants.onSurfaceWhite,
-            ),
-          ),
-        ],
+      padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
+      child: Text(
+        title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+        textAlign: TextAlign.left,
+        style: styles.titleLarge?.copyWith(
+          color: ColorConstants.onSurfaceWhite,
+        ),
       ),
     ),
   );
