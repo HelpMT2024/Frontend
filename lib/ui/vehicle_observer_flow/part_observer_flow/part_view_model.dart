@@ -17,7 +17,9 @@ class PartViewModel {
   late final part = BehaviorSubject<Part>()
     ..addStream(Stream.fromFuture(provider.part(config.id)));
 
-  bool get hasImage => part.valueOrNull?.imageView != null;
+  bool get hasImage =>
+      part.valueOrNull?.imageView != null &&
+      part.valueOrNull?.imageView?.imageFront != null;
 
   List<PdfFile> get pdfFiles =>
       part.valueOrNull?.pdfFilesCollection.items ?? [];

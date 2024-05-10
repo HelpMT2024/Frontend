@@ -25,7 +25,7 @@ class ChildrenSystem {
     return ChildrenSystem(
       id: json['sys']['id'],
       name: json['name'],
-      image: json['image'] != null ? IDPIcon.fromJson(json['image']) : null,
+      image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
       types: json['childrenCollection']['items'].map<ChildType>((e) {
         return childTypeFromJson(e['type']);
       }).toList(),

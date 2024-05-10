@@ -120,10 +120,10 @@ class _PartScreenState extends State<PartScreen> {
 
   Widget _image() {
     final part = widget.viewModel.part.valueOrNull;
-    if (part?.imageView == null) {
+    if (part?.imageView == null && part?.imageView?.imageFront == null) {
       return const SizedBox();
     }
-    return Image.network(part!.imageView!.imageFront.url);
+    return Image.network(part!.imageView!.imageFront!.url);
   }
 
   Widget _title(String? text, TextTheme styles) {
