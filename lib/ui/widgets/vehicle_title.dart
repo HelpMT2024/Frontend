@@ -15,7 +15,6 @@ class VehicleTitle extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SizedBox(height: 32),
         Text(
           text ?? '',
           textAlign: TextAlign.left,
@@ -23,7 +22,7 @@ class VehicleTitle extends StatelessWidget {
             TextStyle(color: ColorConstants.onSurfaceWhite),
           ),
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
       ],
     );
   }

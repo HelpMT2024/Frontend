@@ -31,7 +31,7 @@ class VideoRow extends StatelessWidget {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 24),
+                padding: const EdgeInsets.only(bottom: 51),
                 child: Icon(
                   Icons.play_circle_fill,
                   color: ColorConstants.onSurfaceWhite,
@@ -51,24 +51,27 @@ class VideoRow extends StatelessWidget {
       children: [
         Expanded(
           flex: !isFullWidth ? 2 : 0,
-          child: _image(e),
+          child: _image(e, isFullWidth),
         ),
         const SizedBox(height: 8),
         SizedBox(
-          width: isFullWidth ? MediaQuery.of(context).size.width : 280,
-          child: Text(
-            e.title,
-            style: style,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.start,
-            maxLines: 1,
+          width: isFullWidth ? MediaQuery.of(context).size.width : 260,
+          child: SizedBox(
+            height: 40,
+            child: Text(
+              e.title,
+              style: style,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              maxLines: 2,
+            ),
           ),
         ),
       ],
     );
   }
 
-  Container _image(IDPVideo e) {
+  Container _image(IDPVideo e, bool isFullWidth) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
@@ -83,6 +86,9 @@ class VideoRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Image.network(
           _getYoutubeThumbnail(e.url)!,
+          height: isFullWidth ? null : 150,
+          width: isFullWidth ? null : 260,
+          fit: BoxFit.fitWidth,
         ),
       ),
     );

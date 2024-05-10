@@ -36,6 +36,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         bottom: _navBarTitle(styles),
         bgColor: ColorConstants.surfacePrimaryDark,
         action: const [VehicleNavBarActions()],
+        toolbarHeight: 52,
       ),
       body: Stack(
         children: [
@@ -69,9 +70,6 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         },
         if (widget.viewModel.hasDescription) ...{
           _text(Theme.of(context).textTheme),
-        },
-        if (widget.viewModel.hasPDF) ...{
-          VehicleTitle(text: l10n?.instructions_title),
         },
         _instructionsButtons(),
         if (widget.viewModel.hasVideos) ...{

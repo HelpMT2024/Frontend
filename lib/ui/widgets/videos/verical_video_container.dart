@@ -13,7 +13,7 @@ class VerticalVideoContainer extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return Wrap(
-      runSpacing: 24,
+      runSpacing: 12,
       children: [
         if (videos.isNotEmpty) VehicleTitle(text: l10n?.tips_and_hinst_video),
         for (final video in videos) VideoRow(isFullWidth: true, video: video),

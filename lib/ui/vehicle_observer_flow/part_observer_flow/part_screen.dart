@@ -1,5 +1,6 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,6 +19,9 @@ import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
+
+import '../../widgets/main_bottom_bar.dart';
+import '../../widgets/nav_bar/nav_bar_page.dart';
 
 class PartScreen extends StatefulWidget {
   final PartViewModel viewModel;
@@ -39,6 +43,12 @@ class _PartScreenState extends State<PartScreen> {
         styles: styles,
         action: const [VehicleNavBarActions()],
         bottom: _navBarTitle(styles),
+        toolbarHeight: 52,
+      ),
+      bottomNavigationBar: MainBottomBar(
+        selectedPage: NavBarPage.search,
+        onItemTapped: (_) => widget.viewModel.onSearch(context),
+        hideAllExceptSearch: true,
       ),
       body: Stack(
         children: [
@@ -74,12 +84,8 @@ class _PartScreenState extends State<PartScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          16,
-          widget.viewModel.hasImage ? 24 : 0,
-          16,
-          16,
-        ),
+        padding: AppConsts.componentObserverPadding(
+            isNeedTop: widget.viewModel.hasImage),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [

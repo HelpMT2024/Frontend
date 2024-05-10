@@ -64,7 +64,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
       child: CustomButton(
         title: CustomButtonTitle(text: l10n?.next ?? ''),
         state: CustomButtonStates.filled,

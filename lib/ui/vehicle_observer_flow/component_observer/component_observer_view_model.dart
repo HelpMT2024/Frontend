@@ -29,6 +29,9 @@ class ComponentObserverViewModel {
   bool get hasWarnings => warnings.isNotEmpty;
   List<ChildProblem> get problems => component.valueOrNull?.problems ?? [];
   bool get hasProblems => problems.isNotEmpty;
+  bool get hasDescription => component.valueOrNull?.description != null;
+  List<PdfFile> get pdfFiles => component.valueOrNull?.pdfFiles.items ?? [];
+  bool get hasPDF => pdfFiles.isNotEmpty;
 
   ComponentObserverViewModel({required this.config, required this.provider});
 
