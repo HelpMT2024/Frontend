@@ -14,7 +14,10 @@ class HorizontalVideoContainer extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (videos.isNotEmpty) VehicleTitle(text: l10n?.tips_and_hinst_video),
+        if (videos.isNotEmpty) ...{
+          const SizedBox(height: 32),
+          VehicleTitle(text: l10n?.tips_and_hinst_video)
+        },
         if (videos.length > 1)
           SizedBox(
             height: 198,

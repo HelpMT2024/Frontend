@@ -10,14 +10,6 @@ class VehicleTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return Text(
-      text ?? '',
-      textAlign: TextAlign.left,
-      style: styles.titleMedium?.merge(
-        TextStyle(color: ColorConstants.onSurfaceWhite),
-      ),
-    );
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -30,6 +22,7 @@ class VehicleTitle extends StatelessWidget {
             TextStyle(color: ColorConstants.onSurfaceWhite),
           ),
         ),
+        const SizedBox(height: 16),
       ],
     );
   }
