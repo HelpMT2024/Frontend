@@ -120,11 +120,11 @@ class _SearchScreenState extends State<SearchScreen> {
     return SizedBox(
       height: _height + keyBoardHeight,
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(34),
           child: _topPadding(),
         ),
-        backgroundColor: Colors.transparent,
         body: Stack(
           children: [
             Container(color: ColorConstants.surfacePrimaryDark),
@@ -460,25 +460,25 @@ class _SearchScreenState extends State<SearchScreen> {
             width: 2,
           ),
         ),
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 1,
+            color: ColorConstants.surfacePrimaryDark,
+          ),
+        ],
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
       ),
-      child: SizedBox(
-        height: 44,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 34,
-              height: 4,
-              decoration: BoxDecoration(
-                color: ColorConstants.onSurfaceMedium.withAlpha(102),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ],
+      child: Center(
+        child: Container(
+          width: 34,
+          height: 4,
+          decoration: BoxDecoration(
+            color: ColorConstants.onSurfaceMedium.withAlpha(102),
+            borderRadius: BorderRadius.circular(2),
+          ),
         ),
       ),
     );
