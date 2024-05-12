@@ -11,14 +11,18 @@ PreferredSize mainNavigationBarBottom({
     preferredSize: const Size(double.infinity, 35),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
-      child: Text(
-        title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-        textAlign: TextAlign.left,
-        style: styles.titleLarge?.copyWith(
-          color: ColorConstants.onSurfaceWhite,
-        ),
+      child: Row(
+        children: [
+          Text(
+            title,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            textAlign: TextAlign.left,
+            style: styles.titleLarge?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
+        ],
       ),
     ),
   );
