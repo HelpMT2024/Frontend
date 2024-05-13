@@ -8,16 +8,19 @@ PreferredSize mainNavigationBarBottom({
   final styles = Theme.of(context).textTheme;
 
   return PreferredSize(
-    preferredSize: const Size(double.infinity, 35),
+    preferredSize: Size(double.infinity, 35),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
-      child: Text(
-        title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
-        textAlign: TextAlign.left,
-        style: styles.titleLarge?.copyWith(
-          color: ColorConstants.onSurfaceWhite,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Text(
+          title,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          textAlign: TextAlign.left,
+          style: styles.titleLarge?.copyWith(
+            color: ColorConstants.onSurfaceWhite,
+          ),
         ),
       ),
     ),

@@ -80,7 +80,9 @@ class _TopAndBottomReusableContainerState
     _Position position,
   ) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.end,
+      crossAxisAlignment: position == _Position.top
+          ? CrossAxisAlignment.end
+          : CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         for (final button in models) _button(button, context, position),
