@@ -103,11 +103,12 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             _warningIcons(),
             faults(),
           },
-          const SizedBox(height: 24),
+          const SizedBox(height: 12),
           if (widget.viewModel.hasPDF) ...{
+            const SizedBox(height: 12),
             _title(l10n?.instructions_title, styles),
           },
-          _instructionsButtons(styles),
+          _instructionsButtons(styles, data),
           const SizedBox(height: 8),
           if (widget.viewModel.hasImage) ...{
             HorizontalVideoContainer(videos: widget.viewModel.videos),
@@ -157,7 +158,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     );
   }
 
-  Widget _instructionsButtons(TextTheme styles) {
+  Widget _instructionsButtons(TextTheme styles, Component data) {
     final viewModel = widget.viewModel;
     final buttons = viewModel.pdfFiles.map((e) {
       return PDFButton(file: e);
@@ -166,8 +167,8 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     return ButtonGroup(
       buttons: [
         ...buttons,
-        const SizedBox(height: 24),
-        const CommentButton(disableFlex: true)
+        if (data.children.isEmpty) const SizedBox(height: 32),
+        const CommentButton(disableFlex: true),
       ],
     );
   }

@@ -11,7 +11,7 @@ PreferredSize mainNavigationBarBottom({
     preferredSize: const Size(double.infinity, 35),
     child: Padding(
       padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
-      child: Row(
+      child: Wrap(
         children: [
           Text(
             title,
