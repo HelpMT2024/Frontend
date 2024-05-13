@@ -60,6 +60,11 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^3.0.0
+
+  flutter_native_splash: ^2.4.0
+
+flutter_native_splash:
+  background_image: assets/splash_screen.png
   
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
