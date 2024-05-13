@@ -50,7 +50,7 @@ class _VerticalLeftAlignedReusableContainerState
   Row _middle(List<ReusableModel> models, BuildContext context) {
     return Row(
       children: [
-        Flexible(flex: 2, child: _image()),
+        Expanded(flex: 2, child: _image()),
         Flexible(
           child: Column(children: _buttons(models, context)),
         ),

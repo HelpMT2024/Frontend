@@ -55,7 +55,12 @@ class _VerticalRightAlignedReusableContainerState
             children: _buttons(models, context),
           ),
         ),
-        Flexible(flex: 2, child: _image()),
+        Flexible(
+            flex: 2,
+            child: Container(
+              alignment: Alignment.centerRight,
+              child: _image(),
+            )),
       ],
     );
   }
