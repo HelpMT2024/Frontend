@@ -30,7 +30,7 @@ abstract class ReusableObserverHelper {
   }
 
   static bool _filter(List<IDPPoint>? points, ReusableModel model) {
-    if (points == null) {
+    if (points == null || points.isEmpty) {
       return true;
     }
 
