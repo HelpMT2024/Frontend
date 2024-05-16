@@ -330,6 +330,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Password doesn\'t match'**
   String get confirm_password_error;
+
+  /// No description provided for @account_not_exists.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have an account?'**
+  String get account_not_exists;
+
+  /// No description provided for @enter_verification_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Verification Code'**
+  String get enter_verification_code;
+
+  /// No description provided for @we_sent_code.
+  ///
+  /// In en, this message translates to:
+  /// **'We sent the code to the email'**
+  String get we_sent_code;
+
+  /// No description provided for @enter_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter code'**
+  String get enter_code;
+
+  /// No description provided for @conti_nue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get conti_nue;
+
+  /// No description provided for @didnt_receive_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Didn\'t receive the code?'**
+  String get didnt_receive_code;
+
+  /// No description provided for @resend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend'**
+  String get resend;
+
+  /// No description provided for @reset_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset Password'**
+  String get reset_password;
+
+  /// No description provided for @recovery_code.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address and we\'ll send you a recovery code'**
+  String get recovery_code;
+
+  /// No description provided for @reset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get reset;
+
+  /// No description provided for @new_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new password'**
+  String get new_password;
+
+  /// No description provided for @deleted_by_admin_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was deleted by the administrator'**
+  String get deleted_by_admin_error;
+
+  /// No description provided for @no_internet_connection.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection'**
+  String get no_internet_connection;
+
+  /// No description provided for @refresh_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Please reauth into app'**
+  String get refresh_error;
+
+  /// No description provided for @password_prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Your password must contain at least 8 characters'**
+  String get password_prompt;
+
+  /// No description provided for @favorites_placeholder_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Start adding important pages to your bookmarks.'**
+  String get favorites_placeholder_title;
+
+  /// No description provided for @favorites_placeholder_description.
+  ///
+  /// In en, this message translates to:
+  /// **'They will appear here.'**
+  String get favorites_placeholder_description;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
