@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ButtonGroup extends StatelessWidget {
-  final List<StatelessWidget> buttons;
+  final List<Widget> buttons;
 
   const ButtonGroup({
     super.key,
@@ -11,8 +11,8 @@ class ButtonGroup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return Wrap(
-        spacing: 8,
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           ...buttons.asMap().entries.map((e) {
             final index = e.key;

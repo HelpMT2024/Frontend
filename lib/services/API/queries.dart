@@ -318,9 +318,18 @@ faultCodesCollection {
     icon {
       $image
     } 
+    description {json}
     imageView {
       $imageView
     }
+    pdfFilesCollection {
+          items {
+            asset {
+              url
+            }
+            title
+          }
+        }
     childrenCollection {
       items {
         sys {

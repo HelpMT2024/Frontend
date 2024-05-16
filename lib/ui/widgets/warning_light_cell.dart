@@ -19,14 +19,14 @@ class WarningLightCell extends StatelessWidget {
           overflow: TextOverflow.ellipsis,
         );
     return Padding(
-      padding: const EdgeInsets.only(right: 8),
+      padding: const EdgeInsets.only(right: 4),
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: ColorConstants.onSurfaceHigh,
         ),
-        height: 60,
-        width: 80,
+        height: 52,
+        width: (MediaQuery.of(context).size.width - 68) / 4,
         padding: const EdgeInsets.all(4),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -34,10 +34,10 @@ class WarningLightCell extends StatelessWidget {
             const SizedBox(height: 2),
             SvgPicture.network(
               warning.icon?.url ?? '',
-              height: 33,
-              width: 33,
+              height: 30,
+              width: 30,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Flexible(child: Text(warning.name, style: style)),
           ],
         ),

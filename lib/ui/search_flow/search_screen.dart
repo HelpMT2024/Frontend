@@ -120,11 +120,11 @@ class _SearchScreenState extends State<SearchScreen> {
     return SizedBox(
       height: _height + keyBoardHeight,
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(34),
           child: _topPadding(),
         ),
-        backgroundColor: Colors.transparent,
         body: Stack(
           children: [
             Container(color: ColorConstants.surfacePrimaryDark),
@@ -191,8 +191,11 @@ class _SearchScreenState extends State<SearchScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 16, width: double.infinity),
+              const SizedBox(height: 12, width: double.infinity),
               if (!data.showAsPdf) _faultButton(l10n, data),
+              if (data.linkedFrom.length <= 1 &&
+                  (data.fmiCodes?.isEmpty ?? true))
+                _fmiNotFound(),
               ..._detailsButtons(data)
             ],
           ),
@@ -284,7 +287,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ),
                   Icon(
-                    size: 17,
+                    size: 14,
                     CupertinoIcons.right_chevron,
                     color: ColorConstants.onSurfaceWhite,
                   ),
@@ -305,40 +308,45 @@ class _SearchScreenState extends State<SearchScreen> {
 
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (!widget.searchModalController.needHideBackButton)
-              PlatformIconButton(
-                onPressed: () =>
-                    widget.searchModalController.isInSearch.add(false),
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: ColorConstants.onSurfaceWhite,
-                ),
-              ),
-            const Spacer(),
-            Text(
-              _spn == null
-                  ? l10n?.possible_causes ?? ''
-                  : 'SPN $_spn, FMI $_fmi',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+        SizedBox(
+          height: 24,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (!widget.searchModalController.needHideBackButton)
+                PlatformIconButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () =>
+                      widget.searchModalController.isInSearch.add(false),
+                  icon: Icon(
+                    Icons.arrow_back,
                     color: ColorConstants.onSurfaceWhite,
                   ),
-            ),
-            const Spacer(),
-            if (!widget.searchModalController.needHideBackButton)
-              PlatformIconButton(
-                onPressed: () =>
-                    widget.searchModalController.isInSearch.add(false),
-                icon: const Icon(
-                  CupertinoIcons.battery_empty,
-                  color: Colors.transparent,
                 ),
+              const Spacer(),
+              Text(
+                _spn == null
+                    ? l10n?.possible_causes ?? ''
+                    : 'SPN $_spn, FMI $_fmi',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: ColorConstants.onSurfaceWhite,
+                    ),
               ),
-          ],
+              const Spacer(),
+              if (!widget.searchModalController.needHideBackButton)
+                PlatformIconButton(
+                  onPressed: () =>
+                      widget.searchModalController.isInSearch.add(false),
+                  icon: const Icon(
+                    CupertinoIcons.battery_empty,
+                    color: Colors.transparent,
+                  ),
+                ),
+            ],
+          ),
         ),
+        const SizedBox(height: 12),
       ],
     );
   }
@@ -381,14 +389,39 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  Widget _fmiNotFound() {
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    return SizedBox(
+      height: _height - 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          const SizedBox(height: 24),
+          Text(
+            l10n?.oops ?? '',
+            style: styles.headlineSmall?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            l10n?.no_result_found ?? '',
+            style: styles.titleMedium?.copyWith(
+              color: ColorConstants.surfaceWhite,
+            ),
+          ),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+
   Widget _body(AppLocalizations? l10n) {
     return Container(
-      decoration: const BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
+      decoration: BoxDecoration(
+        color: ColorConstants.surfacePrimaryDark,
       ),
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
       child: Form(
@@ -427,25 +460,25 @@ class _SearchScreenState extends State<SearchScreen> {
             width: 2,
           ),
         ),
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 1,
+            color: ColorConstants.surfacePrimaryDark,
+          ),
+        ],
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(16),
           topRight: Radius.circular(16),
         ),
       ),
-      child: SizedBox(
-        height: 36,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              width: 32,
-              height: 4,
-              decoration: BoxDecoration(
-                color: ColorConstants.onSurfaceMedium.withAlpha(102),
-                borderRadius: BorderRadius.circular(2),
-              ),
-            ),
-          ],
+      child: Center(
+        child: Container(
+          width: 34,
+          height: 4,
+          decoration: BoxDecoration(
+            color: ColorConstants.onSurfaceMedium.withAlpha(102),
+            borderRadius: BorderRadius.circular(2),
+          ),
         ),
       ),
     );
@@ -454,28 +487,48 @@ class _SearchScreenState extends State<SearchScreen> {
   TextBoxField _spnTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.spn_number_title ?? 'SPN Number',
-      height: 39,
+      height: 38,
       maxLines: 1,
       focusNode: widget.searchModalController.spnFocus,
       keyboardType: TextInputType.number,
       hintText: l10n?.enter_hint.replaceAll('\$1', l10n.spn_number_title) ??
           'Enter SPN Number',
       onSaved: (value) => _spn = value,
-      validator: (value) => value?.isNotEmpty == true ? null : "Can't be empty",
+      validator: (value) {
+        if (!(value?.isNotEmpty == true)) {
+          return "Can't be empty";
+        } else if ((value?.length ?? 0) < 2 || (value?.length ?? 0) > 6) {
+          return "SPN must have min 2 digits, max 6 digits";
+        } else if (!RegExp(r'^\d+$').hasMatch(value ?? '')) {
+          return 'The code must include only numbers';
+        }
+
+        return null;
+      },
     );
   }
 
   TextBoxField _fmiTextBox(AppLocalizations? l10n) {
     return TextBoxField(
       title: l10n?.fmi_number_title ?? 'FMI Number',
-      height: 39,
+      height: 38,
       maxLines: 1,
       focusNode: widget.searchModalController.fmiFocus,
       keyboardType: TextInputType.number,
       hintText: l10n?.enter_hint.replaceAll('\$1', l10n.fmi_number_title) ??
           'Enter FMI Number',
       onSaved: (value) => _fmi = value,
-      validator: (value) => value?.isNotEmpty == true ? null : "Can't be empty",
+      validator: (value) {
+        if (!(value?.isNotEmpty == true)) {
+          return "Can't be empty";
+        } else if ((value?.length ?? 0) < 1 || (value?.length ?? 0) > 2) {
+          return "FMI must have min 1 digit, max 2 digits";
+        } else if (!RegExp(r'^\d+$').hasMatch(value ?? '')) {
+          return 'The code must include only numbers';
+        }
+
+        return null;
+      },
     );
   }
 }

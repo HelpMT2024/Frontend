@@ -184,7 +184,7 @@ abstract class AppLocalizations {
   /// No description provided for @oops.
   ///
   /// In en, this message translates to:
-  /// **'Oops'**
+  /// **'Oops..'**
   String get oops;
 
   /// No description provided for @no_result_found.
@@ -228,6 +228,108 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'SPN/FMI'**
   String get spn_fmi_title;
+
+  /// No description provided for @truck_care_anywhere.
+  ///
+  /// In en, this message translates to:
+  /// **'TRUCK CARE ANYWHERE'**
+  String get truck_care_anywhere;
+
+  /// No description provided for @ultimate_maintenance.
+  ///
+  /// In en, this message translates to:
+  /// **'The Ultimate Maintenance and Repair Solution'**
+  String get ultimate_maintenance;
+
+  /// No description provided for @sign_up.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign Up'**
+  String get sign_up;
+
+  /// No description provided for @login.
+  ///
+  /// In en, this message translates to:
+  /// **'Login'**
+  String get login;
+
+  /// No description provided for @username.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get username;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @confirm_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm Password'**
+  String get confirm_password;
+
+  /// No description provided for @notice.
+  ///
+  /// In en, this message translates to:
+  /// **'*By continuing, you are agreeing to our'**
+  String get notice;
+
+  /// No description provided for @terms_button_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get terms_button_title;
+
+  /// No description provided for @and.
+  ///
+  /// In en, this message translates to:
+  /// **' and '**
+  String get and;
+
+  /// No description provided for @privacy_policy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacy_policy;
+
+  /// No description provided for @create_account_button_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Create an account'**
+  String get create_account_button_title;
+
+  /// No description provided for @account_exists.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account?'**
+  String get account_exists;
+
+  /// No description provided for @username_error.
+  ///
+  /// In en, this message translates to:
+  /// **'This username already exists'**
+  String get username_error;
+
+  /// No description provided for @email_error.
+  ///
+  /// In en, this message translates to:
+  /// **'This email already exists'**
+  String get email_error;
+
+  /// No description provided for @confirm_password_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Password doesn\'t match'**
+  String get confirm_password_error;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

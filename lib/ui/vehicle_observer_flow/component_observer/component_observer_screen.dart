@@ -1,4 +1,7 @@
+import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/app_consts.dart';
+import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -16,6 +19,9 @@ import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart'
 import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
+
+import '../../widgets/button_group.dart';
+import '../../widgets/pdf_button.dart';
 
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
@@ -48,12 +54,8 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: EdgeInsets.fromLTRB(
-              12,
-              widget.viewModel.hasImage ? 24 : 0,
-              12,
-              24,
-            ),
+            padding: AppConsts.componentObserverPadding(
+                isNeedTop: widget.viewModel.hasImage),
             child: StreamBuilder<Component>(
               stream: widget.viewModel.component,
               builder: (context, snapshot) {
@@ -72,6 +74,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
 
   Widget _body(Component data) {
     final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
 
     return SingleChildScrollView(
       child: Column(
@@ -84,23 +87,52 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           } else ...{
             VerticalVideoContainer(videos: widget.viewModel.videos),
           },
+          if (widget.viewModel.hasDescription) ...{
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _descriptionSection(styles, data),
+            ),
+          },
           if (widget.viewModel.hasProblems) ...{
             const SizedBox(height: 24),
             _problemsButtons()
           },
           if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-            const SizedBox(height: 12),
+            const SizedBox(height: 36),
             VehicleTitle(text: l10n?.fault_code_title),
             _warningIcons(),
             faults(),
           },
-          const SizedBox(height: 24),
-          const CommentButton(),
+          const SizedBox(height: 12),
+          if (widget.viewModel.hasPDF) ...{
+            const SizedBox(height: 12),
+            _title(l10n?.instructions_title, styles),
+          },
+          _instructionsButtons(styles, data),
+          const SizedBox(height: 8),
           if (widget.viewModel.hasImage) ...{
             HorizontalVideoContainer(videos: widget.viewModel.videos),
           },
         ],
       ),
+    );
+  }
+
+  Widget _descriptionSection(TextTheme styles, Component data) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 32),
+        _text(styles, data),
+      ],
+    );
+  }
+
+  Widget _text(TextTheme styles, Component data) {
+    return DefaultTextStyle.merge(
+      style: styles.labelLarge?.merge(
+          TextStyle(color: ColorConstants.onSurfaceWhite.withAlpha(210))),
+      child: ContentfulRichText(data.description).documentToWidgetTree,
     );
   }
 
@@ -124,6 +156,25 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           .map((e) => FaultCodeButton(fault: e))
           .toList(),
     );
+  }
+
+  Widget _instructionsButtons(TextTheme styles, Component data) {
+    final viewModel = widget.viewModel;
+    final buttons = viewModel.pdfFiles.map((e) {
+      return PDFButton(file: e);
+    }).toList();
+
+    return ButtonGroup(
+      buttons: [
+        ...buttons,
+        if (data.children.isEmpty) const SizedBox(height: 32),
+        const CommentButton(disableFlex: true),
+      ],
+    );
+  }
+
+  Widget _title(String? text, TextTheme styles) {
+    return VehicleTitle(text: text);
   }
 
   ReusableObserverWidget? _content(Component data) {

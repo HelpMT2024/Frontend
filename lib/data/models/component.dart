@@ -24,6 +24,7 @@ class ChildrenPart {
 
 class Component {
   final String name;
+  final Map<String, dynamic>? description;
   final IDPImage? icon;
   final IDPImageView? imageView;
   final List<ChildrenPart> children;
@@ -31,9 +32,11 @@ class Component {
   final List<IDPVideo> videos;
   final List<ChildProblem> problems;
   final List<ChildWarningLight> warningLights;
+  final PdfFilesCollection pdfFiles;
 
   Component({
     required this.name,
+    required this.description,
     required this.icon,
     required this.imageView,
     required this.children,
@@ -41,11 +44,13 @@ class Component {
     required this.videos,
     required this.problems,
     required this.warningLights,
+    required this.pdfFiles,
   });
 
   factory Component.fromJson(Map<String, dynamic> json) {
     return Component(
       name: json['name'],
+      description: json['description']?['json'],
       icon: json['icon'] != null ? IDPImage.fromJson(json['icon']) : null,
       imageView: json['imageView'] != null
           ? IDPImageView.fromJson(json['imageView'])
@@ -71,6 +76,7 @@ class Component {
               .map<ChildWarningLight>((e) => ChildWarningLight.fromJson(e))
               .toList() ??
           [],
+      pdfFiles: PdfFilesCollection.fromJson(json['pdfFilesCollection']),
     );
   }
 }

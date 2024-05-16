@@ -50,7 +50,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tips_and_hinst_video => 'Tips & Hints Videos';
 
   @override
-  String get oops => 'Oops';
+  String get oops => 'Oops..';
 
   @override
   String get no_result_found => 'No result found';
@@ -72,4 +72,55 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get spn_fmi_title => 'SPN/FMI';
+
+  @override
+  String get truck_care_anywhere => 'TRUCK CARE ANYWHERE';
+
+  @override
+  String get ultimate_maintenance => 'The Ultimate Maintenance and Repair Solution';
+
+  @override
+  String get sign_up => 'Sign Up';
+
+  @override
+  String get login => 'Login';
+
+  @override
+  String get username => 'Username';
+
+  @override
+  String get email => 'Email';
+
+  @override
+  String get password => 'Password';
+
+  @override
+  String get confirm_password => 'Confirm Password';
+
+  @override
+  String get notice => '*By continuing, you are agreeing to our';
+
+  @override
+  String get terms_button_title => 'Terms of Service';
+
+  @override
+  String get and => ' and ';
+
+  @override
+  String get privacy_policy => 'Privacy Policy';
+
+  @override
+  String get create_account_button_title => 'Create an account';
+
+  @override
+  String get account_exists => 'Already have an account?';
+
+  @override
+  String get username_error => 'This username already exists';
+
+  @override
+  String get email_error => 'This email already exists';
+
+  @override
+  String get confirm_password_error => 'Password doesn\'t match';
 }

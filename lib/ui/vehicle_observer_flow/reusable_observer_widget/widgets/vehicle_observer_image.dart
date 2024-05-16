@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -31,6 +32,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     with TickerProviderStateMixin {
   late final _leftAnimationController = GifController(vsync: this);
   late final _rightAnimationController = GifController(vsync: this);
+  final GlobalKey _imageKey = GlobalKey();
 
   bool _needHideRight = false;
   bool get isFront =>
@@ -143,7 +145,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
                 _button(() => _nextAnim(false, true), Icons.arrow_forward_ios),
           )
         } else ...{
-          Image.network(widget.image.imageFront.url, fit: BoxFit.cover),
+          Image.network(key: _imageKey, widget.image.imageFront.url, fit: BoxFit.cover),
           _paint(context),
         },
       ],
@@ -158,7 +160,8 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     final imageWidth = widget.image.imageFront.width;
     final aspectRatio = imageWidth / imageHeight;
 
-    final width = MediaQuery.of(context).size.width;
+    final renderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;
+    final width = renderBox?.size.width ?? 0;
     final height = width / aspectRatio;
 
     return CustomPaint(

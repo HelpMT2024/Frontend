@@ -1,5 +1,6 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,6 +19,9 @@ import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
+
+import '../../widgets/main_bottom_bar.dart';
+import '../../widgets/nav_bar/nav_bar_page.dart';
 
 class PartScreen extends StatefulWidget {
   final PartViewModel viewModel;
@@ -39,6 +43,12 @@ class _PartScreenState extends State<PartScreen> {
         styles: styles,
         action: const [VehicleNavBarActions()],
         bottom: _navBarTitle(styles),
+        toolbarHeight: 52,
+      ),
+      bottomNavigationBar: MainBottomBar(
+        selectedPage: NavBarPage.search,
+        onItemTapped: (_) => widget.viewModel.onSearch(context),
+        hideAllExceptSearch: true,
       ),
       body: Stack(
         children: [
@@ -74,12 +84,8 @@ class _PartScreenState extends State<PartScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.fromLTRB(
-          16,
-          widget.viewModel.hasImage ? 24 : 0,
-          16,
-          16,
-        ),
+        padding: AppConsts.componentObserverPadding(
+            isNeedTop: widget.viewModel.hasImage),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -90,15 +96,17 @@ class _PartScreenState extends State<PartScreen> {
               _verticalVideoWidget(),
             },
             if (widget.viewModel.hasProblems) ...{
-              const SizedBox(height: 32),
+              const SizedBox(height: 16),
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
+              const SizedBox(height: 32),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
             },
             if (widget.viewModel.hasPDF) ...{
+              const SizedBox(height: 24),
               _title(l10n?.instructions_title, styles),
             },
             _instructionsButtons(styles),
@@ -112,10 +120,10 @@ class _PartScreenState extends State<PartScreen> {
 
   Widget _image() {
     final part = widget.viewModel.part.valueOrNull;
-    if (part?.imageView == null) {
+    if (part?.imageView == null && part?.imageView?.imageFront == null) {
       return const SizedBox();
     }
-    return Image.network(part!.imageView!.imageFront.url);
+    return Image.network(part!.imageView!.imageFront!.url);
   }
 
   Widget _title(String? text, TextTheme styles) {
@@ -181,7 +189,11 @@ class _PartScreenState extends State<PartScreen> {
     }).toList();
 
     return ButtonGroup(
-      buttons: [...buttons, const CommentButton(disableFlex: true)],
+      buttons: [
+        ...buttons,
+        const SizedBox(height: 24),
+        const CommentButton(disableFlex: true)
+      ],
     );
   }
 

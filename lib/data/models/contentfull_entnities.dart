@@ -154,6 +154,69 @@ class IDPImageView {
   }
 }
 
+class IDPPartImageView {
+  final List<IDPPoint>? imageFrontMarkup;
+  final List<IDPPoint>? imageBackMarkup;
+  final ButtonsPosition buttonsTemplate;
+  final String? description;
+  final String descriptionPosition;
+  final IDPImage? imageFront;
+  final IDPImage? imageBack;
+  final IDPImage? leftImage;
+  final IDPImage? rightImage;
+  final IDPImage? preview;
+
+  IDPPartImageView({
+    required this.imageFrontMarkup,
+    required this.imageBackMarkup,
+    required this.buttonsTemplate,
+    required this.description,
+    required this.descriptionPosition,
+    required this.imageFront,
+    required this.imageBack,
+    required this.leftImage,
+    required this.rightImage,
+    required this.preview,
+  });
+
+  factory IDPPartImageView.fromJson(Map<String, dynamic> json) {
+    return IDPPartImageView(
+      preview: json['previewAnimation'] != null
+          ? IDPImage.fromJson(json['previewAnimation'])
+          : null,
+      imageFrontMarkup: json['imageFrontMarkup'] != null
+          ? List<IDPPoint>.from(
+              json['imageFrontMarkup'].map(
+                (point) => IDPPoint.fromJson(point),
+              ),
+            )
+          : null,
+      imageBackMarkup: json['imageBackMarkup'] != null
+          ? List<IDPPoint>.from(
+              json['imageBackMarkup'].map(
+                (point) => IDPPoint.fromJson(point),
+              ),
+            )
+          : null,
+      buttonsTemplate: descriptionPositionFromString(json['buttonsTemplate']),
+      description: json['description'],
+      descriptionPosition: json['descriptionPosition'],
+      imageFront: json['imageFront'] != null
+          ? IDPImage.fromJson(json['imageFront'])
+          : null,
+      imageBack: json['imageBack'] != null
+          ? IDPImage.fromJson(json['imageBack'])
+          : null,
+      leftImage: json['leftImage'] != null
+          ? IDPImage.fromJson(json['leftImage'])
+          : null,
+      rightImage: json['rightImage'] != null
+          ? IDPImage.fromJson(json['rightImage'])
+          : null,
+    );
+  }
+}
+
 class PdfFile {
   final String title;
   final String? url;

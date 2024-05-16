@@ -10,6 +10,9 @@ import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/warning_light_cell.dart';
 
+import '../../widgets/main_bottom_bar.dart';
+import '../../widgets/nav_bar/nav_bar_page.dart';
+
 class WarningScreen extends StatefulWidget {
   final WarningScreenViewModel viewModel;
 
@@ -31,6 +34,11 @@ class _WarningScreenState extends State<WarningScreen> {
         styles: styles,
         title: l10n?.warning_page_title,
         action: const [VehicleNavBarActions()],
+      ),
+      bottomNavigationBar: MainBottomBar(
+        selectedPage: NavBarPage.search,
+        onItemTapped: (_) => widget.viewModel.onSearch(context),
+        hideAllExceptSearch: true,
       ),
       body: Stack(
         children: [
@@ -69,6 +77,7 @@ class _WarningScreenState extends State<WarningScreen> {
   Widget _lights() {
     return Wrap(
       runSpacing: 8,
+      spacing: 4,
       children: [
         ...widget.viewModel.warnings.valueOrNull?.map((e) {
               return _warning(e);
@@ -83,7 +92,7 @@ class _WarningScreenState extends State<WarningScreen> {
     return GestureDetector(
       onTap: () => widget.viewModel.onModelSelected(e, context),
       child: SizedBox(
-        height: 80,
+        height: 70,
         child: WarningLightCell(warning: warning),
       ),
     );

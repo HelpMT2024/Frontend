@@ -7,7 +7,7 @@ class Part {
   final IDPIcon? icon;
   final List<ChildFault> faults;
   final Map<String, dynamic>? description;
-  final IDPImageView? imageView;
+  final IDPPartImageView? imageView;
   final PdfFilesCollection pdfFilesCollection;
   final VideosCollection videosCollection;
   final List<ChildProblem> problems;
@@ -31,7 +31,7 @@ class Part {
       icon: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
       description: json['description']?['json'],
       imageView: json['imageView'] != null
-          ? IDPImageView.fromJson(json['imageView'])
+          ? IDPPartImageView.fromJson(json['imageView'])
           : null,
       pdfFilesCollection:
           PdfFilesCollection.fromJson(json['pdfFilesCollection']),

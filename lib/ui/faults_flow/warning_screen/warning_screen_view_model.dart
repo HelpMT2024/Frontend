@@ -6,6 +6,9 @@ import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/ui/search_flow/search_screen.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../vehicle_observer_flow/vehicle_navigation_helper.dart';
+import '../../widgets/nav_bar/nav_bar_page.dart';
+
 class WarningScreenViewModel {
   final VehicleProvider provider;
 
@@ -29,5 +32,9 @@ class WarningScreenViewModel {
     final search = SearchScreen(searchModalController: controller);
 
     showModalBottomSheet(context: context, builder: (_) => search);
+  }
+
+  void onSearch(BuildContext context) {
+    VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);
   }
 }
