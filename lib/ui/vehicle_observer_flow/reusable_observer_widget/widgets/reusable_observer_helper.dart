@@ -31,7 +31,7 @@ abstract class ReusableObserverHelper {
 
   static bool _filter(List<IDPPoint>? points, ReusableModel model) {
     if (points == null) {
-      return true;
+      return false;
     }
 
     final filtered = points.where((point) {
