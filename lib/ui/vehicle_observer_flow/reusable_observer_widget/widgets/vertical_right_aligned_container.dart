@@ -58,7 +58,7 @@ class _VerticalRightAlignedReusableContainerState
         Flexible(
             flex: 2,
             child: Container(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               child: _image(),
             )),
       ],

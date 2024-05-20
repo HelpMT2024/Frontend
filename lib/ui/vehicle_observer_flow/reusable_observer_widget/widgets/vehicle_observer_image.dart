@@ -1,10 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
+import 'package:help_my_truck/ui/widgets/mesure_size.dart';
 
 enum AnimationState {
   idle,
@@ -121,17 +121,28 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
       children: [
         if (widget.image.leftImage != null &&
             widget.image.rightImage != null) ...{
-          _gif(
-            widget.image.rightImage!.url,
-            _leftAnimationController,
-            _needHideRight,
-            widget.image.imageFront.url,
-          ),
-          _gif(
-            widget.image.leftImage!.url,
-            _rightAnimationController,
-            !_needHideRight,
-            widget.image.imageFront.url,
+          MeasureSize(
+            key: _imageKey,
+            onChange: (size) {
+              setState(() {});
+            },
+            child: Stack(
+              clipBehavior: Clip.hardEdge,
+              children: [
+                _gif(
+                  widget.image.rightImage!.url,
+                  _leftAnimationController,
+                  _needHideRight,
+                  widget.image.imageFront.url,
+                ),
+                _gif(
+                  widget.image.leftImage!.url,
+                  _rightAnimationController,
+                  !_needHideRight,
+                  widget.image.imageFront.url,
+                ),
+              ],
+            ),
           ),
           _paint(context),
           Align(
@@ -143,9 +154,18 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
             alignment: Alignment.centerRight,
             child:
                 _button(() => _nextAnim(false, true), Icons.arrow_forward_ios),
-          )
+          ),
         } else ...{
-          Image.network(key: _imageKey, widget.image.imageFront.url, fit: BoxFit.cover),
+          MeasureSize(
+            key: _imageKey,
+            onChange: (size) {
+              setState(() {});
+            },
+            child: Image.network(
+              widget.image.imageFront.url,
+              fit: BoxFit.cover,
+            ),
+          ),
           _paint(context),
         },
       ],
@@ -160,7 +180,9 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     final imageWidth = widget.image.imageFront.width;
     final aspectRatio = imageWidth / imageHeight;
 
-    final renderBox = _imageKey.currentContext?.findRenderObject() as RenderBox?;
+    final renderBox = _imageKey.currentContext?.findRenderObject()
+        as MeasureSizeRenderObject?;
+
     final width = renderBox?.size.width ?? 0;
     final height = width / aspectRatio;
 
