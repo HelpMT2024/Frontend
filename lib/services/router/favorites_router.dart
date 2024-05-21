@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
@@ -9,7 +9,7 @@ abstract class FavoritesRouteKeys {
   static const String favoritesScreen = 'favoritesScreen';
 }
 
-Route<dynamic>? FavoritesRouter(RouteSettings setting, NetworkService service) {
+Route<dynamic>? FavoritesRouter(RouteSettings setting, GraphQLNetworkService service) {
   switch (setting.name) {
     case FavoritesRouteKeys.favoritesScreen:
       return nativePageRoute(

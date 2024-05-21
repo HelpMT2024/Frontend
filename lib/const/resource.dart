@@ -13,6 +13,9 @@ class R {
   /// ![preview](file:///Users/filippkos/Documents/Flutter Projects/help-my-truck-frontend/assets/home.svg)
   static const String ASSETS_HOME_SVG = 'assets/home.svg';
 
+  /// ![preview](file:///Users/filippkos/Documents/Flutter Projects/help-my-truck-frontend/assets/mark_email_read.svg)
+  static const String ASSETS_MARK_EMAIL_READ_SVG = 'assets/mark_email_read.svg';
+
   /// ![preview](file:///Users/filippkos/Documents/Flutter Projects/help-my-truck-frontend/assets/pdf_file.svg)
   static const String ASSETS_PDF_FILE_SVG = 'assets/pdf_file.svg';
 
