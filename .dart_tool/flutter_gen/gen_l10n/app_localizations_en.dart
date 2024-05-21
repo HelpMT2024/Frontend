@@ -149,7 +149,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reset_password => 'Reset Password';
 
   @override
-  String get recovery_code => 'Enter your email address and we\'ll send you a recovery code';
+  String get recovery_code => 'Enter your email address and we\'ll send you instructions to reset password';
 
   @override
   String get reset => 'Reset';
@@ -174,4 +174,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites_placeholder_description => 'They will appear here.';
+
+  @override
+  String get terms_and_conditions => 'Terms & conditions';
+
+  @override
+  String get forgot_password => 'Forgot Password?';
+
+  @override
+  String get verify_your_email => 'Verify your email';
+
+  @override
+  String get check_your_email => 'Please check your email and follow the instructions for log in';
 }

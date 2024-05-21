@@ -382,7 +382,7 @@ abstract class AppLocalizations {
   /// No description provided for @recovery_code.
   ///
   /// In en, this message translates to:
-  /// **'Enter your email address and we\'ll send you a recovery code'**
+  /// **'Enter your email address and we\'ll send you instructions to reset password'**
   String get recovery_code;
 
   /// No description provided for @reset.
@@ -432,6 +432,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'They will appear here.'**
   String get favorites_placeholder_description;
+
+  /// No description provided for @terms_and_conditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms & conditions'**
+  String get terms_and_conditions;
+
+  /// No description provided for @forgot_password.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot Password?'**
+  String get forgot_password;
+
+  /// No description provided for @verify_your_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Verify your email'**
+  String get verify_your_email;
+
+  /// No description provided for @check_your_email.
+  ///
+  /// In en, this message translates to:
+  /// **'Please check your email and follow the instructions for log in'**
+  String get check_your_email;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/ui/auth_flow/auth_screen/auth_screen_view_model.dart';
 
 import '../../widgets/auth_field.dart';
@@ -20,6 +21,9 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
 
+  bool _passwordRepeatVisible = false;
+  bool _passwordVisible = false;
+  bool _emailAutoCheck = false;
   bool _acceptTerms = false;
 
   @override
@@ -64,7 +68,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 const SizedBox(height: 8),
                 _termsBlock(l10n, styles),
                 const SizedBox(height: 12),
-                _submitButton(l10n),
+                _submitButton(l10n, context),
                 const SizedBox(height: 24),
                 _accountExists(l10n, styles),
               ],
@@ -78,15 +82,17 @@ class _AuthScreenState extends State<AuthScreen> {
   List<Widget> _fields(AppLocalizations? l10n) {
     return [
       AuthorizationField(
-        autovalidate: AutovalidateMode.onUserInteraction,
+        autovalidate: AutovalidateMode.disabled,
         onSaved: widget.viewModel.saveUsername,
-        validator: (value) => widget.viewModel.validateUsername(value, l10n),
+        validator: (value) => null,
         title: l10n?.username ?? '',
       ),
       AuthorizationField(
-        autovalidate: AutovalidateMode.onUserInteraction,
+        autovalidate: _emailAutoCheck
+            ? AutovalidateMode.onUserInteraction
+            : AutovalidateMode.disabled,
         onSaved: widget.viewModel.saveEmail,
-        validator: (value) => widget.viewModel.validateEmail(value, l10n),
+        validator: (value) => widget.viewModel.validateEmail(value),
         title: l10n?.email ?? '',
       ),
       AuthorizationField(
@@ -94,17 +100,32 @@ class _AuthScreenState extends State<AuthScreen> {
         onSaved: widget.viewModel.savePassword,
         validator: widget.viewModel.validatePassword,
         title: l10n?.password ?? '',
+        promptText: l10n?.password_prompt ?? '',
         obscureText: true,
         hideEye: false,
+        passwordVisible: _passwordVisible,
+        needShowPassword: () {
+          setState(() {
+            _passwordVisible = !_passwordVisible;
+          });
+        },
       ),
+      const SizedBox(height: 6),
       AuthorizationField(
         autovalidate: AutovalidateMode.onUserInteraction,
         onSaved: widget.viewModel.saveConfirmPassword,
-        validator: (value) =>
-            widget.viewModel.validateConfirmPassword(value, l10n),
+        validator: (value) {
+          return widget.viewModel.validateConfirmPassword(value, l10n);
+        },
         title: l10n?.confirm_password ?? '',
         obscureText: true,
         hideEye: false,
+        passwordVisible: _passwordRepeatVisible,
+        needShowPassword: () {
+          setState(() {
+            _passwordRepeatVisible = !_passwordRepeatVisible;
+          });
+        },
       ),
     ];
   }
@@ -157,7 +178,7 @@ class _AuthScreenState extends State<AuthScreen> {
                   fontWeight: FontWeight.bold),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print('<!> Terms of Service');
+                  Navigator.of(context).pushNamed(AuthRouteKeys.termsOfService);
                 }),
           TextSpan(
             text: l10n?.and,
@@ -171,24 +192,27 @@ class _AuthScreenState extends State<AuthScreen> {
                   fontWeight: FontWeight.bold),
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print('<!> Privacy Policy');
+                  Navigator.of(context).pushNamed(AuthRouteKeys.privacyPolicy);
                 }),
         ],
       ),
     );
   }
 
-  Widget _submitButton(AppLocalizations? l10n) {
+  Widget _submitButton(AppLocalizations? l10n, BuildContext context) {
     return CustomButton(
       title: CustomButtonTitle(text: l10n?.create_account_button_title ?? ''),
       state: CustomButtonStates.filled,
       mainColor: ColorConstants.surfaceWhite,
       textColor: ColorConstants.onSurfaceHigh,
-      height: 48,
+      height: 40,
       onPressed: () {
-        if (_formKey.currentState?.validate() ?? false) {
+        if ((_formKey.currentState?.validate() ?? false) && _acceptTerms) {
           _formKey.currentState?.save();
-          widget.viewModel.submit();
+          _emailAutoCheck = true;
+          widget.viewModel.submit(context, () {
+            setState(() {});
+          });
         }
       },
     );

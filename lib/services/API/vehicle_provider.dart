@@ -8,11 +8,11 @@ import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/data/models/warning.dart';
-import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/queries.dart';
 
 class VehicleProvider {
-  final NetworkService service;
+  final GraphQLNetworkService service;
 
   VehicleProvider(this.service);
 
