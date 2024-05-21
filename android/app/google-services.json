@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "734307137754",
+    "project_id": "helpmytruck",
+    "storage_bucket": "helpmytruck.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:734307137754:android:532091cf4a530a0bb40de3",
+        "android_client_info": {
+          "package_name": "com.example.help_my_truck"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVH_FHCvw95jOFKcVgS-PBZ3S06Ds2f-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
