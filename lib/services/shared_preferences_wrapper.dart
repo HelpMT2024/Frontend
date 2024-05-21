@@ -1,6 +1,8 @@
 import 'package:help_my_truck/data/models/token_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'API/locale_provider.dart';
+
 class SharedPreferencesWrapper {
   static late SharedPreferences _container;
 
@@ -8,21 +10,22 @@ class SharedPreferencesWrapper {
     _container = await SharedPreferences.getInstance();
   }
 
+  static Future<bool> setFCM(String token) {
+    return _container.setString('FCMToken', token);
+  }
+
   static TokenModel? getToken() {
     final token = _container.getString('Token');
-    final type = _container.getString('Type');
     final refreshToken = _container.getString('RefreshToken');
 
     if (token == null ||
         token.isEmpty ||
-        type == null ||
-        type.isEmpty ||
         refreshToken == null ||
         refreshToken.isEmpty) {
       return null;
     }
 
-    return TokenModel(token, type, refreshToken);
+    return TokenModel(token, refreshToken);
   }
 
   static Future<bool> setToken(TokenModel? value) {
@@ -34,9 +37,17 @@ class SharedPreferencesWrapper {
         .then(
           (_) =>
               _container.setString('RefreshToken', value?.refreshToken ?? ''),
-        )
-        .then(
-          (_) => _container.setString('Type', value?.type ?? ''),
         );
+  }
+
+  static Future<bool> setLocale(L10nLocales? value) {
+    return _container.setString(
+      'SelectedLocale',
+      value?.locale.languageCode ?? '',
+    );
+  }
+
+  static void setIsFirstLaunch(bool isFirstLaunch) async {
+    await _container.setBool('isFirstLaunch', isFirstLaunch);
   }
 }

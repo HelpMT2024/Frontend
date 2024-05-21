@@ -4,15 +4,15 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
-class NetworkService {
+class GraphQLNetworkService {
   Future<bool>? _refreshTokenFuture;
-  static final NetworkService _api = NetworkService._internal();
+  static final GraphQLNetworkService _api = GraphQLNetworkService._internal();
   final store = InMemoryStore();
-  factory NetworkService() {
+  factory GraphQLNetworkService() {
     return _api;
   }
 
-  NetworkService._internal();
+  GraphQLNetworkService._internal();
 
   Future<QueryResult> callApi(
     String query, {

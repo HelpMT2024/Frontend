@@ -13,14 +13,17 @@ class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
   void _signUp(BuildContext context) {
-    Navigator.of(context).pushNamed(
-      AuthRouteKeys.authScreen,
-    );
+    Navigator.of(context).pushNamed(AuthRouteKeys.authScreen);
+    // Navigator.of(context).pushNamed(AuthRouteKeys.resetPassword);
   }
 
   void _login(BuildContext context) {
+    // Navigator.of(context).pushNamed(
+    //   VehicleSelectorRouteKeys.truckSelector,
+    // );
+
     Navigator.of(context).pushNamed(
-      VehicleSelectorRouteKeys.truckSelector,
+      AuthRouteKeys.loginScreen,
     );
   }
 

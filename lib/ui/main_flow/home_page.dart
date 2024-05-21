@@ -1,6 +1,6 @@
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
-import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
@@ -14,7 +14,7 @@ import 'package:help_my_truck/ui/search_flow/search_screen.dart';
 class MainPageConfig {
   final Engine engine;
   final Truck truck;
-  final NetworkService service;
+  final GraphQLNetworkService service;
 
   MainPageConfig({
     required this.engine,

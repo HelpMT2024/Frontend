@@ -10,9 +10,14 @@ import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'services/router/auth_router.dart';
 import 'services/router/router.dart';
 
+class NavigationService {
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesWrapper.processInitialize();
+
   runApp(const MyApp());
 }
 
@@ -31,6 +36,7 @@ class MyApp extends StatelessWidget {
         cupertinoOverrideTheme: CupertinoThemeData(
             barBackgroundColor: ColorConstants.surfacePrimaryDark),
       ),
+      navigatorKey: NavigationService.navigatorKey,
       initialRoute: SharedPreferencesWrapper.getToken() == null
           ? AuthRouteKeys.welcomeScreen
           : VehicleSelectorRouteKeys.truckSelector,

@@ -5,6 +5,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 class AuthorizationField extends FormField<String> {
   final String? placeholder;
   final String? title;
+  final String? promptText;
   final bool obscureText;
   final bool passwordVisible;
   final bool hideEye;
@@ -21,6 +22,7 @@ class AuthorizationField extends FormField<String> {
       AutovalidateMode? autovalidate = AutovalidateMode.onUserInteraction,
       this.placeholder,
       this.title,
+      this.promptText,
       this.obscureText = false,
       this.passwordVisible = false,
       this.hideEye = false})
@@ -85,8 +87,10 @@ class AuthorizationField extends FormField<String> {
   }
 
   Widget _errorField(FormFieldState<String> state, BuildContext context) {
-    final color = ColorConstants.statesError;
-    final style = Theme.of(context).textTheme.caption;
+    final color = promptText == null
+        ? ColorConstants.statesError
+        : ColorConstants.onSurfaceMedium;
+    final style = Theme.of(context).textTheme.bodySmall;
 
     return Padding(
       padding: const EdgeInsets.only(top: 2),
@@ -101,7 +105,18 @@ class AuthorizationField extends FormField<String> {
                 ),
               ),
             )
-          : const SizedBox(height: 16),
+          : promptText != null
+              ? SizedBox(
+                  height: 16,
+                  width: double.infinity,
+                  child: Text(
+                    promptText ?? "",
+                    style: style?.merge(
+                      TextStyle(color: color),
+                    ),
+                  ),
+                )
+              : const SizedBox(height: 16),
     );
   }
 
@@ -115,10 +130,10 @@ class AuthorizationField extends FormField<String> {
             onPressed: needShowPassword,
             padding: EdgeInsets.zero,
             child: Icon(
-              Icons.remove_red_eye_rounded,
-              color: passwordVisible
-                  ? ColorConstants.surfacePrimary
-                  : ColorConstants.stroke,
+              passwordVisible
+                  ? Icons.visibility_off
+                  : Icons.remove_red_eye_rounded,
+              color: ColorConstants.onSurfaceMedium,
             ),
           )
         : null;

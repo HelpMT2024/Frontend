@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/fault.dart';
-import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
@@ -19,7 +19,8 @@ abstract class FaultsRouteKeys {
   static const String problemCaseScreen = 'problemCaseScreen';
 }
 
-Route<dynamic>? FaultsRouter(RouteSettings setting, NetworkService service) {
+Route<dynamic>? FaultsRouter(
+    RouteSettings setting, GraphQLNetworkService service) {
   switch (setting.name) {
     case FaultsRouteKeys.warningScreen:
       return nativePageRoute(

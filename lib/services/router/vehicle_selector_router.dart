@@ -6,7 +6,7 @@ import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
-import 'package:help_my_truck/services/API/network_service.dart';
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
@@ -36,7 +36,7 @@ abstract class VehicleSelectorRouteKeys {
 
 Route<dynamic>? VehicleSelectorRouter(
   RouteSettings setting,
-  NetworkService service,
+  GraphQLNetworkService service,
 ) {
   switch (setting.name) {
     case VehicleSelectorRouteKeys.driverCabin:

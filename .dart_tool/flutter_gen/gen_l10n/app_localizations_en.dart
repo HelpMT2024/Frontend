@@ -123,4 +123,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get confirm_password_error => 'Password doesn\'t match';
+
+  @override
+  String get account_not_exists => 'Don\'t have an account?';
+
+  @override
+  String get enter_verification_code => 'Enter Verification Code';
+
+  @override
+  String get we_sent_code => 'We sent the code to the email';
+
+  @override
+  String get enter_code => 'Enter code';
+
+  @override
+  String get conti_nue => 'Continue';
+
+  @override
+  String get didnt_receive_code => 'Didn\'t receive the code?';
+
+  @override
+  String get resend => 'Resend';
+
+  @override
+  String get reset_password => 'Reset Password';
+
+  @override
+  String get recovery_code => 'Enter your email address and we\'ll send you instructions to reset password';
+
+  @override
+  String get reset => 'Reset';
+
+  @override
+  String get new_password => 'Create new password';
+
+  @override
+  String get deleted_by_admin_error => 'Your account was deleted by the administrator';
+
+  @override
+  String get no_internet_connection => 'No internet connection';
+
+  @override
+  String get refresh_error => 'Please reauth into app';
+
+  @override
+  String get password_prompt => 'Your password must contain at least 8 characters';
+
+  @override
+  String get favorites_placeholder_title => 'Start adding important pages to your bookmarks.';
+
+  @override
+  String get favorites_placeholder_description => 'They will appear here.';
+
+  @override
+  String get terms_and_conditions => 'Terms & conditions';
+
+  @override
+  String get forgot_password => 'Forgot Password?';
+
+  @override
+  String get verify_your_email => 'Verify your email';
+
+  @override
+  String get check_your_email => 'Please check your email and follow the instructions for log in';
 }
