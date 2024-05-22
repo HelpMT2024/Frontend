@@ -73,12 +73,15 @@ class AuthScreenViewModel {
 
         Navigator.of(context).pushNamed(
           AuthRouteKeys.verificationScreen,
-          arguments:
-              Credentials(email: _email ?? '', password: _password ?? ''),
+          arguments: Credentials(
+              username: _username ?? '',
+              email: _email ?? '',
+              password: _password ?? '',
+              acceptId: value.acceptId),
         );
       }).catchError(
         (error) {
-          _emailError = error.code == 412
+          _emailError = error.code == 409
               ? AppLocalizations.of(context)?.email_error
               : error.message;
 

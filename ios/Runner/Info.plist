@@ -47,7 +47,7 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
-			<key>CFBundleURLTypes</key>
+		<key>CFBundleURLTypes</key>
 		<array>
 			<dict>
 				<key>CFBundleURLName</key>

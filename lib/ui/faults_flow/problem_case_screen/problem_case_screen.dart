@@ -10,7 +10,6 @@ import 'package:help_my_truck/ui/widgets/main_navigation_bar_bottom.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/pdf_button.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
-import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

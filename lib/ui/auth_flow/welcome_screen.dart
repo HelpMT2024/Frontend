@@ -5,7 +5,6 @@ import 'package:help_my_truck/ui/widgets/custom_button.dart';
 
 import '../../const/colors.dart';
 import '../../const/resource.dart';
-import '../../services/router/vehicle_selector_router.dart';
 import '../widgets/app_gradient_bg_decorator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,17 +13,10 @@ class WelcomeScreen extends StatelessWidget {
 
   void _signUp(BuildContext context) {
     Navigator.of(context).pushNamed(AuthRouteKeys.authScreen);
-    // Navigator.of(context).pushNamed(AuthRouteKeys.resetPassword);
   }
 
   void _login(BuildContext context) {
-    // Navigator.of(context).pushNamed(
-    //   VehicleSelectorRouteKeys.truckSelector,
-    // );
-
-    Navigator.of(context).pushNamed(
-      AuthRouteKeys.loginScreen,
-    );
+    Navigator.of(context).pushNamed(AuthRouteKeys.loginScreen);
   }
 
   @override

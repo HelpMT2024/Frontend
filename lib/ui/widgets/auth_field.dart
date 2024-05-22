@@ -155,16 +155,21 @@ class AuthorizationField extends FormField<String> {
               hintText: placeholder,
               cupertino: (context, platform) {
                 return CupertinoTextFieldData(
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: const BoxDecoration(color: Colors.transparent),
-                  padding: EdgeInsets.zero,
-                );
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: const BoxDecoration(color: Colors.transparent),
+                    padding: EdgeInsets.zero,
+                    placeholderStyle: mainStyle?.merge(
+                      TextStyle(color: ColorConstants.onSurfaceMedium),
+                    ));
               },
               material: (context, platform) {
                 return MaterialTextFieldData(
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 11),
+                    helperStyle: mainStyle?.merge(
+                      TextStyle(color: ColorConstants.onSurfaceMedium),
+                    ),
                   ),
                 );
               },

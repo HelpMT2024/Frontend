@@ -68,8 +68,10 @@ Route<dynamic>? AuthRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
+          final credentials = setting.arguments as Credentials;
           final viewModel = VerificationScreenViewModel(
             provider: provider,
+            credentials: credentials,
           );
           return VerificationScreen(
             viewModel: viewModel,
