@@ -50,6 +50,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tips_and_hinst_video => 'Tips & Hints Videos';
 
   @override
+  String get ooops => 'Ooops!';
+
+  @override
   String get oops => 'Oops..';
 
   @override
@@ -174,6 +177,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites_placeholder_description => 'They will appear here.';
+
+  @override
+  String get no_connection_description => 'No internet connection found. Check your connection';
 
   @override
   String get terms_and_conditions => 'Terms & conditions';

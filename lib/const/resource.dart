@@ -30,4 +30,7 @@ class R {
 
   /// ![preview](file:///Users/filippkos/Documents/Flutter Projects/help-my-truck-frontend/assets/truck.svg)
   static const String ASSETS_TRUCK_SVG = 'assets/truck.svg';
+
+  /// ![preview](file:///Users/filippkos/Documents/Flutter Projects/help-my-truck-frontend/assets/wifi_is_off.svg)
+  static const String ASSETS_WIFI_IS_OFF_SVG = 'assets/wifi_is_off.svg';
 }

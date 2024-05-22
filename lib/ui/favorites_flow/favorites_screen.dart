@@ -7,6 +7,7 @@ import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/widgets/no_connection_placeholder.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final FavoritesScreenViewModel viewModel;
@@ -18,6 +19,15 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
+
+  @override
+  void initState() {
+    
+    widget.viewModel.favoritesList();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -82,13 +92,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final styles = Theme.of(context).textTheme;
 
     return InkWell(
-      // onTap: () {
-      //   Navigator.pushNamed(
-      //     context,
-      //     'asdsada',
-      //     arguments: index,
-      //   );
-      // },
+      onTap: () {
+        widget.viewModel.change();
+      },
       child: Container(
         height: 50,
         decoration: BoxDecoration(

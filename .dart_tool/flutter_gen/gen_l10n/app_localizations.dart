@@ -181,6 +181,12 @@ abstract class AppLocalizations {
   /// **'Tips & Hints Videos'**
   String get tips_and_hinst_video;
 
+  /// No description provided for @ooops.
+  ///
+  /// In en, this message translates to:
+  /// **'Ooops!'**
+  String get ooops;
+
   /// No description provided for @oops.
   ///
   /// In en, this message translates to:
@@ -432,6 +438,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'They will appear here.'**
   String get favorites_placeholder_description;
+
+  /// No description provided for @no_connection_description.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection found. Check your connection'**
+  String get no_connection_description;
 
   /// No description provided for @terms_and_conditions.
   ///
