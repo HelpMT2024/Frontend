@@ -27,6 +27,11 @@ class AuthScreenViewModel {
   }
 
   String? validateEmail(String? value) {
+    if (value != _email) {
+      _email = value;
+      _emailError = null;
+    }
+
     return _emailError;
   }
 
@@ -37,6 +42,7 @@ class AuthScreenViewModel {
   String? validatePassword(String? value) {
     if (value != _password) {
       _password = value;
+      _emailError = null;
     }
 
     return null;
@@ -51,6 +57,7 @@ class AuthScreenViewModel {
       passwordRepeatError = l10n?.confirm_password_error;
     } else {
       passwordRepeatError = null;
+      _emailError = null;
     }
 
     return passwordRepeatError;
