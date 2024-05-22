@@ -4,6 +4,7 @@ import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/ui/widgets/auth_field.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'login_screen_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -33,7 +34,21 @@ class _LoginScreenState extends State<LoginScreen> {
         bgColor: ColorConstants.surfacePrimaryDark,
       ),
       backgroundColor: ColorConstants.surfacePrimaryDark,
-      body: _body(context, styles),
+      body: StreamBuilder(
+        stream: widget.viewModel.isLoading,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              _body(context, styles),
+              if (snapshot.data ?? false)
+                Loadable(
+                  forceLoad: true,
+                  child: Container(),
+                )
+            ],
+          );
+        },
+      ),
     );
   }
 

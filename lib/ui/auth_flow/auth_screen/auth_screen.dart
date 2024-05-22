@@ -4,6 +4,7 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/ui/auth_flow/auth_screen/auth_screen_view_model.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 
 import '../../widgets/auth_field.dart';
 import '../../widgets/custom_button.dart';
@@ -37,7 +38,21 @@ class _AuthScreenState extends State<AuthScreen> {
         bgColor: ColorConstants.surfacePrimaryDark,
       ),
       backgroundColor: ColorConstants.surfacePrimaryDark,
-      body: _body(context, styles),
+      body: StreamBuilder(
+        stream: widget.viewModel.isLoading,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              _body(context, styles),
+              if (snapshot.data ?? false)
+                Loadable(
+                  forceLoad: true,
+                  child: Container(),
+                )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -239,7 +254,7 @@ class _AuthScreenState extends State<AuthScreen> {
                     fontWeight: FontWeight.bold),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    print('<!> Login');
+                    widget.viewModel.loginScreen(context);
                   }),
           ],
         ),

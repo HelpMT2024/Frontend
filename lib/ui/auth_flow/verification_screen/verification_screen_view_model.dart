@@ -2,12 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
+import 'package:rxdart/rxdart.dart';
 
 class VerificationScreenViewModel {
   final AuthProvider provider;
   final Credentials credentials;
 
   String? _code;
+
+  late final isLoading = BehaviorSubject<bool>.seeded(false);
 
   VerificationScreenViewModel(
       {required this.provider, required this.credentials});
@@ -26,12 +29,14 @@ class VerificationScreenViewModel {
 
   void submit(BuildContext context) {
     if (_code?.isNotEmpty ?? false) {
+      isLoading.add(true);
       provider
           .sendVerificationCode(credentials.acceptId, _code ?? '')
           .then((value) {
         provider
             .login(email: credentials.email, password: credentials.password)
             .then((value) {
+          isLoading.add(false);
           SharedPreferencesWrapper.setToken(value);
           Navigator.of(context)
               .pushNamed(VehicleSelectorRouteKeys.truckSelector);
@@ -41,6 +46,9 @@ class VerificationScreenViewModel {
   }
 
   void resendCode() {
-    provider.resendCode(email: credentials.email);
+    isLoading.add(true);
+    provider
+        .resendCode(email: credentials.email)
+        .then((value) => isLoading.add(false));
   }
 }

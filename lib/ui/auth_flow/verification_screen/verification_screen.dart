@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/ui/widgets/auth_field.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 
 import '../../../const/colors.dart';
 import '../../widgets/nav_bar/main_navigation_bar.dart';
@@ -32,7 +33,21 @@ class _LoginScreenState extends State<VerificationScreen> {
         bgColor: ColorConstants.surfacePrimaryDark,
       ),
       backgroundColor: ColorConstants.surfacePrimaryDark,
-      body: _body(context, styles, l10n),
+      body: StreamBuilder(
+        stream: widget.viewModel.isLoading,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              _body(context, styles, l10n),
+              if (snapshot.data ?? false)
+                Loadable(
+                  forceLoad: true,
+                  child: Container(),
+                )
+            ],
+          );
+        },
+      ),
     );
   }
 

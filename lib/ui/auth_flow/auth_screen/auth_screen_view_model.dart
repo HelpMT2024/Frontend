@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../../services/router/auth_router.dart';
-import '../../../services/shared_preferences_wrapper.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:help_my_truck/services/router/auth_router.dart';
+import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
 class AuthScreenViewModel {
   final AuthProvider provider;
@@ -15,6 +15,8 @@ class AuthScreenViewModel {
   String? _email;
   String? _password;
   String? _passwordRepeat;
+
+  late final isLoading = BehaviorSubject<bool>.seeded(false);
 
   AuthScreenViewModel({required this.provider});
 
@@ -68,6 +70,7 @@ class AuthScreenViewModel {
         (_email?.isNotEmpty ?? false) &&
         (_password?.isNotEmpty ?? false) &&
         (_passwordRepeat?.isNotEmpty ?? false)) {
+      isLoading.add(true);
       provider
           .register(
         username: _username!,
@@ -76,6 +79,7 @@ class AuthScreenViewModel {
         passwordRepeat: _passwordRepeat!,
       )
           .then((value) {
+        isLoading.add(false);
         SharedPreferencesWrapper.setIsFirstLaunch(true);
 
         Navigator.of(context).pushNamed(
@@ -88,6 +92,7 @@ class AuthScreenViewModel {
         );
       }).catchError(
         (error) {
+          isLoading.add(false);
           _emailError = error.code == 409
               ? AppLocalizations.of(context)?.email_error
               : error.message;
@@ -96,5 +101,9 @@ class AuthScreenViewModel {
         },
       );
     }
+  }
+
+  void loginScreen(BuildContext context) {
+    Navigator.of(context).pushNamed(AuthRouteKeys.loginScreen);
   }
 }
