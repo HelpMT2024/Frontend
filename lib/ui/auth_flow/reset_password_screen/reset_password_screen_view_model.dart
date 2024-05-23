@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rxdart/rxdart.dart';
 
 class ResetPasswordScreenViewModel {
   final AuthProvider provider;
 
   String? _email;
+
+  late final isLoading = BehaviorSubject<bool>.seeded(false);
 
   ResetPasswordScreenViewModel({required this.provider});
 
@@ -15,9 +17,11 @@ class ResetPasswordScreenViewModel {
 
   void submit(BuildContext context) {
     if (_email?.isNotEmpty ?? false) {
-      provider
-          .resetPassword(email: _email ?? '')
-          .then((value) => Navigator.of(context).pop());
+      isLoading.add(true);
+      provider.resetPassword(email: _email ?? '').then((value) {
+        isLoading.add(false);
+        Navigator.of(context).pop();
+      });
     }
   }
 }

@@ -38,8 +38,8 @@ class VerificationScreenViewModel {
             .then((value) {
           isLoading.add(false);
           SharedPreferencesWrapper.setToken(value);
-          Navigator.of(context)
-              .pushNamed(VehicleSelectorRouteKeys.truckSelector);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              VehicleSelectorRouteKeys.truckSelector, (route) => false);
         });
       });
     }

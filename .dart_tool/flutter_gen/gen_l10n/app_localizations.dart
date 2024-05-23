@@ -181,6 +181,12 @@ abstract class AppLocalizations {
   /// **'Tips & Hints Videos'**
   String get tips_and_hinst_video;
 
+  /// No description provided for @ooops.
+  ///
+  /// In en, this message translates to:
+  /// **'Ooops!'**
+  String get ooops;
+
   /// No description provided for @oops.
   ///
   /// In en, this message translates to:
@@ -280,7 +286,7 @@ abstract class AppLocalizations {
   /// No description provided for @notice.
   ///
   /// In en, this message translates to:
-  /// **'*By continuing, you are agreeing to our'**
+  /// **'By continuing, you are agreeing to our'**
   String get notice;
 
   /// No description provided for @terms_button_title.
@@ -310,7 +316,7 @@ abstract class AppLocalizations {
   /// No description provided for @account_exists.
   ///
   /// In en, this message translates to:
-  /// **'Already have an account?'**
+  /// **'Already have an account? '**
   String get account_exists;
 
   /// No description provided for @username_error.
@@ -334,7 +340,7 @@ abstract class AppLocalizations {
   /// No description provided for @account_not_exists.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t have an account?'**
+  /// **'Don\'t have an account? '**
   String get account_not_exists;
 
   /// No description provided for @enter_verification_code.
@@ -432,6 +438,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'They will appear here.'**
   String get favorites_placeholder_description;
+
+  /// No description provided for @no_connection_description.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection found. Check your connection'**
+  String get no_connection_description;
 
   /// No description provided for @terms_and_conditions.
   ///

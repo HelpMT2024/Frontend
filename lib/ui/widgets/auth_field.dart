@@ -167,7 +167,7 @@ class AuthorizationField extends FormField<String> {
                   decoration: InputDecoration(
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 11),
-                    helperStyle: mainStyle?.merge(
+                    hintStyle: mainStyle?.merge(
                       TextStyle(color: ColorConstants.onSurfaceMedium),
                     ),
                   ),

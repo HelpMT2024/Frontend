@@ -50,6 +50,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tips_and_hinst_video => 'Tips & Hints Videos';
 
   @override
+  String get ooops => 'Ooops!';
+
+  @override
   String get oops => 'Oops..';
 
   @override
@@ -98,7 +101,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_password => 'Confirm Password';
 
   @override
-  String get notice => '*By continuing, you are agreeing to our';
+  String get notice => 'By continuing, you are agreeing to our';
 
   @override
   String get terms_button_title => 'Terms of Service';
@@ -113,7 +116,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get create_account_button_title => 'Create an account';
 
   @override
-  String get account_exists => 'Already have an account?';
+  String get account_exists => 'Already have an account? ';
 
   @override
   String get username_error => 'This username already exists';
@@ -125,7 +128,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get confirm_password_error => 'Password doesn\'t match';
 
   @override
-  String get account_not_exists => 'Don\'t have an account?';
+  String get account_not_exists => 'Don\'t have an account? ';
 
   @override
   String get enter_verification_code => 'Enter Verification Code';
@@ -174,6 +177,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites_placeholder_description => 'They will appear here.';
+
+  @override
+  String get no_connection_description => 'No internet connection found. Check your connection';
 
   @override
   String get terms_and_conditions => 'Terms & conditions';

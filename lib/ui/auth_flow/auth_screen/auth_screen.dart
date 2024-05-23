@@ -82,7 +82,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 ..._fields(l10n),
                 const SizedBox(height: 8),
                 _termsBlock(l10n, styles),
-                const SizedBox(height: 12),
+                const SizedBox(height: 4),
                 _submitButton(l10n, context),
                 const SizedBox(height: 24),
                 _accountExists(l10n, styles),
@@ -157,9 +157,6 @@ class _AuthScreenState extends State<AuthScreen> {
           checkColor: ColorConstants.surfacePrimaryDark,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(2),
-            side: MaterialStateBorderSide.resolveWith(
-              (states) => const BorderSide(width: 5.0, color: Colors.red),
-            ),
           ),
           onChanged: (value) {
             setState(() {
@@ -201,14 +198,20 @@ class _AuthScreenState extends State<AuthScreen> {
                 ?.copyWith(color: ColorConstants.onSurfaceWhite),
           ),
           TextSpan(
-              text: l10n?.privacy_policy ?? '',
-              style: styles.bodySmall?.copyWith(
-                  color: ColorConstants.onSurfaceWhite,
-                  fontWeight: FontWeight.bold),
-              recognizer: TapGestureRecognizer()
-                ..onTap = () {
-                  Navigator.of(context).pushNamed(AuthRouteKeys.privacyPolicy);
-                }),
+            text: l10n?.privacy_policy ?? '',
+            style: styles.bodySmall?.copyWith(
+                color: ColorConstants.onSurfaceWhite,
+                fontWeight: FontWeight.bold),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Navigator.of(context).pushNamed(AuthRouteKeys.privacyPolicy);
+              },
+          ),
+          TextSpan(
+            text: '.',
+            style: styles.bodySmall
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
+          ),
         ],
       ),
     );
