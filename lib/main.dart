@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'services/router/auth_router.dart';
 import 'services/router/router.dart';
@@ -15,8 +16,12 @@ class NavigationService {
 }
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesWrapper.processInitialize();
+
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  await Future.delayed(const Duration(seconds: 10));
+  FlutterNativeSplash.remove();
 
   runApp(const MyApp());
 }
