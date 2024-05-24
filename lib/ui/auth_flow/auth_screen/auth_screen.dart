@@ -228,9 +228,7 @@ class _AuthScreenState extends State<AuthScreen> {
         if ((_formKey.currentState?.validate() ?? false) && _acceptTerms) {
           _formKey.currentState?.save();
           _emailAutoCheck = true;
-          widget.viewModel.submit(context, () {
-            setState(() {});
-          });
+          widget.viewModel.submit(context);
         }
       },
     );

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ResetPasswordScreenViewModel {
+class ResetPasswordScreenViewModel with ViewModelErrorHandable {
   final AuthProvider provider;
 
   String? _email;
@@ -21,6 +22,9 @@ class ResetPasswordScreenViewModel {
       provider.resetPassword(email: _email ?? '').then((value) {
         isLoading.add(false);
         Navigator.of(context).pop();
+      }).catchError((error) {
+        isLoading.add(false);
+        showAlertDialog(context, error.message);
       });
     }
   }

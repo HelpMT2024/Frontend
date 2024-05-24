@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LoginScreenViewModel {
+class LoginScreenViewModel with ViewModelErrorHandable {
   final AuthProvider provider;
 
   String? _email;
   String? _password;
-  String? _emailError;
 
   late final isLoading = BehaviorSubject<bool>.seeded(false);
 
   LoginScreenViewModel({required this.provider});
 
   String? validateEmail(String? value) {
-    return _emailError;
+    return null;
   }
 
-  void saveEmail(String? email) {
-    _email = email;
+  void saveEmail(String? value) {
+    if (value != _email) {
+      _email = value;
+    }
   }
 
   void savePassword(String? password) {
@@ -31,7 +32,7 @@ class LoginScreenViewModel {
     return null;
   }
 
-  void submit(BuildContext context, VoidCallback errorHandler) {
+  void submit(BuildContext context) {
     if ((_email?.isNotEmpty ?? false) && (_password?.isNotEmpty ?? false)) {
       isLoading.add(true);
       provider
@@ -43,18 +44,12 @@ class LoginScreenViewModel {
         (value) {
           isLoading.add(false);
           provider.save(token: value);
-          Navigator.of(context)
-              .pushNamed(VehicleSelectorRouteKeys.truckSelector);
+          Navigator.of(context).pushNamedAndRemoveUntil(
+              VehicleSelectorRouteKeys.truckSelector, (route) => false);
         },
       ).catchError((error) {
-        (error) {
-          isLoading.add(false);
-          _emailError = error.code == 409
-              ? AppLocalizations.of(context)?.email_error
-              : error.message;
-
-          errorHandler();
-        };
+        isLoading.add(false);
+        showAlertDialog(context, error.message);
       });
     }
   }

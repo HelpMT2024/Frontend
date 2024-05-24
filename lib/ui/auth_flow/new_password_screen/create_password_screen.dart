@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 import '../../../const/colors.dart';
@@ -20,7 +19,6 @@ class CreatePasswordScreen extends StatefulWidget {
 class _CreatePasswordScreenState extends State<CreatePasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool _acceptTerms = false;
   bool passwordVisible = true;
 
   @override

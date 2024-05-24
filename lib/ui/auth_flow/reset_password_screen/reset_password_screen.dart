@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 
@@ -21,7 +20,6 @@ class ResetPasswordScreen extends StatefulWidget {
 class _LoginScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool _acceptTerms = false;
   bool passwordVisible = true;
 
   @override

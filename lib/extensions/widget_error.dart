@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import '../const/colors.dart';
 import '../services/router/auth_router.dart';
 import '../services/shared_preferences_wrapper.dart';
@@ -97,5 +98,29 @@ extension StateErrorHandable on State {
   Future<Object?> handleError(ErrorValue? error, BuildContext context,
       {String? errorText}) {
     return _handleError(error, context, text: errorText);
+  }
+}
+
+mixin ViewModelErrorHandable {
+  void showAlertDialog(BuildContext context, String error) {
+    final l10n = AppLocalizations.of(context);
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PlatformAlertDialog(
+          title: Text(l10n?.error ?? ''),
+          content: Text(error),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

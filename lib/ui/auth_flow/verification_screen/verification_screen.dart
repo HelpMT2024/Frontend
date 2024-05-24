@@ -141,7 +141,7 @@ class _LoginScreenState extends State<VerificationScreen> {
                     fontWeight: FontWeight.bold),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () {
-                    widget.viewModel.resendCode();
+                    widget.viewModel.resendCode(context);
                   }),
           ],
         ),

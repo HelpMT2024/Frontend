@@ -468,6 +468,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please check your email and follow the instructions for log in'**
   String get check_your_email;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -192,4 +192,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get check_your_email => 'Please check your email and follow the instructions for log in';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get error => 'Error';
 }

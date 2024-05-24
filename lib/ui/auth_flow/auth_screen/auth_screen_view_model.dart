@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
-class AuthScreenViewModel {
+class AuthScreenViewModel with ViewModelErrorHandable {
   final AuthProvider provider;
 
-  String? _emailError;
   String? passwordRepeatError;
 
   String? _username;
@@ -31,10 +31,9 @@ class AuthScreenViewModel {
   String? validateEmail(String? value) {
     if (value != _email) {
       _email = value;
-      _emailError = null;
     }
 
-    return _emailError;
+    return null;
   }
 
   void savePassword(String? value) {
@@ -44,7 +43,6 @@ class AuthScreenViewModel {
   String? validatePassword(String? value) {
     if (value != _password) {
       _password = value;
-      _emailError = null;
     }
 
     return null;
@@ -59,13 +57,12 @@ class AuthScreenViewModel {
       passwordRepeatError = l10n?.confirm_password_error;
     } else {
       passwordRepeatError = null;
-      _emailError = null;
     }
 
     return passwordRepeatError;
   }
 
-  void submit(BuildContext context, VoidCallback errorHandler) {
+  void submit(BuildContext context) {
     if ((_username?.isNotEmpty ?? false) &&
         (_email?.isNotEmpty ?? false) &&
         (_password?.isNotEmpty ?? false) &&
@@ -93,11 +90,7 @@ class AuthScreenViewModel {
       }).catchError(
         (error) {
           isLoading.add(false);
-          _emailError = error.code == 409
-              ? AppLocalizations.of(context)?.email_error
-              : error.message;
-
-          errorHandler();
+          showAlertDialog(context, error.message);
         },
       );
     }

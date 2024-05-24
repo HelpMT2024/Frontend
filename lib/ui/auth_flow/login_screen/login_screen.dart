@@ -139,9 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
       onPressed: () {
         if (_formKey.currentState?.validate() ?? false) {
           _formKey.currentState?.save();
-          widget.viewModel.submit(context, () {
-            setState(() {});
-          });
+          widget.viewModel.submit(context);
         }
       },
     );
