@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
-
 import '../../const/colors.dart';
 import '../../const/resource.dart';
 import '../widgets/app_gradient_bg_decorator.dart';
@@ -23,12 +22,29 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
+    final future = Future.delayed(Duration(seconds: 2));
 
     return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.only(bottom: 56),
-          decoration: appGradientBgDecoration,
-          child: _body(styles, l10n, context)),
+      body: FutureBuilder(
+        future: future,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(bottom: 56),
+                decoration: appGradientBgDecoration,
+                child: _body(
+                  styles,
+                  l10n,
+                  context,
+                ),
+              ),
+              if (snapshot.connectionState != ConnectionState.done)
+                Image.asset(R.ASSETS_SPLASH_SCREEN_PNG),
+            ],
+          );
+        },
+      ),
     );
   }
 
