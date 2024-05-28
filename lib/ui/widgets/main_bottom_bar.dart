@@ -42,7 +42,7 @@ class MainBottomBar extends StatelessWidget {
         );
       },
       cupertino: (context, platform) => CupertinoTabBarData(
-          height: 51, backgroundColor: ColorConstants.surfacePrimaryDark),
+          height: 60, backgroundColor: ColorConstants.surfacePrimaryDark),
       items: [
         _customIcon(
           asset: R.ASSETS_HOME_SVG,
@@ -97,11 +97,12 @@ class MainBottomBar extends StatelessWidget {
     NavBarPage navBarPage = NavBarPage.home,
     String? text,
     double size = 24,
-    double padding = 0,
+    double padding = 4,
   }) {
     bool isActive = navBarPage == selectedPage;
     return BottomNavigationBarItem(
       icon: Container(
+        height: 56,
         padding: EdgeInsets.only(top: Platform.isAndroid ? 0 : 5),
         child: GestureDetector(
           behavior: HitTestBehavior.deferToChild,
