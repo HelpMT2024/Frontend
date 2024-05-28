@@ -37,6 +37,14 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.interTextTheme(textTheme()),
         cupertinoOverrideTheme: CupertinoThemeData(
             barBackgroundColor: ColorConstants.surfacePrimaryDark),
+        checkboxTheme: CheckboxThemeData(
+          side: MaterialStateBorderSide.resolveWith((states) {
+            return BorderSide(
+              color: ColorConstants.onSurfaceWhite,
+              width: 2,
+            );
+          }),
+        ),
       ),
       navigatorKey: NavigationService.navigatorKey,
       initialRoute: SharedPreferencesWrapper.getToken() == null

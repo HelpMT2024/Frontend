@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
-
 import '../../const/colors.dart';
 import '../../const/resource.dart';
-import '../../services/router/vehicle_selector_router.dart';
 import '../widgets/app_gradient_bg_decorator.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -14,29 +12,39 @@ class WelcomeScreen extends StatelessWidget {
 
   void _signUp(BuildContext context) {
     Navigator.of(context).pushNamed(AuthRouteKeys.authScreen);
-    // Navigator.of(context).pushNamed(AuthRouteKeys.resetPassword);
   }
 
   void _login(BuildContext context) {
-    // Navigator.of(context).pushNamed(
-    //   VehicleSelectorRouteKeys.truckSelector,
-    // );
-
-    Navigator.of(context).pushNamed(
-      AuthRouteKeys.loginScreen,
-    );
+    Navigator.of(context).pushNamed(AuthRouteKeys.loginScreen);
   }
 
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
+    final future = Future.delayed(Duration(seconds: 2));
 
     return Scaffold(
-      body: Container(
-          padding: const EdgeInsets.only(bottom: 56),
-          decoration: appGradientBgDecoration,
-          child: _body(styles, l10n, context)),
+      body: FutureBuilder(
+        future: future,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(bottom: 56),
+                decoration: appGradientBgDecoration,
+                child: _body(
+                  styles,
+                  l10n,
+                  context,
+                ),
+              ),
+              if (snapshot.connectionState != ConnectionState.done)
+                Image.asset(R.ASSETS_SPLASH_SCREEN_PNG),
+            ],
+          );
+        },
+      ),
     );
   }
 

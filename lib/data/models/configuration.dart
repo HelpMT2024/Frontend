@@ -1,5 +1,35 @@
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 
+enum ConfigurationChildType {
+  unit,
+  system,
+}
+
+class ConfigurationChild {
+  final String id;
+  final String name;
+  final IDPIcon? image;
+  final ConfigurationChildType type;
+
+  ConfigurationChild({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.type,
+  });
+
+  factory ConfigurationChild.fromJson(Map<String, dynamic> json) {
+    return ConfigurationChild(
+      id: json['sys']['id'],
+      name: json['name'],
+      image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
+      type: json['__typename'] == 'Unit'
+          ? ConfigurationChildType.unit
+          : ConfigurationChildType.system,
+    );
+  }
+}
+
 class ChildrenUnit {
   final String id;
   final String name;
@@ -23,7 +53,7 @@ class ChildrenUnit {
 class Configuration {
   final String name;
   final IDPImageView imageView;
-  final List<ChildrenUnit> children;
+  final List<ConfigurationChild> children;
 
   Configuration({
     required this.name,
@@ -37,7 +67,22 @@ class Configuration {
     return Configuration(
       name: json['name'],
       imageView: IDPImageView.fromJson(json['imageView']),
-      children: children.map((child) => ChildrenUnit.fromJson(child)).toList(),
+      children:
+          children.map((child) => ConfigurationChild.fromJson(child)).toList(),
     );
   }
+}
+
+class ChildrenCollection {
+  List<ConfigurationChild> items;
+
+  ChildrenCollection({
+    required this.items,
+  });
+
+  factory ChildrenCollection.fromJson(Map<String, dynamic> json) =>
+      ChildrenCollection(
+        items: List<ConfigurationChild>.from(
+            json["items"].map((x) => ConfigurationChild.fromJson(x))),
+      );
 }

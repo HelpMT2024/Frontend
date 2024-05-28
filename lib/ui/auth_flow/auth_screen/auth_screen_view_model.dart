@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:help_my_truck/services/router/auth_router.dart';
+import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
-import '../../../services/router/auth_router.dart';
-import '../../../services/shared_preferences_wrapper.dart';
-
-class AuthScreenViewModel {
+class AuthScreenViewModel with ViewModelErrorHandable {
   final AuthProvider provider;
 
-  String? _emailError;
   String? passwordRepeatError;
 
   String? _username;
   String? _email;
   String? _password;
   String? _passwordRepeat;
+
+  late final isLoading = BehaviorSubject<bool>.seeded(false);
 
   AuthScreenViewModel({required this.provider});
 
@@ -27,7 +29,11 @@ class AuthScreenViewModel {
   }
 
   String? validateEmail(String? value) {
-    return _emailError;
+    if (value != _email) {
+      _email = value;
+    }
+
+    return null;
   }
 
   void savePassword(String? value) {
@@ -56,11 +62,12 @@ class AuthScreenViewModel {
     return passwordRepeatError;
   }
 
-  void submit(BuildContext context, VoidCallback errorHandler) {
+  void submit(BuildContext context) {
     if ((_username?.isNotEmpty ?? false) &&
         (_email?.isNotEmpty ?? false) &&
         (_password?.isNotEmpty ?? false) &&
         (_passwordRepeat?.isNotEmpty ?? false)) {
+      isLoading.add(true);
       provider
           .register(
         username: _username!,
@@ -69,22 +76,27 @@ class AuthScreenViewModel {
         passwordRepeat: _passwordRepeat!,
       )
           .then((value) {
+        isLoading.add(false);
         SharedPreferencesWrapper.setIsFirstLaunch(true);
 
         Navigator.of(context).pushNamed(
           AuthRouteKeys.verificationScreen,
-          arguments:
-              Credentials(email: _email ?? '', password: _password ?? ''),
+          arguments: Credentials(
+              username: _username ?? '',
+              email: _email ?? '',
+              password: _password ?? '',
+              acceptId: value.acceptId),
         );
       }).catchError(
         (error) {
-          _emailError = error.code == 412
-              ? AppLocalizations.of(context)?.email_error
-              : error.message;
-
-          errorHandler();
+          isLoading.add(false);
+          showAlertDialog(context, error.message);
         },
       );
     }
+  }
+
+  void loginScreen(BuildContext context) {
+    Navigator.of(context).pushNamed(AuthRouteKeys.loginScreen);
   }
 }

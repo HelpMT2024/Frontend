@@ -1,13 +1,19 @@
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:help_my_truck/data/models/token_model.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
 class UserID {
-  int id;
-  String ss;
+  final int id;
+  final int status;
+  final String acceptId;
 
-  UserID(this.id, this.ss);
+  UserID({required this.id, required this.status, required this.acceptId});
+
+  factory UserID.fromJson(Map<String, dynamic> json) => UserID(
+        id: json["id"],
+        status: json["status"],
+        acceptId: json["acceptId"],
+      );
 }
 
 class Verification {
@@ -44,10 +50,17 @@ class Verification {
 }
 
 class Credentials {
+  final String username;
   final String email;
   final String password;
+  final String acceptId;
 
-  Credentials({required this.email, required this.password});
+  Credentials({
+    required this.username,
+    required this.email,
+    required this.password,
+    required this.acceptId,
+  });
 }
 
 class AuthProvider {
@@ -72,14 +85,13 @@ class AuthProvider {
       }),
     );
 
-    return service.execute(
-        request, (json) => UserID(json['data']['id'], json['data']['ss']));
+    return service.execute(request, (json) => UserID.fromJson(json['data']));
   }
 
-  Future<Verification> sendVerificationCode(String code) {
+  Future<Verification> sendVerificationCode(String acceptId, String code) {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
-      path: '/api/user/approve/$code',
+      path: '/api/user/approve/$acceptId/$code',
       data: const NetworkRequestBody.empty(),
     );
 
@@ -113,5 +125,14 @@ class AuthProvider {
     );
 
     return service.execute(request, (data) {});
+  }
+
+  Future<String> resendCode({required String email}) {
+    final request = NetworkRequest(
+        type: NetworkRequestType.post,
+        path: '/api/user/resend-code',
+        data: NetworkRequestBody.formData({'email': email}));
+
+    return service.execute(request, (data) => data['data']['acceptId']);
   }
 }

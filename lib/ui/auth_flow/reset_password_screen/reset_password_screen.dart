@@ -1,5 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 
 import '../../../const/colors.dart';
 import '../../widgets/auth_field.dart';
@@ -20,7 +20,6 @@ class ResetPasswordScreen extends StatefulWidget {
 class _LoginScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool _acceptTerms = false;
   bool passwordVisible = true;
 
   @override
@@ -34,7 +33,21 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
         bgColor: ColorConstants.surfacePrimaryDark,
       ),
       backgroundColor: ColorConstants.surfacePrimaryDark,
-      body: _body(context, styles),
+      body: StreamBuilder(
+        stream: widget.viewModel.isLoading,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [
+              _body(context, styles),
+              if (snapshot.data ?? false)
+                Loadable(
+                  forceLoad: true,
+                  child: Container(),
+                )
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -67,7 +80,7 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
                 ),
                 const SizedBox(height: 24),
                 _emailTextField(l10n),
-                const SizedBox(height: 8),
+                const SizedBox(height: 28),
                 _submitButton(l10n),
               ],
             ),
@@ -83,6 +96,7 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
       onSaved: widget.viewModel.saveEmail,
       validator: (value) => null,
       title: l10n?.email ?? '',
+      placeholder: l10n?.email ?? '',
     );
   }
 
