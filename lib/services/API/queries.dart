@@ -183,17 +183,68 @@ faultCodesCollection {
       name
       childrenCollection {
         items {
-          sys {
-            id
-          }
-          name
-          icon {
-            $image
-          }
+          ... on Unit {
+            __typename
+              sys {
+                id
+              }
+              name
+              icon {
+                title
+                description
+                contentType
+                fileName
+                size
+                url
+                width
+                height
+              }
+            }
+          ... on System {
+            __typename
+              sys {
+                id
+              }
+              name
+              icon {
+                title
+                description
+                contentType
+                fileName
+                size
+                url
+                width
+                height
+              }
+            }
         }
       }
       imageView {
-        $imageView
+        imageFrontMarkup
+        buttonsTemplate
+        imageBackMarkup
+        description
+        descriptionPosition
+        imageFront {
+          title
+          description
+          fileName
+          url
+          width
+          height
+          size
+          contentType
+        }
+        imageBack {
+          title
+          description
+          fileName
+          url
+          width
+          height
+          size
+          contentType
+        }
       } 
     }
   }
