@@ -23,8 +23,8 @@ Route<dynamic>? FavoritesRouter(
           settings: setting,
           builder: (context) {
             final provider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
-            final vehivleProvider =  VehicleProvider(graphQLNetworkService);
-            final viewModel = FavoritesScreenViewModel(provider: provider, vehicleProvider: vehivleProvider);
+            final vehicleProvider = VehicleProvider(graphQLNetworkService);
+            final viewModel = FavoritesScreenViewModel(provider: provider, vehicleProvider: vehicleProvider);
 
             return FavoritesScreen(viewModel: viewModel);
           });

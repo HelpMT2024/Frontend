@@ -1,3 +1,4 @@
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 
 class Pagination {
@@ -85,8 +86,9 @@ class FavoritesListItem {
 
 class FavoritesProvider {
   final RestAPINetworkService service;
+  final GraphQLNetworkService graphQLNetworkService;
 
-  FavoritesProvider(this.service);
+  FavoritesProvider(this.service, this.graphQLNetworkService);
 
   Future change(int id) {
     final request = NetworkRequest(
@@ -101,12 +103,13 @@ class FavoritesProvider {
         request, (json) => FavoritesListModel.fromJson(json['data']));
   }
 
-  Future<FavoritesListModel> favoritesList(int id) {
+  Future<FavoritesListModel> favoritesList(int id, int page) {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
       data: NetworkRequestBody.formData({
         'owner_id': id,
+        'page': page,
       }),
     );
 

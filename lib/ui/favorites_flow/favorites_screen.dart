@@ -4,12 +4,12 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/no_connection_placeholder.dart';
+import 'package:paginated_list/paginated_list.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final FavoritesScreenViewModel viewModel;
@@ -21,10 +21,8 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  
   @override
   void initState() {
-
     super.initState();
   }
 
@@ -59,30 +57,24 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             height: 24,
           ),
           Expanded(
-            child: StreamBuilder<List<FavoritesListItem>>(
-                stream: widget.viewModel.updateDataStreamController.stream,
-                builder: (context, AsyncSnapshot snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: CupertinoActivityIndicator(),
-                    );
-                  } else if (snapshot.hasData) {
-                    return ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) {
-                        return const SizedBox(height: 8);
-                      },
-                      itemCount: 5,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return listViewCell('Engine', index);
-                      },
-                    );
-                  } else if (snapshot.hasError) {
-                    return Text('Error ${snapshot.hasData}');
-                  } else {
-                    return Container();
-                  }
-                }),
+            child: SizedBox()
+            // PaginatedList<FavoriteContentfulModel>(
+            //   loadingIndicator: const Padding(
+            //     padding: EdgeInsets.symmetric(vertical: 20),
+            //     child: Center(
+            //       child: CircularProgressIndicator(color: Colors.black),
+            //     ),
+            //   ),
+            //   items: widget.viewModel.,
+            //   isRecentSearch: false,
+            //   isLastPage: state.isLastPage,
+            //   onLoadMore: (index) => context.read<MovieBloc>().loadMore(),
+            //   builder: (movie, index) => Co(
+            //     subtitle: movie.overview,
+            //     title: movie.title,
+            //     imageUrl: movie.posterPath ?? '',
+            //   ),
+            // ),
           )
         ],
       ),
@@ -107,8 +99,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
     return InkWell(
       onTap: () {
-        widget.viewModel.provider
-            .change(widget.viewModel.fetchedItems[index].id);
+        // widget.viewModel.handleClick(model, context);
       },
       child: Container(
         height: 50,
