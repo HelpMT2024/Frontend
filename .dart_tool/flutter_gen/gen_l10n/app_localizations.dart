@@ -286,7 +286,7 @@ abstract class AppLocalizations {
   /// No description provided for @notice.
   ///
   /// In en, this message translates to:
-  /// **'*By continuing, you are agreeing to our'**
+  /// **'By continuing, you are agreeing to our'**
   String get notice;
 
   /// No description provided for @terms_button_title.
@@ -316,7 +316,7 @@ abstract class AppLocalizations {
   /// No description provided for @account_exists.
   ///
   /// In en, this message translates to:
-  /// **'Already have an account?'**
+  /// **'Already have an account? '**
   String get account_exists;
 
   /// No description provided for @username_error.
@@ -340,7 +340,7 @@ abstract class AppLocalizations {
   /// No description provided for @account_not_exists.
   ///
   /// In en, this message translates to:
-  /// **'Don\'t have an account?'**
+  /// **'Don\'t have an account? '**
   String get account_not_exists;
 
   /// No description provided for @enter_verification_code.
@@ -468,6 +468,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Please check your email and follow the instructions for log in'**
   String get check_your_email;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

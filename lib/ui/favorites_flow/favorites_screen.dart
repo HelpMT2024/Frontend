@@ -4,7 +4,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
+import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/no_connection_placeholder.dart';
@@ -19,11 +21,9 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-
+  
   @override
   void initState() {
-    
-    widget.viewModel.favoritesList();
 
     super.initState();
   }
@@ -59,16 +59,30 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             height: 24,
           ),
           Expanded(
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 8);
-              },
-              itemCount: 5,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return listViewCell('Engine', index);
-              },
-            ),
+            child: StreamBuilder<List<FavoritesListItem>>(
+                stream: widget.viewModel.updateDataStreamController.stream,
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(),
+                    );
+                  } else if (snapshot.hasData) {
+                    return ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const SizedBox(height: 8);
+                      },
+                      itemCount: 5,
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (context, index) {
+                        return listViewCell('Engine', index);
+                      },
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error ${snapshot.hasData}');
+                  } else {
+                    return Container();
+                  }
+                }),
           )
         ],
       ),
@@ -93,7 +107,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
     return InkWell(
       onTap: () {
-        widget.viewModel.change();
+        widget.viewModel.provider
+            .change(widget.viewModel.fetchedItems[index].id);
       },
       child: Container(
         height: 50,
@@ -102,14 +117,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           color: ColorConstants.surfaceSecondary,
         ),
         child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 12, top: 12, bottom: 12),
+          padding:
+              const EdgeInsets.only(left: 16, right: 12, top: 12, bottom: 12),
           child: Row(
             children: [
-              Expanded(child: Text(title, style: styles.titleMedium?.copyWith(color: ColorConstants.onSurfaceWhite))),
+              Expanded(
+                  child: Text(title,
+                      style: styles.titleMedium
+                          ?.copyWith(color: ColorConstants.onSurfaceWhite))),
               const SizedBox(width: 8),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.17, vertical: 4.5),
-                child: Icon(Icons.bookmark, size: 20, color: ColorConstants.surfaceWhite),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6.17, vertical: 4.5),
+                child: BookmarkButton(widget.viewModel.fetchedItems[index].id,
+                    widget.viewModel.provider),
               )
             ],
           ),

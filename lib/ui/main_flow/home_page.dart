@@ -1,7 +1,10 @@
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
@@ -16,12 +19,14 @@ import 'package:help_my_truck/ui/search_flow/search_screen.dart';
 class MainPageConfig {
   final Engine engine;
   final Truck truck;
-  final GraphQLNetworkService service;
+  final GraphQLNetworkService graphQLNetworkService;
+  final RestAPINetworkService restAPINetworkService;
 
   MainPageConfig({
     required this.engine,
     required this.truck,
-    required this.service,
+    required this.graphQLNetworkService,
+    required this.restAPINetworkService,
   });
 }
 
@@ -53,7 +58,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   late final searchModalController = SearchModalController(
-    provider: VehicleProvider(widget.config.service),
+    provider: VehicleProvider(widget.config.graphQLNetworkService),
   );
 
   final controller = mainPageController;
@@ -68,7 +73,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     NavBarPage.search: const SizedBox(),
     NavBarPage.favorites: FavoritesScreen(
       viewModel: FavoritesScreenViewModel(
-        provider: VehicleProvider(widget.config.service),
+        provider: FavoritesProvider(widget.config.restAPINetworkService, widget.config.graphQLNetworkService),
+        vehicleProvider: VehicleProvider(widget.config.graphQLNetworkService),
       ),
     ),
     NavBarPage.profile: const SizedBox()

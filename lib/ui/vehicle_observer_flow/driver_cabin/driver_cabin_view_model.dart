@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
@@ -11,6 +12,7 @@ import 'package:collection/collection.dart';
 
 class DriverCabinViewModel {
   final VehicleProvider provider;
+  final FavoritesProvider favoritesProvider;
   final ChildrenSystem config;
 
   ChildrenComponent? get warningLightComponent =>
@@ -28,7 +30,11 @@ class DriverCabinViewModel {
       Stream.fromFuture(provider.system(config.id)),
     );
 
-  DriverCabinViewModel({required this.config, required this.provider});
+  DriverCabinViewModel({
+    required this.config,
+    required this.provider,
+    required this.favoritesProvider,
+  });
 
   void onModelSelected(String id, BuildContext context) {
     final model = system.value.children.firstWhere(

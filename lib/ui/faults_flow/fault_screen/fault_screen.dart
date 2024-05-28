@@ -45,7 +45,12 @@ class _FaultScreenState extends State<FaultScreen> {
               appBar: MainNavigationBar(
                 context: context,
                 styles: styles,
-                action: const [VehicleNavBarActions()],
+                action: [
+                  VehicleNavBarActions(
+                    id: int.parse(widget.viewModel.config.id),
+                    provider: widget.viewModel.favoritesProvider,
+                  )
+                ],
                 bottom: _navBarTitle(styles),
                 bgColor: ColorConstants.surfacePrimaryDark,
               ),

@@ -35,7 +35,10 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         styles: styles,
         bottom: _navBarTitle(styles),
         bgColor: ColorConstants.surfacePrimaryDark,
-        action: const [VehicleNavBarActions()],
+        action: [VehicleNavBarActions(
+          id: int.parse(widget.viewModel.config.id),
+          provider: widget.viewModel.favoritesProvider,
+        )],
         toolbarHeight: 52,
       ),
       body: Stack(

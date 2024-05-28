@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
+import 'package:help_my_truck/services/router/favorites_router.dart';
 import 'package:help_my_truck/services/router/home_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 
@@ -16,8 +17,9 @@ final restAPIService =
 Route<dynamic>? AppRouter(RouteSettings setting) {
   var route = AuthRouter(setting, restAPIService) ??
       HomeRouter(setting, graphQLService) ??
-      VehicleSelectorRouter(setting, graphQLService) ??
-      FaultsRouter(setting, graphQLService);
+      VehicleSelectorRouter(setting, restAPIService, graphQLService) ??
+      FaultsRouter(setting, restAPIService, graphQLService) ??
+      FavoritesRouter(setting, restAPIService, graphQLService);
 
   return route;
 }

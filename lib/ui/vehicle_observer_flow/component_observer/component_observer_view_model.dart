@@ -4,6 +4,7 @@ import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
@@ -12,6 +13,7 @@ import 'package:rxdart/subjects.dart';
 
 class ComponentObserverViewModel {
   final VehicleProvider provider;
+  final FavoritesProvider favoritesProvider;
   final ChildrenComponent config;
 
   late final component = BehaviorSubject<Component>()
@@ -33,7 +35,11 @@ class ComponentObserverViewModel {
   List<PdfFile> get pdfFiles => component.valueOrNull?.pdfFiles.items ?? [];
   bool get hasPDF => pdfFiles.isNotEmpty;
 
-  ComponentObserverViewModel({required this.config, required this.provider});
+  ComponentObserverViewModel({
+    required this.config,
+    required this.provider,
+    required this.favoritesProvider
+  });
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);

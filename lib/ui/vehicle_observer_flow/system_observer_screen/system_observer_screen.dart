@@ -30,7 +30,10 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
         context: context,
         styles: styles,
         title: widget.viewModel.config.name,
-        action: const [VehicleNavBarActions()],
+        action: [VehicleNavBarActions(
+          id: int.parse(widget.viewModel.config.id),
+          provider: widget.viewModel.favoritesProvider,
+        )],
       ),
       bottomNavigationBar: MainBottomBar(
         selectedPage: NavBarPage.search,

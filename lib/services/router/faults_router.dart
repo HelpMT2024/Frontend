@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
 import 'package:help_my_truck/ui/faults_flow/problem_case_screen/problem_case_screen.dart';
@@ -20,13 +23,16 @@ abstract class FaultsRouteKeys {
 }
 
 Route<dynamic>? FaultsRouter(
-    RouteSettings setting, GraphQLNetworkService service) {
+  RouteSettings setting,
+  RestAPINetworkService restAPINetworkService,
+  GraphQLNetworkService graphQLNetworkService,
+) {
   switch (setting.name) {
     case FaultsRouteKeys.warningScreen:
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLNetworkService);
           final viewModel = WarningScreenViewModel(provider: provider);
 
           return WarningScreen(viewModel: viewModel);
@@ -37,9 +43,12 @@ Route<dynamic>? FaultsRouter(
         settings: setting,
         builder: (context) {
           final config = setting.arguments as ChildProblem;
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider =
+              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = ProblemCaseScreenViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: config,
           );
 
@@ -51,9 +60,12 @@ Route<dynamic>? FaultsRouter(
         settings: setting,
         builder: (context) {
           final config = setting.arguments as ChildFault;
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider =
+              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = FaultScreenViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: config,
           );
 

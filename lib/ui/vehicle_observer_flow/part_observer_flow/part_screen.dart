@@ -41,7 +41,10 @@ class _PartScreenState extends State<PartScreen> {
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        action: const [VehicleNavBarActions()],
+        action: [VehicleNavBarActions(
+          id: int.parse(widget.viewModel.config.id),
+          provider: widget.viewModel.favoritesProvider,
+        )],
         bottom: _navBarTitle(styles),
         toolbarHeight: 52,
       ),

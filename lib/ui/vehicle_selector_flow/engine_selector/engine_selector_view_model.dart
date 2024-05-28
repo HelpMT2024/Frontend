@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/home_router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
@@ -14,15 +15,17 @@ class EngineSelectorViewModel {
   int currentEngineIndex = 0;
 
   final VehicleProvider provider;
+  final RestAPINetworkService restAPINetworkService;
 
-  EngineSelectorViewModel({required this.provider, required this.truck});
+  EngineSelectorViewModel({required this.provider, required this.truck, required this.restAPINetworkService});
 
   void selectEngine(BuildContext context) {
     final engine = engines.value.elementAt(currentEngineIndex);
     final config = MainPageConfig(
       engine: engine,
       truck: truck,
-      service: provider.service,
+      graphQLNetworkService: provider.service,
+      restAPINetworkService: restAPINetworkService,
     );
 
     Navigator.of(context).pushNamedAndRemoveUntil(

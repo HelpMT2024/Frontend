@@ -18,6 +18,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesWrapper.processInitialize();
 
+  final token = SharedPreferencesWrapper.getToken()?.token ?? '';
+  restAPIService.addBasicAuth(token);
   runApp(const MyApp());
 }
 
