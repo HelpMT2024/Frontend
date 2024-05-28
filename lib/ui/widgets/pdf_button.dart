@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
@@ -57,10 +58,13 @@ class PDFButton extends StatelessWidget {
               const SizedBox(width: 6),
             },
             if (trailing != null) ...{trailing, const SizedBox(width: 6)},
-            Text(
-              title,
-              style: styles.labelLarge?.copyWith(
-                color: ColorConstants.onSurfaceWhite,
+            Flexible(
+              child: Text(
+                title,
+                style: styles.labelLarge?.copyWith(
+                  overflow: TextOverflow.ellipsis,
+                  color: ColorConstants.onSurfaceWhite,
+                ),
               ),
             ),
           ],
