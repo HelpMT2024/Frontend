@@ -1,4 +1,4 @@
-package com.example.help_my_truck
+package com.helpmytruck.fixer
 
 import io.flutter.embedding.android.FlutterActivity
 
