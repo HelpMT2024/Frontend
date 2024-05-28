@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.helpMyTruck</string>
+	<string>com.helpmytruck.fixer</string>
 	<key>PROJECT_ID</key>
 	<string>helpmytruck</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:734307137754:ios:0356d40a65e912d2b40de3</string>
+	<string>1:734307137754:ios:739a664f8497e602b40de3</string>
 </dict>
 </plist>
