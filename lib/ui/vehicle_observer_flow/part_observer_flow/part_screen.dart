@@ -212,11 +212,7 @@ class _PartScreenState extends State<PartScreen> {
     }).toList();
 
     return ButtonGroup(
-      buttons: [
-        ...buttons,
-        const SizedBox(height: 24),
-        const CommentButton(disableFlex: true)
-      ],
+      buttons: [...buttons, const CommentButton(disableFlex: true)],
     );
   }
 

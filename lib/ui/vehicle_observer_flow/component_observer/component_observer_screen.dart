@@ -143,12 +143,12 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
                 size: 16,
               ),
               const SizedBox(width: 4),
-              Text(
-                'Description',
-                style: styles.titleMedium?.copyWith(
-                    color: ColorConstants.surfaceWhite.withAlpha(210),
-                    fontWeight: FontWeight.w800),
-              ),
+              // Text(
+              //   'Description',
+              //   style: styles.titleMedium?.copyWith(
+              //       color: ColorConstants.surfaceWhite.withAlpha(210),
+              //       fontWeight: FontWeight.w800),
+              // ),
             ],
           ),
           const SizedBox(height: 8),

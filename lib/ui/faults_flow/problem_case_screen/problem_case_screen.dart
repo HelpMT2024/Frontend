@@ -67,6 +67,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         },
         if (widget.viewModel.hasDescription) ...{
           _text(Theme.of(context).textTheme),
+          const SizedBox(height: 24),
         },
         _instructionsButtons(),
         if (widget.viewModel.hasVideos) ...{
