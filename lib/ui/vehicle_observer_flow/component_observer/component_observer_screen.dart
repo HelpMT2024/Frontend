@@ -151,6 +151,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
               ),
             ],
           ),
+          const SizedBox(height: 8),
           ContentfulRichText(data.description).documentToWidgetTree,
         ],
       ),
