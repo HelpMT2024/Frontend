@@ -44,7 +44,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         styles: styles,
         title: widget.viewModel.config.name,
         action: [VehicleNavBarActions(
-          id: int.parse(widget.viewModel.config.id),
+          integrationId: widget.viewModel.config.id,
           provider: widget.viewModel.favoritesProvider,
         )],
       ),

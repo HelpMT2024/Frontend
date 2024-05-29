@@ -47,7 +47,7 @@ class _FaultScreenState extends State<FaultScreen> {
                 styles: styles,
                 action: [
                   VehicleNavBarActions(
-                    id: int.parse(widget.viewModel.config.id),
+                    integrationId: widget.viewModel.config.id,
                     provider: widget.viewModel.favoritesProvider,
                   )
                 ],

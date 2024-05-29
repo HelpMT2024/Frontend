@@ -45,7 +45,7 @@ class VehicleProvider {
     if (result.hasException) {
       throw Exception(result.exception);
     }
-
+    print('UNIT ID ${id}');
     return Unit.fromJson(result.data!['unit']);
   }
 

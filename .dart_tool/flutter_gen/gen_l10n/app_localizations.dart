@@ -480,6 +480,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Error'**
   String get error;
+
+  /// No description provided for @favorites_item_type_units.
+  ///
+  /// In en, this message translates to:
+  /// **'Units'**
+  String get favorites_item_type_units;
+
+  /// No description provided for @favorites_item_type_systems.
+  ///
+  /// In en, this message translates to:
+  /// **'Systems'**
+  String get favorites_item_type_systems;
+
+  /// No description provided for @favorites_item_type_components.
+  ///
+  /// In en, this message translates to:
+  /// **'Components'**
+  String get favorites_item_type_components;
+
+  /// No description provided for @favorites_item_type_parts.
+  ///
+  /// In en, this message translates to:
+  /// **'Parts'**
+  String get favorites_item_type_parts;
+
+  /// No description provided for @favorites_item_type_sub_parts.
+  ///
+  /// In en, this message translates to:
+  /// **'Sub Parts'**
+  String get favorites_item_type_sub_parts;
+
+  /// No description provided for @favorites_item_type_fault_codes.
+  ///
+  /// In en, this message translates to:
+  /// **'Fault Codes'**
+  String get favorites_item_type_fault_codes;
+
+  /// No description provided for @favorites_item_type_problem_cases.
+  ///
+  /// In en, this message translates to:
+  /// **'Problem Cases'**
+  String get favorites_item_type_problem_cases;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

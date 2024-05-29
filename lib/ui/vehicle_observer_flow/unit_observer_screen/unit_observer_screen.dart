@@ -32,8 +32,8 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
         title: widget.viewModel.config.name,
         action: [
           VehicleNavBarActions(
-            id: int.parse(widget.viewModel.config.id),
-            provider: widget.viewModel.favoritesProvider,
+            integrationId: widget.viewModel.config.id,
+            provider: widget.viewModel.favoritesProvider, 
           ),
         ],
       ),

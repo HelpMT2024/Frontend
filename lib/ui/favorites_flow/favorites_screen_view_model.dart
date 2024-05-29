@@ -1,20 +1,43 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
-import 'package:rxdart/rxdart.dart';
 
 enum FavoriteModelTypes {
   unit,
   system,
   component,
   part,
+  subPart,
   faultCode,
   problemCase,
+}
+
+extension FavoriteModelTypesExtension on FavoriteModelTypes {
+  String title(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (this) {
+      case FavoriteModelTypes.unit:
+        return l10n?.favorites_item_type_units ?? '';
+      case FavoriteModelTypes.system:
+        return l10n?.favorites_item_type_systems ?? '';
+      case FavoriteModelTypes.component:
+        return l10n?.favorites_item_type_components ?? '';
+      case FavoriteModelTypes.part:
+        return l10n?.favorites_item_type_parts ?? '';
+      case FavoriteModelTypes.subPart:
+        return l10n?.favorites_item_type_sub_parts ?? '';
+      case FavoriteModelTypes.faultCode:
+        return l10n?.favorites_item_type_fault_codes ?? '';
+      case FavoriteModelTypes.problemCase:
+        return l10n?.favorites_item_type_problem_cases ?? '';
+    }
+  }
 }
 
 class FavoriteContentfulModel {
@@ -22,7 +45,8 @@ class FavoriteContentfulModel {
   final String name;
   final FavoriteModelTypes type;
 
-  FavoriteContentfulModel({required this.id, required this.name, required this.type});
+  FavoriteContentfulModel(
+      {required this.id, required this.name, required this.type});
 
   factory FavoriteContentfulModel.fromJson(Map<String, dynamic> json) =>
       FavoriteContentfulModel(
@@ -35,95 +59,147 @@ class FavoriteContentfulModel {
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
   final VehicleProvider vehicleProvider;
-  final int _cellsPerPage = 5;
-  FavoriteModelTypes _selectedFilter = FavoriteModelTypes.unit;
+  final updateDataStreamController = StreamController<List<FavoritesListItem>>.broadcast();
+  final int _cellsPerPage = 10;
 
-  late final user = BehaviorSubject<UserInfoModel>()
-    ..addStream(Stream.fromFuture(provider.user()));
+  // late final user = BehaviorSubject<UserInfoModel>()
+  //   ..addStream(Stream.fromFuture(provider.user()));
 
-  late final page = BehaviorSubject<Future<FavoritesListModel>>()
-    ..addStream(user.map((user) {
+  // late final page = BehaviorSubject<Future<FavoritesListModel>>()
+  //   ..addStream(user.map((user) {
 
-      return provider.favoritesList(user.id, _page);
-    }));
+  //     return provider.favoritesList(user.id, _page);
+  //   }));
 
-  List<FavoritesListItem>? pageItems;
+  UserInfoModel? user;
+  List<FavoritesListItem> pageItems = [];
   List<FavoritesListItem> fetchedItems = [];
-  final updateDataStreamController =
-      StreamController<List<FavoritesListItem>>();
+  FavoriteModelTypes _selectedFilter = FavoriteModelTypes.unit;
+  Pagination? pagination;
+  bool isLastPage = false;
 
   int _page = 1;
 
-  FavoritesScreenViewModel({required this.provider, required this.vehicleProvider,});
+  FavoritesScreenViewModel({
+    required this.provider,
+    required this.vehicleProvider,
+  });
 
-  //fetching to list items
-  void fetch(List<FavoritesListItem> items) {
-    fetchedItems.addAll(items);
-    updateDataStreamController.add(fetchedItems);
-  }
-  
   //request
-  void loadNextPage() {
-    // user
-    // .map((user) => provider.favoritesList(user.id, _page))
-    // .map((favorites) => switch (_selectedFilter) {
-    //   case FavoriteModelTypes.unit:
-    //     final signals = favorites.map((favorite){ vehicleProvider.unit(favorite.id) });
-    //     final resutls = await Future.wait(signals);
+  void getPage() async {
+    user = await provider.user();
 
-    //     return _favoritesFromSystems(results);
-    //   case FavoriteModelTypes.system:
-    //   ,
-    //   case FavoriteModelTypes.component:
+    await provider
+        .favoritesList(user!.id, _page, _cellsPerPage)
+        .then((value) {
+          fetchedItems.addAll(value.items);
+          pagination = value.pagination;
+          updateDataStreamController.add(fetchedItems);
+        });
+    filterItems();
+    handlePagination();
+  }
 
-    //   case FavoriteModelTypes.part:
+  void handlePagination() {
+    _page += 1;
+    isLastPage = pagination?.pages == pagination?.page;
+  }
 
-    //   case FavoriteModelTypes.faultCode:
+  void filterItems() {
+    fetchedItems.map((e) => 
+      switch (_selectedFilter) {
+        FavoriteModelTypes.unit => {     
+          print('VEHICLEPROVIDER ${vehicleProvider.unit(e.integrationId)}',),
+        },
+        FavoriteModelTypes.system => {
 
-    //   case FavoriteModelTypes.problemCase:
+        },
+        FavoriteModelTypes.component => {
 
-    // }
-    // );
-      
-      // case system:
-      // final signals = favorites.map { vehicleProvider.system(id: $0.id) }
-      // final resutls = await Future.wait(signals);
+        },
+        FavoriteModelTypes.part => {
 
-      // return _favoritesFromSystems(results)
-      // case unit:
-      // final signals = favorites.map { vehicleProvider.system(id: $0.id) }
-      // final resutls = await Future.wait(signals);
+        },
+        FavoriteModelTypes.subPart => {
 
-      // return _favoritesFromSystems(results)
+        },
+        FavoriteModelTypes.faultCode => {
+
+        },
+        FavoriteModelTypes.problemCase => {
+
+        },
+      }
+    );
+  }
+
+  void handleTabButtonClick() {
 
   }
 
   void handleClick(FavoriteContentfulModel model, BuildContext context) {
     switch (model.type) {
       case FavoriteModelTypes.unit:
-        final child = ChildrenSystem(id: model.id, name: model.name, image: null, types: [ChildType.standart]);
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
       case FavoriteModelTypes.system:
-        final child = ChildrenSystem(id: model.id, name: model.name, image: null, types: [ChildType.standart]);
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
       case FavoriteModelTypes.component:
-        final child = ChildrenSystem(id: model.id, name: model.name, image: null, types: [ChildType.standart]);
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
       case FavoriteModelTypes.part:
-        final child = ChildrenSystem(id: model.id, name: model.name, image: null, types: [ChildType.standart]);
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
+        Navigator.of(context).pushNamed(child.name);
+      case FavoriteModelTypes.subPart:
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
       case FavoriteModelTypes.faultCode:
-        final child = ChildrenSystem(id: model.id, name: model.name, image: null, types: [ChildType.standart]);
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
       case FavoriteModelTypes.problemCase:
-        final child = ChildrenSystem(id: model.id, name: model.name, image: null, types: [ChildType.standart]);
+        final child = ChildrenSystem(
+            id: model.id,
+            name: model.name,
+            image: null,
+            types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
     }
   }
 
+  // List<FavoriteContentfulModel> _favoritesFromUnits(List<Unit> units) {
+  //   return units.map (event) {
+  //     FavoriteContentfulModel(event.id, event.name, FavoriteModelTypes.unit);
+  //   };
+  // }
+
   // List<FavoriteContentfulModel> _favoritesFromSystems(List<System> systems) {
   //   return systems.map (event) {
-  //     FavoriteModel(event.id, event.name, Type.systems)
-  //   }
+  //     FavoriteContentfulModel(event.id, event.name, Type.systems);
+  //   };
   // }
 }

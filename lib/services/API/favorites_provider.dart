@@ -44,19 +44,27 @@ class ContentfulItem {
 }
 
 class FavoritesListModel {
-  final Pagination pagination;
-  final List<FavoritesListItem> items;
+  Pagination pagination;
+  List<FavoritesListItem> items;
 
   FavoritesListModel({
     required this.pagination,
     required this.items,
   });
 
-  factory FavoritesListModel.fromJson(Map<String, dynamic> json) =>
-      FavoritesListModel(
-        pagination: json["pagination"],
-        items: json["items"],
-      );
+  factory FavoritesListModel.fromJson(Map<String, dynamic> json) {
+    var paginationJson = json['pagination'];
+    var itemsJson = json['items'] as List;
+
+    Pagination pagination = Pagination.fromJson(paginationJson);
+    List<FavoritesListItem> items =
+        itemsJson.map((i) => FavoritesListItem.fromJson(i)).toList();
+
+    return FavoritesListModel(
+      pagination: pagination,
+      items: items,
+    );
+  }
 }
 
 class FavoritesListItem {
@@ -85,36 +93,69 @@ class FavoritesListItem {
 }
 
 class FavoritesProvider {
-  final RestAPINetworkService service;
+  final RestAPINetworkService restAPINetworkService;
   final GraphQLNetworkService graphQLNetworkService;
 
-  FavoritesProvider(this.service, this.graphQLNetworkService);
+  FavoritesProvider(this.restAPINetworkService, this.graphQLNetworkService);
+
+  Future<void> createContentfulItem(String integrationId) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.post,
+      path: '/api/contentful/add',
+      data: NetworkRequestBody.formData({
+        'integrationId': integrationId,
+      }),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => FavoritesListModel.fromJson(json['data']),
+    );
+  }
+
+  Future<ContentfulItem> itemWith(String integrationId) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/contentful/$integrationId/external',
+      data: NetworkRequestBody.empty(),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => ContentfulItem.fromJson(json['data']),
+    );
+  }
 
   Future change(int id) {
     final request = NetworkRequest(
-      type: NetworkRequestType.get,
+      type: NetworkRequestType.post,
       path: '/api/contentful/$id/favorite/change',
-      data: NetworkRequestBody.formData({
-        'contentfulId': id,
-      }),
+      data: NetworkRequestBody.empty(),
+      queryParams: {
+        'id': id,
+      }
     );
 
-    return service.execute(
-        request, (json) => FavoritesListModel.fromJson(json['data']));
+    return restAPINetworkService.execute(
+        request, (json) => null);
   }
 
-  Future<FavoritesListModel> favoritesList(int id, int page) {
+  Future<FavoritesListModel> favoritesList(int? id, int page, int size) {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
-      data: NetworkRequestBody.formData({
+      data: NetworkRequestBody.empty(),
+      queryParams: {
         'owner_id': id,
         'page': page,
-      }),
+        'size': size,
+      },
     );
 
-    return service.execute(
-        request, (json) => FavoritesListModel.fromJson(json['data']));
+    return restAPINetworkService.execute(
+      request,
+      (json) => FavoritesListModel.fromJson(json['data']),
+    );
   }
 
   Future<UserInfoModel> user() {
@@ -124,8 +165,10 @@ class FavoritesProvider {
       data: const NetworkRequestBody.empty(),
     );
 
-    return service.execute(
-        request, (json) => UserInfoModel.fromJson(json['data']));
+    return restAPINetworkService.execute(
+      request,
+      (json) => UserInfoModel.fromJson(json['data']),
+    );
   }
 }
 

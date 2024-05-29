@@ -42,7 +42,7 @@ class _PartScreenState extends State<PartScreen> {
         context: context,
         styles: styles,
         action: [VehicleNavBarActions(
-          id: int.parse(widget.viewModel.config.id),
+          integrationId: widget.viewModel.config.id,
           provider: widget.viewModel.favoritesProvider,
         )],
         bottom: _navBarTitle(styles),

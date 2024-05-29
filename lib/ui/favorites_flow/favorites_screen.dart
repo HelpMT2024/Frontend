@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
@@ -13,7 +14,6 @@ import 'package:paginated_list/paginated_list.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final FavoritesScreenViewModel viewModel;
-
   const FavoritesScreen({super.key, required this.viewModel});
 
   @override
@@ -21,8 +21,19 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    widget.viewModel.updateDataStreamController.close();
+
+    super.dispose();
+  }
+
   @override
   void initState() {
+    print('INIT STATE');
     super.initState();
   }
 
@@ -52,40 +63,48 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       ),
       child: Column(
         children: [
-          Row(children: buttons()),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: buttons(),
+            ),
+          ),
           const SizedBox(
             height: 24,
           ),
           Expanded(
-            child: SizedBox()
-            // PaginatedList<FavoriteContentfulModel>(
-            //   loadingIndicator: const Padding(
-            //     padding: EdgeInsets.symmetric(vertical: 20),
-            //     child: Center(
-            //       child: CircularProgressIndicator(color: Colors.black),
-            //     ),
-            //   ),
-            //   items: widget.viewModel.,
-            //   isRecentSearch: false,
-            //   isLastPage: state.isLastPage,
-            //   onLoadMore: (index) => context.read<MovieBloc>().loadMore(),
-            //   builder: (movie, index) => Co(
-            //     subtitle: movie.overview,
-            //     title: movie.title,
-            //     imageUrl: movie.posterPath ?? '',
-            //   ),
-            // ),
-          )
+            child: StreamBuilder<List<FavoritesListItem>>(
+              stream: widget.viewModel.updateDataStreamController.stream,
+              builder: (context, AsyncSnapshot snapshot) {
+                return PaginatedList<FavoritesListItem>(
+                    scrollDirection: Axis.vertical,
+                    controller: _scrollController,
+                    loadingIndicator: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      child: Center(
+                        child: CircularProgressIndicator(color: Colors.black),
+                      ),
+                    ),
+                    items: widget.viewModel.fetchedItems,
+                    isRecentSearch: false,
+                    isLastPage: widget.viewModel.isLastPage,
+                    onLoadMore: (index) {
+                      widget.viewModel.getPage();
+                    },
+                    builder: (item, index) => listViewCell(item, index));
+              },
+            ),
+          ),
         ],
       ),
     );
   }
 
   List<Widget> buttons() {
-    return [0, 1, 2].map((button) {
+    return FavoriteModelTypes.values.map((type) {
       return Row(
         children: [
-          customTabButton('Units'),
+          customTabButton(type.title(context), null, true),
           const SizedBox(
             width: 8,
           ),
@@ -94,53 +113,60 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     }).toList();
   }
 
-  Widget listViewCell(String title, int index) {
-    final styles = Theme.of(context).textTheme;
-
-    return InkWell(
-      onTap: () {
-        // widget.viewModel.handleClick(model, context);
-      },
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: ColorConstants.surfaceSecondary,
-        ),
-        child: Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 12, top: 12, bottom: 12),
-          child: Row(
-            children: [
-              Expanded(
-                  child: Text(title,
-                      style: styles.titleMedium
-                          ?.copyWith(color: ColorConstants.onSurfaceWhite))),
-              const SizedBox(width: 8),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 6.17, vertical: 4.5),
-                child: BookmarkButton(widget.viewModel.fetchedItems[index].id,
-                    widget.viewModel.provider),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget customTabButton(String title) {
+  Widget customTabButton(String title, Function()? onPressed, bool isSelected) {
     return CustomButton(
       height: 28,
-      textColor: ColorConstants.onSurfaceWhite,
+      textColor: isSelected
+          ? ColorConstants.onSurfaceWhite
+          : ColorConstants.surfacePrimaryDark,
       borderColor: ColorConstants.stroke,
       borderRadius: 8,
       title: CustomButtonTitle(
         text: title,
       ),
-      state: CustomButtonStates.outlined,
-      onPressed: () => (),
+      state:
+          isSelected ? CustomButtonStates.outlined : CustomButtonStates.filled,
+      onPressed: onPressed,
+    );
+  }
+
+  Widget listViewCell(FavoritesListItem model, int index) {
+    final styles = Theme.of(context).textTheme;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: () {
+          // widget.viewModel.handleClick(model, context);
+        },
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: ColorConstants.surfaceSecondary,
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 16, right: 0, top: 6, bottom: 6),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    model.integrationId,
+                    style: styles.titleMedium
+                        ?.copyWith(color: ColorConstants.onSurfaceWhite),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                BookmarkButton(
+                  widget.viewModel.fetchedItems[index].integrationId,
+                  widget.viewModel.provider,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
