@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
@@ -58,13 +59,11 @@ class PDFButton extends StatelessWidget {
               const SizedBox(width: 6),
             },
             if (trailing != null) ...{trailing, const SizedBox(width: 6)},
-            Flexible(
-              child: Text(
-                title,
-                style: styles.labelLarge?.copyWith(
-                  overflow: TextOverflow.ellipsis,
-                  color: ColorConstants.onSurfaceWhite,
-                ),
+            Text(
+              title,
+              style: styles.labelLarge?.copyWith(
+                overflow: TextOverflow.ellipsis,
+                color: ColorConstants.onSurfaceWhite,
               ),
             ),
           ],

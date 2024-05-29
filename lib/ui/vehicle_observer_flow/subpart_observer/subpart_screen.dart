@@ -2,9 +2,9 @@ import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
+import 'package:help_my_truck/data/models/subpart.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/subpart_observer/subpart_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -12,7 +12,6 @@ import 'package:help_my_truck/ui/widgets/fault_code_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/main_navigation_bar_bottom.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
-import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_view_model.dart';
 import 'package:help_my_truck/ui/widgets/pdf_button.dart';
 import 'package:help_my_truck/ui/widgets/problems_buttons.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
@@ -24,16 +23,16 @@ import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 import '../../widgets/main_bottom_bar.dart';
 import '../../widgets/nav_bar/nav_bar_page.dart';
 
-class PartScreen extends StatefulWidget {
-  final PartViewModel viewModel;
+class SubPartScreen extends StatefulWidget {
+  final SubPartViewModel viewModel;
 
-  const PartScreen({super.key, required this.viewModel});
+  const SubPartScreen({super.key, required this.viewModel});
 
   @override
-  State<PartScreen> createState() => _PartScreenState();
+  State<SubPartScreen> createState() => _SubPartScreenState();
 }
 
-class _PartScreenState extends State<PartScreen> {
+class _SubPartScreenState extends State<SubPartScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
@@ -56,7 +55,7 @@ class _PartScreenState extends State<PartScreen> {
           Container(decoration: appGradientBgDecoration),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
-            child: StreamBuilder<Part>(
+            child: StreamBuilder<SubPart>(
               stream: widget.viewModel.part,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
@@ -79,7 +78,7 @@ class _PartScreenState extends State<PartScreen> {
     );
   }
 
-  Widget _body(Part data) {
+  Widget _body(SubPart data) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
 
@@ -92,7 +91,7 @@ class _PartScreenState extends State<PartScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             if (widget.viewModel.hasImage) ...{
-              _content(data) ?? _image(),
+              _image(),
               _symptomsSection(styles),
             } else ...{
               _verticalVideoWidget(),
@@ -125,28 +124,7 @@ class _PartScreenState extends State<PartScreen> {
     if (part?.imageView == null && part?.imageView?.imageFront == null) {
       return const SizedBox();
     }
-    return Image.network(part!.imageView!.imageFront.url);
-  }
-
-  ReusableObserverWidget? _content(Part data) {
-    if (data.imageView == null) {
-      return null;
-    }
-
-    final models = data.subparts
-        .map((e) => ReusableModel(id: e.id, name: e.name, icon: e.image))
-        .toList();
-
-    final config = ReusableObserverWidgetConfig(
-      imageView: data.imageView!,
-      models: models,
-      onModelSelected: (model) => widget.viewModel.onModelSelected(
-        model.id,
-        context,
-      ),
-    );
-
-    return ReusableObserverWidget(config: config);
+    return Image.network(part!.imageView!.imageFront!.url);
   }
 
   Widget _title(String? text, TextTheme styles) {

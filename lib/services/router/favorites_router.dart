@@ -9,17 +9,18 @@ abstract class FavoritesRouteKeys {
   static const String favoritesScreen = 'favoritesScreen';
 }
 
-Route<dynamic>? FavoritesRouter(RouteSettings setting, GraphQLNetworkService service) {
+// ignore: body_might_complete_normally_nullable, non_constant_identifier_names
+Route<dynamic>? FavoritesRouter(
+    RouteSettings setting, GraphQLNetworkService service) {
   switch (setting.name) {
     case FavoritesRouteKeys.favoritesScreen:
       return nativePageRoute(
-        settings: setting,
-        builder: (context) {
-          final provider = VehicleProvider(service);
-          final viewModel = FavoritesScreenViewModel(provider: provider);
+          settings: setting,
+          builder: (context) {
+            final provider = VehicleProvider(service);
+            final viewModel = FavoritesScreenViewModel(provider: provider);
 
-          return FavoritesScreen(viewModel: viewModel);
-        }
-      );
+            return FavoritesScreen(viewModel: viewModel);
+          });
   }
 }

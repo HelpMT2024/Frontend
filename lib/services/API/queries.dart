@@ -397,6 +397,70 @@ faultCodesCollection {
 ''';
   }
 
+  static String subPartById({required String id}) {
+    return '''
+query Subpart(\$id: String = "$id") {
+	subPart(id: \$id) {
+    internalName
+    name
+    icon {
+      title
+      description
+      contentType
+      fileName
+      size
+      url
+      width
+      height
+    } 
+    warningLightsCollection {
+      items {
+        sys {
+          id
+        }
+        name
+        icon {
+          title
+          description
+          contentType
+          fileName
+          size
+          url
+          width
+          height
+        }
+      }
+    }
+    problemCasesCollection(limit: 50) {
+      items {
+        internalName
+        name
+        warningLightsCollection(limit: 50) {
+          items {
+            internalName
+            name
+          }
+        }
+      } 
+    }
+     faultCodesCollection {
+      items {
+        spnCode
+        fmiCodes
+      } 
+    }
+    imageView {
+      internalName
+      imageFrontMarkup
+      imageBackMarkup
+      buttonsTemplate
+      description
+      descriptionPosition
+    }
+  }
+}''';
+  }
+
   static String partById({required String id}) {
     return '''
     query Part(\$id: String = "$id") {
@@ -413,6 +477,17 @@ faultCodesCollection {
         }
         imageView {
           $imageView
+        }
+        childrenCollection {
+          items {
+            sys {
+              id
+            }
+            name
+            icon {
+              $image
+            }
+          }
         }
         pdfFilesCollection {
           items {

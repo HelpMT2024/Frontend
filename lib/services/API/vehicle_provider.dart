@@ -4,6 +4,7 @@ import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/problem_case.dart';
+import 'package:help_my_truck/data/models/subpart.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
@@ -90,6 +91,17 @@ class VehicleProvider {
     final List<dynamic> engines = result.data!['engineCollection']['items'];
 
     return engines.map((engine) => Engine.fromJson(engine)).toList();
+  }
+
+  Future<SubPart> subPart(String id) async {
+    final query = Queries.subPartById(id: id);
+    final result = await service.callApi(query);
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    return SubPart.fromJson(result.data!['subPart']);
   }
 
   Future<Part> part(String id) async {

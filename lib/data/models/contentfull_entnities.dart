@@ -33,6 +33,11 @@ class IDPIcon {
   }
 }
 
+enum IDPPointPosition {
+  top,
+  bottom,
+}
+
 class IDPPoint {
   final double x;
   final double y;
@@ -40,6 +45,7 @@ class IDPPoint {
   final String type;
   final String color;
   final String parentID;
+  final IDPPointPosition? position;
 
   IDPPoint({
     required this.x,
@@ -48,6 +54,7 @@ class IDPPoint {
     required this.type,
     required this.color,
     required this.parentID,
+    required this.position,
   });
 
   factory IDPPoint.fromJson(Map<String, dynamic> json) {
@@ -58,6 +65,11 @@ class IDPPoint {
       type: json['type'],
       color: json['color'],
       parentID: json['cls'],
+      position: json['position'] == null
+          ? null
+          : json['position'] == 'Top'
+              ? IDPPointPosition.top
+              : IDPPointPosition.bottom,
     );
   }
 }
