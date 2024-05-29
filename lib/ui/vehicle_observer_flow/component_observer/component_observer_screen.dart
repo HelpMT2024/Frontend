@@ -132,7 +132,28 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     return DefaultTextStyle.merge(
       style: styles.labelLarge?.merge(
           TextStyle(color: ColorConstants.onSurfaceWhite.withAlpha(210))),
-      child: ContentfulRichText(data.description).documentToWidgetTree,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                color: ColorConstants.onSurfaceWhite.withAlpha(210),
+                size: 16,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                'Description',
+                style: styles.titleMedium?.copyWith(
+                    color: ColorConstants.surfaceWhite.withAlpha(210),
+                    fontWeight: FontWeight.w800),
+              ),
+            ],
+          ),
+          ContentfulRichText(data.description).documentToWidgetTree,
+        ],
+      ),
     );
   }
 
