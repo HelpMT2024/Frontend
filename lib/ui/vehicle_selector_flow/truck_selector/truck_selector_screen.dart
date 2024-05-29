@@ -89,20 +89,23 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
-        return Column(
-          children: [
-            SizedBox(
-              height: 240,
-              width: 240,
-              child: Image.network(truck.image.url),
-            ),
-            Text(
-              truck.name.toUpperCase(),
-              style: styles.titleMedium?.copyWith(
-                color: ColorConstants.surfaceWhite,
+        return GestureDetector(
+          onTap: () => widget.viewModel.selectTruck(context),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 240,
+                width: 240,
+                child: Image.network(truck.image.url),
               ),
-            ),
-          ],
+              Text(
+                truck.name.toUpperCase(),
+                style: styles.titleMedium?.copyWith(
+                  color: ColorConstants.surfaceWhite,
+                ),
+              ),
+            ],
+          ),
         );
       },
       options: CarouselOptions(
