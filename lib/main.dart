@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -16,6 +18,21 @@ class NavigationService {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 }
 
+class ProxiedHttpOverrides extends HttpOverrides {
+  final String proxy;
+  ProxiedHttpOverrides(this.proxy);
+
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..findProxy = (uri) {
+        return proxy.isNotEmpty ? "PROXY $proxy;" : 'DIRECT';
+      }
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => Platform.isAndroid;
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesWrapper.processInitialize();
@@ -23,6 +40,11 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  final proxy = SharedPreferencesWrapper.getProxy();
+  if (proxy.isNotEmpty) {
+    HttpOverrides.global = ProxiedHttpOverrides(proxy);
+  }
 
   runApp(const MyApp());
 }

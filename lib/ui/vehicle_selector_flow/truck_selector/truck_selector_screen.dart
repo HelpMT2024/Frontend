@@ -125,11 +125,20 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
 
   Widget _header(TextTheme styles) {
     final l10n = AppLocalizations.of(context);
-    return Text(
-      l10n!.choose_your_truck,
-      style: styles.headlineSmall?.copyWith(
-        color: ColorConstants.surfaceWhite,
+    return _proxySetter(
+      Text(
+        l10n!.choose_your_truck,
+        style: styles.headlineSmall?.copyWith(
+          color: ColorConstants.surfaceWhite,
+        ),
       ),
+    );
+  }
+
+  Widget _proxySetter(Widget child) {
+    return GestureDetector(
+      onTap: () => widget.viewModel.setProxy(context),
+      child: child,
     );
   }
 }
