@@ -39,10 +39,12 @@ class SubPart {
       videosCollection: json['videosCollection'] == null
           ? null
           : VideosCollection.fromJson(json['videosCollection']),
-      faults: json['faultCodesCollection']?['items']
-              .map<ChildFault>((e) => ChildFault.fromJson(e))
-              .toList() ??
-          [],
+      faults: json['faultsCollection']?['items'] == null
+          ? []
+          : json['faultsCollection']?['items']
+                  ?.map<ChildFault>((e) => ChildFault.fromJson(e))
+                  .toList() ??
+              [],
       problems: json['problemCasesCollection']?['items']
               .map<ChildProblem>((e) => ChildProblem.fromJson(e))
               .toList() ??

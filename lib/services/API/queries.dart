@@ -433,11 +433,15 @@ query Subpart(\$id: String = "$id") {
     }
     problemCasesCollection(limit: 50) {
       items {
-        internalName
+        sys {
+          id
+        }
         name
         warningLightsCollection(limit: 50) {
           items {
-            internalName
+            sys {
+              id
+            }
             name
           }
         }
