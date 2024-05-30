@@ -14,7 +14,10 @@ class ProblemsButtons extends StatelessWidget {
       children: [
         ...problems.map(
           (e) {
-            return ProblemCaseButton(problem: e);
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: ProblemCaseButton(problem: e),
+            );
           },
         ),
       ],
