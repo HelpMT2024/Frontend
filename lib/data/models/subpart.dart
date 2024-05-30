@@ -33,18 +33,13 @@ class SubPart {
       imageView: json['imageView'] != null
           ? IDPPartImageView.fromJson(json['imageView'])
           : null,
-      pdfFilesCollection: json['pdfFilesCollection'] == null
-          ? null
-          : PdfFilesCollection.fromJson(json['pdfFilesCollection']),
-      videosCollection: json['videosCollection'] == null
-          ? null
-          : VideosCollection.fromJson(json['videosCollection']),
-      faults: json['faultsCollection']?['items'] == null
-          ? []
-          : json['faultsCollection']?['items']
-                  ?.map<ChildFault>((e) => ChildFault.fromJson(e))
-                  .toList() ??
-              [],
+      pdfFilesCollection:
+          PdfFilesCollection.fromJson(json['pdfFilesCollection']),
+      videosCollection: VideosCollection.fromJson(json['videosCollection']),
+      faults: json['faultCodesCollection']?['items']
+              .map<ChildFault>((e) => ChildFault.fromJson(e))
+              .toList() ??
+          [],
       problems: json['problemCasesCollection']?['items']
               .map<ChildProblem>((e) => ChildProblem.fromJson(e))
               .toList() ??
