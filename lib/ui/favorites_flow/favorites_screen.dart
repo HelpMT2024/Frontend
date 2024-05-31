@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -7,7 +8,8 @@ import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
-import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/filter_tab_bar.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/no_connection_placeholder.dart';
 import 'package:paginated_list/paginated_list.dart';
@@ -26,15 +28,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
-    widget.viewModel.updateDataStreamController.close();
 
     super.dispose();
   }
 
   @override
   void initState() {
-    print('INIT STATE');
+    widget.viewModel.resetData();
+
     super.initState();
+  }
+
+  void buttonCallback(String id) {
+    widget.viewModel.fetchedItems
+        .removeWhere((element) => element.integrationId == id);
+    widget.viewModel.updateDataStreamController
+        .add(widget.viewModel.fetchedItems);
   }
 
   @override
@@ -49,11 +58,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         styles: styles,
         title: l10n?.favorites_title ?? '',
       ),
-      body: _successBody(),
+      body: _commonBody(),
     );
   }
 
-  Widget _successBody() {
+  Widget _commonBody() {
     return Container(
       color: ColorConstants.surfacePrimaryDark,
       padding: const EdgeInsets.only(
@@ -61,72 +70,64 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         left: 16,
         right: 16,
       ),
-      child: Column(
-        children: [
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: buttons(),
-            ),
-          ),
-          const SizedBox(
-            height: 24,
-          ),
-          Expanded(
-            child: StreamBuilder<List<FavoritesListItem>>(
-              stream: widget.viewModel.updateDataStreamController.stream,
-              builder: (context, AsyncSnapshot snapshot) {
-                return PaginatedList<FavoritesListItem>(
-                    scrollDirection: Axis.vertical,
-                    controller: _scrollController,
-                    loadingIndicator: const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Center(
-                        child: CircularProgressIndicator(color: Colors.black),
-                      ),
-                    ),
-                    items: widget.viewModel.fetchedItems,
-                    isRecentSearch: false,
-                    isLastPage: widget.viewModel.isLastPage,
-                    onLoadMore: (index) {
-                      widget.viewModel.getPage();
-                    },
-                    builder: (item, index) => listViewCell(item, index));
-              },
-            ),
-          ),
-        ],
+      child: StreamBuilder<List<FavoritesListItem>>(
+        stream: widget.viewModel.updateDataStreamController.stream,
+        builder: (context, AsyncSnapshot snapshot) {
+
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Loadable(forceLoad: true, child: Container());
+          } else if (snapshot.data?.length == 0) {
+              return _placeholder();
+            //spinner
+          } else if (snapshot.hasData) {
+            return 
+            // widget.viewModel.fetchedItems.isEmpty
+            //   ? _placeholder()
+              _successBody();
+            //listview
+          } else if (snapshot.hasError) {
+            return Text('Error ${snapshot.hasData}');
+          } else {
+            return Container();
+          }
+        }
+        //   return widget.viewModel.fetchedItems.isEmpty
+        //       ? _placeholder()
+        //       : _successBody();
+        // },
       ),
     );
   }
 
-  List<Widget> buttons() {
-    return FavoriteModelTypes.values.map((type) {
-      return Row(
-        children: [
-          customTabButton(type.title(context), null, true),
-          const SizedBox(
-            width: 8,
+  Widget _successBody() {
+    return Column(
+      children: [
+        FilterTabBar(
+            titles:
+                FavoriteModelType.values.map((e) => e.title(context)).toList()),
+        const SizedBox(
+          height: 24,
+        ),
+        Flexible(
+            child: PaginatedList<FavoritesListItem>(
+          scrollDirection: Axis.vertical,
+          controller: _scrollController,
+          loadingIndicator: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Center(
+              child: Loadable(forceLoad: true, child: Container())
+            ),
           ),
-        ],
-      );
-    }).toList();
-  }
-
-  Widget customTabButton(String title, Function()? onPressed, bool isSelected) {
-    return CustomButton(
-      height: 28,
-      textColor: isSelected
-          ? ColorConstants.onSurfaceWhite
-          : ColorConstants.surfacePrimaryDark,
-      borderColor: ColorConstants.stroke,
-      borderRadius: 8,
-      title: CustomButtonTitle(
-        text: title,
-      ),
-      state:
-          isSelected ? CustomButtonStates.outlined : CustomButtonStates.filled,
-      onPressed: onPressed,
+          items: widget.viewModel.fetchedItems,
+          isRecentSearch: false,
+          isLastPage: widget.viewModel.isLastPage,
+          onLoadMore: (index) {
+            widget.viewModel.getPage();
+          },
+          builder: (item, index) => listViewCell(item, index),
+        )),
+      ],
     );
   }
 
@@ -161,6 +162,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 BookmarkButton(
                   widget.viewModel.fetchedItems[index].integrationId,
                   widget.viewModel.provider,
+                  buttonCallback,
+                  true,
                 ),
               ],
             ),
@@ -170,7 +173,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Widget placeholder() {
+  Widget _placeholder() {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 

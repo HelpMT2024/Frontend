@@ -44,7 +44,7 @@ class VehicleNavBarActions extends StatelessWidget {
           onPressed: _openAppPage,
         ),
         if (!hideBookmark)
-          BookmarkButton(integrationId, provider)
+          BookmarkButton(integrationId, provider, null, false)
       ],
     );
   }

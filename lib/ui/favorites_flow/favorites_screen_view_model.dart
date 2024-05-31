@@ -8,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 
-enum FavoriteModelTypes {
+enum FavoriteModelType {
   unit,
   system,
   component,
@@ -18,23 +18,37 @@ enum FavoriteModelTypes {
   problemCase,
 }
 
-extension FavoriteModelTypesExtension on FavoriteModelTypes {
+extension FavoriteModelTypesExtension on FavoriteModelType {
+  FavoriteModelType getTypeBy(String name) {
+    return FavoriteModelTypesExtension.itemType[name] ?? FavoriteModelType.unit;
+  }
+
+  static Map<String, FavoriteModelType> itemType = {
+    "Units": FavoriteModelType.unit,
+    "Systems": FavoriteModelType.system,
+    "Component": FavoriteModelType.component,
+    "Parts": FavoriteModelType.part,
+    "Sub Parts": FavoriteModelType.subPart,
+    "Fault Code": FavoriteModelType.faultCode,
+    "Problem Case": FavoriteModelType.problemCase,
+  };
+
   String title(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     switch (this) {
-      case FavoriteModelTypes.unit:
+      case FavoriteModelType.unit:
         return l10n?.favorites_item_type_units ?? '';
-      case FavoriteModelTypes.system:
+      case FavoriteModelType.system:
         return l10n?.favorites_item_type_systems ?? '';
-      case FavoriteModelTypes.component:
+      case FavoriteModelType.component:
         return l10n?.favorites_item_type_components ?? '';
-      case FavoriteModelTypes.part:
+      case FavoriteModelType.part:
         return l10n?.favorites_item_type_parts ?? '';
-      case FavoriteModelTypes.subPart:
+      case FavoriteModelType.subPart:
         return l10n?.favorites_item_type_sub_parts ?? '';
-      case FavoriteModelTypes.faultCode:
+      case FavoriteModelType.faultCode:
         return l10n?.favorites_item_type_fault_codes ?? '';
-      case FavoriteModelTypes.problemCase:
+      case FavoriteModelType.problemCase:
         return l10n?.favorites_item_type_problem_cases ?? '';
     }
   }
@@ -43,7 +57,7 @@ extension FavoriteModelTypesExtension on FavoriteModelTypes {
 class FavoriteContentfulModel {
   final String id;
   final String name;
-  final FavoriteModelTypes type;
+  final FavoriteModelType type;
 
   FavoriteContentfulModel(
       {required this.id, required this.name, required this.type});
@@ -59,22 +73,14 @@ class FavoriteContentfulModel {
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
   final VehicleProvider vehicleProvider;
-  final updateDataStreamController = StreamController<List<FavoritesListItem>>.broadcast();
+  final updateDataStreamController =
+      StreamController<List<FavoritesListItem>>.broadcast();
   final int _cellsPerPage = 10;
 
-  // late final user = BehaviorSubject<UserInfoModel>()
-  //   ..addStream(Stream.fromFuture(provider.user()));
-
-  // late final page = BehaviorSubject<Future<FavoritesListModel>>()
-  //   ..addStream(user.map((user) {
-
-  //     return provider.favoritesList(user.id, _page);
-  //   }));
-
   UserInfoModel? user;
-  List<FavoritesListItem> pageItems = [];
   List<FavoritesListItem> fetchedItems = [];
-  FavoriteModelTypes _selectedFilter = FavoriteModelTypes.unit;
+  List<FavoriteContentfulModel> filtered = [];
+  FavoriteModelType _selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
 
@@ -85,19 +91,21 @@ class FavoritesScreenViewModel {
     required this.vehicleProvider,
   });
 
-  //request
   void getPage() async {
     user = await provider.user();
 
-    await provider
-        .favoritesList(user!.id, _page, _cellsPerPage)
-        .then((value) {
-          fetchedItems.addAll(value.items);
-          pagination = value.pagination;
-          updateDataStreamController.add(fetchedItems);
-        });
-    filterItems();
+    await provider.favoritesList(user!.id, _page, _cellsPerPage).then((value) {
+      fetchedItems.addAll(value.items);
+      pagination = value.pagination;
+    });
     handlePagination();
+    updateDataStreamController.add(fetchedItems);
+  }
+
+  void resetData() {
+    _page = 1;
+    fetchedItems.clear();
+    getPage();
   }
 
   void handlePagination() {
@@ -105,83 +113,53 @@ class FavoritesScreenViewModel {
     isLastPage = pagination?.pages == pagination?.page;
   }
 
-  void filterItems() {
-    fetchedItems.map((e) => 
-      switch (_selectedFilter) {
-        FavoriteModelTypes.unit => {     
-          print('VEHICLEPROVIDER ${vehicleProvider.unit(e.integrationId)}',),
-        },
-        FavoriteModelTypes.system => {
-
-        },
-        FavoriteModelTypes.component => {
-
-        },
-        FavoriteModelTypes.part => {
-
-        },
-        FavoriteModelTypes.subPart => {
-
-        },
-        FavoriteModelTypes.faultCode => {
-
-        },
-        FavoriteModelTypes.problemCase => {
-
-        },
-      }
-    );
-  }
-
-  void handleTabButtonClick() {
-
-  }
+  void handleTabButtonClick() {}
 
   void handleClick(FavoriteContentfulModel model, BuildContext context) {
     switch (model.type) {
-      case FavoriteModelTypes.unit:
+      case FavoriteModelType.unit:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
             image: null,
             types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
-      case FavoriteModelTypes.system:
+      case FavoriteModelType.system:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
             image: null,
             types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
-      case FavoriteModelTypes.component:
+      case FavoriteModelType.component:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
             image: null,
             types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
-      case FavoriteModelTypes.part:
+      case FavoriteModelType.part:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
             image: null,
             types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
-      case FavoriteModelTypes.subPart:
+      case FavoriteModelType.subPart:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
             image: null,
             types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
-      case FavoriteModelTypes.faultCode:
+      case FavoriteModelType.faultCode:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
             image: null,
             types: [ChildType.standart]);
         Navigator.of(context).pushNamed(child.name);
-      case FavoriteModelTypes.problemCase:
+      case FavoriteModelType.problemCase:
         final child = ChildrenSystem(
             id: model.id,
             name: model.name,
@@ -190,16 +168,4 @@ class FavoritesScreenViewModel {
         Navigator.of(context).pushNamed(child.name);
     }
   }
-
-  // List<FavoriteContentfulModel> _favoritesFromUnits(List<Unit> units) {
-  //   return units.map (event) {
-  //     FavoriteContentfulModel(event.id, event.name, FavoriteModelTypes.unit);
-  //   };
-  // }
-
-  // List<FavoriteContentfulModel> _favoritesFromSystems(List<System> systems) {
-  //   return systems.map (event) {
-  //     FavoriteContentfulModel(event.id, event.name, Type.systems);
-  //   };
-  // }
 }

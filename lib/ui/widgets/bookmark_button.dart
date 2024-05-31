@@ -7,8 +7,12 @@ import 'package:help_my_truck/services/API/favorites_provider.dart';
 class BookmarkButton extends StatefulWidget {
   FavoritesProvider? provider;
   String? integrationId;
+  final bool isFixedState;
+  void Function(String)? voidCallback;
 
-  BookmarkButton(this.integrationId, this.provider, {super.key});
+  BookmarkButton(this.integrationId, this.provider, this.voidCallback,
+      this.isFixedState,
+      {super.key});
 
   @override
   State<BookmarkButton> createState() => _BookmarkButtonState();
@@ -35,15 +39,16 @@ class _BookmarkButtonState extends State<BookmarkButton> {
 
   void updateIconState() {
     setState(() {
-      print('ITEM ISFAV ${item?.isFavorite}');
       _isBookmarked = item?.isFavorite ?? false;
     });
   }
 
   void changeIconState() {
-    setState(() {
-      _isBookmarked = !_isBookmarked;
-    });
+    if (!widget.isFixedState) {
+      setState(() {
+        _isBookmarked = !_isBookmarked;
+      });
+    }
   }
 
   @override
@@ -64,6 +69,11 @@ class _BookmarkButtonState extends State<BookmarkButton> {
             widget.provider?.change(item?.id ?? 0);
             changeIconState();
           }
+        }
+
+        final callback = widget.voidCallback;
+        if (callback != null) {
+          callback(widget.integrationId ?? '');
         }
       },
     );
