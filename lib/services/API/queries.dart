@@ -429,6 +429,9 @@ query Subpart(\$id: String = "$id") {
     imageView {
       $imageView
     }
+    description {
+      json
+    }
     $pdfFilesCollection
     $videoCollection
   }
