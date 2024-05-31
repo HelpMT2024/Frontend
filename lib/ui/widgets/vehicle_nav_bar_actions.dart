@@ -28,24 +28,36 @@ class VehicleNavBarActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.ios_share_rounded,
-            color: ColorConstants.onSurfaceWhite,
-          ),
-          onPressed: _openAppPage,
-        ),
-        if (!hideBookmark)
-          IconButton(
-            icon: Icon(
-              Icons.bookmark_border_outlined,
-              color: ColorConstants.onSurfaceWhite,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 32,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.ios_share_rounded,
+                color: ColorConstants.onSurfaceWhite,
+              ),
+              onPressed: _openAppPage,
             ),
-            onPressed: () {},
           ),
-      ],
+          const SizedBox(width: 4,),
+          if (!hideBookmark)
+            SizedBox(
+              width: 32,
+              child: IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(
+                  Icons.bookmark_border_outlined,
+                  color: ColorConstants.onSurfaceWhite,
+                ),
+                onPressed: () {},
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
