@@ -120,10 +120,11 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     final search = SearchScreen(searchModalController: searchModalController);
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (_) {
-        return search;
-      },
+      builder: (BuildContext bc) => Wrap(
+        children: [search],
+      ),
     );
   }
 

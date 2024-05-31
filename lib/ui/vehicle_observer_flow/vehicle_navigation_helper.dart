@@ -27,6 +27,12 @@ class VehicleNavigationHelper {
     final controller = SearchModalController(provider: provider);
     final search = SearchScreen(searchModalController: controller);
 
-    showModalBottomSheet(context: context, builder: (_) => search);
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context,
+      builder: (BuildContext bc) => Wrap(
+        children: [search],
+      ),
+    );
   }
 }
