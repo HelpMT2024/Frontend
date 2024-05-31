@@ -1,13 +1,17 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/profile_flow/profile_screen.dart';
 import 'package:help_my_truck/ui/profile_flow/profile_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
+import 'package:help_my_truck/ui/widgets/custom_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:flutter/material.dart';
@@ -131,23 +135,41 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     return Scaffold(
       key: _scaffoldKey,
-      bottomNavigationBar: _buildNavBar(l10n),
+      //bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
         decoration: appGradientBgDecoration,
-        child: PageView(
-          controller: pageController,
-          allowImplicitScrolling: false,
-          physics: const NeverScrollableScrollPhysics(),
-          children: _widgetOptions.values.toList(),
+        child: Column(
+          children: [
+            Expanded(
+              child: PageView(
+                controller: pageController,
+                allowImplicitScrolling: false,
+                physics: const NeverScrollableScrollPhysics(),
+                children: _widgetOptions.values.toList(),
+              ),
+            ),
+            _buildNavBar(l10n),
+            // Positioned(
+            //   bottom: 0,
+            //   left: 0,
+            //   right: 0,
+            //   child: _buildNavBar(l10n),
+            // ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildNavBar(AppLocalizations? l10n) {
-    return MainBottomBar(
+    return CustomBottomBar(
       selectedPage: controller._selectedPage,
       onItemTapped: _onItemTapped,
     );
+
+    // return MainBottomBar(
+    //   selectedPage: controller._selectedPage,
+    //   onItemTapped: _onItemTapped,
+    // );
   }
 }

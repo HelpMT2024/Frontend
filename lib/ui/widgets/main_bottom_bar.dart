@@ -42,7 +42,9 @@ class MainBottomBar extends StatelessWidget {
         );
       },
       cupertino: (context, platform) => CupertinoTabBarData(
-          height: 60, backgroundColor: ColorConstants.surfacePrimaryDark),
+        height: 60,
+        backgroundColor: ColorConstants.surfacePrimaryDark,
+      ),
       items: [
         _customIcon(
           asset: R.ASSETS_HOME_SVG,
