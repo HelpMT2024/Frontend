@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -73,29 +71,18 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       child: StreamBuilder<List<FavoritesListItem>>(
         stream: widget.viewModel.updateDataStreamController.stream,
         builder: (context, AsyncSnapshot snapshot) {
-
-
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loadable(forceLoad: true, child: Container());
           } else if (snapshot.data?.length == 0) {
-              return _placeholder();
-            //spinner
+            return _placeholder();
           } else if (snapshot.hasData) {
-            return 
-            // widget.viewModel.fetchedItems.isEmpty
-            //   ? _placeholder()
-              _successBody();
-            //listview
+            return _successBody();
           } else if (snapshot.hasError) {
             return Text('Error ${snapshot.hasData}');
           } else {
             return Container();
           }
         }
-        //   return widget.viewModel.fetchedItems.isEmpty
-        //       ? _placeholder()
-        //       : _successBody();
-        // },
       ),
     );
   }
