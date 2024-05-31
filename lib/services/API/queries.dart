@@ -1,4 +1,14 @@
 abstract class Queries {
+  static String pdfFilesCollection = '''
+  pdfFilesCollection {
+          items {
+            asset {
+              url
+            }
+            title
+          }
+        }
+  ''';
   static String warningCollection = '''
     warningLightsCollection {
       items {
@@ -413,54 +423,14 @@ query Subpart(\$id: String = "$id") {
       width
       height
     } 
-    warningLightsCollection {
-      items {
-        sys {
-          id
-        }
-        name
-        icon {
-          title
-          description
-          contentType
-          fileName
-          size
-          url
-          width
-          height
-        }
-      }
-    }
-    problemCasesCollection(limit: 50) {
-      items {
-        sys {
-          id
-        }
-        name
-        warningLightsCollection(limit: 50) {
-          items {
-            sys {
-              id
-            }
-            name
-          }
-        }
-      } 
-    }
-     faultCodesCollection {
-      items {
-        spnCode
-        fmiCodes
-      } 
-    }
+    $problemsCollection
+    $faultsCodesCollection
+    $warningCollection
     imageView {
-      internalName
-      imageFrontMarkup
-      imageBackMarkup
-      buttonsTemplate
-      description
-      descriptionPosition
+      $imageView
     }
+    $pdfFilesCollection
+    $videoCollection
   }
 }''';
   }
@@ -493,14 +463,7 @@ query Subpart(\$id: String = "$id") {
             }
           }
         }
-        pdfFilesCollection {
-          items {
-            asset {
-              url
-            }
-            title
-          }
-        }
+        $pdfFilesCollection
         $videoCollection
       }
     } 
