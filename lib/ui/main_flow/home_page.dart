@@ -58,6 +58,7 @@ final mainPageController = MainPageController();
 
 class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+  final double _bottomNavigationBarHeight = 89;
 
   late final searchModalController = SearchModalController(
     provider: VehicleProvider(widget.config.service),
@@ -138,23 +139,28 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       //bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
         decoration: appGradientBgDecoration,
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-              child: PageView(
-                controller: pageController,
-                allowImplicitScrolling: false,
-                physics: const NeverScrollableScrollPhysics(),
-                children: _widgetOptions.values.toList(),
-              ),
+            Column(
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: pageController,
+                    allowImplicitScrolling: false,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: _widgetOptions.values.toList(),
+                  ),
+                ),
+                SizedBox(height: _bottomNavigationBarHeight),
+              ],
             ),
-            _buildNavBar(l10n),
-            // Positioned(
-            //   bottom: 0,
-            //   left: 0,
-            //   right: 0,
-            //   child: _buildNavBar(l10n),
-            // ),
+            //_buildNavBar(l10n),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: _buildNavBar(l10n),
+            ),
           ],
         ),
       ),
@@ -166,10 +172,5 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       selectedPage: controller._selectedPage,
       onItemTapped: _onItemTapped,
     );
-
-    // return MainBottomBar(
-    //   selectedPage: controller._selectedPage,
-    //   onItemTapped: _onItemTapped,
-    // );
   }
 }

@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -26,39 +23,40 @@ class CustomBottomBar extends StatelessWidget {
 
     return Container(
       height: 89,
-      color: Colors.red,
+      color: Colors.transparent,
+      padding: EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          Container(height: 8, color: Colors.red),
+          Container(height: 8, color: Colors.transparent),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _customIcon(
                 styles: styles,
-                asset: R.ASSETS_HOME_SVG,
+                icon: Icons.home_sharp,
                 navBarPage: NavBarPage.home,
                 text: l10n?.home_title,
                 action: () => onItemTapped(0),
               ),
               _customIcon(
                 styles: styles,
-                asset: R.ASSETS_PEOPLE_SVG,
+                icon: Icons.groups,
                 navBarPage: NavBarPage.people,
                 text: l10n?.people_title,
                 action: () => onItemTapped(1),
               ),
-              if (!hideAllExceptSearch) _faultCodeIcon(l10n),
+              if (!hideAllExceptSearch) _faultCodeIcon(l10n, styles),
               _customIcon(
                 styles: styles,
-                asset: R.ASSETS_FAVORITE_STAR_SVG,
+                icon: Icons.bookmark,
                 navBarPage: NavBarPage.favorites,
                 text: l10n?.favorites_title,
                 action: () => onItemTapped(3),
               ),
               _customIcon(
                 styles: styles,
-                asset: R.ASSETS_PROFILE_IMAGE_SVG,
+                icon: Icons.person_sharp,
                 navBarPage: NavBarPage.profile,
                 text: l10n?.profile_title,
                 action: () => onItemTapped(4),
@@ -71,12 +69,13 @@ class CustomBottomBar extends StatelessWidget {
     );
   }
 
-  Widget _faultCodeIcon(AppLocalizations? l10n) {
+  Widget _faultCodeIcon(AppLocalizations? l10n, TextTheme styles) {
     return _customIcon(
+      styles: styles,
       icon: Icons.search_rounded,
       navBarPage: NavBarPage.search,
-      isCenterIcon: true,
       text: l10n?.fault_code_title,
+      isCenterIcon: true,
       action: () => onItemTapped(2),
     );
   }
@@ -96,7 +95,7 @@ class CustomBottomBar extends StatelessWidget {
     String? asset,
     IconData? icon,
     bool isCenterIcon = false,
-    NavBarPage navBarPage = NavBarPage.people,
+    NavBarPage navBarPage = NavBarPage.home,
     String? text,
     double size = 24,
     required VoidCallback action,
@@ -136,7 +135,14 @@ class CustomBottomBar extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               text ?? '',
-              style: styles?.bodySmall,
+              style: styles?.bodySmall?.copyWith(
+                fontSize: 10,
+                color: isActive
+                    ? ColorConstants.onSurfaceWhite
+                    : isCenterIcon
+                        ? ColorConstants.surfacePrimaryDark
+                        : ColorConstants.onSurfaceWhite64,
+              ),
             ),
           ],
         ),

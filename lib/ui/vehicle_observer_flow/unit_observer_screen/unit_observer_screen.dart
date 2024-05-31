@@ -45,7 +45,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
             child: StreamBuilder<Unit>(
               stream: widget.viewModel.unit,
               builder: (context, snapshot) {
@@ -74,6 +74,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
           },
           const SizedBox(height: 16),
           const CommentButton(),
+          const SizedBox(height: 24),
         ],
       ),
     );
