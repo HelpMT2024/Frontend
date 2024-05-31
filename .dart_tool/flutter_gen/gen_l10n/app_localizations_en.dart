@@ -219,4 +219,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites_item_type_problem_cases => 'Problem Cases';
+
+  @override
+  String get description => 'Description';
 }

@@ -6,14 +6,12 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final NavBarPage selectedPage;
-  final bool hideAllExceptSearch;
   final Function(int) onItemTapped;
 
   const CustomBottomBar({
     super.key,
     required this.selectedPage,
     required this.onItemTapped,
-    this.hideAllExceptSearch = false,
   });
 
   @override
@@ -23,11 +21,11 @@ class CustomBottomBar extends StatelessWidget {
 
     return Container(
       height: 89,
-      color: Colors.transparent,
-      padding: EdgeInsets.symmetric(horizontal: 16),
+      color: ColorConstants.surfacePrimaryDark,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
-          Container(height: 8, color: Colors.transparent),
+          Container(height: 8, color: ColorConstants.surfacePrimaryDark),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +44,14 @@ class CustomBottomBar extends StatelessWidget {
                 text: l10n?.people_title,
                 action: () => onItemTapped(1),
               ),
-              if (!hideAllExceptSearch) _faultCodeIcon(l10n, styles),
+              _customIcon(
+                styles: styles,
+                icon: Icons.search_rounded,
+                navBarPage: NavBarPage.search,
+                text: l10n?.fault_code_title,
+                isCenterIcon: true,
+                action: () => onItemTapped(2),
+              ),
               _customIcon(
                 styles: styles,
                 icon: Icons.bookmark,
@@ -61,7 +66,6 @@ class CustomBottomBar extends StatelessWidget {
                 text: l10n?.profile_title,
                 action: () => onItemTapped(4),
               ),
-              if (hideAllExceptSearch) _spnFmiIcon(l10n),
             ],
           ),
         ],

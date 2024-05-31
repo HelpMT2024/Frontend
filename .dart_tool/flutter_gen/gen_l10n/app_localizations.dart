@@ -522,6 +522,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Problem Cases'**
   String get favorites_item_type_problem_cases;
+
+  /// No description provided for @description.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get description;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

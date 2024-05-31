@@ -4,7 +4,6 @@ import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
-import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
@@ -12,7 +11,6 @@ import 'package:help_my_truck/ui/profile_flow/profile_screen.dart';
 import 'package:help_my_truck/ui/profile_flow/profile_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/custom_bottom_bar.dart';
-import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -58,7 +56,6 @@ final mainPageController = MainPageController();
 
 class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-  final double _bottomNavigationBarHeight = 89;
 
   late final searchModalController = SearchModalController(
     provider: VehicleProvider(widget.config.service),
@@ -136,7 +133,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
 
     return Scaffold(
       key: _scaffoldKey,
-      //bottomNavigationBar: _buildNavBar(l10n),
+      bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
         decoration: appGradientBgDecoration,
         child: Stack(
@@ -151,15 +148,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
                     children: _widgetOptions.values.toList(),
                   ),
                 ),
-                SizedBox(height: _bottomNavigationBarHeight),
               ],
-            ),
-            //_buildNavBar(l10n),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: _buildNavBar(l10n),
             ),
           ],
         ),

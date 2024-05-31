@@ -8,6 +8,7 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/subpart_observer/subpart_
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_floating_button.dart';
 import 'package:help_my_truck/ui/widgets/fault_code_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/main_navigation_bar_bottom.dart';
@@ -19,9 +20,6 @@ import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/videos/verical_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
-
-import '../../widgets/main_bottom_bar.dart';
-import '../../widgets/nav_bar/nav_bar_page.dart';
 
 class SubPartScreen extends StatefulWidget {
   final SubPartViewModel viewModel;
@@ -45,10 +43,9 @@ class _SubPartScreenState extends State<SubPartScreen> {
         bottom: _navBarTitle(styles),
         toolbarHeight: 52,
       ),
-      bottomNavigationBar: MainBottomBar(
-        selectedPage: NavBarPage.search,
-        onItemTapped: (_) => widget.viewModel.onSearch(context),
-        hideAllExceptSearch: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: CustomFloatingButton(
+        onPressed: () => widget.viewModel.onSearch(context),
       ),
       body: Stack(
         children: [

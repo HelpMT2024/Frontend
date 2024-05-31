@@ -5,13 +5,12 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_floating_button.dart';
 import 'package:help_my_truck/ui/widgets/fault_code_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
-import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
-import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:help_my_truck/ui/widgets/problems_buttons.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
@@ -45,10 +44,9 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         title: widget.viewModel.config.name,
         action: const [VehicleNavBarActions()],
       ),
-      bottomNavigationBar: MainBottomBar(
-        selectedPage: NavBarPage.search,
-        onItemTapped: (_) => widget.viewModel.onSearch(context),
-        hideAllExceptSearch: true,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: CustomFloatingButton(
+        onPressed: () => widget.viewModel.onSearch(context),
       ),
       body: Stack(
         children: [
@@ -90,7 +88,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           if (widget.viewModel.hasDescription) ...{
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: _descriptionSection(styles, data),
+              child: _descriptionSection(l10n, styles, data),
             ),
           },
           if (widget.viewModel.hasProblems) ...{
@@ -118,17 +116,18 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     );
   }
 
-  Widget _descriptionSection(TextTheme styles, Component data) {
+  Widget _descriptionSection(
+      AppLocalizations? l10n, TextTheme styles, Component data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: 32),
-        _text(styles, data),
+        _text(l10n, styles, data),
       ],
     );
   }
 
-  Widget _text(TextTheme styles, Component data) {
+  Widget _text(AppLocalizations? l10n, TextTheme styles, Component data) {
     return DefaultTextStyle.merge(
       style: styles.labelLarge?.merge(
           TextStyle(color: ColorConstants.onSurfaceWhite.withAlpha(210))),
@@ -143,12 +142,12 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
                 size: 16,
               ),
               const SizedBox(width: 4),
-              // Text(
-              //   'Description',
-              //   style: styles.titleMedium?.copyWith(
-              //       color: ColorConstants.surfaceWhite.withAlpha(210),
-              //       fontWeight: FontWeight.w800),
-              // ),
+              Text(
+                l10n?.description ?? '',
+                style: styles.titleMedium?.copyWith(
+                    color: ColorConstants.surfaceWhite.withAlpha(210),
+                    fontWeight: FontWeight.w800),
+              ),
             ],
           ),
           const SizedBox(height: 8),
