@@ -106,7 +106,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
               _faultCodeSection(),
             },
             if (widget.viewModel.hasPDF) ...{
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               _title(l10n?.instructions_title, styles),
             },
             _instructionsButtons(styles),

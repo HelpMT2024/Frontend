@@ -107,7 +107,7 @@ class _PartScreenState extends State<PartScreen> {
               _faultCodeSection(),
             },
             if (widget.viewModel.hasPDF) ...{
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
               _title(l10n?.instructions_title, styles),
             },
             _instructionsButtons(styles),
@@ -166,7 +166,7 @@ class _PartScreenState extends State<PartScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 32),
+        const SizedBox(height: 4),
         _text(styles),
       ],
     );

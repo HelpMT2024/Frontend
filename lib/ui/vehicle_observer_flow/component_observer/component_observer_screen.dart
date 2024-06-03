@@ -96,7 +96,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             _problemsButtons()
           },
           if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-            const SizedBox(height: 36),
+            const SizedBox(height: 12),
             VehicleTitle(text: l10n?.fault_code_title),
             _warningIcons(),
             faults(),
@@ -121,7 +121,6 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 32),
         _text(l10n, styles, data),
       ],
     );
