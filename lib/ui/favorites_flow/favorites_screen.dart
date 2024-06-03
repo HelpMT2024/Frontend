@@ -69,30 +69,33 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         right: 16,
       ),
       child: StreamBuilder<List<FavoritesListItem>>(
-        stream: widget.viewModel.updateDataStreamController.stream,
-        builder: (context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Loadable(forceLoad: true, child: Container());
-          } else if (snapshot.data?.length == 0) {
-            return _placeholder();
-          } else if (snapshot.hasData) {
-            return _successBody();
-          } else if (snapshot.hasError) {
-            return Text('Error ${snapshot.hasData}');
-          } else {
-            return Container();
-          }
-        }
-      ),
+          stream: widget.viewModel.updateDataStreamController.stream,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Loadable(forceLoad: true, child: Container());
+            } else if (snapshot.data?.length == 0) {
+              return _placeholder();
+            } else if (snapshot.hasData) {
+              return _successBody();
+            } else if (snapshot.hasError) {
+              return Text('Error ${snapshot.hasData}');
+            } else {
+              return Container();
+            }
+          }),
     );
   }
 
   Widget _successBody() {
+    final titles = FavoriteModelType.values.map((e) => e.title(context)).toList()
+
     return Column(
       children: [
         FilterTabBar(
-            titles:
-                FavoriteModelType.values.map((e) => e.title(context)).toList()),
+          titles: titles,
+          outputSelectionCallback: widget.viewModel.handleTabButtonClick,
+          initSelectionIndex: 0,
+        ),
         const SizedBox(
           height: 24,
         ),
@@ -102,15 +105,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           controller: _scrollController,
           loadingIndicator: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Center(
-              child: Loadable(forceLoad: true, child: Container())
-            ),
+            child: Center(child: Loadable(forceLoad: true, child: Container())),
           ),
           items: widget.viewModel.fetchedItems,
           isRecentSearch: false,
           isLastPage: widget.viewModel.isLastPage,
           onLoadMore: (index) {
-            widget.viewModel.getPage();
+            widget.viewModel.getPage(widget.viewModel.selectedFilter);
           },
           builder: (item, index) => listViewCell(item, index),
         )),
