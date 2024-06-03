@@ -9,8 +9,17 @@ PreferredSize mainNavigationBarBottom({
 
   return PreferredSize(
     preferredSize: Size(double.infinity, 35),
-    child: Padding(
+    child: Container(
       padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
+      decoration: BoxDecoration(
+        color: ColorConstants.surfacePrimary,
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 1,
+            color: ColorConstants.surfacePrimary,
+          ),
+        ],
+      ),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Text(
