@@ -166,7 +166,7 @@ class AuthorizationField extends FormField<String> {
                 return MaterialTextFieldData(
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 11),
+                    contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 11),
                     hintStyle: mainStyle?.merge(
                       TextStyle(color: ColorConstants.onSurfaceMedium),
                     ),

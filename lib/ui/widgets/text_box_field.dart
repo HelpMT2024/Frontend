@@ -100,7 +100,7 @@ class _TextBoxFieldState extends State<_TextBoxField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _title(styles),
-        const SizedBox(height: 2),
+        const SizedBox(height: 8),
         _textField(),
         const SizedBox(height: 2),
         _errorField(widget.state, styles)
@@ -115,7 +115,7 @@ class _TextBoxFieldState extends State<_TextBoxField> {
       child: Text(
         widget.title,
         maxLines: 1,
-        style: styles.caption?.merge(
+        style: styles.bodySmall?.merge(
           TextStyle(color: ColorConstants.onSurfaceWhite),
         ),
       ),
@@ -139,8 +139,6 @@ class _TextBoxFieldState extends State<_TextBoxField> {
   }
 
   Widget _textField() {
-    final styles = Theme.of(context).textTheme;
-
     return FocusScope(
       child: Focus(
         onFocusChange: (focus) {
@@ -182,9 +180,7 @@ class _TextBoxFieldState extends State<_TextBoxField> {
                     12,
                   ),
                   counterText: '',
-                  hintStyle: styles.bodyText1?.merge(
-                    TextStyle(color: ColorConstants.onSurfaceMedium),
-                  ),
+                  hintStyle: TextStyle(color: ColorConstants.onSurfaceMedium),
                 ),
               );
             },
@@ -195,6 +191,8 @@ class _TextBoxFieldState extends State<_TextBoxField> {
                     : TextAlignVertical.top,
                 decoration: const BoxDecoration(border: null),
                 padding: const EdgeInsets.fromLTRB(12, 3, 12, 3),
+                placeholderStyle:
+                    TextStyle(color: ColorConstants.onSurfaceMedium),
               );
             },
             keyboardType: widget.keyboardType,
