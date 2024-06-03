@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -57,7 +58,12 @@ void main() async {
     HttpOverrides.global = ProxiedHttpOverrides(proxy);
   }
 
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]).then((_) {
+    runApp(const MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
