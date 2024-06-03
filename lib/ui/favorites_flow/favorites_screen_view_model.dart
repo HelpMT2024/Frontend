@@ -52,6 +52,25 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
         return l10n?.favorites_item_type_problem_cases ?? '';
     }
   }
+
+  String filterKey() {
+    switch (this) {
+      case FavoriteModelType.unit:
+        return 'unit';
+      case FavoriteModelType.system:
+        return 'system';
+      case FavoriteModelType.component:
+        return 'component';
+      case FavoriteModelType.part:
+        return 'part';
+      case FavoriteModelType.subPart:
+        return 'sub_part';
+      case FavoriteModelType.faultCode:
+        return 'fault_code';
+      case FavoriteModelType.problemCase:
+        return 'problem_case';
+    }
+  }
 }
 
 class FavoriteContentfulModel {
@@ -80,7 +99,7 @@ class FavoritesScreenViewModel {
   UserInfoModel? user;
   List<FavoritesListItem> fetchedItems = [];
   List<FavoriteContentfulModel> filtered = [];
-  FavoriteModelType _selectedFilter = FavoriteModelType.unit;
+  FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
 
@@ -91,10 +110,11 @@ class FavoritesScreenViewModel {
     required this.vehicleProvider,
   });
 
-  void getPage() async {
+  void getPage(FavoriteModelType filter) async {
     user = await provider.user();
-
-    await provider.favoritesList(user!.id, _page, _cellsPerPage).then((value) {
+    var typeFilter = selectedFilter.filterKey();
+    
+    await provider.favoritesList(user!.id, typeFilter, _page, _cellsPerPage).then((value) {
       fetchedItems.addAll(value.items);
       pagination = value.pagination;
     });
@@ -105,7 +125,7 @@ class FavoritesScreenViewModel {
   void resetData() {
     _page = 1;
     fetchedItems.clear();
-    getPage();
+    getPage(selectedFilter);
   }
 
   void handlePagination() {
@@ -113,7 +133,9 @@ class FavoritesScreenViewModel {
     isLastPage = pagination?.pages == pagination?.page;
   }
 
-  void handleTabButtonClick() {}
+  void handleTabButtonClick(int filter) {
+
+  }
 
   void handleClick(FavoriteContentfulModel model, BuildContext context) {
     switch (model.type) {

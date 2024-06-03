@@ -140,13 +140,14 @@ class FavoritesProvider {
         request, (json) => null);
   }
 
-  Future<FavoritesListModel> favoritesList(int? id, int page, int size) {
+  Future<FavoritesListModel> favoritesList(int? id, String typeFilter, int page, int size) {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
       data: NetworkRequestBody.empty(),
       queryParams: {
         'owner_id': id,
+        'contentful_type': typeFilter,
         'page': page,
         'size': size,
       },

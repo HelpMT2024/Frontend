@@ -3,8 +3,15 @@ import 'package:help_my_truck/ui/widgets/custom_tab_button.dart';
 
 class FilterTabBar extends StatefulWidget {
   final List<String> titles;
+  final Function(int) outputSelectionCallback;
+  final int initSelectionIndex;
 
-  const FilterTabBar({super.key, required this.titles});
+  const FilterTabBar({
+    super.key,
+    required this.titles,
+    required this.outputSelectionCallback,
+    required this.initSelectionIndex,
+  });
 
   @override
   State<FilterTabBar> createState() => FilterTabBarState();
@@ -16,7 +23,7 @@ class FilterTabBarState extends State<FilterTabBar> {
 
   @override
   void initState() {
-    createButtons(0);
+    createButtons(widget.initSelectionIndex);
 
     super.initState();
   }

@@ -87,7 +87,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   Widget _successBody() {
-    final titles = FavoriteModelType.values.map((e) => e.title(context)).toList()
+    final titles = FavoriteModelType.values.map((e) => e.title(context)).toList();
 
     return Column(
       children: [
