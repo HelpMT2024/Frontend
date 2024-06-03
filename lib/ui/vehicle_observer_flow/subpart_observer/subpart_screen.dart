@@ -34,13 +34,14 @@ class _SubPartScreenState extends State<SubPartScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+    final backgroundColor = ColorConstants.surfacePrimary;
 
     return Scaffold(
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
         action: const [VehicleNavBarActions()],
-        bottom: _navBarTitle(styles),
+        bottom: _navBarTitle(styles, backgroundColor),
         toolbarHeight: 52,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
@@ -68,10 +69,11 @@ class _SubPartScreenState extends State<SubPartScreen> {
     );
   }
 
-  PreferredSize _navBarTitle(TextTheme styles) {
+  PreferredSize _navBarTitle(TextTheme styles, Color backgroundColor) {
     return mainNavigationBarBottom(
       context: context,
       title: widget.viewModel.config.name,
+      backgroundColor: backgroundColor,
     );
   }
 
