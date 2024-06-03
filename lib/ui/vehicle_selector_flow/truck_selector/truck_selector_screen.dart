@@ -48,12 +48,10 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
     final styles = Theme.of(context).textTheme;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _header(styles),
-        const SizedBox(
-          height: 80,
-        ),
+        const Spacer(),
         if (data.isNotEmpty) _carousel(data),
         _indicator(data),
         const Spacer(),

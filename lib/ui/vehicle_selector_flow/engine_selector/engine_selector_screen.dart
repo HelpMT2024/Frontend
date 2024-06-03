@@ -47,7 +47,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
     final styles = Theme.of(context).textTheme;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _header(styles),
         const Spacer(),
