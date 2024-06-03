@@ -44,6 +44,7 @@ class FaultCodeButton extends StatelessWidget {
     Color? color,
   }) {
     return CustomButton(
+      height: 48,
       title: CustomButtonTitle(
         text: null,
         widget: Expanded(
