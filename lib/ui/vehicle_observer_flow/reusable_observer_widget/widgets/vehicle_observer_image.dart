@@ -127,6 +127,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
               setState(() {});
             },
             child: Stack(
+              alignment: Alignment.center,
               clipBehavior: Clip.hardEdge,
               children: [
                 _gif(
