@@ -38,9 +38,10 @@ class FilterTabBarState extends State<FilterTabBar> {
     );
   }
 
-  void selectionCallback(int index) {
+  void selectionCallback(int selectionIndex) {
     setState(() {
-      createButtons(index);
+      createButtons(selectionIndex);
+      widget.outputSelectionCallback(selectionIndex);
     });
   }
 

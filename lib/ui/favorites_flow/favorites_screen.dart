@@ -32,6 +32,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   void initState() {
+    widget.viewModel.selectedFilter = FavoriteModelType.unit;
     widget.viewModel.resetData();
 
     super.initState();
@@ -111,7 +112,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           isRecentSearch: false,
           isLastPage: widget.viewModel.isLastPage,
           onLoadMore: (index) {
-            widget.viewModel.getPage(widget.viewModel.selectedFilter);
+            widget.viewModel.getPage();
           },
           builder: (item, index) => listViewCell(item, index),
         )),

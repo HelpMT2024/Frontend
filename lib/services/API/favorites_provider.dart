@@ -146,8 +146,8 @@ class FavoritesProvider {
       path: '/api/favorite/list',
       data: NetworkRequestBody.empty(),
       queryParams: {
-        'owner_id': id,
-        'contentful_type': typeFilter,
+        'filter[owner_id]': id,
+        'filter[contentful_type]': typeFilter,
         'page': page,
         'size': size,
       },

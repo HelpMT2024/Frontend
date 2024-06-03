@@ -110,9 +110,9 @@ class FavoritesScreenViewModel {
     required this.vehicleProvider,
   });
 
-  void getPage(FavoriteModelType filter) async {
-    user = await provider.user();
+  void getPage() async {
     var typeFilter = selectedFilter.filterKey();
+    user = await provider.user();
     
     await provider.favoritesList(user!.id, typeFilter, _page, _cellsPerPage).then((value) {
       fetchedItems.addAll(value.items);
@@ -125,7 +125,7 @@ class FavoritesScreenViewModel {
   void resetData() {
     _page = 1;
     fetchedItems.clear();
-    getPage(selectedFilter);
+    getPage();
   }
 
   void handlePagination() {
@@ -133,8 +133,9 @@ class FavoritesScreenViewModel {
     isLastPage = pagination?.pages == pagination?.page;
   }
 
-  void handleTabButtonClick(int filter) {
-
+  void handleTabButtonClick(int index) {
+    selectedFilter = FavoriteModelType.values[index];
+    resetData();
   }
 
   void handleClick(FavoriteContentfulModel model, BuildContext context) {
