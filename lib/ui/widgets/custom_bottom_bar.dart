@@ -21,7 +21,15 @@ class CustomBottomBar extends StatelessWidget {
 
     return Container(
       height: 89,
-      color: ColorConstants.surfacePrimaryDark,
+      decoration: BoxDecoration(
+        color: ColorConstants.surfacePrimaryDark,
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 1,
+            color: ColorConstants.surfacePrimaryDark,
+          ),
+        ],
+      ),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
