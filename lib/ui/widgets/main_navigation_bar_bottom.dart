@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 
 PreferredSize mainNavigationBarBottom({
   required BuildContext context,
   required String title,
+  required Color backgroundColor,
 }) {
   final styles = Theme.of(context).textTheme;
 
   return PreferredSize(
-    preferredSize: Size(double.infinity, 35),
+    preferredSize: const Size(double.infinity, 39),
     child: Container(
       padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
       decoration: BoxDecoration(
-        color: ColorConstants.surfacePrimary,
+        color: backgroundColor,
         boxShadow: [
           BoxShadow(
             spreadRadius: 1,
-            color: ColorConstants.surfacePrimary,
+            color: backgroundColor,
           ),
         ],
       ),

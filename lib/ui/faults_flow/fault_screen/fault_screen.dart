@@ -27,11 +27,12 @@ class _FaultScreenState extends State<FaultScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+    final backgroundColor = ColorConstants.surfacePrimaryDark;
 
     return Stack(
       children: [
         Container(
-          color: ColorConstants.surfacePrimaryDark,
+          color: backgroundColor,
         ),
         StreamBuilder<Fault>(
           stream: widget.viewModel.fault,
@@ -46,12 +47,12 @@ class _FaultScreenState extends State<FaultScreen> {
                 context: context,
                 styles: styles,
                 action: const [VehicleNavBarActions()],
-                bottom: _navBarTitle(styles),
-                bgColor: ColorConstants.surfacePrimaryDark,
+                bottom: _navBarTitle(styles, backgroundColor),
+                bgColor: backgroundColor,
               ),
               body: Stack(
                 children: [
-                  Container(color: ColorConstants.surfacePrimaryDark),
+                  Container(color: backgroundColor),
                   if (snapshot.hasData) ...{
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
@@ -133,10 +134,11 @@ class _FaultScreenState extends State<FaultScreen> {
     );
   }
 
-  PreferredSize _navBarTitle(TextTheme styles) {
+  PreferredSize _navBarTitle(TextTheme styles, Color backgroundColor) {
     return mainNavigationBarBottom(
       context: context,
       title: widget.viewModel.config.text,
+      backgroundColor: backgroundColor
     );
   }
 }

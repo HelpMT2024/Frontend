@@ -26,19 +26,20 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+    final backgroundColor = ColorConstants.surfacePrimaryDark;
 
     return Scaffold(
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        bottom: _navBarTitle(styles),
-        bgColor: ColorConstants.surfacePrimaryDark,
+        bottom: _navBarTitle(styles, backgroundColor),
+        bgColor: backgroundColor,
         action: const [VehicleNavBarActions()],
         toolbarHeight: 52,
       ),
       body: Stack(
         children: [
-          Container(color: ColorConstants.surfacePrimaryDark),
+          Container(color: backgroundColor),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
             child: StreamBuilder<ProblemCase>(
@@ -101,10 +102,11 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     );
   }
 
-  PreferredSize _navBarTitle(TextTheme styles) {
+  PreferredSize _navBarTitle(TextTheme styles, Color backgroundColor) {
     return mainNavigationBarBottom(
       context: context,
       title: widget.viewModel.config.name,
+      backgroundColor: backgroundColor,
     );
   }
 }
