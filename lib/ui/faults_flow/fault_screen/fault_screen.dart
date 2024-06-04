@@ -29,11 +29,12 @@ class _FaultScreenState extends State<FaultScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+    final backgroundColor = ColorConstants.surfacePrimaryDark;
 
     return Stack(
       children: [
         Container(
-          color: ColorConstants.surfacePrimaryDark,
+          color: backgroundColor,
         ),
         StreamBuilder<Fault>(
           stream: widget.viewModel.fault,
@@ -54,8 +55,8 @@ class _FaultScreenState extends State<FaultScreen> {
                     provider: widget.viewModel.favoritesProvider,
                   )
                 ],
-                bottom: _navBarTitle(styles),
-                bgColor: ColorConstants.surfacePrimaryDark,
+                bottom: _navBarTitle(styles, backgroundColor),
+                bgColor: backgroundColor,
               ),
               body: Stack(
                 children: [
@@ -141,10 +142,11 @@ class _FaultScreenState extends State<FaultScreen> {
     );
   }
 
-  PreferredSize _navBarTitle(TextTheme styles) {
+  PreferredSize _navBarTitle(TextTheme styles, Color backgroundColor) {
     return mainNavigationBarBottom(
       context: context,
       title: widget.viewModel.config.text,
+      backgroundColor: backgroundColor
     );
   }
 }

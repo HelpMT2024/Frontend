@@ -37,6 +37,7 @@ class FavoritesScreenViewModel {
   FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
+  bool isFavoritesExists = false;
 
   int _page = 1;
 
@@ -48,6 +49,8 @@ class FavoritesScreenViewModel {
   void getPage() async {
     var typeFilter = selectedFilter.filterKey();
     user = await provider.user();
+
+    await provider.favoritesList(user!.id, typeFilter, 1, 1);
     
     await provider.favoritesList(user!.id, typeFilter, _page, _cellsPerPage).then((value) {
       fetchedItems.addAll(value.items);

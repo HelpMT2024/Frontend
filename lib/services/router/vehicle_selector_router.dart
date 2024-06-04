@@ -50,7 +50,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLNetworkService);
           final viewModel = SubPartViewModel(
             provider: provider,
             config: setting.arguments as ChildSubpart,
