@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
@@ -14,6 +15,8 @@ import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 
 class UnitObserverScreen extends StatefulWidget {
   final UnitObserverViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.unit;
+
   const UnitObserverScreen({super.key, required this.viewModel});
 
   @override
@@ -33,6 +36,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
         action: [
           VehicleNavBarActions(
             integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
             provider: widget.viewModel.favoritesProvider, 
           ),
         ],

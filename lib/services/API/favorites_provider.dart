@@ -98,12 +98,13 @@ class FavoritesProvider {
 
   FavoritesProvider(this.restAPINetworkService, this.graphQLNetworkService);
 
-  Future<void> createContentfulItem(String integrationId) {
+  Future<void> createContentfulItem(String integrationId, String type) {
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/contentful/add',
       data: NetworkRequestBody.formData({
         'integrationId': integrationId,
+        'type': type,
       }),
     );
 
@@ -148,6 +149,24 @@ class FavoritesProvider {
       queryParams: {
         'filter[owner_id]': id,
         'filter[contentful_type]': typeFilter,
+        'page': page,
+        'size': size,
+      },
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => FavoritesListModel.fromJson(json['data']),
+    );
+  }
+
+    Future<FavoritesListModel> commonFavoritesList(int? id, int page, int size) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/favorite/list',
+      data: NetworkRequestBody.empty(),
+      queryParams: {
+        'filter[owner_id]': id,
         'page': page,
         'size': size,
       },

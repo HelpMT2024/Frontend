@@ -1,6 +1,7 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/problem_case.dart';
 import 'package:help_my_truck/ui/faults_flow/problem_case_screen/problem_case_view_model.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
@@ -16,6 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProblemCaseScreen extends StatefulWidget {
   final ProblemCaseScreenViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.problemCase;
 
   const ProblemCaseScreen({super.key, required this.viewModel});
 
@@ -36,6 +38,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         bgColor: ColorConstants.surfacePrimaryDark,
         action: [VehicleNavBarActions(
           integrationId: widget.viewModel.config.id,
+          type: widget.itemType.filterKey(),
           provider: widget.viewModel.favoritesProvider,
         )],
         toolbarHeight: 52,

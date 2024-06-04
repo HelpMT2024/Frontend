@@ -8,6 +8,7 @@ import 'package:share_plus/share_plus.dart';
 
 class VehicleNavBarActions extends StatelessWidget {
   final String? integrationId;
+  final String? type;
   final bool hideBookmark;
   final FavoritesProvider? provider;
 
@@ -15,6 +16,7 @@ class VehicleNavBarActions extends StatelessWidget {
     super.key,
     this.hideBookmark = false,
     this.integrationId,
+    this.type,
     this.provider, 
   });
 
@@ -44,7 +46,7 @@ class VehicleNavBarActions extends StatelessWidget {
           onPressed: _openAppPage,
         ),
         if (!hideBookmark)
-          BookmarkButton(integrationId, provider, null, false)
+          BookmarkButton(integrationId, type, provider, null, false)
       ],
     );
   }

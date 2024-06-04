@@ -7,10 +7,11 @@ import 'package:help_my_truck/services/API/favorites_provider.dart';
 class BookmarkButton extends StatefulWidget {
   FavoritesProvider? provider;
   String? integrationId;
+  String? type;
   final bool isFixedState;
   void Function(String)? voidCallback;
 
-  BookmarkButton(this.integrationId, this.provider, this.voidCallback,
+  BookmarkButton(this.integrationId, this.type, this.provider, this.voidCallback,
       this.isFixedState,
       {super.key});
 
@@ -64,8 +65,9 @@ class _BookmarkButtonState extends State<BookmarkButton> {
           changeIconState();
         } else {
           final id = widget.integrationId;
-          if (id != null) {
-            widget.provider?.createContentfulItem(id);
+          final type = widget.type;
+          if (id != null && type != null) {
+            widget.provider?.createContentfulItem(id, type);
             widget.provider?.change(item?.id ?? 0);
             changeIconState();
           }
