@@ -22,9 +22,12 @@ Route<dynamic>? FavoritesRouter(
       return nativePageRoute(
           settings: setting,
           builder: (context) {
-            final provider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
-            final vehicleProvider = VehicleProvider(graphQLNetworkService);
-            final viewModel = FavoritesScreenViewModel(provider: provider, vehicleProvider: vehicleProvider);
+            final provider =
+                FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+            final vehicleProvider =
+                VehicleProvider(graphQLNetworkService, restAPINetworkService);
+            final viewModel = FavoritesScreenViewModel(
+                provider: provider, vehicleProvider: vehicleProvider);
 
             return FavoritesScreen(viewModel: viewModel);
           });

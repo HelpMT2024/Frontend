@@ -21,7 +21,10 @@ class ConfigurationObserverViewModel {
   ConfigurationObserverViewModel({
     required this.config,
   }) {
-    provider = VehicleProvider(config.graphQLNetworkService);
+    provider = VehicleProvider(
+      config.graphQLNetworkService,
+      config.restAPINetworkService,
+    );
   }
 
   void onModelSelected(String id, BuildContext context) {

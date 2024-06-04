@@ -63,7 +63,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   late final searchModalController = SearchModalController(
-    provider: VehicleProvider(widget.config.graphQLNetworkService),
+    provider: VehicleProvider(widget.config.graphQLNetworkService,
+        widget.config.restAPINetworkService),
   );
 
   final controller = mainPageController;
@@ -82,7 +83,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
           widget.config.restAPINetworkService,
           widget.config.graphQLNetworkService,
         ),
-        vehicleProvider: VehicleProvider(widget.config.graphQLNetworkService),
+        vehicleProvider: VehicleProvider(
+          widget.config.graphQLNetworkService,
+          widget.config.restAPINetworkService,
+        ),
       ),
     ),
     NavBarPage.profile: ProfileScreen(

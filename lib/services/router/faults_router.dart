@@ -32,7 +32,8 @@ Route<dynamic>? FaultsRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLNetworkService);
+          final provider =
+              VehicleProvider(graphQLNetworkService, restAPINetworkService);
           final viewModel = WarningScreenViewModel(provider: provider);
 
           return WarningScreen(viewModel: viewModel);
@@ -43,7 +44,8 @@ Route<dynamic>? FaultsRouter(
         settings: setting,
         builder: (context) {
           final config = setting.arguments as ChildProblem;
-          final provider = VehicleProvider(graphQLNetworkService);
+          final provider =
+              VehicleProvider(graphQLNetworkService, restAPINetworkService);
           final favoritesProvider =
               FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = ProblemCaseScreenViewModel(
@@ -60,7 +62,8 @@ Route<dynamic>? FaultsRouter(
         settings: setting,
         builder: (context) {
           final config = setting.arguments as ChildFault;
-          final provider = VehicleProvider(graphQLNetworkService);
+          final provider =
+              VehicleProvider(graphQLNetworkService, restAPINetworkService);
           final favoritesProvider =
               FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = FaultScreenViewModel(
