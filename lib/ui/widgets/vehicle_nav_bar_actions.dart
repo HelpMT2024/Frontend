@@ -2,14 +2,22 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:share_plus/share_plus.dart';
 
 class VehicleNavBarActions extends StatelessWidget {
+  final String? integrationId;
+  final String? type;
   final bool hideBookmark;
+  final FavoritesProvider? provider;
 
   const VehicleNavBarActions({
     super.key,
     this.hideBookmark = false,
+    this.integrationId,
+    this.type,
+    this.provider,
   });
 
   _openAppPage() {
@@ -43,18 +51,13 @@ class VehicleNavBarActions extends StatelessWidget {
               onPressed: _openAppPage,
             ),
           ),
-          const SizedBox(width: 4,),
+          const SizedBox(
+            width: 4,
+          ),
           if (!hideBookmark)
             SizedBox(
               width: 32,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: Icon(
-                  Icons.bookmark_border_outlined,
-                  color: ColorConstants.onSurfaceWhite,
-                ),
-                onPressed: () {},
-              ),
+              child: BookmarkButton(integrationId, type, provider, null, false),
             ),
         ],
       ),

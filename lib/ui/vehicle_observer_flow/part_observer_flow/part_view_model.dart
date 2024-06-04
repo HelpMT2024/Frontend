@@ -4,6 +4,7 @@ import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/part.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
@@ -13,6 +14,7 @@ import '../vehicle_navigation_helper.dart';
 
 class PartViewModel {
   final VehicleProvider provider;
+  final FavoritesProvider favoritesProvider;
   final ChildrenPart config;
 
   late final part = BehaviorSubject<Part>()
@@ -43,6 +45,7 @@ class PartViewModel {
 
   PartViewModel({
     required this.provider,
+    required this.favoritesProvider,
     required this.config,
   });
 

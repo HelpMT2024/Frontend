@@ -7,6 +7,7 @@ import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -41,15 +42,15 @@ abstract class VehicleSelectorRouteKeys {
 
 Route<dynamic>? VehicleSelectorRouter(
   RouteSettings setting,
-  GraphQLNetworkService graphQLService,
-  RestAPINetworkService restAPIService,
+  RestAPINetworkService restAPINetworkService,
+  GraphQLNetworkService graphQLNetworkService,
 ) {
   switch (setting.name) {
     case VehicleSelectorRouteKeys.subPartObserver:
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
           final viewModel = SubPartViewModel(
             provider: provider,
             config: setting.arguments as ChildSubpart,
@@ -62,9 +63,11 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = DriverCabinViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: setting.arguments as ChildrenSystem,
           );
 
@@ -75,9 +78,11 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = ComponentObserverViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: setting.arguments as ChildrenComponent,
           );
 
@@ -88,9 +93,11 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = SystemObserverViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: setting.arguments as ChildrenSystem,
           );
 
@@ -102,9 +109,11 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = UnitObserverViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: setting.arguments as ChildrenUnit,
           );
 
@@ -116,9 +125,11 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = PartViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: setting.arguments as ChildrenPart,
           );
 
@@ -130,8 +141,9 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
           final viewModel = EngineSelectorViewModel(
+            restAPINetworkService: restAPINetworkService,
             provider: provider,
             truck: setting.arguments as Truck,
           );
@@ -143,7 +155,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(graphQLService, restAPIService);
+          final provider = VehicleProvider(graphQLNetworkService);
           final viewModel = TruckSelectorViewModel(provider: provider);
 
           return TruckSelectorScreen(viewModel: viewModel);

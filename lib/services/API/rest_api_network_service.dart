@@ -350,9 +350,9 @@ class RestAPINetworkService {
         onSendProgress,
         onReceiveProgress,
       );
-
+      
       final token = SharedPreferencesWrapper.getToken();
-
+      
       return await _composed<Model>(_IsolatedValue(req, token)).then(
         (value) {
           return value.map(

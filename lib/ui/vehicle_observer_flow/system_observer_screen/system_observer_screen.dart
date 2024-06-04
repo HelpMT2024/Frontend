@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -12,6 +13,7 @@ import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 
 class SystemObserverScreen extends StatefulWidget {
   final SystemObserverViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.system;
 
   const SystemObserverScreen({super.key, required this.viewModel});
 
@@ -29,7 +31,11 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
         context: context,
         styles: styles,
         title: widget.viewModel.config.name,
-        action: const [VehicleNavBarActions()],
+        action: [VehicleNavBarActions(
+          integrationId: widget.viewModel.config.id,
+          type: widget.itemType.filterKey(),
+          provider: widget.viewModel.favoritesProvider,
+        )],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: CustomFloatingButton(

@@ -1,16 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
-import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
+import 'package:help_my_truck/ui/widgets/filter_tab_bar.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/widgets/no_connection_placeholder.dart';
+import 'package:paginated_list/paginated_list.dart';
 
 class FavoritesScreen extends StatefulWidget {
   final FavoritesScreenViewModel viewModel;
-
   const FavoritesScreen({super.key, required this.viewModel});
 
   @override
@@ -18,6 +22,30 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    widget.viewModel.selectedFilter = FavoriteModelType.unit;
+    widget.viewModel.resetData();
+
+    super.initState();
+  }
+
+  void buttonCallback(String id) {
+    widget.viewModel.fetchedItems
+        .removeWhere((element) => element.integrationId == id);
+    widget.viewModel.updateDataStreamController
+        .add(widget.viewModel.fetchedItems);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -30,11 +58,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         styles: styles,
         title: l10n?.favorites_title ?? '',
       ),
-      body: _successBody(),
+      body: _commonBody(),
     );
   }
 
-  Widget _successBody() {
+  Widget _commonBody() {
     return Container(
       color: ColorConstants.surfacePrimaryDark,
       padding: const EdgeInsets.only(
@@ -42,91 +70,101 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         left: 16,
         right: 16,
       ),
-      child: Column(
-        children: [
-          Row(children: buttons()),
-          const SizedBox(
-            height: 24,
-          ),
-          Expanded(
-            child: ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                return const SizedBox(height: 8);
-              },
-              itemCount: 5,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (context, index) {
-                return listViewCell('Engine', index);
-              },
-            ),
-          )
-        ],
-      ),
+      child: StreamBuilder<List<FavoritesListItem>>(
+          stream: widget.viewModel.updateDataStreamController.stream,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Loadable(forceLoad: true, child: Container());
+            } else if (snapshot.data?.length == 0) {
+              return _placeholder();
+            } else if (snapshot.hasData) {
+              return _successBody();
+            } else if (snapshot.hasError) {
+              return Text('Error ${snapshot.hasData}');
+            } else {
+              return Container();
+            }
+          }),
     );
   }
 
-  List<Widget> buttons() {
-    return [0, 1, 2].map((button) {
-      return Row(
-        children: [
-          customTabButton('Units'),
-          const SizedBox(
-            width: 8,
+  Widget _successBody() {
+    final titles = FavoriteModelType.values.map((e) => e.title(context)).toList();
+
+    return Column(
+      children: [
+        FilterTabBar(
+          titles: titles,
+          outputSelectionCallback: widget.viewModel.handleTabButtonClick,
+          initSelectionIndex: 0,
+        ),
+        const SizedBox(
+          height: 24,
+        ),
+        Flexible(
+            child: PaginatedList<FavoritesListItem>(
+          scrollDirection: Axis.vertical,
+          controller: _scrollController,
+          loadingIndicator: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Center(child: Loadable(forceLoad: true, child: Container())),
           ),
-        ],
-      );
-    }).toList();
+          items: widget.viewModel.fetchedItems,
+          isRecentSearch: false,
+          isLastPage: widget.viewModel.isLastPage,
+          onLoadMore: (index) {
+            widget.viewModel.getPage();
+          },
+          builder: (item, index) => listViewCell(item, index),
+        )),
+      ],
+    );
   }
 
-  Widget listViewCell(String title, int index) {
+  Widget listViewCell(FavoritesListItem model, int index) {
     final styles = Theme.of(context).textTheme;
 
-    return InkWell(
-      // onTap: () {
-      //   Navigator.pushNamed(
-      //     context,
-      //     'asdsada',
-      //     arguments: index,
-      //   );
-      // },
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          color: ColorConstants.surfaceSecondary,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16, right: 12, top: 12, bottom: 12),
-          child: Row(
-            children: [
-              Expanded(child: Text(title, style: styles.titleMedium?.copyWith(color: ColorConstants.onSurfaceWhite))),
-              const SizedBox(width: 8),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 6.17, vertical: 4.5),
-                child: Icon(Icons.bookmark, size: 20, color: ColorConstants.surfaceWhite),
-              )
-            ],
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: InkWell(
+        onTap: () {
+          // widget.viewModel.handleClick(model, context);
+        },
+        child: Container(
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: ColorConstants.surfaceSecondary,
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 16, right: 0, top: 6, bottom: 6),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    model.integrationId,
+                    style: styles.titleMedium
+                        ?.copyWith(color: ColorConstants.onSurfaceWhite),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                BookmarkButton(
+                  widget.viewModel.fetchedItems[index].integrationId,
+                  null,
+                  widget.viewModel.provider,
+                  buttonCallback,
+                  true,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget customTabButton(String title) {
-    return CustomButton(
-      height: 28,
-      textColor: ColorConstants.onSurfaceWhite,
-      borderColor: ColorConstants.stroke,
-      borderRadius: 8,
-      title: CustomButtonTitle(
-        text: title,
-      ),
-      state: CustomButtonStates.outlined,
-      onPressed: () => (),
-    );
-  }
-
-  Widget placeholder() {
+  Widget _placeholder() {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 

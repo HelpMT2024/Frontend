@@ -2,6 +2,7 @@ import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
@@ -24,6 +25,7 @@ import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 
 class PartScreen extends StatefulWidget {
   final PartViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.part;
 
   const PartScreen({super.key, required this.viewModel});
 
@@ -41,7 +43,11 @@ class _PartScreenState extends State<PartScreen> {
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        action: const [VehicleNavBarActions()],
+        action: [VehicleNavBarActions(
+          integrationId: widget.viewModel.config.id,
+          type: widget.itemType.filterKey(),
+          provider: widget.viewModel.favoritesProvider,
+        )],
         bottom: _navBarTitle(styles, backgroundColor),
         toolbarHeight: 52,
       ),

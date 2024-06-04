@@ -33,7 +33,7 @@ class _WarningScreenState extends State<WarningScreen> {
         context: context,
         styles: styles,
         title: l10n?.warning_page_title,
-        action: const [VehicleNavBarActions()],
+        action: const [VehicleNavBarActions(hideBookmark: true,)],
       ),
       bottomNavigationBar: MainBottomBar(
         selectedPage: NavBarPage.search,

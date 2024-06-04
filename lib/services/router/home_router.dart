@@ -10,7 +10,7 @@ abstract class HomeRouteKeys {
 }
 
 Route<dynamic>? HomeRouter(
-    RouteSettings setting, GraphQLNetworkService service) {
+    RouteSettings setting, GraphQLNetworkService graphQLNetworkService) {
   switch (setting.name) {
     case HomeRouteKeys.home:
       return nativePageRoute(
