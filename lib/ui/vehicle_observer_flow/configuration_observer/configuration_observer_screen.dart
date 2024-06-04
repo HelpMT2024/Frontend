@@ -38,7 +38,7 @@ class _ConfigurationObserverScreenState
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
             child: StreamBuilder<Configuration>(
               stream: widget.viewModel.configuration,
               builder: (context, snapshot) {
@@ -62,6 +62,7 @@ class _ConfigurationObserverScreenState
           _content(data),
           const SizedBox(height: 32),
           const CommentButton(),
+          const SizedBox(height: 24),
         ],
       ),
     );

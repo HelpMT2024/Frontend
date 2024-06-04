@@ -17,7 +17,7 @@ class VehicleNavBarActions extends StatelessWidget {
     this.hideBookmark = false,
     this.integrationId,
     this.type,
-    this.provider, 
+    this.provider,
   });
 
   _openAppPage() {
@@ -36,18 +36,31 @@ class VehicleNavBarActions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: Icon(
-            Icons.ios_share_rounded,
-            color: ColorConstants.onSurfaceWhite,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: [
+          SizedBox(
+            width: 32,
+            child: IconButton(
+              padding: EdgeInsets.zero,
+              icon: Icon(
+                Icons.ios_share_rounded,
+                color: ColorConstants.onSurfaceWhite,
+              ),
+              onPressed: _openAppPage,
+            ),
           ),
-          onPressed: _openAppPage,
-        ),
-        if (!hideBookmark)
-          BookmarkButton(integrationId, type, provider, null, false)
-      ],
+          const SizedBox(
+            width: 4,
+          ),
+          if (!hideBookmark)
+            SizedBox(
+              width: 32,
+              child: BookmarkButton(integrationId, type, provider, null, false),
+            ),
+        ],
+      ),
     );
   }
 }

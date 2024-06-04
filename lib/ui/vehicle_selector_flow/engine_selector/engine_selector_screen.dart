@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
+import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_selector_flow/engine_selector/engine_selector_view_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:page_view_dot_indicator/page_view_dot_indicator.dart';
-
-import '../../widgets/custom_button.dart';
 
 class EngineSelectorScreen extends StatefulWidget {
   final EngineSelectorViewModel viewModel;
@@ -48,7 +47,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
     final styles = Theme.of(context).textTheme;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _header(styles),
         const Spacer(),
@@ -93,20 +92,23 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
-        return Column(
-          children: [
-            SizedBox(
-              height: 240,
-              width: 240,
-              child: Image.network(truck.image.url),
-            ),
-            Text(
-              truck.name.toUpperCase(),
-              style: styles.titleMedium?.copyWith(
-                color: ColorConstants.surfaceWhite,
+        return GestureDetector(
+          onTap: () => widget.viewModel.selectEngine(context),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 240,
+                width: 240,
+                child: Image.network(truck.image.url),
               ),
-            ),
-          ],
+              Text(
+                truck.name.toUpperCase(),
+                style: styles.titleMedium?.copyWith(
+                  color: ColorConstants.surfaceWhite,
+                ),
+              ),
+            ],
+          ),
         );
       },
       options: CarouselOptions(

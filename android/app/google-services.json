@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:734307137754:android:532091cf4a530a0bb40de3",
+        "mobilesdk_app_id": "1:734307137754:android:555a9c3348b98130b40de3",
         "android_client_info": {
-          "package_name": "com.example.help_my_truck"
+          "package_name": "com.helpmytruck.fixer"
         }
       },
       "oauth_client": [],

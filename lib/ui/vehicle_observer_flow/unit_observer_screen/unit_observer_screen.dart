@@ -4,8 +4,8 @@ import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
-import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/unit_observer_screen/unit_observer_view_model.dart';
@@ -41,20 +41,16 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: MainBottomBar(
+      bottomNavigationBar: CustomBottomBar(
         selectedPage: NavBarPage.home,
         onItemTapped: (item) => VehicleNavigationHelper.navigateTo(
-          NavBarPage.fromPage(item),
-          context,
-          false,
-        ),
-        hideAllExceptSearch: false,
+            NavBarPage.fromPage(item), context, false),
       ),
       body: Stack(
         children: [
           Container(decoration: appGradientBgDecoration),
           Padding(
-            padding: const EdgeInsets.fromLTRB(12, 24, 12, 24),
+            padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
             child: StreamBuilder<Unit>(
               stream: widget.viewModel.unit,
               builder: (context, snapshot) {
@@ -83,6 +79,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
           },
           const SizedBox(height: 16),
           const CommentButton(),
+          const SizedBox(height: 24),
         ],
       ),
     );

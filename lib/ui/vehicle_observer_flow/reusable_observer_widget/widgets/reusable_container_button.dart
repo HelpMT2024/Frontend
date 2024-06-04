@@ -68,7 +68,7 @@ class ReusableContainerButton extends StatelessWidget {
           ),
         if (model.icon == null) _container(_text(model, styles)),
         if (model.icon != null) ...{
-          const SizedBox(height: 8),
+          const SizedBox(height: 2),
           _text(model, styles),
         }
       ];
@@ -77,7 +77,7 @@ class ReusableContainerButton extends StatelessWidget {
         if (model.icon != null) _text(model, styles),
         if (model.icon == null) _container(_text(model, styles)),
         if (model.icon != null) ...{
-          const SizedBox(height: 8),
+          const SizedBox(height: 2),
           _container(
             model.icon?.contentType == 'image/svg+xml'
                 ? SvgPicture.network(model.icon!.url)

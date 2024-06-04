@@ -1,4 +1,14 @@
 abstract class Queries {
+  static String pdfFilesCollection = '''
+  pdfFilesCollection {
+          items {
+            asset {
+              url
+            }
+            title
+          }
+        }
+  ''';
   static String warningCollection = '''
     warningLightsCollection {
       items {
@@ -397,6 +407,37 @@ faultCodesCollection {
 ''';
   }
 
+  static String subPartById({required String id}) {
+    return '''
+query Subpart(\$id: String = "$id") {
+	subPart(id: \$id) {
+    internalName
+    name
+    icon {
+      title
+      description
+      contentType
+      fileName
+      size
+      url
+      width
+      height
+    } 
+    $problemsCollection
+    $faultsCodesCollection
+    $warningCollection
+    imageView {
+      $imageView
+    }
+    description {
+      json
+    }
+    $pdfFilesCollection
+    $videoCollection
+  }
+}''';
+  }
+
   static String partById({required String id}) {
     return '''
     query Part(\$id: String = "$id") {
@@ -414,14 +455,18 @@ faultCodesCollection {
         imageView {
           $imageView
         }
-        pdfFilesCollection {
+        childrenCollection {
           items {
-            asset {
-              url
+            sys {
+              id
             }
-            title
+            name
+            icon {
+              $image
+            }
           }
         }
+        $pdfFilesCollection
         $videoCollection
       }
     } 

@@ -127,6 +127,7 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
               setState(() {});
             },
             child: Stack(
+              alignment: Alignment.center,
               clipBehavior: Clip.hardEdge,
               children: [
                 _gif(
@@ -207,7 +208,11 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
         width: 32,
         height: 32,
         decoration: BoxDecoration(
-          color: ColorConstants.onSurfaceSecondary,
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: ColorConstants.gradientPrimary,
+          ),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Icon(icon, size: 20, color: ColorConstants.surfaceWhite),

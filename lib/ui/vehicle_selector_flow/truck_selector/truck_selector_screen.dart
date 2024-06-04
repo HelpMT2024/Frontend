@@ -48,12 +48,10 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
     final styles = Theme.of(context).textTheme;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _header(styles),
-        const SizedBox(
-          height: 80,
-        ),
+        const Spacer(),
         if (data.isNotEmpty) _carousel(data),
         _indicator(data),
         const Spacer(),
@@ -89,20 +87,23 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
-        return Column(
-          children: [
-            SizedBox(
-              height: 240,
-              width: 240,
-              child: Image.network(truck.image.url),
-            ),
-            Text(
-              truck.name.toUpperCase(),
-              style: styles.titleMedium?.copyWith(
-                color: ColorConstants.surfaceWhite,
+        return GestureDetector(
+          onTap: () => widget.viewModel.selectTruck(context),
+          child: Column(
+            children: [
+              SizedBox(
+                height: 240,
+                width: 240,
+                child: Image.network(truck.image.url),
               ),
-            ),
-          ],
+              Text(
+                truck.name.toUpperCase(),
+                style: styles.titleMedium?.copyWith(
+                  color: ColorConstants.surfaceWhite,
+                ),
+              ),
+            ],
+          ),
         );
       },
       options: CarouselOptions(
@@ -122,11 +123,20 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
 
   Widget _header(TextTheme styles) {
     final l10n = AppLocalizations.of(context);
-    return Text(
-      l10n!.choose_your_truck,
-      style: styles.headlineSmall?.copyWith(
-        color: ColorConstants.surfaceWhite,
+    return _proxySetter(
+      Text(
+        l10n!.choose_your_truck,
+        style: styles.headlineSmall?.copyWith(
+          color: ColorConstants.surfaceWhite,
+        ),
       ),
+    );
+  }
+
+  Widget _proxySetter(Widget child) {
+    return GestureDetector(
+      onTap: () => widget.viewModel.setProxy(context),
+      child: child,
     );
   }
 }

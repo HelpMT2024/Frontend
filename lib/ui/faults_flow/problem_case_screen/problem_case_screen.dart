@@ -13,7 +13,6 @@ import 'package:help_my_truck/ui/widgets/pdf_button.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProblemCaseScreen extends StatefulWidget {
   final ProblemCaseScreenViewModel viewModel;
@@ -29,12 +28,13 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+    final backgroundColor = ColorConstants.surfacePrimaryDark;
 
     return Scaffold(
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        bottom: _navBarTitle(styles),
+        bottom: _navBarTitle(styles, backgroundColor),
         bgColor: ColorConstants.surfacePrimaryDark,
         action: [VehicleNavBarActions(
           integrationId: widget.viewModel.config.id,
@@ -45,7 +45,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
       ),
       body: Stack(
         children: [
-          Container(color: ColorConstants.surfacePrimaryDark),
+          Container(color: backgroundColor),
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
             child: StreamBuilder<ProblemCase>(
@@ -65,7 +65,6 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
   }
 
   Widget _body() {
-    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -75,6 +74,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         },
         if (widget.viewModel.hasDescription) ...{
           _text(Theme.of(context).textTheme),
+          const SizedBox(height: 24),
         },
         _instructionsButtons(),
         if (widget.viewModel.hasVideos) ...{
@@ -108,10 +108,11 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     );
   }
 
-  PreferredSize _navBarTitle(TextTheme styles) {
+  PreferredSize _navBarTitle(TextTheme styles, Color backgroundColor) {
     return mainNavigationBarBottom(
       context: context,
       title: widget.viewModel.config.name,
+      backgroundColor: backgroundColor,
     );
   }
 }

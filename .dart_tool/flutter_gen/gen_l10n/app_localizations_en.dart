@@ -11,7 +11,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get people_title => 'People';
 
   @override
-  String get fault_code_title => 'Fault Codes';
+  String get fault_code_title => 'Fault Code';
 
   @override
   String get favorites_title => 'Favorites';
@@ -219,4 +219,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites_item_type_problem_cases => 'Problem Cases';
+
+  @override
+  String get description => 'Description';
 }

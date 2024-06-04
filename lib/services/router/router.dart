@@ -2,13 +2,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/favorites_router.dart';
 import 'package:help_my_truck/services/router/home_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
-
-import '../API/rest_api_network_service.dart';
 
 final graphQLService = GraphQLNetworkService();
 final restAPIService =

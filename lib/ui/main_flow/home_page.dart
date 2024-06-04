@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
@@ -11,7 +13,7 @@ import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart
 import 'package:help_my_truck/ui/profile_flow/profile_screen.dart';
 import 'package:help_my_truck/ui/profile_flow/profile_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
-import 'package:help_my_truck/ui/widgets/main_bottom_bar.dart';
+import 'package:help_my_truck/ui/widgets/custom_bottom_bar.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -127,10 +129,11 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     final search = SearchScreen(searchModalController: searchModalController);
 
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
-      builder: (_) {
-        return search;
-      },
+      builder: (BuildContext bc) => Wrap(
+        children: [search],
+      ),
     );
   }
 
@@ -143,18 +146,28 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
       bottomNavigationBar: _buildNavBar(l10n),
       body: Container(
         decoration: appGradientBgDecoration,
-        child: PageView(
-          controller: pageController,
-          allowImplicitScrolling: false,
-          physics: const NeverScrollableScrollPhysics(),
-          children: _widgetOptions.values.toList(),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                Expanded(
+                  child: PageView(
+                    controller: pageController,
+                    allowImplicitScrolling: false,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children: _widgetOptions.values.toList(),
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );
   }
 
   Widget _buildNavBar(AppLocalizations? l10n) {
-    return MainBottomBar(
+    return CustomBottomBar(
       selectedPage: controller._selectedPage,
       onItemTapped: _onItemTapped,
     );

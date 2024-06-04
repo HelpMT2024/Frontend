@@ -64,8 +64,9 @@ class _WebViewScreenState extends State<WebViewScreen> {
                   filePath: localPath,
                   enableSwipe: true,
                   swipeHorizontal: false,
-                  autoSpacing: false,
                   pageFling: false,
+                  pageSnap: false,
+                  fitPolicy: FitPolicy.WIDTH,
                   onError: (error) {
                     Navigator.of(context).pop();
                   },

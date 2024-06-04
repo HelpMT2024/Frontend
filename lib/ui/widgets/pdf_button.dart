@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
@@ -60,6 +62,7 @@ class PDFButton extends StatelessWidget {
             Text(
               title,
               style: styles.labelLarge?.copyWith(
+                overflow: TextOverflow.ellipsis,
                 color: ColorConstants.onSurfaceWhite,
               ),
             ),

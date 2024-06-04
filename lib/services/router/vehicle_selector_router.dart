@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
+import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
@@ -16,6 +17,8 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_s
 import 'package:help_my_truck/ui/vehicle_observer_flow/part_observer_flow/part_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/component_observer/component_observer_view_model.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/subpart_observer/subpart_screen.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/subpart_observer/subpart_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/system_observer_screen/system_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/system_observer_screen/system_observer_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/unit_observer_screen/unit_observer_screen.dart';
@@ -32,6 +35,7 @@ abstract class VehicleSelectorRouteKeys {
   static const String systemObserver = 'systemObserver';
   static const String unitObserver = 'unitObserver';
   static const String partObserver = 'partObserver';
+  static const String subPartObserver = 'subPartObserver';
   static const String truckSelector = 'truckSelector';
   static const String engineSelector = 'engineSelector';
 }
@@ -42,6 +46,19 @@ Route<dynamic>? VehicleSelectorRouter(
   GraphQLNetworkService graphQLNetworkService,
 ) {
   switch (setting.name) {
+    case VehicleSelectorRouteKeys.subPartObserver:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final provider = VehicleProvider(service);
+          final viewModel = SubPartViewModel(
+            provider: provider,
+            config: setting.arguments as ChildSubpart,
+          );
+
+          return SubPartScreen(viewModel: viewModel);
+        },
+      );
     case VehicleSelectorRouteKeys.driverCabin:
       return nativePageRoute(
         settings: setting,

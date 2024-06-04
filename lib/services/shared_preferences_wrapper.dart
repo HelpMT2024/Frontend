@@ -10,6 +10,14 @@ class SharedPreferencesWrapper {
     _container = await SharedPreferences.getInstance();
   }
 
+  static Future<bool> setProxy(String proxy) {
+    return _container.setString('Proxy', proxy);
+  }
+
+  static String getProxy() {
+    return _container.getString('Proxy') ?? '';
+  }
+
   static Future<bool> setFCM(String token) {
     return _container.setString('FCMToken', token);
   }

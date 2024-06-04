@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/extensions/list_extensions.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_container_button.dart';
-import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/reusable_observer_helper.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_observer_image.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 
@@ -40,13 +41,46 @@ class _TopAndBottomReusableContainerState
     imageKey: _imageKey,
   );
 
+  List<List<ReusableModel>> get _models {
+    final points = _isFront
+        ? widget.config.imageView.imageFrontMarkup
+        : widget.config.imageView.imageBackMarkup;
+    final top = points
+            ?.where((element) => element.position == IDPPointPosition.top)
+            .toList() ??
+        [];
+    final bottom = points
+            ?.where((element) => element.position == IDPPointPosition.bottom)
+            .toList() ??
+        [];
+    final withoutPosition =
+        points?.where((element) => element.position == null).toList() ?? [];
+
+    final topModels = widget.config.models
+        .where((element) => top.any((point) => point.parentID == element.id))
+        .toList();
+    final bottomModels = widget.config.models
+        .where((element) => bottom.any((point) => point.parentID == element.id))
+        .toList();
+    final withoutPositionModels = widget.config.models
+        .where((element) =>
+            withoutPosition.any((point) => point.parentID == element.id))
+        .toList();
+
+    List<List<ReusableModel>> chunk = withoutPositionModels.chunked(2);
+    if (chunk.length == 2) {
+      topModels.addAll(chunk[0]);
+      bottomModels.addAll(chunk[1]);
+    } else {
+      topModels.addAll(withoutPositionModels);
+    }
+
+    return [topModels, bottomModels];
+  }
+
   @override
   Widget build(BuildContext context) {
-    final models = ReusableObserverHelper.getReusableObserverHelperModel(
-      config: widget.config,
-      chunkSize: 2,
-      isFront: _isFront,
-    );
+    final models = _models;
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -55,7 +89,7 @@ class _TopAndBottomReusableContainerState
         if (models.isNotEmpty) _buttons(models[0], context, _Position.top),
         const SizedBox(height: 10),
         _image(),
-        const SizedBox(height: 10),
+        const SizedBox(height: 4),
         if (models.length > 1) _buttons(models[1], context, _Position.bottom),
       ],
     );

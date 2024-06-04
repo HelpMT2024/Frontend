@@ -118,14 +118,19 @@ class CustomButton extends StatelessWidget {
           ),
           borderRadius: BorderRadius.circular(borderRadius),
         ),
-        child: Center(
-            child: title.text != null
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            title.text != null
                 ? _buttonText(
                     title.text!,
                     styles,
                     _isOutlined ? buttonColor : ColorConstants.onSurfaceWhite,
                   )
-                : title.widget!),
+                : title.widget!,
+          ],
+        ),
       ),
     );
   }
@@ -133,7 +138,7 @@ class CustomButton extends StatelessWidget {
   Widget _buttonText(String title, TextTheme styles, Color color) {
     return Text(
       title,
-      style: styles.button?.merge(
+      style: styles.labelLarge?.merge(
         TextStyle(color: textColor ?? color),
       ),
     );
