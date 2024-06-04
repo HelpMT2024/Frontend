@@ -2,31 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
+import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
+import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
-
-class FavoriteContentfulModel {
-  final String id;
-  final String name;
-  final FavoriteModelType type;
-
-  FavoriteContentfulModel(
-      {required this.id, required this.name, required this.type});
-
-  factory FavoriteContentfulModel.fromJson(Map<String, dynamic> json) =>
-      FavoriteContentfulModel(
-        id: json["id"],
-        name: json["name"],
-        type: json["type"],
-      );
-}
 
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
@@ -37,7 +24,6 @@ class FavoritesScreenViewModel {
 
   UserInfoModel? user;
   List<FavoritesListItem> fetchedItems = [];
-  List<FavoriteContentfulModel> filtered = [];
   FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
@@ -87,86 +73,100 @@ class FavoritesScreenViewModel {
           name: 'unit_name',
           image: null,
         );
-        Navigator.of(context).pushNamed(
+        Navigator.of(context)
+            .pushNamed(
           VehicleSelectorRouteKeys.unitObserver,
           arguments: child,
-        ).then((value) {
+        )
+            .then((value) {
           resetData();
         });
       case FavoriteModelType.system:
         final child = ChildrenSystem(
           id: model.integrationId,
           name: 'system_name',
-          image: null, 
+          image: null,
           types: [],
         );
-        Navigator.of(context).pushNamed(
+        Navigator.of(context)
+            .pushNamed(
           VehicleSelectorRouteKeys.systemObserver,
           arguments: child,
-        ).then((value) {
+        )
+            .then((value) {
           resetData();
         });
       case FavoriteModelType.component:
         final child = ChildrenComponent(
           id: model.integrationId,
           name: 'component_name',
-          image: null, 
+          image: null,
           type: ChildType.standart,
         );
-        Navigator.of(context).pushNamed(
+        Navigator.of(context)
+            .pushNamed(
           VehicleSelectorRouteKeys.componentObserver,
           arguments: child,
-        ).then((value) {
+        )
+            .then((value) {
           resetData();
         });
       case FavoriteModelType.part:
         final child = ChildrenPart(
           id: model.integrationId,
           name: 'part_name',
-          image: null, 
+          image: null,
         );
-        Navigator.of(context).pushNamed(
+        Navigator.of(context)
+            .pushNamed(
           VehicleSelectorRouteKeys.partObserver,
           arguments: child,
-        ).then((value) {
+        )
+            .then((value) {
           resetData();
         });
       case FavoriteModelType.subPart:
         final child = ChildrenPart(
           id: model.integrationId,
           name: 'sub_part_name',
-          image: null, 
+          image: null,
         );
-        Navigator.of(context).pushNamed(
+        Navigator.of(context)
+            .pushNamed(
           VehicleSelectorRouteKeys.subPartObserver,
           arguments: child,
-        ).then((value) {
+        )
+            .then((value) {
           resetData();
         });
       case FavoriteModelType.faultCode:
-        // final child = ChildrenPart(
-        //   id: model.integrationId,
-        //   name: 'sub_part_name',
-        //   image: null, 
-        // );
-        // Navigator.of(context).pushNamed(
-        //   VehicleSelectorRouteKeys.faultCo,
-        //   arguments: child,
-        // ).then((value) {
-        //   resetData();
-        // });
+        final child = ChildFault(
+          id: model.integrationId,
+          spnCode: 'code',
+          fmiCodes: [],
+          showAsPdf: false,
+        );
+        Navigator.of(context)
+            .pushNamed(
+          FaultsRouteKeys.faultScreen,
+          arguments: child,
+        )
+            .then((value) {
+          resetData();
+        });
       case FavoriteModelType.problemCase:
-        // final child = ChildrenPart(
-        //   id: model.integrationId,
-        //   name: 'sub_part_name',
-        //   image: null, 
-        // );
-        // Navigator.of(context).pushNamed(
-        //   VehicleSelectorRouteKeys.subPartObserver,
-        //   arguments: child,
-        // ).then((value) {
-        //   resetData();
-        // });
+        final child = ChildProblem(
+          id: model.integrationId,
+          name: 'problem_name',
+        );
+        Navigator.of(context)
+            .pushNamed(
+          FaultsRouteKeys.problemCaseScreen,
+          arguments: child,
+        )
+            .then((value) {
+          resetData();
+        });
     }
   }
 }
