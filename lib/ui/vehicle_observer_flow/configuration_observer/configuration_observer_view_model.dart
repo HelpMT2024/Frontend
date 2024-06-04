@@ -21,7 +21,7 @@ class ConfigurationObserverViewModel {
   ConfigurationObserverViewModel({
     required this.config,
   }) {
-    provider = VehicleProvider(config.service);
+    provider = VehicleProvider(config.graphQLService, config.restAPIService);
   }
 
   void onModelSelected(String id, BuildContext context) {

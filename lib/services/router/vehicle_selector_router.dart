@@ -8,6 +8,7 @@ import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
@@ -40,14 +41,15 @@ abstract class VehicleSelectorRouteKeys {
 
 Route<dynamic>? VehicleSelectorRouter(
   RouteSettings setting,
-  GraphQLNetworkService service,
+  GraphQLNetworkService graphQLService,
+  RestAPINetworkService restAPIService,
 ) {
   switch (setting.name) {
     case VehicleSelectorRouteKeys.subPartObserver:
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = SubPartViewModel(
             provider: provider,
             config: setting.arguments as ChildSubpart,
@@ -60,7 +62,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = DriverCabinViewModel(
             provider: provider,
             config: setting.arguments as ChildrenSystem,
@@ -73,7 +75,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = ComponentObserverViewModel(
             provider: provider,
             config: setting.arguments as ChildrenComponent,
@@ -86,7 +88,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = SystemObserverViewModel(
             provider: provider,
             config: setting.arguments as ChildrenSystem,
@@ -100,7 +102,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = UnitObserverViewModel(
             provider: provider,
             config: setting.arguments as ChildrenUnit,
@@ -114,7 +116,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = PartViewModel(
             provider: provider,
             config: setting.arguments as ChildrenPart,
@@ -128,7 +130,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = EngineSelectorViewModel(
             provider: provider,
             truck: setting.arguments as Truck,
@@ -141,7 +143,7 @@ Route<dynamic>? VehicleSelectorRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = TruckSelectorViewModel(provider: provider);
 
           return TruckSelectorScreen(viewModel: viewModel);

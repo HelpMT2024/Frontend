@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
@@ -20,13 +21,16 @@ abstract class FaultsRouteKeys {
 }
 
 Route<dynamic>? FaultsRouter(
-    RouteSettings setting, GraphQLNetworkService service) {
+  RouteSettings setting,
+  GraphQLNetworkService graphQLService,
+  RestAPINetworkService restAPIService,
+) {
   switch (setting.name) {
     case FaultsRouteKeys.warningScreen:
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = WarningScreenViewModel(provider: provider);
 
           return WarningScreen(viewModel: viewModel);
@@ -37,7 +41,7 @@ Route<dynamic>? FaultsRouter(
         settings: setting,
         builder: (context) {
           final config = setting.arguments as ChildProblem;
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = ProblemCaseScreenViewModel(
             provider: provider,
             config: config,
@@ -51,7 +55,7 @@ Route<dynamic>? FaultsRouter(
         settings: setting,
         builder: (context) {
           final config = setting.arguments as ChildFault;
-          final provider = VehicleProvider(service);
+          final provider = VehicleProvider(graphQLService, restAPIService);
           final viewModel = FaultScreenViewModel(
             provider: provider,
             config: config,

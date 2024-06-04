@@ -4,6 +4,7 @@ import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
@@ -21,12 +22,14 @@ import 'package:help_my_truck/ui/search_flow/search_screen.dart';
 class MainPageConfig {
   final Engine engine;
   final Truck truck;
-  final GraphQLNetworkService service;
+  final GraphQLNetworkService graphQLService;
+  final RestAPINetworkService restAPIService;
 
   MainPageConfig({
     required this.engine,
     required this.truck,
-    required this.service,
+    required this.graphQLService,
+    required this.restAPIService,
   });
 }
 
@@ -58,7 +61,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   late final searchModalController = SearchModalController(
-    provider: VehicleProvider(widget.config.service),
+    provider: VehicleProvider(
+        widget.config.graphQLService, widget.config.restAPIService),
   );
 
   final controller = mainPageController;
@@ -73,7 +77,8 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     NavBarPage.search: const SizedBox(),
     NavBarPage.favorites: FavoritesScreen(
       viewModel: FavoritesScreenViewModel(
-        provider: VehicleProvider(widget.config.service),
+        provider: VehicleProvider(
+            widget.config.graphQLService, widget.config.restAPIService),
       ),
     ),
     NavBarPage.profile: ProfileScreen(

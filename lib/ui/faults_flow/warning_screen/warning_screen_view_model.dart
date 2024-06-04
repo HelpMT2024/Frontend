@@ -22,7 +22,7 @@ class WarningScreenViewModel {
   void onModelSelected(Warning model, BuildContext context) {
     final fault = SearchFault.fromWarning(model);
 
-    final provider = VehicleProvider(graphQLService);
+    final provider = VehicleProvider(graphQLService, restAPIService);
     final controller = SearchModalController(
       provider: provider,
       searchFault: fault,

@@ -23,7 +23,8 @@ class EngineSelectorViewModel {
     final config = MainPageConfig(
       engine: engine,
       truck: truck,
-      service: provider.service,
+      graphQLService: provider.graphQLService,
+      restAPIService: provider.restAPIService,
     );
 
     Navigator.of(context).pushNamedAndRemoveUntil(

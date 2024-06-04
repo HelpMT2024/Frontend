@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/truck.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/main.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
@@ -9,7 +10,7 @@ import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'package:help_my_truck/ui/widgets/text_box_field.dart';
 import 'package:rxdart/rxdart.dart';
 
-class TruckSelectorViewModel {
+class TruckSelectorViewModel with ViewModelErrorHandable {
   final VehicleProvider provider;
 
   late final trucks = BehaviorSubject<List<Truck>>()
@@ -24,11 +25,22 @@ class TruckSelectorViewModel {
 
   void selectTruck(BuildContext context) {
     final truck = trucks.value.elementAt(currentTruckIndex);
-
-    Navigator.of(context).pushNamed(
-      VehicleSelectorRouteKeys.engineSelector,
-      arguments: truck,
-    );
+    provider.chooseTruck(id: truck.id).then((value) {
+      Navigator.of(context).pushNamed(
+        VehicleSelectorRouteKeys.engineSelector,
+        arguments: truck,
+      );
+    }).catchError((error) {
+      switch (error.code) {
+        case 422:
+          Navigator.of(context).pushNamed(
+            VehicleSelectorRouteKeys.engineSelector,
+            arguments: truck,
+          );
+        default:
+          showAlertDialog(context, error.message);
+      }
+    });
   }
 
   void setProxy(BuildContext context) async {
