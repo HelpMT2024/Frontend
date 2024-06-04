@@ -51,8 +51,10 @@ Route<dynamic>? VehicleSelectorRouter(
         settings: setting,
         builder: (context) {
           final provider = VehicleProvider(graphQLNetworkService);
+          final favoritesProvider = FavoritesProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = SubPartViewModel(
             provider: provider,
+            favoritesProvider: favoritesProvider,
             config: setting.arguments as ChildSubpart,
           );
 

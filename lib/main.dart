@@ -58,6 +58,9 @@ void main() async {
     HttpOverrides.global = ProxiedHttpOverrides(proxy);
   }
 
+  final token = SharedPreferencesWrapper.getToken()?.token;
+  restAPIService.addBasicAuth(token ?? '');
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

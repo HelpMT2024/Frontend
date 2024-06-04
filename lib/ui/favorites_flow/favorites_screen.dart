@@ -63,6 +63,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   Widget _commonBody() {
+    final titles =
+        FavoriteModelType.values.map((e) => e.title(context)).toList();
+
     return Container(
       color: ColorConstants.surfacePrimaryDark,
       padding: const EdgeInsets.only(
@@ -70,54 +73,61 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         left: 16,
         right: 16,
       ),
-      child: StreamBuilder<List<FavoritesListItem>>(
-          stream: widget.viewModel.updateDataStreamController.stream,
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Loadable(forceLoad: true, child: Container());
-            } else if (snapshot.data?.length == 0) {
-              return _placeholder();
-            } else if (snapshot.hasData) {
-              return _successBody();
-            } else if (snapshot.hasError) {
-              return Text('Error ${snapshot.hasData}');
-            } else {
-              return Container();
-            }
-          }),
+      child: Column(
+        children: [
+          FilterTabBar(
+            titles: titles,
+            outputSelectionCallback: widget.viewModel.handleTabButtonClick,
+            initSelectionIndex: 0,
+          ),
+          const SizedBox(
+            height: 24,
+          ),
+          StreamBuilder<List<FavoritesListItem>>(
+              stream: widget.viewModel.updateDataStreamController.stream,
+              builder: (context, AsyncSnapshot snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Expanded(
+                    child: Loadable(
+                      forceLoad: true,
+                      child: SizedBox(
+                        height: 40,
+                        width: 40,
+                      ),
+                    ),
+                  );
+                } else if (snapshot.data?.length == 0) {
+                  return _placeholder();
+                } else if (snapshot.hasData) {
+                  return _successBody();
+                } else if (snapshot.hasError) {
+                  return Text('Error ${snapshot.hasData}');
+                } else {
+                  return Container();
+                }
+              }),
+        ],
+      ),
     );
   }
 
   Widget _successBody() {
-    final titles = FavoriteModelType.values.map((e) => e.title(context)).toList();
-
-    return Column(
-      children: [
-        FilterTabBar(
-          titles: titles,
-          outputSelectionCallback: widget.viewModel.handleTabButtonClick,
-          initSelectionIndex: 0,
+    return Flexible(
+      child: PaginatedList<FavoritesListItem>(
+        scrollDirection: Axis.vertical,
+        controller: _scrollController,
+        loadingIndicator: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Center(child: Loadable(forceLoad: true, child: Container())),
         ),
-        const SizedBox(
-          height: 24,
-        ),
-        Flexible(
-            child: PaginatedList<FavoritesListItem>(
-          scrollDirection: Axis.vertical,
-          controller: _scrollController,
-          loadingIndicator: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: Center(child: Loadable(forceLoad: true, child: Container())),
-          ),
-          items: widget.viewModel.fetchedItems,
-          isRecentSearch: false,
-          isLastPage: widget.viewModel.isLastPage,
-          onLoadMore: (index) {
-            widget.viewModel.getPage();
-          },
-          builder: (item, index) => listViewCell(item, index),
-        )),
-      ],
+        items: widget.viewModel.fetchedItems,
+        isRecentSearch: false,
+        isLastPage: widget.viewModel.isLastPage,
+        onLoadMore: (index) {
+          widget.viewModel.getPage();
+        },
+        builder: (item, index) => listViewCell(item, index),
+      ),
     );
   }
 
@@ -128,7 +138,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       padding: const EdgeInsets.only(bottom: 8),
       child: InkWell(
         onTap: () {
-          // widget.viewModel.handleClick(model, context);
+          widget.viewModel.handleClick(model, context);
         },
         child: Container(
           height: 50,
@@ -168,37 +178,39 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Container(
-      padding: const EdgeInsets.only(left: 65, right: 65),
-      color: ColorConstants.surfacePrimaryDark,
-      child: Center(
-        child: Expanded(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                R.ASSETS_BOOKMARK_SVG,
-                height: 128,
-                width: 128,
-              ),
-              const SizedBox(
-                height: 23,
-              ),
-              Text(
-                l10n?.favorites_placeholder_title ?? '',
-                textAlign: TextAlign.center,
-                style: styles.titleMedium
-                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                l10n?.favorites_placeholder_description ?? '',
-                style: styles.bodyMedium
-                    ?.copyWith(color: ColorConstants.onSurfaceWhite80),
-              )
-            ],
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.only(left: 65, right: 65),
+        color: ColorConstants.surfacePrimaryDark,
+        child: Center(
+          child: Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SvgPicture.asset(
+                  R.ASSETS_BOOKMARK_SVG,
+                  height: 128,
+                  width: 128,
+                ),
+                const SizedBox(
+                  height: 23,
+                ),
+                Text(
+                  l10n?.favorites_placeholder_title ?? '',
+                  textAlign: TextAlign.center,
+                  style: styles.titleMedium
+                      ?.copyWith(color: ColorConstants.onSurfaceWhite),
+                ),
+                const SizedBox(
+                  height: 4,
+                ),
+                Text(
+                  l10n?.favorites_placeholder_description ?? '',
+                  style: styles.bodyMedium
+                      ?.copyWith(color: ColorConstants.onSurfaceWhite80),
+                )
+              ],
+            ),
           ),
         ),
       ),
