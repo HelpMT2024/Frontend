@@ -31,11 +31,15 @@ class _BookmarkButtonState extends State<BookmarkButton> {
   }
 
   void checkInFavorites() async {
+    await loadItem();
+
+    updateIconState();
+  }
+
+  Future<void> loadItem() async {
     item = await widget.provider
         ?.itemWith(widget.integrationId ?? '')
         .then((value) => value);
-
-    updateIconState();
   }
 
   void updateIconState() {
@@ -64,12 +68,14 @@ class _BookmarkButtonState extends State<BookmarkButton> {
           widget.provider?.change(item?.id ?? 0);
           changeIconState();
         } else {
-          final id = widget.integrationId;
+          final integrationId = widget.integrationId;
           final type = widget.type;
-          if (id != null && type != null) {
-            widget.provider?.createContentfulItem(id, type);
-            widget.provider?.change(item?.id ?? 0);
-            changeIconState();
+          if (integrationId != null && type != null) {
+            widget.provider?.createContentfulItem(integrationId, type);
+            loadItem().then((value) {
+             widget.provider?.change(item?.id ?? 0);
+             changeIconState();
+            });
           }
         }
 
