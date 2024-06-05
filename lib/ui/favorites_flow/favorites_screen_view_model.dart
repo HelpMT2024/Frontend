@@ -41,9 +41,16 @@ class FavoritesScreenViewModel {
     user = await provider.user();
     await provider
         .favoritesList(user!.id, typeFilter, _page, _cellsPerPage)
-        .then((value) {
-      fetchedItems.addAll(value.items);
-      pagination = value.pagination;
+        .then((page) async {
+      await Future.wait(
+        page.items.map((item) async {
+          item.name = await itemTitle(item.integrationId);
+          return item;
+        }).toList(),
+      );
+
+      fetchedItems.addAll(page.items);
+      pagination = page.pagination;
     });
     handlePagination();
     updateDataStreamController.add(fetchedItems);
@@ -65,12 +72,35 @@ class FavoritesScreenViewModel {
     resetData();
   }
 
+  Future<String> itemTitle(String id) async {
+    switch (selectedFilter) {
+      case FavoriteModelType.unit:
+        return vehicleProvider.unit(id).then((unit) => unit.name);
+      case FavoriteModelType.system:
+        return vehicleProvider.system(id).then((system) => system.name);
+      case FavoriteModelType.component:
+        return vehicleProvider
+            .component(id)
+            .then((component) => component.name);
+      case FavoriteModelType.part:
+        return vehicleProvider.part(id).then((part) => part.name);
+      case FavoriteModelType.subPart:
+        return vehicleProvider.subPart(id).then((subPart) => subPart.name);
+      case FavoriteModelType.faultCode:
+        return vehicleProvider.fault(id).then((fault) => 'SPN ${fault.spnCode}, FMI ${fault.spnCode}');
+      case FavoriteModelType.problemCase:
+        return vehicleProvider
+            .problemCase(id)
+            .then((problemCase) => problemCase.name);
+    }
+  }
+
   void handleClick(FavoritesListItem model, BuildContext context) {
     switch (selectedFilter) {
       case FavoriteModelType.unit:
         final child = ChildrenUnit(
           id: model.integrationId,
-          name: 'unit_name',
+          name: model.name ?? '',
           image: null,
         );
         Navigator.of(context)
@@ -84,7 +114,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.system:
         final child = ChildrenSystem(
           id: model.integrationId,
-          name: 'system_name',
+          name: model.name ?? '',
           image: null,
           types: [],
         );
@@ -99,7 +129,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.component:
         final child = ChildrenComponent(
           id: model.integrationId,
-          name: 'component_name',
+          name: model.name ?? '',
           image: null,
           type: ChildType.standart,
         );
@@ -114,7 +144,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.part:
         final child = ChildrenPart(
           id: model.integrationId,
-          name: 'part_name',
+          name: model.name ?? '',
           image: null,
         );
         Navigator.of(context)
@@ -128,7 +158,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.subPart:
         final child = ChildrenPart(
           id: model.integrationId,
-          name: 'sub_part_name',
+          name: model.name ?? '',
           image: null,
         );
         Navigator.of(context)
@@ -142,7 +172,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.faultCode:
         final child = ChildFault(
           id: model.integrationId,
-          spnCode: 'code',
+          spnCode: model.name ?? '',
           fmiCodes: [],
           showAsPdf: false,
         );
@@ -157,7 +187,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.problemCase:
         final child = ChildProblem(
           id: model.integrationId,
-          name: 'problem_name',
+          name: model.name ?? '',
         );
         Navigator.of(context)
             .pushNamed(

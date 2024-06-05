@@ -10,7 +10,6 @@ import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:help_my_truck/ui/widgets/filter_tab_bar.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
-import 'package:help_my_truck/ui/widgets/no_connection_placeholder.dart';
 import 'package:paginated_list/paginated_list.dart';
 
 class FavoritesScreen extends StatefulWidget {
@@ -37,13 +36,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     widget.viewModel.resetData();
 
     super.initState();
-  }
-
-  void buttonCallback(String id) {
-    widget.viewModel.fetchedItems
-        .removeWhere((element) => element.integrationId == id);
-    widget.viewModel.updateDataStreamController
-        .add(widget.viewModel.fetchedItems);
   }
 
   @override
@@ -153,7 +145,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               children: [
                 Expanded(
                   child: Text(
-                    model.integrationId,
+                    model.name ?? '',
                     style: styles.titleMedium
                         ?.copyWith(color: ColorConstants.onSurfaceWhite),
                   ),
@@ -163,8 +155,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   widget.viewModel.fetchedItems[index].integrationId,
                   null,
                   widget.viewModel.provider,
-                  buttonCallback,
-                  true,
+                  null,
+                  false,
                 ),
               ],
             ),

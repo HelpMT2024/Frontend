@@ -1,30 +1,6 @@
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 
-class Pagination {
-  final int count;
-  final int total;
-  final int perPage;
-  final int page;
-  final int pages;
-
-  Pagination({
-    required this.count,
-    required this.total,
-    required this.perPage,
-    required this.page,
-    required this.pages,
-  });
-
-  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
-        count: json["count"],
-        total: json["total"],
-        perPage: json["per_page"],
-        page: json["page"],
-        pages: json["pages"],
-      );
-}
-
 class ContentfulItem {
   final int id;
   final String integrationId;
@@ -67,12 +43,37 @@ class FavoritesListModel {
   }
 }
 
+class Pagination {
+  final int count;
+  final int total;
+  final int perPage;
+  final int page;
+  final int pages;
+
+  Pagination({
+    required this.count,
+    required this.total,
+    required this.perPage,
+    required this.page,
+    required this.pages,
+  });
+
+  factory Pagination.fromJson(Map<String, dynamic> json) => Pagination(
+        count: json["count"],
+        total: json["total"],
+        perPage: json["per_page"],
+        page: json["page"],
+        pages: json["pages"],
+      );
+}
+
 class FavoritesListItem {
   final int id;
   final String integrationId;
   final int ownerId;
   final String ownerUsername;
   final String createdAt;
+  String? name;
 
   FavoritesListItem({
     required this.id,
@@ -118,7 +119,7 @@ class FavoritesProvider {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/contentful/$integrationId/external',
-      data: NetworkRequestBody.empty(),
+      data: const NetworkRequestBody.empty(),
     );
 
     return restAPINetworkService.execute(
@@ -131,7 +132,7 @@ class FavoritesProvider {
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/contentful/$id/favorite/change',
-      data: NetworkRequestBody.empty(),
+      data: const NetworkRequestBody.empty(),
       queryParams: {
         'id': id,
       }
@@ -145,7 +146,7 @@ class FavoritesProvider {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
-      data: NetworkRequestBody.empty(),
+      data: const NetworkRequestBody.empty(),
       queryParams: {
         'filter[owner_id]': id,
         'filter[contentful_type]': typeFilter,
@@ -164,7 +165,7 @@ class FavoritesProvider {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
-      data: NetworkRequestBody.empty(),
+      data: const NetworkRequestBody.empty(),
       queryParams: {
         'filter[owner_id]': id,
         'page': page,
