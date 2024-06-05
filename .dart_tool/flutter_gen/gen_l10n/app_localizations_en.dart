@@ -222,4 +222,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get description => 'Description';
+
+  @override
+  String get your_trucks => 'Your Trucks';
+
+  @override
+  String get engine => 'Engine:';
 }

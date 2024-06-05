@@ -48,7 +48,7 @@ class VehicleProvider {
     if (result.hasException) {
       throw Exception(result.exception);
     }
-    
+
     return Unit.fromJson(result.data!['unit']);
   }
 
@@ -167,11 +167,25 @@ class VehicleProvider {
     return warnings.map((warning) => Warning.fromJson(warning)).toList();
   }
 
-  Future<void> chooseTruck({required String id}) {
+  Future<void> chooseConfiguration({
+    required String truckId,
+    required String engineId,
+  }) {
+    final truckId = '2BV4LcsvZp3ivuHXGKTeXX';
+    final engineId = '7zuQJb6lwiqWgPPKuuyzOY';
+    /*
+      For the MVP period, a strictly defined truck ID is sent,
+      in the future the line above must be deleted
+    */
+    print('<!> truckId = $truckId');
+    print('<!> engineId = $engineId');
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/truck/add',
-      data: NetworkRequestBody.formData({'truckId': id}),
+      data: NetworkRequestBody.formData({
+        'truckId': truckId,
+        'engineId': engineId,
+      }),
     );
 
     return restAPIService.execute(request, (data) {});

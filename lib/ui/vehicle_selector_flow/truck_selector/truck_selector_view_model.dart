@@ -10,7 +10,7 @@ import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'package:help_my_truck/ui/widgets/text_box_field.dart';
 import 'package:rxdart/rxdart.dart';
 
-class TruckSelectorViewModel with ViewModelErrorHandable {
+class TruckSelectorViewModel {
   final VehicleProvider provider;
 
   late final trucks = BehaviorSubject<List<Truck>>()
@@ -25,22 +25,11 @@ class TruckSelectorViewModel with ViewModelErrorHandable {
 
   void selectTruck(BuildContext context) {
     final truck = trucks.value.elementAt(currentTruckIndex);
-    provider.chooseTruck(id: truck.id).then((value) {
-      Navigator.of(context).pushNamed(
-        VehicleSelectorRouteKeys.engineSelector,
-        arguments: truck,
-      );
-    }).catchError((error) {
-      switch (error.code) {
-        case 422:
-          Navigator.of(context).pushNamed(
-            VehicleSelectorRouteKeys.engineSelector,
-            arguments: truck,
-          );
-        default:
-          showAlertDialog(context, error.message);
-      }
-    });
+
+    Navigator.of(context).pushNamed(
+      VehicleSelectorRouteKeys.engineSelector,
+      arguments: truck,
+    );
   }
 
   void setProxy(BuildContext context) async {

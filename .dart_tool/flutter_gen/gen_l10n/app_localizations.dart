@@ -528,6 +528,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Description'**
   String get description;
+
+  /// No description provided for @your_trucks.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Trucks'**
+  String get your_trucks;
+
+  /// No description provided for @engine.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine:'**
+  String get engine;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

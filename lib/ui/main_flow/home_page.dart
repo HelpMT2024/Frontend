@@ -7,7 +7,6 @@ import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
-import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/profile_flow/profile_screen.dart';
@@ -91,7 +90,10 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     ),
     NavBarPage.profile: ProfileScreen(
       viewModel: ProfileScreenViewModel(
-        provider: ProfileProvider(),
+        provider: ProfileProvider(
+          graphQLService: widget.config.graphQLNetworkService,
+          restAPIService: widget.config.restAPINetworkService,
+        ),
       ),
     ),
   };
