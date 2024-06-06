@@ -1,3 +1,4 @@
+import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/queries.dart';
@@ -55,6 +56,11 @@ class TruckItem {
       );
 }
 
+abstract class Language {
+  static const String eng = 'eng';
+  static const String esp = 'esp';
+}
+
 class ProfileProvider {
   final GraphQLNetworkService graphQLService;
   final RestAPINetworkService restAPIService;
@@ -72,6 +78,19 @@ class ProfileProvider {
         request, (json) => UserInfo.fromJson(json['data']));
   }
 
+  Future<void> editUsername({required String newUsername}) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.post,
+      path: '/api/user/edit',
+      data: NetworkRequestBody.formData({
+        'username': newUsername,
+        'language': Language.eng,
+      }),
+    );
+
+    return restAPIService.execute(request, (data) {});
+  }
+
   Future<List<Truck>> trucks() async {
     const query = Queries.getTrucks;
     final result = await graphQLService.callApi(query);
@@ -83,5 +102,18 @@ class ProfileProvider {
     final List<dynamic> trucks = result.data!['truckCollection']['items'];
 
     return trucks.map((truck) => Truck.fromJson(truck)).toList();
+  }
+
+  Future<List<Engine>> engines() async {
+    const query = Queries.getEngines;
+    final result = await graphQLService.callApi(query);
+
+    if (result.hasException) {
+      throw Exception(result.exception);
+    }
+
+    final List<dynamic> engines = result.data!['engineCollection']['items'];
+
+    return engines.map((engine) => Engine.fromJson(engine)).toList();
   }
 }

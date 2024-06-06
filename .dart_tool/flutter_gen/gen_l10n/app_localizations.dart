@@ -540,6 +540,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Engine:'**
   String get engine;
+
+  /// No description provided for @edit_username_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit Username'**
+  String get edit_username_title;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscription'**
+  String get subscription;
+
+  /// No description provided for @legal_and_policies.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal & policies'**
+  String get legal_and_policies;
+
+  /// No description provided for @delete_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete profile'**
+  String get delete_profile;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -228,4 +228,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get engine => 'Engine:';
+
+  @override
+  String get edit_username_title => 'Edit Username';
+
+  @override
+  String get save => 'Save';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get subscription => 'Subscription';
+
+  @override
+  String get legal_and_policies => 'Legal & policies';
+
+  @override
+  String get delete_profile => 'Delete profile';
+
+  @override
+  String get logout => 'Logout';
 }

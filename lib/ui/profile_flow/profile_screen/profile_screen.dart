@@ -4,7 +4,7 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
-import 'package:help_my_truck/ui/profile_flow/profile_screen_view_model.dart';
+import 'package:help_my_truck/ui/profile_flow/profile_screen/profile_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -70,7 +70,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           Expanded(
             child: ListView(
               children: widget.viewModel.trucks
-                  .map((e) => _truckItem(e, l10n, styles))
+                  .asMap()
+                  .entries
+                  .map((e) => _truckItem(e.key, e.value, l10n, styles))
                   .toList(),
             ),
           )
@@ -79,7 +81,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _truckItem(Truck truck, AppLocalizations? l10n, TextTheme styles) {
+  Widget _truckItem(
+      int index, Truck truck, AppLocalizations? l10n, TextTheme styles) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Container(
@@ -124,7 +127,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                       Text(
-                        'DD13',
+                        widget.viewModel.engines[index].name,
                         style: styles.labelMedium?.copyWith(
                           color: ColorConstants.onSurfaceWhite,
                           fontWeight: FontWeight.w600,
@@ -150,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           color: ColorConstants.onSurfaceWhite,
           size: 32,
         ),
-        onPressed: widget.viewModel.settings,
+        onPressed: () => widget.viewModel.settings(context),
       ),
     );
   }
@@ -158,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _edit(AppLocalizations? l10n, TextTheme styles) {
     return ElevatedButton(
       onPressed: () {
-        print('Edit Button Pressed');
+        widget.viewModel.editUsername(context);
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(0),

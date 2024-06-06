@@ -175,10 +175,8 @@ class VehicleProvider {
     final engineId = '7zuQJb6lwiqWgPPKuuyzOY';
     /*
       For the MVP period, a strictly defined truck ID is sent,
-      in the future the line above must be deleted
+      in the future the lines above must be deleted
     */
-    print('<!> truckId = $truckId');
-    print('<!> engineId = $engineId');
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/truck/add',

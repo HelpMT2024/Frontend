@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/truck.dart';
-import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/main.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
