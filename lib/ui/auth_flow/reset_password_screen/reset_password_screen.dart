@@ -20,14 +20,17 @@ class ResetPasswordScreen extends StatefulWidget {
 class _LoginScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool passwordVisible = true;
+  bool _passwordRepeatVisible = false;
+  bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: MainNavigationBar(
+        title: l10n?.reset_password ?? '',
         context: context,
         styles: styles,
         bgColor: ColorConstants.surfacePrimaryDark,
@@ -38,7 +41,7 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
         builder: (context, snapshot) {
           return Stack(
             children: [
-              _body(context, styles),
+              _body(context, styles, l10n),
               if (snapshot.data ?? false)
                 Loadable(
                   forceLoad: true,
@@ -51,9 +54,7 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  Widget _body(BuildContext context, TextTheme styles) {
-    final l10n = AppLocalizations.of(context);
-
+  Widget _body(BuildContext context, TextTheme styles, AppLocalizations? l10n) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
       child: SafeArea(
@@ -65,23 +66,9 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  l10n?.reset_password ?? '',
-                  style: styles.headlineSmall?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  l10n?.recovery_code ?? '',
-                  style: styles.bodyMedium?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                _emailTextField(l10n),
-                const SizedBox(height: 28),
-                _submitButton(l10n),
+                ..._fields(l10n),
+                const SizedBox(height: 8),
+                _submitButton(l10n, context),
               ],
             ),
           ),
@@ -90,19 +77,63 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
     );
   }
 
-  Widget _emailTextField(AppLocalizations? l10n) {
-    return AuthorizationField(
-      autovalidate: AutovalidateMode.onUserInteraction,
-      onSaved: widget.viewModel.saveEmail,
-      validator: (value) => null,
-      title: l10n?.email ?? '',
-      placeholder: l10n?.email ?? '',
-    );
+  List<Widget> _fields(AppLocalizations? l10n) {
+    return [
+      AuthorizationField(
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.savePassword,
+        validator: widget.viewModel.validatePassword,
+        title: l10n?.password ?? '',
+        placeholder: l10n?.enter_password_prompt,
+        obscureText: true,
+        hideEye: false,
+        passwordVisible: _passwordVisible,
+        needShowPassword: () {
+          setState(() {
+            _passwordVisible = !_passwordVisible;
+          });
+        },
+      ),
+      const SizedBox(height: 6),
+      AuthorizationField(
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.saveNewPassword,
+        validator: widget.viewModel.validateNewPassword,
+        title: l10n?.new_password ?? '',
+        placeholder: l10n?.new_password_prompt ?? '',
+        promptText: l10n?.password_prompt ?? '',
+        obscureText: true,
+        hideEye: false,
+        passwordVisible: _passwordRepeatVisible,
+        needShowPassword: () {
+          setState(() {
+            _passwordRepeatVisible = !_passwordRepeatVisible;
+          });
+        },
+      ),
+      const SizedBox(height: 6),
+      AuthorizationField(
+        autovalidate: AutovalidateMode.onUserInteraction,
+        onSaved: widget.viewModel.saveConfirmPassword,
+        validator: (value) =>
+            widget.viewModel.validateConfirmPassword(value, l10n),
+        title: l10n?.confirm_password_prompt ?? '',
+        placeholder: l10n?.confirm_password_prompt,
+        obscureText: true,
+        hideEye: false,
+        passwordVisible: _passwordVisible,
+        needShowPassword: () {
+          setState(() {
+            _passwordVisible = !_passwordVisible;
+          });
+        },
+      ),
+    ];
   }
 
-  Widget _submitButton(AppLocalizations? l10n) {
+  Widget _submitButton(AppLocalizations? l10n, BuildContext context) {
     return CustomButton(
-      title: CustomButtonTitle(text: l10n?.conti_nue ?? ''),
+      title: CustomButtonTitle(text: l10n?.save_new_password_title ?? ''),
       state: CustomButtonStates.filled,
       mainColor: ColorConstants.surfaceWhite,
       textColor: ColorConstants.onSurfaceHigh,

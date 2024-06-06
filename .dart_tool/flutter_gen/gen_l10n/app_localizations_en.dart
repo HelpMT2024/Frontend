@@ -110,7 +110,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get and => ' and ';
 
   @override
-  String get privacy_policy => 'Privacy Policy';
+  String get privacy_policy => 'Privacy policy';
 
   @override
   String get create_account_button_title => 'Create an account';
@@ -158,7 +158,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reset => 'Reset';
 
   @override
-  String get new_password => 'Create new password';
+  String get new_password => 'New password';
 
   @override
   String get deleted_by_admin_error => 'Your account was deleted by the administrator';
@@ -252,4 +252,52 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get logout => 'Logout';
+
+  @override
+  String get want_logout => 'Are you sure you want to Logout?';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get cancel => 'Cancel';
+
+  @override
+  String get want_delete_profile => 'Are you sure you want to delete profile?';
+
+  @override
+  String get new_password_prompt => 'Enter New Password';
+
+  @override
+  String get confirm_password_prompt => 'Confirm New Password';
+
+  @override
+  String get save_new_password_title => 'Save New Password';
+
+  @override
+  String get enter_password_prompt => 'Enter Password';
+
+  @override
+  String get active_subscription => 'YOUR SUBSCRIPTION IS ACTIVE';
+
+  @override
+  String get inactive_subscription => 'YOUR SUBSCRIPTION IS INACTIVE';
+
+  @override
+  String get current_period => 'Current period:';
+
+  @override
+  String get subscribed_since => 'Subscribed since:';
+
+  @override
+  String get renews_on => 'Renews on:';
+
+  @override
+  String get subscribe => 'Subscribe';
+
+  @override
+  String get restore_purchases => 'Restore purchases';
+
+  @override
+  String get multiple_subscription => 'Allows you to use your subscription on multiple devices at once';
 }

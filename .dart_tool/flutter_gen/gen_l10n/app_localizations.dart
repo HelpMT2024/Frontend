@@ -304,7 +304,7 @@ abstract class AppLocalizations {
   /// No description provided for @privacy_policy.
   ///
   /// In en, this message translates to:
-  /// **'Privacy Policy'**
+  /// **'Privacy policy'**
   String get privacy_policy;
 
   /// No description provided for @create_account_button_title.
@@ -400,7 +400,7 @@ abstract class AppLocalizations {
   /// No description provided for @new_password.
   ///
   /// In en, this message translates to:
-  /// **'Create new password'**
+  /// **'New password'**
   String get new_password;
 
   /// No description provided for @deleted_by_admin_error.
@@ -588,6 +588,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Logout'**
   String get logout;
+
+  /// No description provided for @want_logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to Logout?'**
+  String get want_logout;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @want_delete_profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete profile?'**
+  String get want_delete_profile;
+
+  /// No description provided for @new_password_prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter New Password'**
+  String get new_password_prompt;
+
+  /// No description provided for @confirm_password_prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm New Password'**
+  String get confirm_password_prompt;
+
+  /// No description provided for @save_new_password_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Save New Password'**
+  String get save_new_password_title;
+
+  /// No description provided for @enter_password_prompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter Password'**
+  String get enter_password_prompt;
+
+  /// No description provided for @active_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR SUBSCRIPTION IS ACTIVE'**
+  String get active_subscription;
+
+  /// No description provided for @inactive_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'YOUR SUBSCRIPTION IS INACTIVE'**
+  String get inactive_subscription;
+
+  /// No description provided for @current_period.
+  ///
+  /// In en, this message translates to:
+  /// **'Current period:'**
+  String get current_period;
+
+  /// No description provided for @subscribed_since.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribed since:'**
+  String get subscribed_since;
+
+  /// No description provided for @renews_on.
+  ///
+  /// In en, this message translates to:
+  /// **'Renews on:'**
+  String get renews_on;
+
+  /// No description provided for @subscribe.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscribe'**
+  String get subscribe;
+
+  /// No description provided for @restore_purchases.
+  ///
+  /// In en, this message translates to:
+  /// **'Restore purchases'**
+  String get restore_purchases;
+
+  /// No description provided for @multiple_subscription.
+  ///
+  /// In en, this message translates to:
+  /// **'Allows you to use your subscription on multiple devices at once'**
+  String get multiple_subscription;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

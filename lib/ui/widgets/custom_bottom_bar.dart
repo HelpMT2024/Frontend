@@ -30,7 +30,6 @@ class CustomBottomBar extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Container(height: 8, color: ColorConstants.surfacePrimaryDark),

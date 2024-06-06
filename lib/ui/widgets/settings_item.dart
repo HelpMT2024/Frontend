@@ -3,7 +3,7 @@ import 'package:help_my_truck/const/colors.dart';
 
 class SettingsItem extends StatelessWidget {
   final String title;
-  final IconData icon;
+  final IconData? icon;
   final bool hasArrow;
   final VoidCallback onTap;
 
@@ -32,7 +32,12 @@ class SettingsItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.max,
           children: [
-            Icon(icon, size: 24, color: ColorConstants.onSurfaceWhite),
+            if (icon != null)
+              Icon(
+                icon,
+                size: 24,
+                color: ColorConstants.onSurfaceWhite,
+              ),
             const SizedBox(width: 8),
             Text(
               title,

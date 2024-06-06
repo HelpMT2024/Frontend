@@ -91,6 +91,26 @@ class ProfileProvider {
     return restAPIService.execute(request, (data) {});
   }
 
+  Future<void> logout() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/user/logout',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return restAPIService.execute(request, (data) {});
+  }
+
+  Future<void> deleteProfile() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.delete,
+      path: '/api/user/delete',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return restAPIService.execute(request, (data) {});
+  }
+
   Future<List<Truck>> trucks() async {
     const query = Queries.getTrucks;
     final result = await graphQLService.callApi(query);
