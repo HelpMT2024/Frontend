@@ -16,7 +16,7 @@ class PDFButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.only(bottom: 16),
       child: _button(
         trailing: SvgPicture.asset(
           R.ASSETS_PDF_FILE_SVG,
