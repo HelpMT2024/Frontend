@@ -87,7 +87,7 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.subPart:
         return vehicleProvider.subPart(id).then((subPart) => subPart.name);
       case FavoriteModelType.faultCode:
-        return vehicleProvider.fault(id).then((fault) => 'SPN ${fault.spnCode}, FMI ${fault.spnCode}');
+        return vehicleProvider.fault(id).then((fault) => 'SPN ${fault.spnCode}, FMI ${fault.fmiCodes}');
       case FavoriteModelType.problemCase:
         return vehicleProvider
             .problemCase(id)
