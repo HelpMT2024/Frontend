@@ -114,6 +114,8 @@ class CustomBottomBar extends StatelessWidget {
     bool isActive = navBarPage == selectedPage;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         backgroundColor: isCenterIcon
             ? ColorConstants.statesDanger
             : ColorConstants.surfacePrimaryDark,
