@@ -9,15 +9,13 @@ class WarningLightsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          ...warnings.map((e) {
-            return WarningLightCell(warning: e);
-          }),
-        ],
-      ),
+    return Wrap(
+      runSpacing: 4,
+      children: [
+        ...warnings.map((e) {
+          return WarningLightCell(warning: e);
+        }),
+      ],
     );
   }
 }
