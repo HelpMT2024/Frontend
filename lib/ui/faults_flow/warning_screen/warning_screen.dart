@@ -77,7 +77,7 @@ class _WarningScreenState extends State<WarningScreen> {
   Widget _lights() {
     return Wrap(
       runSpacing: 8,
-      spacing: 4,
+      spacing: 8,
       children: [
         ...widget.viewModel.warnings.valueOrNull?.map((e) {
               return _warning(e);
