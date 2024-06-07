@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -20,7 +22,7 @@ class CustomBottomBar extends StatelessWidget {
     final styles = Theme.of(context).textTheme;
 
     return Container(
-      height: 89,
+      height: Platform.isAndroid ? 68 : 89,
       decoration: BoxDecoration(
         color: ColorConstants.surfacePrimaryDark,
         boxShadow: [
