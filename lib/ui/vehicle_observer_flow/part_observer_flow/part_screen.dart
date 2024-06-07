@@ -51,7 +51,7 @@ class _PartScreenState extends State<PartScreen> {
           )
         ],
         bottom: _navBarTitle(styles, backgroundColor),
-        toolbarHeight: 52,
+        toolbarHeight: 48,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: CustomFloatingButton(
@@ -89,9 +89,7 @@ class _PartScreenState extends State<PartScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: AppConsts.componentObserverPadding(
-          isNeedTop: widget.viewModel.hasImage,
-        ),
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -106,7 +104,7 @@ class _PartScreenState extends State<PartScreen> {
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-              const SizedBox(height: 16),
+              const SizedBox(height: 4),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),

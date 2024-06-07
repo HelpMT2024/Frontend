@@ -97,7 +97,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-              const SizedBox(height: 16),
+              const SizedBox(height: 4),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
