@@ -9,7 +9,7 @@ abstract class AppConsts {
 
   static const String accessToken = kDebugMode || flavor == 'Firebase'
       ? 'Bearer DBSmrNo64KHraOylV1gVv36GXHjKlUdaPbOAbywqDZQ'
-      : 'Bearer 0-QdA21PQJqJVGA1P2hB6yAyCxHJ_64ZR3m-bUlscZc';
+      : 'Bearer Hj6XZHCOMZZ79G39-iWX-jASZ5joUn5CaXm5rC3v-vw';
 
   static EdgeInsets componentObserverPadding({required bool isNeedTop}) {
     return EdgeInsets.fromLTRB(12, isNeedTop ? 24 : 0, 12, 24);
