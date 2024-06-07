@@ -36,6 +36,6 @@ abstract class ColorConstants {
 
   static List<Color> gradientPrimary = [
     hexToColor('#114649'),
-    hexToColor('#0B1822'),
+    hexToColor('#101F27'),
   ];
 }

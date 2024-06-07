@@ -44,11 +44,13 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         context: context,
         styles: styles,
         title: widget.viewModel.config.name,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+        action: [
+          VehicleNavBarActions(
+            integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
+            provider: widget.viewModel.favoritesProvider,
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: CustomFloatingButton(
@@ -136,29 +138,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     return DefaultTextStyle.merge(
       style: styles.labelLarge?.merge(
           TextStyle(color: ColorConstants.onSurfaceWhite.withAlpha(210))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(
-                Icons.info_outline,
-                color: ColorConstants.onSurfaceWhite.withAlpha(210),
-                size: 16,
-              ),
-              const SizedBox(width: 4),
-              Text(
-                l10n?.description ?? '',
-                style: styles.titleMedium?.copyWith(
-                    color: ColorConstants.surfaceWhite.withAlpha(210),
-                    fontWeight: FontWeight.w800),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          ContentfulRichText(data.description).documentToWidgetTree,
-        ],
-      ),
+      child: ContentfulRichText(data.description).documentToWidgetTree,
     );
   }
 
