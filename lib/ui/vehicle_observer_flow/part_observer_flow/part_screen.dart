@@ -1,6 +1,5 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
@@ -214,7 +213,11 @@ class _PartScreenState extends State<PartScreen> {
     }).toList();
 
     return ButtonGroup(
-      buttons: [...buttons, const CommentButton(disableFlex: true)],
+      buttons: [
+        ...buttons,
+        const SizedBox(height: 8),
+        const CommentButton(disableFlex: true)
+      ],
     );
   }
 
