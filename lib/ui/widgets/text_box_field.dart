@@ -139,6 +139,7 @@ class _TextBoxFieldState extends State<_TextBoxField> {
   }
 
   Widget _textField() {
+    final mainStyle = Theme.of(context).textTheme.bodyLarge;
     return FocusScope(
       child: Focus(
         onFocusChange: (focus) {
@@ -180,7 +181,9 @@ class _TextBoxFieldState extends State<_TextBoxField> {
                     12,
                   ),
                   counterText: '',
-                  hintStyle: TextStyle(color: ColorConstants.onSurfaceMedium),
+                  hintStyle: mainStyle?.merge(
+                    TextStyle(color: ColorConstants.onSurfaceMedium),
+                  ),
                 ),
               );
             },
@@ -191,8 +194,11 @@ class _TextBoxFieldState extends State<_TextBoxField> {
                     : TextAlignVertical.top,
                 decoration: const BoxDecoration(border: null),
                 padding: const EdgeInsets.fromLTRB(12, 3, 12, 3),
-                placeholderStyle:
-                    TextStyle(color: ColorConstants.onSurfaceMedium),
+                placeholderStyle: mainStyle?.merge(
+                  TextStyle(
+                    color: ColorConstants.onSurfaceMedium,
+                  ),
+                ),
               );
             },
             keyboardType: widget.keyboardType,

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/ui/profile_flow/edit_username_screen/edit_username_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/auth_field.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
@@ -7,18 +8,25 @@ import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'verification_screen_view_model.dart';
 
-class VerificationScreen extends StatefulWidget {
-  final VerificationScreenViewModel viewModel;
+class EditUsernameScreen extends StatefulWidget {
+  final EditUsernameScreenViewModel viewModel;
+  final String username;
+  final _controller = TextEditingController();
 
-  const VerificationScreen({super.key, required this.viewModel});
+  EditUsernameScreen({
+    super.key,
+    required this.viewModel,
+    required this.username,
+  }) {
+    _controller.text = username;
+  }
 
   @override
-  State<VerificationScreen> createState() => _LoginScreenState();
+  State<EditUsernameScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<VerificationScreen> {
+class _LoginScreenState extends State<EditUsernameScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -28,6 +36,7 @@ class _LoginScreenState extends State<VerificationScreen> {
 
     return Scaffold(
       appBar: MainNavigationBar(
+        title: l10n?.edit_username_title ?? '',
         context: context,
         styles: styles,
         bgColor: ColorConstants.surfacePrimaryDark,
@@ -63,30 +72,9 @@ class _LoginScreenState extends State<VerificationScreen> {
               mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(
-                  l10n?.enter_verification_code ?? '',
-                  style: styles.headlineSmall?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  l10n?.we_sent_code ?? '',
-                  style: styles.bodyMedium?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
-                Text(
-                  widget.viewModel.credentials.email,
-                  style: styles.bodyMedium?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
                 _textField(l10n),
-                const SizedBox(height: 24),
+                const SizedBox(height: 28),
                 _submitButton(l10n),
-                const SizedBox(height: 24),
-                _resendCode(l10n, styles),
               ],
             ),
           ),
@@ -97,16 +85,17 @@ class _LoginScreenState extends State<VerificationScreen> {
 
   Widget _textField(AppLocalizations? l10n) {
     return AuthorizationField(
+      title: l10n?.username,
       autovalidate: AutovalidateMode.onUserInteraction,
-      onSaved: widget.viewModel.saveCode,
-      validator: widget.viewModel.validateCode,
-      placeholder: l10n?.enter_code ?? '',
+      onSaved: widget.viewModel.saveUsername,
+      validator: widget.viewModel.validateUsername,
+      controller: widget._controller,
     );
   }
 
   Widget _submitButton(AppLocalizations? l10n) {
     return CustomButton(
-      title: CustomButtonTitle(text: l10n?.conti_nue ?? ''),
+      title: CustomButtonTitle(text: l10n?.save ?? ''),
       state: CustomButtonStates.filled,
       mainColor: ColorConstants.surfaceWhite,
       textColor: ColorConstants.onSurfaceHigh,
@@ -139,10 +128,7 @@ class _LoginScreenState extends State<VerificationScreen> {
                 style: styles.bodyMedium?.copyWith(
                     color: ColorConstants.onSurfaceWhite,
                     fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    widget.viewModel.resendCode(context);
-                  }),
+                recognizer: TapGestureRecognizer()..onTap = () {}),
           ],
         ),
       ),

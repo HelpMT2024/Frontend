@@ -11,15 +11,17 @@ import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/data/models/warning.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/queries.dart';
+import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 
 class VehicleProvider {
-  final GraphQLNetworkService service;
+  final GraphQLNetworkService graphQLService;
+  final RestAPINetworkService restAPIService;
 
-  VehicleProvider(this.service);
+  VehicleProvider(this.graphQLService, this.restAPIService);
 
   Future<Component> component(String id) async {
     final query = Queries.componentById(id: id);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -30,7 +32,7 @@ class VehicleProvider {
 
   Future<System> system(String id) async {
     final query = Queries.systemById(id: id);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -41,12 +43,12 @@ class VehicleProvider {
 
   Future<Unit> unit(String id) async {
     final query = Queries.unitById(id: id);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
     }
-    
+
     return Unit.fromJson(result.data!['unit']);
   }
 
@@ -55,7 +57,7 @@ class VehicleProvider {
       engineId: engine.id,
       truckId: truck.id,
     );
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -69,7 +71,7 @@ class VehicleProvider {
 
   Future<List<Truck>> trucks() async {
     const query = Queries.getTrucks;
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -82,7 +84,7 @@ class VehicleProvider {
 
   Future<List<Engine>> engines() async {
     const query = Queries.getEngines;
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -95,7 +97,7 @@ class VehicleProvider {
 
   Future<SubPart> subPart(String id) async {
     final query = Queries.subPartById(id: id);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -106,7 +108,7 @@ class VehicleProvider {
 
   Future<Part> part(String id) async {
     final query = Queries.partById(id: id);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -117,7 +119,7 @@ class VehicleProvider {
 
   Future<Fault> fault(String id) async {
     final query = Queries.faultById(id: id);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -128,7 +130,7 @@ class VehicleProvider {
 
   Future<SearchFault> searchFault(String spn, String fmi) async {
     final query = Queries.foundFaults(spn: spn, fmi: fmi);
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.data!['faultCodeCollection']['items'].isEmpty) {
       throw Exception('Fault not found');
@@ -142,7 +144,7 @@ class VehicleProvider {
   Future<ProblemCase> problemCase(String id) async {
     final query = Queries.problemCase(id: id);
 
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -153,7 +155,7 @@ class VehicleProvider {
 
   Future<List<Warning>> warnings() async {
     final query = Queries.getWholeWarningsCollection;
-    final result = await service.callApi(query);
+    final result = await graphQLService.callApi(query);
 
     if (result.hasException) {
       throw Exception(result.exception);
@@ -163,5 +165,27 @@ class VehicleProvider {
         result.data!['warningLightCollection']['items'];
 
     return warnings.map((warning) => Warning.fromJson(warning)).toList();
+  }
+
+  Future<void> chooseConfiguration({
+    required String truckId,
+    required String engineId,
+  }) {
+    final truckId = '2BV4LcsvZp3ivuHXGKTeXX';
+    final engineId = '7zuQJb6lwiqWgPPKuuyzOY';
+    /*
+      For the MVP period, a strictly defined truck ID is sent,
+      in the future the lines above must be deleted
+    */
+    final request = NetworkRequest(
+      type: NetworkRequestType.post,
+      path: '/api/truck/add',
+      data: NetworkRequestBody.formData({
+        'truckId': truckId,
+        'engineId': engineId,
+      }),
+    );
+
+    return restAPIService.execute(request, (data) {});
   }
 }

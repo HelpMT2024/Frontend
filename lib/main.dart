@@ -36,6 +36,8 @@ class ProxiedHttpOverrides extends HttpOverrides {
   }
 }
 
+const String flavor = String.fromEnvironment('app.flavor');
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferencesWrapper.processInitialize();

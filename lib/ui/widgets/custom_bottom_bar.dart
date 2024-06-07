@@ -30,7 +30,6 @@ class CustomBottomBar extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Column(
         children: [
           Container(height: 8, color: ColorConstants.surfacePrimaryDark),
@@ -115,6 +114,8 @@ class CustomBottomBar extends StatelessWidget {
     bool isActive = navBarPage == selectedPage;
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        surfaceTintColor: Colors.transparent,
+        shadowColor: Colors.transparent,
         backgroundColor: isCenterIcon
             ? ColorConstants.statesDanger
             : ColorConstants.surfacePrimaryDark,

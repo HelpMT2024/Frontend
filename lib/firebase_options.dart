@@ -51,7 +51,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAVH_FHCvw95jOFKcVgS-PBZ3S06Ds2f-Y',
-    appId: '1:734307137754:android:555a9c3348b98130b40de3',
+    appId: '1:734307137754:android:6d96151b2d612a1cb40de3',
     messagingSenderId: '734307137754',
     projectId: 'helpmytruck',
     storageBucket: 'helpmytruck.appspot.com',
@@ -59,11 +59,11 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCY3eMxpWrTE6RclRg0VJ60SQDpnaEygN0',
-    appId: '1:734307137754:ios:739a664f8497e602b40de3',
+    appId: '1:734307137754:ios:17ecdf9da34c057bb40de3',
     messagingSenderId: '734307137754',
     projectId: 'helpmytruck',
     storageBucket: 'helpmytruck.appspot.com',
-    iosBundleId: 'com.helpmytruck.fixer',
+    iosBundleId: 'appsolutions.HMT',
   );
 
 }

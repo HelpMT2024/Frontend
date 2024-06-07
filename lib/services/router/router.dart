@@ -7,6 +7,7 @@ import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/favorites_router.dart';
 import 'package:help_my_truck/services/router/home_router.dart';
+import 'package:help_my_truck/services/router/profile_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 
 final graphQLService = GraphQLNetworkService();
@@ -18,7 +19,8 @@ Route<dynamic>? AppRouter(RouteSettings setting) {
       HomeRouter(setting, graphQLService) ??
       VehicleSelectorRouter(setting, restAPIService, graphQLService) ??
       FaultsRouter(setting, restAPIService, graphQLService) ??
-      FavoritesRouter(setting, restAPIService, graphQLService);
+      FavoritesRouter(setting, restAPIService, graphQLService) ??
+      ProfileRouter(setting, graphQLService, restAPIService);
 
   return route;
 }

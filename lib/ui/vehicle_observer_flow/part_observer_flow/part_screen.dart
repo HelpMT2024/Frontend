@@ -107,13 +107,12 @@ class _PartScreenState extends State<PartScreen> {
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-              const SizedBox(height: 32),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
             },
             if (widget.viewModel.hasPDF) ...{
-              const SizedBox(height: 16),
+              const SizedBox(height: 4),
               _title(l10n?.instructions_title, styles),
             },
             _instructionsButtons(styles),

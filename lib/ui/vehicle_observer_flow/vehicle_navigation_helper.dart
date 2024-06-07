@@ -23,7 +23,7 @@ class VehicleNavigationHelper {
   }
 
   static void _showSearchModal(BuildContext context) {
-    final provider = VehicleProvider(graphQLService);
+    final provider = VehicleProvider(graphQLService, restAPIService);
     final controller = SearchModalController(provider: provider);
     final search = SearchScreen(searchModalController: controller);
 

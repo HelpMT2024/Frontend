@@ -5,18 +5,16 @@ import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/terms_of_service_screen.dart';
 import 'package:native_page_route/native_page_route.dart';
-import '../../ui/auth_flow/auth_screen/auth_screen.dart';
-import '../../ui/auth_flow/auth_screen/auth_screen_view_model.dart';
-import '../../ui/auth_flow/login_screen/login_screen.dart';
-import '../../ui/auth_flow/login_screen/login_screen_view_model.dart';
-import '../../ui/auth_flow/new_password_screen/create_password_screen.dart';
-import '../../ui/auth_flow/new_password_screen/create_password_screen_view_model.dart';
-import '../../ui/auth_flow/reset_password_screen/reset_password_screen.dart';
-import '../../ui/auth_flow/reset_password_screen/reset_password_screen_view_model.dart';
-import '../../ui/auth_flow/verification_screen/verification_screen.dart';
-import '../../ui/auth_flow/verification_screen/verification_screen_view_model.dart';
-import '../../ui/auth_flow/welcome_screen.dart';
-import '../API/auth_provider.dart';
+import 'package:help_my_truck/ui/auth_flow/auth_screen/auth_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/auth_screen/auth_screen_view_model.dart';
+import 'package:help_my_truck/ui/auth_flow/login_screen/login_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/login_screen/login_screen_view_model.dart';
+import 'package:help_my_truck/ui/auth_flow/reset_password_screen/reset_password_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/reset_password_screen/reset_password_screen_view_model.dart';
+import 'package:help_my_truck/ui/auth_flow/verification_screen/verification_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/verification_screen/verification_screen_view_model.dart';
+import 'package:help_my_truck/ui/auth_flow/welcome_screen.dart';
+import 'package:help_my_truck/services/API/auth_provider.dart';
 
 abstract class AuthRouteKeys {
   static const String welcomeScreen = 'welcomeScreen';
@@ -85,17 +83,6 @@ Route<dynamic>? AuthRouter(
         builder: (context) {
           final viewModel = ResetPasswordScreenViewModel(provider: provider);
           return ResetPasswordScreen(
-            viewModel: viewModel,
-          );
-        },
-      );
-
-    case AuthRouteKeys.createPassword:
-      return nativePageRoute(
-        settings: setting,
-        builder: (context) {
-          final viewModel = CreatePasswordScreenViewModel(provider: provider);
-          return CreatePasswordScreen(
             viewModel: viewModel,
           );
         },

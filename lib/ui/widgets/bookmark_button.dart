@@ -59,7 +59,9 @@ class _BookmarkButtonState extends State<BookmarkButton> {
   @override
   Widget build(BuildContext context) {
     return IconButton(
+      padding: const EdgeInsets.all(0),
       icon: Icon(
+        size: 28,
         _isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
         color: ColorConstants.onSurfaceWhite,
       ),

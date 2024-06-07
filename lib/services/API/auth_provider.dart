@@ -117,11 +117,19 @@ class AuthProvider {
     return SharedPreferencesWrapper.setToken(token);
   }
 
-  Future<void> resetPassword({required String email}) {
+  Future<void> changePassword({
+    required String passwordOld,
+    required String passwordNew,
+    required String passwordNewRepeat,
+  }) {
     final request = NetworkRequest(
       type: NetworkRequestType.post,
-      path: '/api/user/reset-password',
-      data: NetworkRequestBody.formData({'email': email}),
+      path: '/api/user/change-password',
+      data: NetworkRequestBody.formData({
+        'passwordOld': passwordOld,
+        'passwordNew': passwordNew,
+        'passwordNewRepeat': passwordNewRepeat,
+      }),
     );
 
     return service.execute(request, (data) {});
