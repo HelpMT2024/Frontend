@@ -10,10 +10,11 @@ class WarningLightsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
+      spacing: 4,
       runSpacing: 4,
       children: [
         ...warnings.map((e) {
-          return WarningLightCell(warning: e);
+          return WarningLightCell(warning: e, fixedWidth: 64,);
         }),
       ],
     );
