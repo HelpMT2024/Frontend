@@ -43,11 +43,13 @@ class _PartScreenState extends State<PartScreen> {
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+        action: [
+          VehicleNavBarActions(
+            integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
+            provider: widget.viewModel.favoritesProvider,
+          )
+        ],
         bottom: _navBarTitle(styles, backgroundColor),
         toolbarHeight: 52,
       ),
@@ -58,18 +60,15 @@ class _PartScreenState extends State<PartScreen> {
       body: Stack(
         children: [
           Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
-            child: StreamBuilder<Part>(
-              stream: widget.viewModel.part,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+          StreamBuilder<Part>(
+            stream: widget.viewModel.part,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return _body(snapshot.data!);
+              } else {
+                return Loadable(forceLoad: true, child: Container());
+              }
+            },
           ),
         ],
       ),
@@ -107,6 +106,7 @@ class _PartScreenState extends State<PartScreen> {
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
+              const SizedBox(height: 16),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
@@ -162,7 +162,7 @@ class _PartScreenState extends State<PartScreen> {
       return const SizedBox();
     }
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 8),
       child: WarningLightsRow(warnings: widget.viewModel.warnings),
     );
   }
