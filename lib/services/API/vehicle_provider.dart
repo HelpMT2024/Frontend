@@ -141,6 +141,19 @@ class VehicleProvider {
     );
   }
 
+  Future<SearchFaults> searchFaults(String spn, String fmi) async {
+    final query = Queries.foundFaults(spn: spn, fmi: fmi);
+    final result = await graphQLService.callApi(query);
+
+    if (result.data!['faultCodeCollection'].isEmpty) {
+      throw Exception('Faults not found');
+    }
+
+    return SearchFaults.fromJson(
+      result.data!['faultCodeCollection'],
+    );
+  }
+
   Future<ProblemCase> problemCase(String id) async {
     final query = Queries.problemCase(id: id);
 

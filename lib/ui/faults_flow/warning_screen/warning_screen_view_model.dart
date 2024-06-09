@@ -21,11 +21,12 @@ class WarningScreenViewModel {
 
   void onModelSelected(Warning model, BuildContext context) {
     final fault = SearchFault.fromWarning(model);
+    final faults = SearchFaults(searchFaults: [fault]);
 
     final provider = VehicleProvider(graphQLService, restAPIService);
     final controller = SearchModalController(
       provider: provider,
-      searchFault: fault,
+      searchFaults: faults,
       needHideBackButton: true,
     );
 

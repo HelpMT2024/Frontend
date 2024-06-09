@@ -7,6 +7,7 @@ import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
@@ -28,8 +29,8 @@ class SearchModalController {
   final panelController = PanelController();
   final bool needHideBackButton;
   final isInSearch = BehaviorSubject<bool>.seeded(false);
-  final searchResult = BehaviorSubject<SearchFault?>.seeded(null);
-  SearchFault? _initialSearchResult;
+  final searchResult = BehaviorSubject<SearchFaults?>.seeded(null);
+  SearchFaults? _initialSearchResult;
   double _offset = 0;
   bool _isShowSearch = false;
   bool _isShowMaxSearch = false;
@@ -39,12 +40,12 @@ class SearchModalController {
 
   SearchModalController({
     required this.provider,
-    SearchFault? searchFault,
+    SearchFaults? searchFaults,
     this.needHideBackButton = false,
   }) {
-    if (searchFault != null) {
-      _initialSearchResult = searchFault;
-      searchResult.add(searchFault);
+    if (searchFaults != null) {
+      _initialSearchResult = searchFaults;
+      searchResult.add(searchFaults);
       isInSearch.add(true);
     }
     spnFocus.addListener(() => _updateFocusValue);
@@ -73,10 +74,10 @@ class SearchModalController {
       searchResult.add(_initialSearchResult);
       return;
     }
-    provider
-        .searchFault(spn, fmi)
-        .then((value) => searchResult.add(value))
-        .catchError((error) {
+    provider.searchFaults(spn, fmi).then((value) {
+
+      searchResult.add(value);
+    }).catchError((error) {
       searchResult.addError(error);
     });
   }
@@ -155,7 +156,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   Widget _searchBody() {
-    return StreamBuilder<SearchFault?>(
+    return StreamBuilder<SearchFaults?>(
       stream: widget.searchModalController.searchResult,
       builder: (context, snapshot) {
         return Padding(
@@ -181,8 +182,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _successBody(SearchFault data) {
-    final l10n = AppLocalizations.of(context);
+  Widget _successBody(SearchFaults data) {
     return Column(
       children: [
         _title(),
@@ -192,11 +192,9 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 12, width: double.infinity),
-              if (!data.showAsPdf) _faultButton(l10n, data),
-              if (data.linkedFrom.length <= 1 &&
-                  (data.fmiCodes?.isEmpty ?? true))
-                _fmiNotFound(),
-              ..._detailsButtons(data)
+              ..._faultButtons(data),
+              if (data.searchFaults.isEmpty) _fmiNotFound(),
+              ..._allDetailsBUttons(data),
             ],
           ),
         ),
@@ -204,8 +202,32 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Iterable<Widget> _detailsButtons(SearchFault data) {
-    return data.linkedFrom.map((e) {
+  List<Widget> _faultButtons(SearchFaults data) {
+    return data.searchFaults.map((searchFault) {
+      if (!searchFault.showAsPdf) {
+        return _faultButton(searchFault);
+      } else {
+        return Container();
+      }
+    }).toList();
+  }
+
+  List<Widget> _allDetailsBUttons(SearchFaults data) {
+    List<Widget> buttons = [];
+    List<SearchFaultDetail> searchFaultDetails = [];
+
+    for (var searchFault in data.searchFaults) {
+      searchFaultDetails.addAll(searchFault.linkedFrom);
+    }
+    var uniqueFaults = searchFaultDetails.toSet().toList();
+    buttons.addAll([..._detailsButtons(uniqueFaults)]);
+    
+    return buttons;
+  }
+
+
+  Iterable<Widget> _detailsButtons(List<SearchFaultDetail> faultsDetail) {
+    return faultsDetail.map((e) {
       switch (e.type) {
         case SearchFaultDetailType.problemCase:
           return _button(e.name, () {
@@ -238,6 +260,14 @@ class _SearchScreenState extends State<SearchScreen> {
               arguments: arg,
             );
           });
+        case SearchFaultDetailType.subPart:
+          return _button(e.name, () {
+            final arg = ChildSubpart(id: e.id, name: e.name, image: null);
+            Navigator.of(context).pushNamed(
+              VehicleSelectorRouteKeys.subPartObserver,
+              arguments: arg,
+            );
+          });
 
         case SearchFaultDetailType.warningLight:
           return Container();
@@ -245,11 +275,14 @@ class _SearchScreenState extends State<SearchScreen> {
     });
   }
 
-  Widget _faultButton(AppLocalizations? l10n, SearchFault data) {
+  Widget _faultButton(SearchFault data) {
     if (data.spnCode == null || data.fmiCodes == null || data.id == null) {
       return Container();
     }
-    return _button(l10n?.open_page_with_fault_code ?? '', () {
+    var fmiCodes =
+        data.fmiCodes.toString().replaceAll('[', '').replaceAll(']', '');
+
+    return _button('SPN ${data.spnCode}, FMI $fmiCodes', () {
       final arg = ChildFault(
         id: data.id!,
         spnCode: data.spnCode!,
