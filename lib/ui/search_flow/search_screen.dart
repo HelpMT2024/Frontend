@@ -209,7 +209,7 @@ class _SearchScreenState extends State<SearchScreen> {
     }
     var uniqueFaults = searchFaultDetails.toSet().toList();
     buttons.addAll([..._detailsButtons(uniqueFaults)]);
-    
+
     return buttons;
   }
 
@@ -219,7 +219,6 @@ class _SearchScreenState extends State<SearchScreen> {
         case SearchFaultDetailType.problemCase:
           return _button(e.name, () {
             final arg = ChildProblem(id: e.id, name: e.name);
-
             Navigator.of(context).pushNamed(
               FaultsRouteKeys.problemCaseScreen,
               arguments: arg,
@@ -233,7 +232,6 @@ class _SearchScreenState extends State<SearchScreen> {
               image: null,
               type: ChildType.standart,
             );
-
             Navigator.of(context).pushNamed(
               VehicleSelectorRouteKeys.componentObserver,
               arguments: arg,
@@ -241,7 +239,11 @@ class _SearchScreenState extends State<SearchScreen> {
           });
         case SearchFaultDetailType.part:
           return _button(e.name, () {
-            final arg = ChildrenPart(id: e.id, name: e.name, image: null);
+            final arg = ChildrenPart(
+              id: e.id,
+              name: e.name,
+              image: null,
+            );
             Navigator.of(context).pushNamed(
               VehicleSelectorRouteKeys.partObserver,
               arguments: arg,
@@ -249,37 +251,19 @@ class _SearchScreenState extends State<SearchScreen> {
           });
         case SearchFaultDetailType.subPart:
           return _button(e.name, () {
-            final arg = ChildSubpart(id: e.id, name: e.name, image: null);
+            final arg = ChildSubpart(
+              id: e.id,
+              name: e.name,
+              image: null,
+            );
             Navigator.of(context).pushNamed(
               VehicleSelectorRouteKeys.subPartObserver,
               arguments: arg,
             );
           });
-
         case SearchFaultDetailType.warningLight:
           return Container();
       }
-    });
-  }
-
-  Widget _faultButton(SearchFault data) {
-    if (data.spnCode == null || data.fmiCodes == null || data.id == null) {
-      return Container();
-    }
-    var fmiCodes =
-        data.fmiCodes.toString().replaceAll('[', '').replaceAll(']', '');
-
-    return _button('SPN ${data.spnCode}, FMI $fmiCodes', () {
-      final arg = ChildFault(
-        id: data.id!,
-        spnCode: data.spnCode!,
-        fmiCodes: data.fmiCodes!,
-        showAsPdf: false,
-      );
-      Navigator.of(context).pushNamed(
-        FaultsRouteKeys.faultScreen,
-        arguments: arg,
-      );
     });
   }
 
