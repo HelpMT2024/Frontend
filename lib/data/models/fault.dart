@@ -87,7 +87,9 @@ class SearchFaultDetail {
               ? SearchFaultDetailType.component
               : json['__typename'] == 'Part'
                   ? SearchFaultDetailType.part
-                  : SearchFaultDetailType.problemCase,
+                  : json['__typename'] == 'SubPart'
+                    ? SearchFaultDetailType.subPart
+                    : SearchFaultDetailType.problemCase,
     );
   }
 
