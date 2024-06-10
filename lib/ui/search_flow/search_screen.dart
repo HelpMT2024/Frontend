@@ -416,6 +416,13 @@ class _SearchScreenState extends State<SearchScreen> {
               color: ColorConstants.surfaceWhite,
             ),
           ),
+          const SizedBox(height: 4),
+          Text(
+            l10n?.no_search_result_description ?? '',
+            style: styles.bodyMedium?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
           const Spacer(),
         ],
       ),
