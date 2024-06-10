@@ -69,7 +69,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         children: [
           FilterTabBar(
             titles: titles,
-            outputSelectionCallback: widget.viewModel.handleTabButtonClick,
+            outputSelectionCallback: handleTabButtonClick,
             initSelectionIndex: 0,
           ),
           const SizedBox(
@@ -101,6 +101,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ],
       ),
     );
+  }
+
+  void handleTabButtonClick(int index) {
+    widget.viewModel.handleTabButtonClick(index);
+    setState(() { });
   }
 
   Widget _successBody() {

@@ -145,7 +145,7 @@ class FavoritesProvider {
         request, (json) => null);
   }
 
-  Future<FavoritesListModel> favoritesList(int? id, String typeFilter, int page, int size) {
+  Future<FavoritesListModel> favoritesList(int? id, List<String> typeFilter, int page, int size) {
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
@@ -153,24 +153,6 @@ class FavoritesProvider {
       queryParams: {
         'filter[owner_id]': id,
         'filter[contentful_type]': typeFilter,
-        'page': page,
-        'size': size,
-      },
-    );
-
-    return restAPINetworkService.execute(
-      request,
-      (json) => FavoritesListModel.fromJson(json['data']),
-    );
-  }
-
-    Future<FavoritesListModel> commonFavoritesList(int? id, int page, int size) {
-    final request = NetworkRequest(
-      type: NetworkRequestType.get,
-      path: '/api/favorite/list',
-      data: const NetworkRequestBody.empty(),
-      queryParams: {
-        'filter[owner_id]': id,
         'page': page,
         'size': size,
       },

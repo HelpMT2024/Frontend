@@ -18,16 +18,15 @@ import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
   final VehicleProvider vehicleProvider;
-  final updateDataStreamController =
-      StreamController<List<FavoritesListItem>>.broadcast();
   final int _cellsPerPage = 10;
 
+  var updateDataStreamController =
+      StreamController<List<FavoritesListItem>>();
   UserInfoModel? user;
   List<FavoritesListItem> fetchedItems = [];
   FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
-  bool isFavoritesExists = false;
 
   int _page = 1;
 
@@ -37,7 +36,7 @@ class FavoritesScreenViewModel {
   });
 
   void getPage() async {
-    var typeFilter = selectedFilter.filterKey();
+    var typeFilter = selectedFilter.filterKeys();
     user = await provider.user();
     await provider
         .favoritesList(user!.id, typeFilter, _page, _cellsPerPage)
@@ -59,6 +58,8 @@ class FavoritesScreenViewModel {
   void resetData() {
     _page = 1;
     fetchedItems.clear();
+    updateDataStreamController =
+      StreamController<List<FavoritesListItem>>();
     getPage();
   }
 
@@ -118,32 +119,46 @@ class FavoritesScreenViewModel {
           resetData();
         });
       case FavoriteModelType.system:
+        final driverDisplayTypeKey = FavoriteModelSubType.driverDisplay.filterKey();
         final child = ChildrenSystem(
           id: model.integrationId,
           name: model.name ?? '',
           image: null,
           types: [],
         );
+        String routeKey;
+        if (model.type == driverDisplayTypeKey) {
+          routeKey = VehicleSelectorRouteKeys.driverCabin;
+        } else {
+          routeKey = VehicleSelectorRouteKeys.systemObserver;
+        }
+
         Navigator.of(context)
             .pushNamed(
-          VehicleSelectorRouteKeys.systemObserver,
+          routeKey,
           arguments: child,
         )
             .then((value) {
           resetData();
         });
       case FavoriteModelType.component:
-        
-
+        final warningsTypeKey = FavoriteModelSubType.warningLights.filterKey();
         final child = ChildrenComponent(
           id: model.integrationId,
           name: model.name ?? '',
           image: null,
           type: ChildType.standart,
         );
+        String routeKey;
+        if (model.type == warningsTypeKey) {
+          routeKey = FaultsRouteKeys.warningScreen;
+        } else {
+          routeKey = VehicleSelectorRouteKeys.systemObserver;
+        }
+
         Navigator.of(context)
             .pushNamed(
-          VehicleSelectorRouteKeys.componentObserver,
+          routeKey,
           arguments: child,
         )
             .then((value) {
