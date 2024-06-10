@@ -22,7 +22,7 @@ class VehicleTitle extends StatelessWidget {
             TextStyle(color: ColorConstants.onSurfaceWhite),
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: 8),
       ],
     );
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -20,7 +22,7 @@ class CustomBottomBar extends StatelessWidget {
     final styles = Theme.of(context).textTheme;
 
     return Container(
-      height: 89,
+      height: Platform.isAndroid ? 68 : 89,
       decoration: BoxDecoration(
         color: ColorConstants.surfacePrimaryDark,
         boxShadow: [
@@ -80,27 +82,6 @@ class CustomBottomBar extends StatelessWidget {
     );
   }
 
-  Widget _faultCodeIcon(AppLocalizations? l10n, TextTheme styles) {
-    return _customIcon(
-      styles: styles,
-      icon: Icons.search_rounded,
-      navBarPage: NavBarPage.search,
-      text: l10n?.fault_code_title,
-      isCenterIcon: true,
-      action: () => onItemTapped(2),
-    );
-  }
-
-  Widget _spnFmiIcon(AppLocalizations? l10n) {
-    return _customIcon(
-      icon: Icons.search_rounded,
-      navBarPage: NavBarPage.search,
-      isCenterIcon: true,
-      text: l10n?.spn_fmi_title,
-      action: () => onItemTapped(2),
-    );
-  }
-
   Widget _customIcon({
     TextTheme? styles,
     String? asset,
@@ -112,28 +93,28 @@ class CustomBottomBar extends StatelessWidget {
     required VoidCallback action,
   }) {
     bool isActive = navBarPage == selectedPage;
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        surfaceTintColor: Colors.transparent,
-        shadowColor: Colors.transparent,
-        backgroundColor: isCenterIcon
-            ? ColorConstants.statesDanger
-            : ColorConstants.surfacePrimaryDark,
-        foregroundColor: isCenterIcon
-            ? ColorConstants.onSurfaceHigh
-            : isActive
-                ? ColorConstants.onSurfaceWhite
-                : ColorConstants.onSurfaceWhite64,
-        padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+    return SizedBox(
+      height: 50,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          surfaceTintColor: Colors.transparent,
+          shadowColor: Colors.transparent,
+          backgroundColor: isCenterIcon
+              ? ColorConstants.statesDanger
+              : ColorConstants.surfacePrimaryDark,
+          foregroundColor: isCenterIcon
+              ? ColorConstants.onSurfaceHigh
+              : isActive
+                  ? ColorConstants.onSurfaceWhite
+                  : ColorConstants.onSurfaceWhite64,
+          padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
         ),
-      ),
-      onPressed: () {
-        action();
-      },
-      child: SizedBox(
-        height: 48,
+        onPressed: () {
+          action();
+        },
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,

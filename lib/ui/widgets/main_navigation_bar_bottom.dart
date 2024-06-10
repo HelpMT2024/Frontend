@@ -10,9 +10,9 @@ PreferredSize mainNavigationBarBottom({
   final styles = Theme.of(context).textTheme;
 
   return PreferredSize(
-    preferredSize: const Size(double.infinity, 39),
+    preferredSize: const Size(double.infinity, 25),
     child: Container(
-      padding: const EdgeInsets.fromLTRB(12, 0, 0, 14),
+      padding: const EdgeInsets.only(left: 12),
       decoration: BoxDecoration(
         color: backgroundColor,
         boxShadow: [

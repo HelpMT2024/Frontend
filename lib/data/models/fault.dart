@@ -64,7 +64,7 @@ class ChildFault {
   }
 }
 
-enum SearchFaultDetailType { component, part, problemCase, warningLight }
+enum SearchFaultDetailType { component, part, subPart, problemCase, warningLight }
 
 class SearchFaultDetail {
   final String id;
@@ -87,7 +87,38 @@ class SearchFaultDetail {
               ? SearchFaultDetailType.component
               : json['__typename'] == 'Part'
                   ? SearchFaultDetailType.part
-                  : SearchFaultDetailType.problemCase,
+                  : json['__typename'] == 'SubPart'
+                    ? SearchFaultDetailType.subPart
+                    : SearchFaultDetailType.problemCase,
+    );
+  }
+
+  @override
+  bool operator ==(other) {
+    if (other is! SearchFaultDetail) {
+      return false;
+    }
+    return id == other.id &&
+        id == other.id;
+  }
+
+  @override
+  int get hashCode => (id + name).hashCode;
+}
+
+class SearchFaults {
+  final List<SearchFault> searchFaults;
+
+  SearchFaults({
+    required this.searchFaults,
+  });
+
+  factory SearchFaults.fromJson(Map<String, dynamic> json) {
+    var faultsJson = json['items'] as List;
+    List<SearchFault> searchFaults = faultsJson.map((i) => SearchFault.fromJson(i)).toList();
+
+    return SearchFaults(
+      searchFaults: searchFaults,
     );
   }
 }

@@ -77,7 +77,7 @@ class VehiclePointsDrawer extends CustomPainter {
 
   final ovalOuter = Paint()
     ..color = ColorConstants.pointColor
-    ..strokeWidth = 2
+    ..strokeWidth = 1
     ..style = PaintingStyle.stroke;
 
   final ovalInner = Paint()
@@ -102,7 +102,6 @@ class VehiclePointsDrawer extends CustomPainter {
     linesDrawer.paint(canvas, size, points ?? []);
     _paintPointsOuter(size, canvas, points);
     _paintPointsInner(size, canvas, points);
-    _paintPointsNeon(size, canvas, points);
   }
 
   void _paintPointsNeon(Size size, Canvas canvas, List<IDPPoint>? points) {
@@ -125,7 +124,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 3.5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 4.0));
     });
 
     canvas.drawPath(path, ovalInner);
@@ -139,7 +138,7 @@ class VehiclePointsDrawer extends CustomPainter {
       final y = element.y * size.height;
       path.moveTo(x, y);
 
-      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 6.5));
+      path.addOval(Rect.fromCircle(center: Offset(x, y), radius: 6));
     });
 
     canvas.drawPath(path, ovalOuter);

@@ -87,7 +87,7 @@ class _TopAndBottomReusableContainerState
       children: [
         const SizedBox(width: double.infinity),
         if (models.isNotEmpty) _buttons(models[0], context, _Position.top),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         _image(),
         const SizedBox(height: 4),
         if (models.length > 1) _buttons(models[1], context, _Position.bottom),

@@ -530,7 +530,7 @@ query Subpart(\$id: String = "$id") {
     query SearchFaultCode(\$spnCode: String! = "$spn", \$fmiCodes: String! = "$fmi") {
   faultCodeCollection(
     where: {spnCode: \$spnCode, fmiCodes_contains_some: [\$fmiCodes]}
-    limit: 1
+    limit: 50
   ) {
     items {
       sys {
@@ -540,8 +540,15 @@ query Subpart(\$id: String = "$id") {
       spnCode
       fmiCodes
       linkedFrom {
-        entryCollection(limit: 10, skip: 0) {
+        entryCollection(limit: 100, skip: 0) {
           items {
+          ... on SubPart {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
             ... on Part {
               __typename
               name
