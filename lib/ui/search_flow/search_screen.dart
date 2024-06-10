@@ -75,7 +75,6 @@ class SearchModalController {
       return;
     }
     provider.searchFaults(spn, fmi).then((value) {
-
       searchResult.add(value);
     }).catchError((error) {
       searchResult.addError(error);
@@ -192,9 +191,8 @@ class _SearchScreenState extends State<SearchScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 12, width: double.infinity),
-              ..._faultButtons(data),
               if (data.searchFaults.isEmpty) _fmiNotFound(),
-              ..._allDetailsBUttons(data),
+              ..._allDetailsButtons(data),
             ],
           ),
         ),
@@ -202,17 +200,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  List<Widget> _faultButtons(SearchFaults data) {
-    return data.searchFaults.map((searchFault) {
-      if (!searchFault.showAsPdf) {
-        return _faultButton(searchFault);
-      } else {
-        return Container();
-      }
-    }).toList();
-  }
-
-  List<Widget> _allDetailsBUttons(SearchFaults data) {
+  List<Widget> _allDetailsButtons(SearchFaults data) {
     List<Widget> buttons = [];
     List<SearchFaultDetail> searchFaultDetails = [];
 
@@ -224,7 +212,6 @@ class _SearchScreenState extends State<SearchScreen> {
     
     return buttons;
   }
-
 
   Iterable<Widget> _detailsButtons(List<SearchFaultDetail> faultsDetail) {
     return faultsDetail.map((e) {
