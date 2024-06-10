@@ -145,17 +145,24 @@ class FavoritesProvider {
         request, (json) => null);
   }
 
-  Future<FavoritesListModel> favoritesList(int? id, List<String> typeFilter, int page, int size) {
+  Future<FavoritesListModel> favoritesList(int? id, List<String> typeFilters, int page, int size) {
+    Map<String, dynamic> queryParameters = {
+        'filter[owner_id]': id,
+        'page': page,
+        'size': size,
+      };
+
+    var index = 0;
+    for (var typeFilter in typeFilters) {
+      queryParameters['filter[contentful_type][$index]'] = typeFilter;
+      index += 1;
+    }
+
     final request = NetworkRequest(
       type: NetworkRequestType.get,
       path: '/api/favorite/list',
       data: const NetworkRequestBody.empty(),
-      queryParams: {
-        'filter[owner_id]': id,
-        'filter[contentful_type]': typeFilter,
-        'page': page,
-        'size': size,
-      },
+      queryParams: queryParameters,
     );
 
     return restAPINetworkService.execute(

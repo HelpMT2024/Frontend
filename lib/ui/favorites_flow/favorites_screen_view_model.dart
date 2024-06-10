@@ -36,10 +36,10 @@ class FavoritesScreenViewModel {
   });
 
   void getPage() async {
-    var typeFilter = selectedFilter.filterKeys();
+    var typeFilters = selectedFilter.filterKeys();
     user = await provider.user();
     await provider
-        .favoritesList(user!.id, typeFilter, _page, _cellsPerPage)
+        .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
         .then((page) async {
       await Future.wait(
         page.items.map((item) async {
