@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
@@ -13,6 +14,7 @@ import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart'
 
 class DriverCabinScreen extends StatefulWidget {
   final DriverCabinViewModel viewModel;
+  final FavoriteModelSubType itemType = FavoriteModelSubType.driverDisplay;
 
   const DriverCabinScreen({super.key, required this.viewModel});
 
@@ -32,6 +34,7 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
         title: widget.viewModel.config.name,
         action: [VehicleNavBarActions(
           integrationId: widget.viewModel.config.id,
+          type: widget.itemType.filterKey(),
           provider: widget.viewModel.favoritesProvider,
         )],
       ),

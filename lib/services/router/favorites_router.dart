@@ -19,16 +19,17 @@ Route<dynamic>? FavoritesRouter(
   switch (setting.name) {
     case FavoritesRouteKeys.favoritesScreen:
       return nativePageRoute(
-          settings: setting,
-          builder: (context) {
-            final provider =
-                FavoritesProvider(restAPINetworkService, graphQLNetworkService);
-            final vehicleProvider =
-                VehicleProvider(graphQLNetworkService, restAPINetworkService);
-            final viewModel = FavoritesScreenViewModel(
-                provider: provider, vehicleProvider: vehicleProvider);
+        settings: setting,
+        builder: (context) {
+          final provider =
+              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final vehicleProvider =
+              VehicleProvider(graphQLNetworkService, restAPINetworkService);
+          final viewModel = FavoritesScreenViewModel(
+              provider: provider, vehicleProvider: vehicleProvider);
 
-            return FavoritesScreen(viewModel: viewModel);
-          });
+          return FavoritesScreen(viewModel: viewModel);
+        },
+      );
   }
 }

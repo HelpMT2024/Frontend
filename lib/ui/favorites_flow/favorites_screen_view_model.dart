@@ -133,6 +133,8 @@ class FavoritesScreenViewModel {
           resetData();
         });
       case FavoriteModelType.component:
+        
+
         final child = ChildrenComponent(
           id: model.integrationId,
           name: model.name ?? '',

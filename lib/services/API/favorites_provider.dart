@@ -70,6 +70,7 @@ class Pagination {
 class FavoritesListItem {
   final int id;
   final String integrationId;
+  final String type;
   final int ownerId;
   final String ownerUsername;
   final String createdAt;
@@ -78,6 +79,7 @@ class FavoritesListItem {
   FavoritesListItem({
     required this.id,
     required this.integrationId,
+    required this.type,
     required this.ownerId,
     required this.ownerUsername,
     required this.createdAt,
@@ -87,6 +89,7 @@ class FavoritesListItem {
       FavoritesListItem(
         id: json["id"],
         integrationId: json["integration_id"],
+        type: json["type"],
         ownerId: json["owner_id"],
         ownerUsername: json["owner_username"],
         createdAt: json["created_at"],

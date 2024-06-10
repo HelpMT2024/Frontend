@@ -12,19 +12,19 @@ enum FavoriteModelType {
 }
 
 extension FavoriteModelTypesExtension on FavoriteModelType {
-  FavoriteModelType getTypeBy(String name) {
-    return FavoriteModelTypesExtension.itemType[name] ?? FavoriteModelType.unit;
-  }
+  // FavoriteModelType getTypeBy(String name) {
+  //   return FavoriteModelTypesExtension.itemType[name] ?? FavoriteModelType.unit;
+  // }
 
-  static Map<String, FavoriteModelType> itemType = {
-    "Units": FavoriteModelType.unit,
-    "Systems": FavoriteModelType.system,
-    "Component": FavoriteModelType.component,
-    "Parts": FavoriteModelType.part,
-    "Sub Parts": FavoriteModelType.subPart,
-    "Fault Code": FavoriteModelType.faultCode,
-    "Problem Case": FavoriteModelType.problemCase,
-  };
+  // static Map<String, FavoriteModelType> itemType = {
+  //   "Units": FavoriteModelType.unit,
+  //   "Systems": FavoriteModelType.system,
+  //   "Component": FavoriteModelType.component,
+  //   "Parts": FavoriteModelType.part,
+  //   "Sub Parts": FavoriteModelType.subPart,
+  //   "Fault Code": FavoriteModelType.faultCode,
+  //   "Problem Case": FavoriteModelType.problemCase,
+  // };
 
   String title(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -62,6 +62,22 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
         return 'fault_code';
       case FavoriteModelType.problemCase:
         return 'problem_case';
+    }
+  }
+}
+
+enum FavoriteModelSubType {
+  driverDisplay,
+  warningLights,
+}
+
+extension FavoriteModelSubTypeExtension on FavoriteModelSubType {
+    String filterKey() {
+    switch (this) {
+      case FavoriteModelSubType.driverDisplay:
+        return 'driver_display';
+      case FavoriteModelSubType.warningLights:
+        return 'warning_lights';
     }
   }
 }

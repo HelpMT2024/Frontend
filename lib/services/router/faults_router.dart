@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
@@ -33,7 +34,13 @@ Route<dynamic>? FaultsRouter(
         builder: (context) {
           final provider =
               VehicleProvider(graphQLNetworkService, restAPINetworkService);
-          final viewModel = WarningScreenViewModel(provider: provider);
+          final favoritesProvider =
+              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final viewModel = WarningScreenViewModel(
+            provider: provider,
+            favoritesProvider: favoritesProvider, 
+            config: setting.arguments as ChildrenComponent,
+          );
 
           return WarningScreen(viewModel: viewModel);
         },
