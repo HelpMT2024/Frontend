@@ -31,11 +31,13 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
         context: context,
         styles: styles,
         title: widget.viewModel.config.name,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+        action: [
+          VehicleNavBarActions(
+            integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
+            provider: widget.viewModel.favoritesProvider,
+          )
+        ],
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: CustomFloatingButton(
@@ -72,7 +74,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
             const SizedBox(height: 32),
             _problemsButtons(),
           },
-          const SizedBox(height: 16),
+          const SizedBox(height: 4),
           const CommentButton(),
         ],
       ),

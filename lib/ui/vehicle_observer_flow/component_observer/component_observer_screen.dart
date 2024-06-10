@@ -88,7 +88,6 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.viewModel.hasImage) ...{
-            const SizedBox(height: 24),
             _content(data)!,
           } else ...{
             VerticalVideoContainer(videos: widget.viewModel.videos),

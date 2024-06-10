@@ -51,18 +51,15 @@ class _SubPartScreenState extends State<SubPartScreen> {
       body: Stack(
         children: [
           Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
-            child: StreamBuilder<SubPart>(
-              stream: widget.viewModel.part,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+          StreamBuilder<SubPart>(
+            stream: widget.viewModel.part,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return _body(snapshot.data!);
+              } else {
+                return Loadable(forceLoad: true, child: Container());
+              }
+            },
           ),
         ],
       ),
@@ -100,7 +97,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-              const SizedBox(height: 32),
+              const SizedBox(height: 4),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
@@ -135,7 +132,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
       return const SizedBox();
     }
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 8),
       child: WarningLightsRow(warnings: widget.viewModel.warnings),
     );
   }
@@ -144,7 +141,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 32),
+        const SizedBox(height: 4),
         _text(styles),
       ],
     );
@@ -191,7 +188,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
     return ButtonGroup(
       buttons: [
         ...buttons,
-        const SizedBox(height: 24),
+        const SizedBox(height: 8),
         const CommentButton(disableFlex: true)
       ],
     );

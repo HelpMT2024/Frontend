@@ -1,6 +1,5 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
-import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
@@ -43,13 +42,15 @@ class _PartScreenState extends State<PartScreen> {
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+        action: [
+          VehicleNavBarActions(
+            integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
+            provider: widget.viewModel.favoritesProvider,
+          )
+        ],
         bottom: _navBarTitle(styles, backgroundColor),
-        toolbarHeight: 52,
+        toolbarHeight: 48,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
       floatingActionButton: CustomFloatingButton(
@@ -58,18 +59,15 @@ class _PartScreenState extends State<PartScreen> {
       body: Stack(
         children: [
           Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 16, 0, 24),
-            child: StreamBuilder<Part>(
-              stream: widget.viewModel.part,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+          StreamBuilder<Part>(
+            stream: widget.viewModel.part,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return _body(snapshot.data!);
+              } else {
+                return Loadable(forceLoad: true, child: Container());
+              }
+            },
           ),
         ],
       ),
@@ -90,9 +88,7 @@ class _PartScreenState extends State<PartScreen> {
 
     return SingleChildScrollView(
       child: Padding(
-        padding: AppConsts.componentObserverPadding(
-          isNeedTop: widget.viewModel.hasImage,
-        ),
+        padding: const EdgeInsets.fromLTRB(12, 0, 12, 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -107,6 +103,7 @@ class _PartScreenState extends State<PartScreen> {
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
+              const SizedBox(height: 4),
               _title(l10n?.fault_code_title, styles),
               _warningIcons(),
               _faultCodeSection(),
@@ -162,7 +159,7 @@ class _PartScreenState extends State<PartScreen> {
       return const SizedBox();
     }
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.only(bottom: 8),
       child: WarningLightsRow(warnings: widget.viewModel.warnings),
     );
   }
@@ -216,7 +213,11 @@ class _PartScreenState extends State<PartScreen> {
     }).toList();
 
     return ButtonGroup(
-      buttons: [...buttons, const CommentButton(disableFlex: true)],
+      buttons: [
+        ...buttons,
+        const SizedBox(height: 8),
+        const CommentButton(disableFlex: true)
+      ],
     );
   }
 
