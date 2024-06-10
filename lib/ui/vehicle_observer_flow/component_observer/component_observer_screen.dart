@@ -172,7 +172,6 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     return ButtonGroup(
       buttons: [
         ...buttons,
-        if (data.children.isEmpty) const SizedBox(height: 32),
         const CommentButton(disableFlex: true),
       ],
     );
