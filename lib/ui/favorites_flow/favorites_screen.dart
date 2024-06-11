@@ -180,34 +180,32 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         padding: const EdgeInsets.only(left: 65, right: 65),
         color: ColorConstants.surfacePrimaryDark,
         child: Center(
-          child: Expanded(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SvgPicture.asset(
-                  R.ASSETS_BOOKMARK_SVG,
-                  height: 128,
-                  width: 128,
-                ),
-                const SizedBox(
-                  height: 23,
-                ),
-                Text(
-                  l10n?.favorites_placeholder_title ?? '',
-                  textAlign: TextAlign.center,
-                  style: styles.titleMedium
-                      ?.copyWith(color: ColorConstants.onSurfaceWhite),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Text(
-                  l10n?.favorites_placeholder_description ?? '',
-                  style: styles.bodyMedium
-                      ?.copyWith(color: ColorConstants.onSurfaceWhite80),
-                )
-              ],
-            ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                R.ASSETS_BOOKMARK_SVG,
+                height: 128,
+                width: 128,
+              ),
+              const SizedBox(
+                height: 23,
+              ),
+              Text(
+                l10n?.favorites_placeholder_title ?? '',
+                textAlign: TextAlign.center,
+                style: styles.titleMedium
+                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              Text(
+                l10n?.favorites_placeholder_description ?? '',
+                style: styles.bodyMedium
+                    ?.copyWith(color: ColorConstants.onSurfaceWhite80),
+              )
+            ],
           ),
         ),
       ),
