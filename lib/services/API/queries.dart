@@ -55,6 +55,13 @@ query WarningLights {
                 id
               }
             }
+            ... on SubPart {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
             ... on ProblemCase {
               __typename
               sys {

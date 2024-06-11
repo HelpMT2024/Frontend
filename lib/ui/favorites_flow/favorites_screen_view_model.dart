@@ -18,7 +18,7 @@ import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
   final VehicleProvider vehicleProvider;
-  final int _cellsPerPage = 10;
+  final int _cellsPerPage = 50;
 
   var updateDataStreamController =
       StreamController<List<FavoritesListItem>>();

@@ -136,9 +136,6 @@ class FavoritesProvider {
       type: NetworkRequestType.post,
       path: '/api/contentful/$id/favorite/change',
       data: const NetworkRequestBody.empty(),
-      queryParams: {
-        'id': id,
-      }
     );
 
     return restAPINetworkService.execute(
