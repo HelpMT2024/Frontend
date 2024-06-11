@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
+import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -19,6 +20,15 @@ class UnitObserverViewModel {
 
   List<ChildProblem> get problems => unit.valueOrNull?.problems ?? [];
   bool get hasProblems => problems.isNotEmpty;
+
+  List<PdfFile> get pdfFiles =>
+      unit.valueOrNull?.pdfFilesCollection.items ?? [];
+  bool get hasPDF => pdfFiles.isNotEmpty;
+
+  List<IDPVideo> get videos => unit.valueOrNull?.videos ?? [];
+  bool get hasVideos => videos.isNotEmpty;
+
+  bool get hasDescription => unit.valueOrNull?.description != null;
 
   UnitObserverViewModel({
     required this.config,

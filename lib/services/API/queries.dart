@@ -290,6 +290,18 @@ faultCodesCollection {
         } 
       }
     }
+    description {
+      json
+    }
+    $videoCollection
+    pdfFilesCollection {
+      items {
+        title
+        asset {
+          $image
+        }
+      }
+    }
   }
 } 
 ''';
@@ -333,17 +345,39 @@ faultCodesCollection {
 
   static String systemById({required String id}) {
     return '''
-    query System(\$id: String = "$id") {
+query System(\$id: String = "44PyuqMUyRnbJ0JjjnUGXS") {
   system(id: \$id) {
     sys {
       id
     }
     name
+    description {
+      json
+    }
     icon {
       $image
     } 
     imageView {
-      $imageView
+      imageFront {
+      	$image
+    	}
+    	imageBack {
+      	$image
+    	}
+    	leftImage {
+      	$image
+    	}
+    	rightImage {
+      	$image
+   		}
+    	imageFrontMarkup
+    	imageBackMarkup
+    	buttonsTemplate
+    	description
+    	descriptionPosition
+    	previewAnimation {
+      	$image
+    	}
     }
     $videoCollection
     $problemsCollection
@@ -359,9 +393,48 @@ faultCodesCollection {
         } 
       }
     }
+    pdfFilesCollection {
+      items {
+        title
+        asset {
+          $image
+        }
+      }
+    }
   }
-} 
+}
 ''';
+
+//     return '''
+//     query System(\$id: String = "$id") {
+//   system(id: \$id) {
+//     sys {
+//       id
+//     }
+//     name
+//     icon {
+//       $image
+//     }
+//     imageView {
+//       $imageView
+//     }
+//     $videoCollection
+//     $problemsCollection
+//     childrenCollection {
+//       items {
+//         sys {
+//           id
+//         }
+//         type
+//         name
+//         icon {
+//           $image
+//         }
+//       }
+//     }
+//   }
+// }
+// ''';
   }
 
   static String componentById({required String id}) {

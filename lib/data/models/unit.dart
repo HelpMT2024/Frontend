@@ -39,6 +39,9 @@ class Unit {
   final IDPImageView? imageView;
   final List<ChildrenSystem> children;
   final List<ChildProblem> problems;
+  final List<IDPVideo>? videos;
+  final Map<String, dynamic>? description;
+  final PdfFilesCollection pdfFilesCollection;
 
   Unit({
     required this.name,
@@ -46,6 +49,9 @@ class Unit {
     required this.imageView,
     required this.children,
     required this.problems,
+    required this.videos,
+    required this.description,
+    required this.pdfFilesCollection,
   });
 
   factory Unit.fromJson(Map<String, dynamic> json) {
@@ -64,6 +70,13 @@ class Unit {
               .map<ChildProblem>((e) => ChildProblem.fromJson(e))
               .toList() ??
           [],
+      videos: json['videosCollection']?['items']
+              .map<IDPVideo>((e) => IDPVideo.fromJson(e))
+              .toList() ??
+          [],
+      description: json['description']?['json'],
+      pdfFilesCollection:
+          PdfFilesCollection.fromJson(json['pdfFilesCollection']),
     );
   }
 }

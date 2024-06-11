@@ -33,6 +33,8 @@ class System {
   final List<ChildrenComponent> children;
   final List<ChildProblem> problems;
   final List<IDPVideo>? videos;
+  final Map<String, dynamic>? description;
+  final PdfFilesCollection pdfFilesCollection;
 
   System({
     required this.id,
@@ -42,6 +44,8 @@ class System {
     required this.children,
     required this.problems,
     required this.videos,
+    required this.description,
+    required this.pdfFilesCollection,
   });
 
   factory System.fromJson(Map<String, dynamic> json) {
@@ -64,6 +68,9 @@ class System {
               .map<IDPVideo>((e) => IDPVideo.fromJson(e))
               .toList() ??
           [],
+      description: json['description']?['json'],
+      pdfFilesCollection:
+          PdfFilesCollection.fromJson(json['pdfFilesCollection']),
     );
   }
 }
