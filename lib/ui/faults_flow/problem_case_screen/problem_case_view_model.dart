@@ -25,10 +25,11 @@ class ProblemCaseScreenViewModel {
   bool get hasWarnings => warnings.isNotEmpty;
   Map<String, dynamic>? get description => problem.valueOrNull?.description;
   bool get hasDescription => description != null;
+  bool get hasImage => problem.valueOrNull?.image != null;
 
   ProblemCaseScreenViewModel({
     required this.provider,
     required this.config,
-    required this.favoritesProvider, 
+    required this.favoritesProvider,
   });
 }

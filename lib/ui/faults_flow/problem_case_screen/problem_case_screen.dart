@@ -36,11 +36,13 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         styles: styles,
         bottom: _navBarTitle(styles, backgroundColor),
         bgColor: ColorConstants.surfacePrimaryDark,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+        action: [
+          VehicleNavBarActions(
+            integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
+            provider: widget.viewModel.favoritesProvider,
+          )
+        ],
         toolbarHeight: 52,
       ),
       body: Stack(
@@ -68,6 +70,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (widget.viewModel.hasImage) _image(),
         if (widget.viewModel.hasWarnings) ...{
           WarningLightsRow(warnings: widget.viewModel.warnings),
           const SizedBox(height: 24),
@@ -114,5 +117,9 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
       title: widget.viewModel.config.name,
       backgroundColor: backgroundColor,
     );
+  }
+
+  Widget _image() {
+    return Image.network(widget.viewModel.problem.value.image!.url);
   }
 }

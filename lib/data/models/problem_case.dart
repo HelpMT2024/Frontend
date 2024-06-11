@@ -7,6 +7,7 @@ class ProblemCase {
   final List<IDPVideo> videos;
   final PdfFilesCollection pdfFilesCollection;
   final List<ChildWarningLight> warningLights;
+  final IDPImage? image;
 
   ProblemCase({
     required this.name,
@@ -14,6 +15,7 @@ class ProblemCase {
     required this.videos,
     required this.pdfFilesCollection,
     required this.warningLights,
+    required this.image,
   });
 
   factory ProblemCase.fromJson(Map<String, dynamic> json) {
@@ -30,6 +32,7 @@ class ProblemCase {
               .map<ChildWarningLight>((e) => ChildWarningLight.fromJson(e))
               .toList() ??
           [],
+      image: json['image'] != null ? IDPImage.fromJson(json['image']) : null,
     );
   }
 }
