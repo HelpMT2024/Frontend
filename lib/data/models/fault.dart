@@ -64,7 +64,13 @@ class ChildFault {
   }
 }
 
-enum SearchFaultDetailType { component, part, subPart, problemCase, warningLight }
+enum SearchFaultDetailType {
+  component,
+  part,
+  subPart,
+  problemCase,
+  warningLight
+}
 
 class SearchFaultDetail {
   final String id;
@@ -78,6 +84,9 @@ class SearchFaultDetail {
   });
 
   factory SearchFaultDetail.fromJson(Map<String, dynamic> json) {
+    print('<!> json = $json');
+    print('<!>');
+    print('<!> e.id = ${json['sys']['id']}');
     return SearchFaultDetail(
       id: json['sys']['id'],
       name: json['name'],
@@ -88,8 +97,8 @@ class SearchFaultDetail {
               : json['__typename'] == 'Part'
                   ? SearchFaultDetailType.part
                   : json['__typename'] == 'SubPart'
-                    ? SearchFaultDetailType.subPart
-                    : SearchFaultDetailType.problemCase,
+                      ? SearchFaultDetailType.subPart
+                      : SearchFaultDetailType.problemCase,
     );
   }
 
@@ -98,8 +107,7 @@ class SearchFaultDetail {
     if (other is! SearchFaultDetail) {
       return false;
     }
-    return id == other.id &&
-        id == other.id;
+    return id == other.id && id == other.id;
   }
 
   @override
@@ -115,7 +123,8 @@ class SearchFaults {
 
   factory SearchFaults.fromJson(Map<String, dynamic> json) {
     var faultsJson = json['items'] as List;
-    List<SearchFault> searchFaults = faultsJson.map((i) => SearchFault.fromJson(i)).toList();
+    List<SearchFault> searchFaults =
+        faultsJson.map((i) => SearchFault.fromJson(i)).toList();
 
     return SearchFaults(
       searchFaults: searchFaults,

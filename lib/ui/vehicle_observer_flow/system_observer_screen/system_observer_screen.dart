@@ -78,22 +78,32 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (_content(data) != null) _content(data)!,
           if (widget.viewModel.hasDescription) _symptomsSection(styles),
           if (widget.viewModel.hasProblems) ...{
-            const SizedBox(height: 32),
+            if (widget.viewModel.hasDescription) ...{
+              const SizedBox(height: 16)
+            } else ...{
+              const SizedBox(height: 32),
+            },
             _problemsButtons(),
           },
           if (widget.viewModel.hasPDF) ...{
-            const SizedBox(height: 4),
+            if (widget.viewModel.hasProblems) const SizedBox(height: 4),
+            if (!widget.viewModel.hasProblems) const SizedBox(height: 16),
             _title(l10n?.instructions_title, styles),
           },
           _instructionsButtons(styles),
-          const SizedBox(height: 16),
-          if (data.children.isEmpty) const SizedBox(height: 16),
+          const SizedBox(height: 8),
+          if (data.children.isEmpty &&
+              data.pdfFilesCollection.items.length == 0 &&
+              data.problems.isEmpty)
+            const SizedBox(height: 16),
           const CommentButton(),
-          if (widget.viewModel.hasVideos) _horizontalVideoWidget()
+          if (widget.viewModel.hasVideos) _horizontalVideoWidget(),
+          const SizedBox(height: 24),
         ],
       ),
     );

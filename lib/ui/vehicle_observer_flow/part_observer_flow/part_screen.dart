@@ -97,6 +97,8 @@ class _PartScreenState extends State<PartScreen> {
               _symptomsSection(styles),
             } else ...{
               _verticalVideoWidget(),
+              const SizedBox(height: 4),
+              _symptomsSection(styles),
             },
             if (widget.viewModel.hasProblems) ...{
               const SizedBox(height: 16),

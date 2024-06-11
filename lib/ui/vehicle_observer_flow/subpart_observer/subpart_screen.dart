@@ -42,11 +42,13 @@ class _SubPartScreenState extends State<SubPartScreen> {
       appBar: MainNavigationBar(
         context: context,
         styles: styles,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+        action: [
+          VehicleNavBarActions(
+            integrationId: widget.viewModel.config.id,
+            type: widget.itemType.filterKey(),
+            provider: widget.viewModel.favoritesProvider,
+          )
+        ],
         bottom: _navBarTitle(styles, backgroundColor),
         toolbarHeight: 52,
       ),
@@ -97,6 +99,8 @@ class _SubPartScreenState extends State<SubPartScreen> {
               _symptomsSection(styles),
             } else ...{
               _verticalVideoWidget(),
+              const SizedBox(height: 4),
+              _symptomsSection(styles),
             },
             if (widget.viewModel.hasProblems) ...{
               const SizedBox(height: 16),

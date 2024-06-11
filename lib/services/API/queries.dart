@@ -41,6 +41,13 @@ query WarningLights {
       linkedFrom {
         entryCollection(limit: 30, skip: 0) {
           items {
+            ... on SubPart {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
             ... on Part {
               __typename
               name
@@ -458,6 +465,9 @@ query Subpart(\$id: String = "$id") {
 	subPart(id: \$id) {
     internalName
     name
+    sys {
+      id
+    }
     icon {
       title
       description
