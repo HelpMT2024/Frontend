@@ -98,7 +98,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
           _instructionsButtons(styles),
           const SizedBox(height: 8),
           if (data.children.isEmpty &&
-              data.pdfFilesCollection.items.length == 0 &&
+              data.pdfFilesCollection.items.isEmpty &&
               data.problems.isEmpty)
             const SizedBox(height: 16),
           const CommentButton(),
