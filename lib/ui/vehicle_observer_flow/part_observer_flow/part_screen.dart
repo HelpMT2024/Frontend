@@ -106,7 +106,8 @@ class _PartScreenState extends State<PartScreen> {
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
               const SizedBox(height: 4),
-              _title(l10n?.fault_code_title, styles),
+              if (widget.viewModel.hasFaults)
+                _title(l10n?.favorites_item_type_fault_codes, styles),
               _warningIcons(),
               _faultCodeSection(),
             },

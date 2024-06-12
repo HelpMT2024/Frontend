@@ -104,7 +104,8 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           },
           if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
             const SizedBox(height: 12),
-            VehicleTitle(text: l10n?.favorites_item_type_fault_codes),
+            if (widget.viewModel.hasFaults)
+              VehicleTitle(text: l10n?.favorites_item_type_fault_codes),
             _warningIcons(),
             faults(),
           },
