@@ -67,6 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             style: styles.titleMedium
                 ?.copyWith(color: ColorConstants.onSurfaceWhite),
           ),
+          const SizedBox(height: 12),
           Expanded(
             child: ListView(
               children: widget.viewModel.trucks

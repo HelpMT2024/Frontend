@@ -125,7 +125,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get email_error => 'This email already exists';
 
   @override
-  String get confirm_password_error => 'Password doesn\'t match';
+  String get confirm_password_error => 'Passwords do not match';
 
   @override
   String get account_not_exists => 'Don\'t have an account? ';

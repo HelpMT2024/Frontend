@@ -84,9 +84,6 @@ class SearchFaultDetail {
   });
 
   factory SearchFaultDetail.fromJson(Map<String, dynamic> json) {
-    print('<!> json = $json');
-    print('<!>');
-    print('<!> e.id = ${json['sys']['id']}');
     return SearchFaultDetail(
       id: json['sys']['id'],
       name: json['name'],

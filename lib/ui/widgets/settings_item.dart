@@ -35,7 +35,7 @@ class SettingsItem extends StatelessWidget {
             if (icon != null)
               Icon(
                 icon,
-                size: 24,
+                size: 20,
                 color: ColorConstants.onSurfaceWhite,
               ),
             const SizedBox(width: 8),

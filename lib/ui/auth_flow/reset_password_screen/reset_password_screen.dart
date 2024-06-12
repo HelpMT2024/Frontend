@@ -20,8 +20,9 @@ class ResetPasswordScreen extends StatefulWidget {
 class _LoginScreenState extends State<ResetPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  bool _passwordRepeatVisible = false;
   bool _passwordVisible = false;
+  bool _newPasswordVisible = false;
+  bool _newPasswordRepeatVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +105,10 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
         promptText: l10n?.password_prompt ?? '',
         obscureText: true,
         hideEye: false,
-        passwordVisible: _passwordRepeatVisible,
+        passwordVisible: _newPasswordVisible,
         needShowPassword: () {
           setState(() {
-            _passwordRepeatVisible = !_passwordRepeatVisible;
+            _newPasswordVisible = !_newPasswordVisible;
           });
         },
       ),
@@ -121,10 +122,10 @@ class _LoginScreenState extends State<ResetPasswordScreen> {
         placeholder: l10n?.confirm_password_prompt,
         obscureText: true,
         hideEye: false,
-        passwordVisible: _passwordVisible,
+        passwordVisible: _newPasswordRepeatVisible,
         needShowPassword: () {
           setState(() {
-            _passwordVisible = !_passwordVisible;
+            _newPasswordRepeatVisible = !_newPasswordRepeatVisible;
           });
         },
       ),

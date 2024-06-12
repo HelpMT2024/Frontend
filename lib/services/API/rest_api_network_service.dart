@@ -287,7 +287,7 @@ class RestAPINetworkService {
       path: '/api/user/token/refresh',
       data: NetworkRequestBody.formData(
         {
-          'refreshToken': token.refreshToken,
+          'refresh_token': token.refreshToken,
         },
       ),
     );
@@ -350,9 +350,9 @@ class RestAPINetworkService {
         onSendProgress,
         onReceiveProgress,
       );
-      
+
       final token = SharedPreferencesWrapper.getToken();
-      
+
       return await _composed<Model>(_IsolatedValue(req, token)).then(
         (value) {
           return value.map(
