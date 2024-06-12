@@ -96,14 +96,17 @@ class _SubPartScreenState extends State<SubPartScreen> {
           children: [
             if (widget.viewModel.hasImage) ...{
               _image(),
-              _symptomsSection(styles),
             } else ...{
               _verticalVideoWidget(),
-              const SizedBox(height: 4),
-              _symptomsSection(styles),
+            },
+            if (widget.viewModel.hasDescription) ...{
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
+                child: _symptomsSection(styles),
+              ),
             },
             if (widget.viewModel.hasProblems) ...{
-              const SizedBox(height: 16),
+              SizedBox(height: widget.viewModel.hasDescription ? 8 : 32),
               _problemsButtons(styles),
             },
             if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
@@ -114,7 +117,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
               _faultCodeSection(),
             },
             if (widget.viewModel.hasPDF) ...{
-              const SizedBox(height: 16),
+              const SizedBox(height: 8),
               _title(l10n?.instructions_title, styles),
             },
             _instructionsButtons(styles),

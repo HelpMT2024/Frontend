@@ -94,28 +94,27 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
           },
           if (widget.viewModel.hasDescription) ...{
             Padding(
-              padding: const EdgeInsets.only(bottom: 8),
+              padding: const EdgeInsets.fromLTRB(0, 4, 0, 8),
               child: _descriptionSection(l10n, styles, data),
             ),
           },
           if (widget.viewModel.hasProblems) ...{
-            const SizedBox(height: 24),
+            SizedBox(height: widget.viewModel.hasDescription ? 8 : 32),
             _problemsButtons()
           },
           if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
-            const SizedBox(height: 12),
+            const SizedBox(height: 4),
             if (widget.viewModel.hasFaults)
               VehicleTitle(text: l10n?.favorites_item_type_fault_codes),
             _warningIcons(),
             faults(),
           },
-          const SizedBox(height: 12),
           if (widget.viewModel.hasPDF) ...{
-            const SizedBox(height: 12),
+            const SizedBox(height: 8),
             _title(l10n?.instructions_title, styles),
           },
           _instructionsButtons(styles, data),
-          const SizedBox(height: 8),
+          const SizedBox(height: 4),
           if (widget.viewModel.hasImage) ...{
             HorizontalVideoContainer(videos: widget.viewModel.videos),
           },
@@ -173,6 +172,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     return ButtonGroup(
       buttons: [
         ...buttons,
+        if (buttons.isNotEmpty) const SizedBox(height: 8),
         const CommentButton(disableFlex: true),
       ],
     );

@@ -31,6 +31,7 @@ class PartViewModel {
       part.valueOrNull?.videosCollection.items.isNotEmpty ?? false;
 
   bool get hasFaults => part.valueOrNull?.faults.isNotEmpty ?? false;
+  bool get hasDescription => part.valueOrNull?.description != null;
 
   List<ChildWarningLight> get warnings => part.valueOrNull?.warningLights ?? [];
   bool get hasWarnings => warnings.isNotEmpty;
