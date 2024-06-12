@@ -176,7 +176,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get favorites_placeholder_title => 'Start adding important pages to your bookmarks.';
 
   @override
-  String get favorites_placeholder_description => 'They will appear here.';
+  String get favorites_placeholder_description => 'They will appear here';
 
   @override
   String get no_connection_description => 'No internet connection found. Check your connection';
