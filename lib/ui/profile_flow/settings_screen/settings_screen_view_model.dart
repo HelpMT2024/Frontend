@@ -98,6 +98,8 @@ class SettingsScreenViewModel with ViewModelErrorHandable {
         AuthRouteKeys.welcomeScreen,
         (route) => false,
       );
+    }).catchError((error) {
+      showAlertDialog(context, error.message);
     });
   }
 }

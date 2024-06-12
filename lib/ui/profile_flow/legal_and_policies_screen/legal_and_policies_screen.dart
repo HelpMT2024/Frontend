@@ -22,7 +22,7 @@ class _LegalAndPoliciesScreenState extends State<LegalAndPoliciesScreen> {
 
     return Scaffold(
         appBar: MainNavigationBar(
-          title: l10n?.settings,
+          title: l10n?.legal_and_policies,
           context: context,
           styles: styles,
           bgColor: ColorConstants.surfacePrimaryDark,

@@ -86,6 +86,7 @@ class _LanguageScreenState extends State<LanguageScreen> {
             right: 0,
             child: _comingSoon(styles),
           ),
+          Container(color: Colors.transparent, height: 48),
         ],
       ),
     ];
@@ -119,7 +120,9 @@ class _LanguageScreenState extends State<LanguageScreen> {
           Text(
             title,
             style: styles.bodyLarge?.copyWith(
-              color: ColorConstants.surfaceWhite,
+              color: isChecked
+                  ? ColorConstants.surfaceWhite
+                  : ColorConstants.onSurfaceWhite64,
             ),
           ),
           const Spacer(),

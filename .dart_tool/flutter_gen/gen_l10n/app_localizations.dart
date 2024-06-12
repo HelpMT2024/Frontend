@@ -334,7 +334,7 @@ abstract class AppLocalizations {
   /// No description provided for @confirm_password_error.
   ///
   /// In en, this message translates to:
-  /// **'Password doesn\'t match'**
+  /// **'Passwords do not match'**
   String get confirm_password_error;
 
   /// No description provided for @account_not_exists.

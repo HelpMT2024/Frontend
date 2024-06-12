@@ -73,7 +73,7 @@ class _LoginScreenState extends State<EditUsernameScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 _textField(l10n),
-                const SizedBox(height: 28),
+                const SizedBox(height: 12),
                 _submitButton(l10n),
               ],
             ),
