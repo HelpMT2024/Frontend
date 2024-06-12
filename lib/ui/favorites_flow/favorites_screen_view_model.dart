@@ -8,6 +8,7 @@ import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
@@ -179,7 +180,7 @@ class FavoritesScreenViewModel {
           resetData();
         });
       case FavoriteModelType.subPart:
-        final child = ChildrenPart(
+        final child = ChildSubpart(
           id: model.integrationId,
           name: model.name ?? '',
           image: null,
