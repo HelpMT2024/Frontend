@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         icon: Icon(
           Icons.settings,
           color: ColorConstants.onSurfaceWhite,
-          size: 32,
+          size: 24,
         ),
         onPressed: () => widget.viewModel.settings(context),
       ),
