@@ -166,7 +166,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
       style: ElevatedButton.styleFrom(
         padding: const EdgeInsets.all(0),
-        backgroundColor: ColorConstants.surfacePrimaryDark,
+        backgroundColor: Colors.transparent,
         foregroundColor: ColorConstants.onSurfaceWhite,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),
