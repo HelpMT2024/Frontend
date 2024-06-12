@@ -138,9 +138,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           widget.viewModel.handleClick(model, context);
         },
         child: Container(
-          height: 50,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             color: ColorConstants.surfaceSecondary,
           ),
           child: Padding(
@@ -151,12 +150,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 Expanded(
                   child: Text(
                     model.name ?? '',
+                    overflow: TextOverflow.visible,
                     style: styles.titleMedium
                         ?.copyWith(color: ColorConstants.onSurfaceWhite),
                   ),
                 ),
                 const SizedBox(width: 8),
                 BookmarkButton(
+                  20,
                   widget.viewModel.fetchedItems[index].integrationId,
                   null,
                   widget.viewModel.provider,
@@ -179,34 +180,33 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       child: Container(
         padding: const EdgeInsets.only(left: 65, right: 65),
         color: ColorConstants.surfacePrimaryDark,
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SvgPicture.asset(
-                R.ASSETS_BOOKMARK_SVG,
-                height: 128,
-                width: 128,
-              ),
-              const SizedBox(
-                height: 23,
-              ),
-              Text(
-                l10n?.favorites_placeholder_title ?? '',
-                textAlign: TextAlign.center,
-                style: styles.titleMedium
-                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
-              ),
-              const SizedBox(
-                height: 4,
-              ),
-              Text(
-                l10n?.favorites_placeholder_description ?? '',
-                style: styles.bodyMedium
-                    ?.copyWith(color: ColorConstants.onSurfaceWhite80),
-              )
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 86,),
+            SvgPicture.asset(
+              R.ASSETS_BOOKMARK_SVG,
+              height: 128,
+              width: 128,
+            ),
+            const SizedBox(
+              height: 23,
+            ),
+            Text(
+              l10n?.favorites_placeholder_title ?? '',
+              textAlign: TextAlign.center,
+              style: styles.titleMedium
+                  ?.copyWith(color: ColorConstants.onSurfaceWhite),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              l10n?.favorites_placeholder_description ?? '',
+              style: styles.bodyMedium
+                  ?.copyWith(color: ColorConstants.onSurfaceWhite80),
+            )
+          ],
         ),
       ),
     );

@@ -57,7 +57,14 @@ class VehicleNavBarActions extends StatelessWidget {
           if (!hideBookmark)
             SizedBox(
               width: 32,
-              child: BookmarkButton(integrationId, type, provider, null, false),
+              child: BookmarkButton(
+                28,
+                integrationId,
+                type,
+                provider,
+                null,
+                false,
+              ),
             ),
         ],
       ),
