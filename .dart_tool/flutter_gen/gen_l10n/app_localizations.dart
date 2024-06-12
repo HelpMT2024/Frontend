@@ -436,7 +436,7 @@ abstract class AppLocalizations {
   /// No description provided for @favorites_placeholder_description.
   ///
   /// In en, this message translates to:
-  /// **'They will appear here.'**
+  /// **'They will appear here'**
   String get favorites_placeholder_description;
 
   /// No description provided for @no_connection_description.

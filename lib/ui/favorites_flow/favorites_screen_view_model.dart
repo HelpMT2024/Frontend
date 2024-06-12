@@ -8,6 +8,7 @@ import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
@@ -18,7 +19,7 @@ import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
   final VehicleProvider vehicleProvider;
-  final int _cellsPerPage = 50;
+  final int _cellsPerPage = 10;
 
   var updateDataStreamController =
       StreamController<List<FavoritesListItem>>();
@@ -153,7 +154,7 @@ class FavoritesScreenViewModel {
         if (model.type == warningsTypeKey) {
           routeKey = FaultsRouteKeys.warningScreen;
         } else {
-          routeKey = VehicleSelectorRouteKeys.systemObserver;
+          routeKey = VehicleSelectorRouteKeys.componentObserver;
         }
 
         Navigator.of(context)
@@ -179,7 +180,7 @@ class FavoritesScreenViewModel {
           resetData();
         });
       case FavoriteModelType.subPart:
-        final child = ChildrenPart(
+        final child = ChildSubpart(
           id: model.integrationId,
           name: model.name ?? '',
           image: null,
