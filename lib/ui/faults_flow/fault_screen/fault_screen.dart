@@ -89,7 +89,7 @@ class _FaultScreenState extends State<FaultScreen> {
             Image.network(model.image!.url),
             const SizedBox(height: 24),
           },
-          _description(styles, model),
+          if (model.description != null) _description(styles, model),
           const SizedBox(height: 24),
           _buttons(model, l10n),
           HorizontalVideoContainer(videos: model.videosCollection.items),
@@ -144,9 +144,8 @@ class _FaultScreenState extends State<FaultScreen> {
 
   PreferredSize _navBarTitle(TextTheme styles, Color backgroundColor) {
     return mainNavigationBarBottom(
-      context: context,
-      title: widget.viewModel.config.text,
-      backgroundColor: backgroundColor
-    );
+        context: context,
+        title: widget.viewModel.config.text,
+        backgroundColor: backgroundColor);
   }
 }

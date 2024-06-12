@@ -72,12 +72,13 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
       children: [
         if (widget.viewModel.hasImage) _image(),
         if (widget.viewModel.hasWarnings) ...{
+          const SizedBox(height: 4),
           WarningLightsRow(warnings: widget.viewModel.warnings),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
         },
         if (widget.viewModel.hasDescription) ...{
           _text(Theme.of(context).textTheme),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
         },
         _instructionsButtons(),
         if (widget.viewModel.hasVideos) ...{
