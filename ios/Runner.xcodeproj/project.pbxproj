@@ -14,7 +14,6 @@
 		6271DB67CFBE4C940A4B19BB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 096EFD3E55F6D57D26ED3737 /* GoogleService-Info.plist */; };
 		74858FAF1ED2DC5600515810 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74858FAE1ED2DC5600515810 /* AppDelegate.swift */; };
 		9618AF892C1B131900BCD76C /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9618AF882C1B131900BCD76C /* StoreKit.framework */; };
-		9618AF8C2C1B19CB00BCD76C /* StoreKitTestCertificate.cer in Resources */ = {isa = PBXBuildFile; fileRef = 9618AF8B2C1B19CB00BCD76C /* StoreKitTestCertificate.cer */; };
 		9618AF8D2C1B1A5400BCD76C /* Main.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 9618AF8A2C1B189500BCD76C /* Main.storekit */; };
 		97C146FC1CF9000F007C117D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FA1CF9000F007C117D /* Main.storyboard */; };
 		97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 97C146FD1CF9000F007C117D /* Assets.xcassets */; };
@@ -60,7 +59,7 @@
 		7AFA3C8E1D35360C0083082E /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Flutter/Release.xcconfig; sourceTree = "<group>"; };
 		9618AF882C1B131900BCD76C /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9618AF8A2C1B189500BCD76C /* Main.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Main.storekit; sourceTree = "<group>"; };
-		9618AF8B2C1B19CB00BCD76C /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; name = StoreKitTestCertificate.cer; path = ../../../../Downloads/StoreKitTestCertificate.cer; sourceTree = "<group>"; };
+		964548412C1B3ECF00368C05 /* StoreKitTestCertificate.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = StoreKitTestCertificate.cer; sourceTree = "<group>"; };
 		9740EEB21CF90195004384FC /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Flutter/Debug.xcconfig; sourceTree = "<group>"; };
 		9740EEB31CF90195004384FC /* Generated.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Generated.xcconfig; path = Flutter/Generated.xcconfig; sourceTree = "<group>"; };
 		97C146EE1CF9000F007C117D /* Runner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Runner.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -160,9 +159,9 @@
 				97C147021CF9000F007C117D /* Info.plist */,
 				1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */,
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
+				964548412C1B3ECF00368C05 /* StoreKitTestCertificate.cer */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				9618AF8B2C1B19CB00BCD76C /* StoreKitTestCertificate.cer */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
@@ -279,7 +278,6 @@
 				97C146FE1CF9000F007C117D /* Assets.xcassets in Resources */,
 				97C146FC1CF9000F007C117D /* Main.storyboard in Resources */,
 				6271DB67CFBE4C940A4B19BB /* GoogleService-Info.plist in Resources */,
-				9618AF8C2C1B19CB00BCD76C /* StoreKitTestCertificate.cer in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
