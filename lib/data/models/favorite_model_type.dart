@@ -12,6 +12,17 @@ enum FavoriteModelType {
 }
 
 extension FavoriteModelTypesExtension on FavoriteModelType {
+  static Map<String, FavoriteModelType> itemTypeByString = {
+    "unit": FavoriteModelType.unit,
+    "system": FavoriteModelType.system,
+    "driver_display": FavoriteModelType.system,
+    "component": FavoriteModelType.component,
+    "warning_lights": FavoriteModelType.component,
+    "part": FavoriteModelType.part,
+    "sub_parts": FavoriteModelType.subPart,
+    "fault_code": FavoriteModelType.faultCode,
+    "problem_case": FavoriteModelType.problemCase,
+  };
 
   String title(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -78,7 +89,7 @@ enum FavoriteModelSubType {
 }
 
 extension FavoriteModelSubTypeExtension on FavoriteModelSubType {
-    String filterKey() {
+  String filterKey() {
     switch (this) {
       case FavoriteModelSubType.driverDisplay:
         return 'driver_display';
