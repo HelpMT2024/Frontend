@@ -104,7 +104,7 @@ class FavoritesProvider {
 
   FavoritesProvider(this.restAPINetworkService, this.graphQLNetworkService);
 
-  Future<void> createContentfulItem(String integrationId, String type) {
+  Future createContentfulItem(String integrationId, String type) {
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/contentful/add',
@@ -116,7 +116,7 @@ class FavoritesProvider {
 
     return restAPINetworkService.execute(
       request,
-      (json) => FavoritesListModel.fromJson(json['data']),
+      (json) => null,
     );
   }
 
