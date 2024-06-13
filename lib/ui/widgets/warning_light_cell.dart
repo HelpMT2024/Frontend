@@ -6,11 +6,13 @@ import 'package:help_my_truck/data/models/child_problem.dart';
 class WarningLightCell extends StatelessWidget {
   final ChildWarningLight warning;
   final double? fixedWidth;
+  final double? fixedHeight;
 
   const WarningLightCell({
     super.key,
     required this.warning,
     this.fixedWidth,
+    this.fixedHeight,
   });
 
   @override
@@ -25,7 +27,7 @@ class WarningLightCell extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
         color: ColorConstants.onSurfaceHigh,
       ),
-      height: 52,
+      height: fixedHeight ?? 52,
       width: fixedWidth ?? (MediaQuery.of(context).size.width - 56) / 4,
       padding: const EdgeInsets.all(4),
       child: Column(
