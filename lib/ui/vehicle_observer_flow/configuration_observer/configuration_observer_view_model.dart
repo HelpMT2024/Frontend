@@ -33,11 +33,11 @@ class ConfigurationObserverViewModel {
   void onModelSelected(String id, BuildContext context) async {
     final model =
         configuration.value.children.firstWhere((element) => element.id == id);
-    if (PurchaseService.instance.isPro) {
-      _navigateToChild(context, model);
-    } else {
-      await RevenueCatUI.presentPaywallIfNeeded(AppConsts.revenueEntitlement);
-    }
+    //if (PurchaseService.instance.isPro) {
+    _navigateToChild(context, model);
+    // } else {
+    //   await RevenueCatUI.presentPaywallIfNeeded(AppConsts.revenueEntitlement);
+    // }
   }
 
   void _navigateToChild(BuildContext context, ConfigurationChild model) {
