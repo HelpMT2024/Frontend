@@ -66,11 +66,13 @@ class FavoritesScreenViewModel {
       ]);
     }).then((value) {
       final page = value[0] as FavoritesListModel;
-      if (page.type == selectedFilter) {
+      if (page.type != null && page.type == selectedFilter) {
         fetchedItems.addAll(page.items);
         pagination = page.pagination;
         updateDataStreamController.add(fetchedItems);
         _handlePagination();
+      } else {
+        updateDataStreamController.add([]);
       }
     });
   }
