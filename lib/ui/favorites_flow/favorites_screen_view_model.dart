@@ -21,13 +21,12 @@ class FavoritesScreenViewModel {
   final VehicleProvider vehicleProvider;
   final int _cellsPerPage = 10;
 
-  var updateDataStreamController =
-      StreamController<List<FavoritesListItem>>();
-  UserInfoModel? user;
+  var updateDataStreamController = StreamController<List<FavoritesListItem>>();
   List<FavoritesListItem> fetchedItems = [];
   FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
+  bool isLoading = false;
 
   int _page = 1;
 
@@ -35,43 +34,59 @@ class FavoritesScreenViewModel {
     required this.provider,
     required this.vehicleProvider,
   });
+  Future? value;
 
-  void getPage() async {
+  void getPage() {
+    if (value != null) {
+      value?.ignore();
+    }
+      _request();
+  }
+
+  void _request() {
     var typeFilters = selectedFilter.filterKeys();
-    user = await provider.user();
-    await provider
-        .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
-        .then((page) async {
-      await Future.wait(
-        page.items.map((item) async {
-          item.name = await itemTitle(item.integrationId);
-          return item;
-        }).toList(),
-      );
 
-      fetchedItems.addAll(page.items);
-      pagination = page.pagination;
+    value = provider
+        .user()
+        .then(
+          (user) => provider.favoritesList(
+            user.id,
+            typeFilters,
+            _page,
+            _cellsPerPage,
+          ),
+        )
+        .then((page) {
+      return Future.wait([
+        Future.value(page),
+        ...page.items.map((item) {
+          final name = itemTitle(item.integrationId).then((value) {
+            item.name = value;
+          });
+          return name;
+        }),
+      ]);
+    }).then((value) {
+      final page = value[0] as FavoritesListModel;
+      if (page.type == selectedFilter) {
+        fetchedItems.addAll(page.items);
+        pagination = page.pagination;
+        updateDataStreamController.add(fetchedItems);
+        handlePagination();
+      }
     });
-    handlePagination();
-    updateDataStreamController.add(fetchedItems);
   }
 
   void resetData() {
     _page = 1;
     fetchedItems.clear();
-    updateDataStreamController =
-      StreamController<List<FavoritesListItem>>();
+    updateDataStreamController = StreamController<List<FavoritesListItem>>();
     getPage();
   }
 
   void handlePagination() {
     _page += 1;
     isLastPage = pagination?.pages == pagination?.page;
-  }
-
-  void handleTabButtonClick(int index) {
-    selectedFilter = FavoriteModelType.values[index];
-    resetData();
   }
 
   Future<String> itemTitle(String id) async {
@@ -90,10 +105,9 @@ class FavoritesScreenViewModel {
         return vehicleProvider.subPart(id).then((subPart) => subPart.name);
       case FavoriteModelType.faultCode:
         return vehicleProvider.fault(id).then((fault) {
-          final fmiCodes = fault.fmiCodes.toString()
-           .replaceAll(']', '')
-           .replaceAll('[', '');
-           
+          final fmiCodes =
+              fault.fmiCodes.toString().replaceAll(']', '').replaceAll('[', '');
+
           return 'SPN ${fault.spnCode}, FMI $fmiCodes';
         });
       case FavoriteModelType.problemCase:
@@ -120,7 +134,8 @@ class FavoritesScreenViewModel {
           resetData();
         });
       case FavoriteModelType.system:
-        final driverDisplayTypeKey = FavoriteModelSubType.driverDisplay.filterKey();
+        final driverDisplayTypeKey =
+            FavoriteModelSubType.driverDisplay.filterKey();
         final child = ChildrenSystem(
           id: model.integrationId,
           name: model.name ?? '',
@@ -133,7 +148,6 @@ class FavoritesScreenViewModel {
         } else {
           routeKey = VehicleSelectorRouteKeys.systemObserver;
         }
-
         Navigator.of(context)
             .pushNamed(
           routeKey,
@@ -156,7 +170,6 @@ class FavoritesScreenViewModel {
         } else {
           routeKey = VehicleSelectorRouteKeys.componentObserver;
         }
-
         Navigator.of(context)
             .pushNamed(
           routeKey,

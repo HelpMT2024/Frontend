@@ -19,10 +19,12 @@ class FilterTabBar extends StatefulWidget {
 
 class FilterTabBarState extends State<FilterTabBar> {
   List<CustomTabButton> buttons = [];
+  int? currentIndex;
   final double spacing = 8;
 
   @override
   void initState() {
+    currentIndex = widget.initSelectionIndex;
     createButtons(widget.initSelectionIndex);
 
     super.initState();
@@ -39,10 +41,13 @@ class FilterTabBarState extends State<FilterTabBar> {
   }
 
   void selectionCallback(int selectionIndex) {
-    setState(() {
-      createButtons(selectionIndex);
-      widget.outputSelectionCallback(selectionIndex);
-    });
+    if (selectionIndex != currentIndex) {
+      setState(() {
+        createButtons(selectionIndex);
+        widget.outputSelectionCallback(selectionIndex);
+        currentIndex = selectionIndex;
+      });
+    }
   }
 
   void createButtons(int tapIndex) {

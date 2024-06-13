@@ -50,11 +50,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         styles: styles,
         title: l10n?.favorites_title ?? '',
       ),
-      body: _commonBody(),
+      body: _body(),
     );
   }
 
-  Widget _commonBody() {
+  Widget _body() {
     final titles =
         FavoriteModelType.values.map((e) => e.title(context)).toList();
 
@@ -104,7 +104,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   void handleTabButtonClick(int index) {
-    widget.viewModel.handleTabButtonClick(index);
+    widget.viewModel.selectedFilter = FavoriteModelType.values[index];
+    widget.viewModel.resetData();
     setState(() { });
   }
 

@@ -1,3 +1,4 @@
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 
@@ -22,6 +23,7 @@ class ContentfulItem {
 class FavoritesListModel {
   Pagination pagination;
   List<FavoritesListItem> items;
+  FavoriteModelType get type => FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type] ?? FavoriteModelType.unit;
 
   FavoritesListModel({
     required this.pagination,
