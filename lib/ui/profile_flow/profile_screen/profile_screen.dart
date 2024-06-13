@@ -56,6 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _edit(l10n, styles),
             ],
           ),
+          const SizedBox(height: 16),
           Text(
             data?.email ?? '',
             style: styles.bodyMedium
