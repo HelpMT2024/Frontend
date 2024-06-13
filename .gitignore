@@ -496,3 +496,4 @@ obj/
 !/gradle/wrapper/gradle-wrapper.jar
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,visualstudiocode,dart,androidstudio,intellij,android,kotlin,swift,xcode
+hmt.properties
