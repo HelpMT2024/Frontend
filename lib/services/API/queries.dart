@@ -352,6 +352,7 @@ faultCodesCollection {
       }
     }
     $warningCollection
+    $faultsCodesCollection
     image {
       $image
     }

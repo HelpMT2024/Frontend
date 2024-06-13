@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
+import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'package:rxdart/rxdart.dart';
@@ -41,6 +42,7 @@ class VerificationScreenViewModel with ViewModelErrorHandable {
             .then((value) {
           isLoading.add(false);
           SharedPreferencesWrapper.setToken(value);
+          restAPIService.addBasicAuth(value.token);
           Navigator.of(context).pushNamedAndRemoveUntil(
               VehicleSelectorRouteKeys.truckSelector, (route) => false);
         });

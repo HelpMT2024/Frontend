@@ -160,22 +160,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _edit(AppLocalizations? l10n, TextTheme styles) {
-    return ElevatedButton(
-      onPressed: () {
+    return InkWell(
+      onTap: () {
         widget.viewModel.editUsername(context);
       },
-      style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.all(0),
-        backgroundColor: ColorConstants.surfacePrimaryDark,
-        foregroundColor: ColorConstants.onSurfaceWhite,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.edit, size: 20),
+          Icon(
+            Icons.edit,
+            size: 20,
+            color: ColorConstants.onSurfaceWhite,
+          ),
           const SizedBox(width: 6),
           Text(
             l10n?.edit ?? '',

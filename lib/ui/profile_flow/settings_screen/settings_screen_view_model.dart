@@ -5,6 +5,7 @@ import 'package:help_my_truck/services/API/profile_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/services/router/profile_router.dart';
+import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
 class SettingsScreenViewModel with ViewModelErrorHandable {
@@ -85,7 +86,7 @@ class SettingsScreenViewModel with ViewModelErrorHandable {
   void exit(BuildContext context) {
     provider.logout().then((value) {
       SharedPreferencesWrapper.setToken(null);
-
+      restAPIService.addBasicAuth('');
       Navigator.of(context).pop();
       Navigator.of(context).pushNamedAndRemoveUntil(
         AuthRouteKeys.welcomeScreen,
@@ -96,6 +97,8 @@ class SettingsScreenViewModel with ViewModelErrorHandable {
 
   void remove(BuildContext context) {
     provider.deleteProfile().then((value) {
+      SharedPreferencesWrapper.setToken(null);
+      restAPIService.addBasicAuth('');
       Navigator.of(context).pop();
       Navigator.of(context).pushNamedAndRemoveUntil(
         AuthRouteKeys.welcomeScreen,

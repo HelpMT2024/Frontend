@@ -1,5 +1,6 @@
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/data/models/fault.dart';
 
 class ProblemCase {
   final String name;
@@ -8,6 +9,7 @@ class ProblemCase {
   final PdfFilesCollection pdfFilesCollection;
   final List<ChildWarningLight> warningLights;
   final IDPImage? image;
+  final List<ChildFault> faults;
 
   ProblemCase({
     required this.name,
@@ -16,6 +18,7 @@ class ProblemCase {
     required this.pdfFilesCollection,
     required this.warningLights,
     required this.image,
+    required this.faults,
   });
 
   factory ProblemCase.fromJson(Map<String, dynamic> json) {
@@ -33,6 +36,10 @@ class ProblemCase {
               .toList() ??
           [],
       image: json['image'] != null ? IDPImage.fromJson(json['image']) : null,
+      faults: json['faultCodesCollection']?['items']
+              .map<ChildFault>((e) => ChildFault.fromJson(e))
+              .toList() ??
+          [],
     );
   }
 }

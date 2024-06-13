@@ -60,6 +60,7 @@ dependencies:
   paginated_list: ^1.2.3
   firebase_crashlytics: ^3.5.7
   firebase_analytics: ^10.10.7
+  purchases_flutter: ^6.29.3
 
 dev_dependencies:
   flutter_test:

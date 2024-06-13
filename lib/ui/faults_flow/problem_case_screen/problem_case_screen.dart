@@ -6,13 +6,16 @@ import 'package:help_my_truck/data/models/problem_case.dart';
 import 'package:help_my_truck/ui/faults_flow/problem_case_screen/problem_case_view_model.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/fault_code_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/main_navigation_bar_bottom.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/pdf_button.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
+import 'package:help_my_truck/ui/widgets/vehicle_title.dart';
 import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart';
 import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProblemCaseScreen extends StatefulWidget {
   final ProblemCaseScreenViewModel viewModel;
@@ -67,13 +70,20 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
   }
 
   Widget _body() {
+    final styles = Theme.of(context).textTheme;
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (widget.viewModel.hasImage) _image(),
-        if (widget.viewModel.hasWarnings) ...{
+        if (widget.viewModel.hasFaults || widget.viewModel.hasWarnings) ...{
           const SizedBox(height: 4),
+          if (widget.viewModel.hasFaults)
+            _title(l10n?.favorites_item_type_fault_codes, styles),
           WarningLightsRow(warnings: widget.viewModel.warnings),
+          if (widget.viewModel.hasFaults) const SizedBox(height: 12),
+          _faultCodeSection(),
           const SizedBox(height: 16),
         },
         if (widget.viewModel.hasDescription) ...{
@@ -122,5 +132,24 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
 
   Widget _image() {
     return Image.network(widget.viewModel.problem.value.image!.url);
+  }
+
+  Widget _faultCodeSection() {
+    final codes = widget.viewModel.faults;
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ...codes.map(
+          (e) {
+            return FaultCodeButton(fault: e);
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _title(String? text, TextTheme styles) {
+    return VehicleTitle(text: text);
   }
 }
