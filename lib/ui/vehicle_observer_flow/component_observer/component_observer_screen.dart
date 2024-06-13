@@ -173,6 +173,12 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
       buttons: [
         ...buttons,
         if (buttons.isNotEmpty) const SizedBox(height: 8),
+        if (buttons.isEmpty &&
+            !widget.viewModel.hasFaults &&
+            !widget.viewModel.hasWarnings &&
+            !widget.viewModel.hasProblems &&
+            !widget.viewModel.hasDescription)
+          const SizedBox(height: 32),
         const CommentButton(disableFlex: true),
       ],
     );
