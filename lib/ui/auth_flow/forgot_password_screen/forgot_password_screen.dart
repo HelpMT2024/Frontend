@@ -1,5 +1,5 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/auth_field.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
@@ -7,18 +7,17 @@ import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'verification_screen_view_model.dart';
 
-class VerificationScreen extends StatefulWidget {
-  final VerificationScreenViewModel viewModel;
+class ForgotPasswordScreen extends StatefulWidget {
+  final ForgotPasswordScreenViewModel viewModel;
 
-  const VerificationScreen({super.key, required this.viewModel});
+  const ForgotPasswordScreen({super.key, required this.viewModel});
 
   @override
-  State<VerificationScreen> createState() => _VerificationScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _VerificationScreenState extends State<VerificationScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -64,29 +63,22 @@ class _VerificationScreenState extends State<VerificationScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  l10n?.enter_verification_code ?? '',
+                  l10n?.reset_password ?? '',
                   style: styles.headlineSmall?.copyWith(
                     color: ColorConstants.onSurfaceWhite,
                   ),
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  l10n?.we_sent_code ?? '',
+                  l10n?.recovery_code ?? '',
                   style: styles.bodyMedium?.copyWith(
                     color: ColorConstants.onSurfaceWhite,
                   ),
                 ),
-                Text(
-                  widget.viewModel.credentials.email,
-                  style: styles.bodyMedium?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
+                const SizedBox(height: 24),
                 _textField(l10n),
                 const SizedBox(height: 24),
                 _submitButton(l10n),
-                const SizedBox(height: 24),
-                _resendCode(l10n, styles),
               ],
             ),
           ),
@@ -100,7 +92,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
       autovalidate: AutovalidateMode.onUserInteraction,
       onSaved: widget.viewModel.saveCode,
       validator: widget.viewModel.validateCode,
-      placeholder: l10n?.enter_code ?? '',
+      placeholder: l10n?.email ?? '',
+      title: l10n?.email ?? '',
     );
   }
 
@@ -117,35 +110,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
           widget.viewModel.submit(context);
         }
       },
-    );
-  }
-
-  Widget _resendCode(AppLocalizations? l10n, TextTheme styles) {
-    return Container(
-      height: 32,
-      alignment: Alignment.center,
-      child: Text.rich(
-        TextSpan(
-          children: [
-            TextSpan(
-              text: l10n?.didnt_receive_code ?? '',
-              style: styles.bodyMedium?.copyWith(
-                color: ColorConstants.onSurfaceWhite,
-              ),
-            ),
-            const TextSpan(text: ' '),
-            TextSpan(
-                text: l10n?.resend ?? '',
-                style: styles.bodyMedium?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                    fontWeight: FontWeight.bold),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    widget.viewModel.resendCode(context);
-                  }),
-          ],
-        ),
-      ),
     );
   }
 }

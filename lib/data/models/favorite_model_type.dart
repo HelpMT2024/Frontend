@@ -19,7 +19,7 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
     "component": FavoriteModelType.component,
     "warning_lights": FavoriteModelType.component,
     "part": FavoriteModelType.part,
-    "sub_parts": FavoriteModelType.subPart,
+    "sub_part": FavoriteModelType.subPart,
     "fault_code": FavoriteModelType.faultCode,
     "problem_case": FavoriteModelType.problemCase,
   };
