@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
+import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen_view_model.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/terms_of_service_screen.dart';
 import 'package:native_page_route/native_page_route.dart';
@@ -25,6 +27,7 @@ abstract class AuthRouteKeys {
   static const String createPassword = 'createPassword';
   static const String termsOfService = 'termsOfService';
   static const String privacyPolicy = 'privacyPolicy';
+  static const String forgotPassword = 'forgotPassword';
 }
 
 Route<dynamic>? AuthRouter(
@@ -101,6 +104,17 @@ Route<dynamic>? AuthRouter(
         settings: setting,
         builder: (context) {
           return const PrivacyPolicyScreen();
+        },
+      );
+
+    case AuthRouteKeys.forgotPassword:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final viewModel = ForgotPasswordScreenViewModel(provider: provider);
+          return ForgotPasswordScreen(
+            viewModel: viewModel,
+          );
         },
       );
   }

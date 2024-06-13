@@ -143,4 +143,16 @@ class AuthProvider {
 
     return service.execute(request, (data) => data['data']['acceptId']);
   }
+
+  Future<void> resetPassword({required String email}) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.post,
+      path: '/api/user/reset-password',
+      data: NetworkRequestBody.formData({
+        'email': email,
+      }),
+    );
+
+    return service.execute(request, (data) {});
+  }
 }

@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
               fontWeight: FontWeight.bold),
           recognizer: TapGestureRecognizer()
             ..onTap = () {
-              Navigator.of(context).pushNamed(AuthRouteKeys.resetPassword);
+              Navigator.of(context).pushNamed(AuthRouteKeys.forgotPassword);
             }),
     );
   }
