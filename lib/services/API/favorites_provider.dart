@@ -23,7 +23,7 @@ class ContentfulItem {
 class FavoritesListModel {
   Pagination pagination;
   List<FavoritesListItem> items;
-  FavoriteModelType get type => FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type] ?? FavoriteModelType.unit;
+  FavoriteModelType? get type => FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type];
 
   FavoritesListModel({
     required this.pagination,
