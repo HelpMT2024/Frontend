@@ -3,15 +3,19 @@ import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'firebase_options.dart';
 
 import 'services/router/auth_router.dart';
@@ -46,6 +50,8 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  await _configurePaymentSDK();
+
   FlutterError.onError = (errorDetails) {
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
@@ -69,6 +75,21 @@ void main() async {
   ]).then((_) {
     runApp(const MyApp());
   });
+}
+
+Future<void> _configurePaymentSDK() async {
+  await Purchases.setLogLevel(kDebugMode ? LogLevel.debug : LogLevel.error);
+
+  PurchasesConfiguration configuration;
+
+  configuration = PurchasesConfiguration(AppConsts.revenueCatApiKey)
+    ..appUserID = null
+    ..observerMode = false;
+
+  await Purchases.configure(configuration);
+
+  // For initializing singleton instance of PurchaseService
+  PurchaseService.instance;
 }
 
 class MyApp extends StatelessWidget {

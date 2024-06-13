@@ -1,0 +1,141 @@
+{
+  "identifier" : "5B7B9605",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "current" : {
+          "index" : 2,
+          "type" : "generic"
+        },
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "current" : null,
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "12DBD2D4",
+      "localizations" : [
+
+      ],
+      "name" : "Main",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "134.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "E79D36B1",
+          "introductoryOffer" : {
+            "internalID" : "95AFC74C",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Diagnostic information annual subscription. ",
+              "displayName" : "Annual Subscription",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "7 days trial free after 134,99$/year",
+          "subscriptionGroupID" : "12DBD2D4",
+          "type" : "RecurringSubscription"
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "13.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "B4C7A04D",
+          "introductoryOffer" : {
+            "internalID" : "2F446B51",
+            "paymentMode" : "free",
+            "subscriptionPeriod" : "P1W"
+          },
+          "localizations" : [
+            {
+              "description" : "Diagnostic information monthly subscription.",
+              "displayName" : "Monthly Subscription",
+              "locale" : "en_US"
+            }
+          ],
+          "productID" : "weekly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "7 days trial free after 13,99$/month",
+          "subscriptionGroupID" : "12DBD2D4",
+          "type" : "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "subscriptionOffersKeyPair" : {
+    "id" : "46B79516",
+    "privateKey" : "MIGTAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBHkwdwIBAQQgojBbrD/ECTqCHRgFbBn+sFl3Npw+Dx5bumLxOVjiTBugCgYIKoZIzj0DAQehRANCAAT8UGC41u2nI29I4qgEFTv7hmZg4/KWUaFOSOWBjaQIqCXxoLu7ugxNEycpvJhFBL+/JadrxTAkG2n+EiPEh/k3"
+  },
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

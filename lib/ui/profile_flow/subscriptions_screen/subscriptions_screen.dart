@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/ui/profile_flow/subscriptions_screen/subscriptions_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
@@ -21,17 +22,31 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-        appBar: MainNavigationBar(
-          title: l10n?.subscription,
-          context: context,
-          styles: styles,
-          bgColor: ColorConstants.surfacePrimaryDark,
-        ),
-        backgroundColor: ColorConstants.surfacePrimaryDark,
-        body: _body(styles, l10n));
+      appBar: MainNavigationBar(
+        title: l10n?.subscription,
+        context: context,
+        styles: styles,
+        bgColor: ColorConstants.surfacePrimaryDark,
+      ),
+      backgroundColor: ColorConstants.surfacePrimaryDark,
+      body: StreamBuilder<SubscriptionInfo>(
+        stream: widget.viewModel.info,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return _body(styles, l10n, snapshot.data!);
+          } else {
+            return Loadable(forceLoad: true, child: Container());
+          }
+        },
+      ),
+    );
   }
 
-  Widget _body(TextTheme styles, AppLocalizations? l10n) {
+  Widget _body(
+    TextTheme styles,
+    AppLocalizations? l10n,
+    SubscriptionInfo data,
+  ) {
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
@@ -39,29 +54,41 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           mainAxisAlignment: MainAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: _content(styles, l10n),
+          children: _content(styles, l10n, data),
         ),
       ),
     );
   }
 
-  List<Widget> _content(TextTheme styles, AppLocalizations? l10n) {
+  List<Widget> _content(
+    TextTheme styles,
+    AppLocalizations? l10n,
+    SubscriptionInfo data,
+  ) {
     return [
       Text(
-        l10n?.inactive_subscription ?? '',
+        widget.viewModel.isSubscribed
+            ? l10n?.active_subscription ?? ''
+            : l10n?.inactive_subscription ?? '',
         style: styles.bodySmall?.copyWith(
           color: ColorConstants.onSurfaceWhite,
           fontWeight: FontWeight.w400,
         ),
       ),
       const SizedBox(height: 12),
-      _table(styles, l10n),
+      _table(styles, l10n, data),
       const SizedBox(height: 24),
-      _subscriptionButton(l10n),
+      if (!widget.viewModel.isSubscribed) _subscriptionButton(l10n),
     ];
   }
 
-  Widget _table(TextTheme styles, AppLocalizations? l10n) {
+  Widget _table(
+    TextTheme styles,
+    AppLocalizations? l10n,
+    SubscriptionInfo data,
+  ) {
+    final isFree = !widget.viewModel.isSubscribed;
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
@@ -73,19 +100,27 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          _item(styles, l10n?.current_period ?? '', null),
-          _item(styles, l10n?.subscribed_since ?? '', null),
-          _item(styles, l10n?.renews_on ?? '', null),
+          _item(
+            styles,
+            l10n?.current_period ?? '',
+            isFree ? null : data.currentPeriod,
+          ),
+          _item(
+            styles,
+            l10n?.subscribed_since ?? '',
+            isFree ? null : data.since,
+          ),
+          _item(
+            styles,
+            l10n?.renews_on ?? '',
+            isFree ? null : data.renewal,
+          ),
         ],
       ),
     );
   }
 
-  Widget _item(
-    TextTheme styles,
-    String title,
-    String? value,
-  ) {
+  Widget _item(TextTheme styles, String title, String? value) {
     return SizedBox(
       height: 48,
       child: Row(
@@ -119,7 +154,9 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       mainColor: ColorConstants.surfaceWhite,
       textColor: ColorConstants.onSurfaceHigh,
       height: 40,
-      onPressed: () => widget.viewModel.subscribe(),
+      onPressed: () => widget.viewModel.subscribe().then(
+            (value) => setState(() {}),
+          ),
     );
   }
 }

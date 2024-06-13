@@ -1,6 +1,7 @@
 import 'package:help_my_truck/data/models/token_model.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class UserID {
   final int id;
@@ -85,7 +86,12 @@ class AuthProvider {
       }),
     );
 
-    return service.execute(request, (json) => UserID.fromJson(json['data']));
+    return service
+        .execute(request, (json) => UserID.fromJson(json['data']))
+        .then((value) async {
+      await Purchases.logIn(email);
+      return value;
+    });
   }
 
   Future<Verification> sendVerificationCode(String acceptId, String code) {
@@ -108,8 +114,15 @@ class AuthProvider {
           'password': password,
         }));
 
-    return service.execute(
-        request, (json) => TokenModel.fromJson(json['data']));
+    return service
+        .execute(
+      request,
+      (json) => TokenModel.fromJson(json['data']),
+    )
+        .then((value) async {
+      await Purchases.logIn(email);
+      return value;
+    });
   }
 
   Future<bool> save({required TokenModel token}) {

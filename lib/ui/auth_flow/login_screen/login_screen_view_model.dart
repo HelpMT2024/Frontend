@@ -45,7 +45,9 @@ class LoginScreenViewModel with ViewModelErrorHandable {
           isLoading.add(false);
           provider.save(token: value);
           Navigator.of(context).pushNamedAndRemoveUntil(
-              VehicleSelectorRouteKeys.truckSelector, (route) => false);
+            VehicleSelectorRouteKeys.truckSelector,
+            (route) => false,
+          );
         },
       ).catchError((error) {
         isLoading.add(false);
