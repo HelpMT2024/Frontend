@@ -26,8 +26,6 @@ class FavoritesScreenViewModel {
   FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
-  bool isLoading = false;
-
   int _page = 1;
 
   FavoritesScreenViewModel({
@@ -72,7 +70,7 @@ class FavoritesScreenViewModel {
         fetchedItems.addAll(page.items);
         pagination = page.pagination;
         updateDataStreamController.add(fetchedItems);
-        handlePagination();
+        _handlePagination();
       }
     });
   }
@@ -84,7 +82,7 @@ class FavoritesScreenViewModel {
     getPage();
   }
 
-  void handlePagination() {
+  void _handlePagination() {
     _page += 1;
     isLastPage = pagination?.pages == pagination?.page;
   }
