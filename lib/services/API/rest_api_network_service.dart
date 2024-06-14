@@ -200,8 +200,8 @@ class RestAPINetworkService {
     final dio = Dio()
       ..options.baseUrl = baseUrl
       ..options.headers = _headers
-      ..options.connectTimeout = const Duration(seconds: 10)
-      ..options.receiveTimeout = const Duration(seconds: 10);
+      ..options.connectTimeout = const Duration(seconds: 100)
+      ..options.receiveTimeout = const Duration(seconds: 100);
 
     return dio;
   }
@@ -395,7 +395,7 @@ class RestAPINetworkService {
                 final context = NavigationService.navigatorKey.currentContext;
 
                 state?.pushNamedAndRemoveUntil(
-                  AuthRouteKeys.authScreen,
+                  AuthRouteKeys.loginScreen,
                   (route) => false,
                 );
 
