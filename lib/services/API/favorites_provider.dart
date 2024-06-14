@@ -2,6 +2,30 @@ import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 
+class UserInfoModel {
+  final int id;
+  final String userName;
+  final String email;
+  final String language;
+  final String createdAt;
+
+  UserInfoModel({
+    required this.id,
+    required this.userName,
+    required this.email,
+    required this.language,
+    required this.createdAt,
+  });
+
+  factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
+        id: json["id"],
+        email: json["email"],
+        userName: json["username"],
+        language: json["language"],
+        createdAt: json["createdAt"],
+      );
+}
+
 class ContentfulItem {
   final int id;
   final String integrationId;
@@ -182,28 +206,4 @@ class FavoritesProvider {
       (json) => UserInfoModel.fromJson(json['data']),
     );
   }
-}
-
-class UserInfoModel {
-  final int id;
-  final String userName;
-  final String email;
-  final String language;
-  final String createdAt;
-
-  UserInfoModel({
-    required this.id,
-    required this.userName,
-    required this.email,
-    required this.language,
-    required this.createdAt,
-  });
-
-  factory UserInfoModel.fromJson(Map<String, dynamic> json) => UserInfoModel(
-        id: json["id"],
-        email: json["email"],
-        userName: json["username"],
-        language: json["language"],
-        createdAt: json["createdAt"],
-      );
 }

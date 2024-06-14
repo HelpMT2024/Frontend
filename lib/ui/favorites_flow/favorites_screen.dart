@@ -32,7 +32,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   void initState() {
-    widget.viewModel.selectedFilter = FavoriteModelType.unit;
+    widget.viewModel.currentFilter = FavoriteModelType.unit;
     widget.viewModel.resetData();
 
     super.initState();
@@ -109,7 +109,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   void handleTabButtonClick(int index) {
-    widget.viewModel.selectedFilter = FavoriteModelType.values[index];
+    widget.viewModel.currentFilter = FavoriteModelType.values[index];
     widget.viewModel.resetData();
     setState(() { });
   }
