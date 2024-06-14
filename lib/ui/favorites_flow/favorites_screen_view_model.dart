@@ -24,61 +24,37 @@ class FavoritesScreenViewModel {
   late final isLoading = BehaviorSubject<bool>.seeded(false);
   var updateDataStreamController = StreamController<List<FavoritesListItem>>();
   List<FavoritesListItem> fetchedItems = [];
-  FavoriteModelType selectedFilter = FavoriteModelType.unit;
+  FavoriteModelType currentFilter = FavoriteModelType.unit;
   Pagination? pagination;
+  UserInfoModel? user;
   bool isLastPage = false;
+
   int _page = 1;
-  Future? value;
 
   FavoritesScreenViewModel({
     required this.provider,
     required this.vehicleProvider,
   });
 
-  void getPage() {
+  void getPage() async {
     isLoading.add(true);
-    if (value != null) {
-      value?.ignore();
-    }
-      _request();
-  }
-
-  void _request() {
-    var typeFilters = selectedFilter.filterKeys();
-
-    value = provider
-        .user()
-        .then(
-          (user) => provider.favoritesList(
-            user.id,
-            typeFilters,
-            _page,
-            _cellsPerPage,
-          ),
-        )
-        .then((page) {
-      return Future.wait([
-        Future.value(page),
-        ...page.items.map((item) {
-          final name = itemTitle(item.integrationId).then((value) {
-            item.name = value;
-          });
-          return name;
-        }),
-      ]);
-    }).then((value) {
-      final page = value[0] as FavoritesListModel;
-      if (page.type != null && page.type == selectedFilter) {
-        fetchedItems.addAll(page.items);
-        pagination = page.pagination;
-        updateDataStreamController.add(fetchedItems);
-        _handlePagination();
-        isLoading.add(false);
-      } else {
-        updateDataStreamController.add([]);
-        isLoading.add(false);
-      }
+    var typeFilters = currentFilter.filterKeys();
+    user = await provider.user();
+    await provider
+        .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
+        .then((page) async {
+      await Future.wait(
+        page.items.map((item) async {
+          item.name = await itemTitle(item.integrationId);
+          return item;
+        }).toList(),
+      );
+      fetchedItems.addAll(page.items);
+      pagination = page.pagination;
     });
+    _handlePagination();
+    updateDataStreamController.add(fetchedItems);
+    isLoading.add(false);
   }
 
   void resetData() {
@@ -94,7 +70,7 @@ class FavoritesScreenViewModel {
   }
 
   Future<String> itemTitle(String id) async {
-    switch (selectedFilter) {
+    switch (currentFilter) {
       case FavoriteModelType.unit:
         return vehicleProvider.unit(id).then((unit) => unit.name);
       case FavoriteModelType.system:
@@ -122,7 +98,7 @@ class FavoritesScreenViewModel {
   }
 
   void handleClick(FavoritesListItem model, BuildContext context) {
-    switch (selectedFilter) {
+    switch (currentFilter) {
       case FavoriteModelType.unit:
         final child = ChildrenUnit(
           id: model.integrationId,
