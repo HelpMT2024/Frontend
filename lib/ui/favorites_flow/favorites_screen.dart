@@ -50,7 +50,22 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         styles: styles,
         title: l10n?.favorites_title ?? '',
       ),
-      body: _body(),
+      body: StreamBuilder(
+        stream: widget.viewModel.isLoading,
+        builder: (context, snapshot) {
+          return Stack(
+            children: [     
+              _body(),
+              if (snapshot.data ?? false)
+                Loadable(
+                  forceLoad: true,
+                  child: Container(),
+                )
+            ],
+          );
+        },
+      ),
+      
     );
   }
 
@@ -78,17 +93,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           StreamBuilder<List<FavoritesListItem>>(
               stream: widget.viewModel.updateDataStreamController.stream,
               builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Expanded(
-                    child: Loadable(
-                      forceLoad: true,
-                      child: SizedBox(
-                        height: 40,
-                        width: 40,
-                      ),
-                    ),
-                  );
-                } else if (snapshot.data?.length == 0) {
+                if (snapshot.data?.length == 0 && widget.viewModel.isLoading.value == false) {
                   return _placeholder();
                 } else if (snapshot.hasData) {
                   return _successBody();
