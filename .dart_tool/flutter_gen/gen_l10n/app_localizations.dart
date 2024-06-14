@@ -684,6 +684,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allows you to use your subscription on multiple devices at once'**
   String get multiple_subscription;
+
+  /// No description provided for @annual.
+  ///
+  /// In en, this message translates to:
+  /// **'Annual'**
+  String get annual;
+
+  /// No description provided for @monthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get monthly;
+
+  /// No description provided for @free_trial.
+  ///
+  /// In en, this message translates to:
+  /// **'Free Trial'**
+  String get free_trial;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -5,6 +5,7 @@ import 'package:help_my_truck/ui/profile_flow/subscriptions_screen/subscriptions
 import 'package:help_my_truck/ui/widgets/custom_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
+import 'package:help_my_truck/ui/widgets/round_checkbox.dart';
 
 class SubscriptionsScreen extends StatefulWidget {
   final SubscriptionsScreenViewModel viewModel;
@@ -33,7 +34,21 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
         stream: widget.viewModel.info,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return _body(styles, l10n, snapshot.data!);
+            return StreamBuilder<bool>(
+              stream: widget.viewModel.isLoading,
+              builder: (context, innerSnapshot) {
+                return Stack(
+                  children: [
+                    _body(styles, l10n, snapshot.data!),
+                    if (innerSnapshot.data ?? false)
+                      Loadable(
+                        forceLoad: true,
+                        child: Container(),
+                      )
+                  ],
+                );
+              },
+            );
           } else {
             return Loadable(forceLoad: true, child: Container());
           }
@@ -78,6 +93,8 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
       const SizedBox(height: 12),
       _table(styles, l10n, data),
       const SizedBox(height: 24),
+      _restoreBlock(l10n, styles),
+      const SizedBox(height: 24),
       if (!widget.viewModel.isSubscribed) _subscriptionButton(l10n),
     ];
   }
@@ -88,6 +105,18 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
     SubscriptionInfo data,
   ) {
     final isFree = !widget.viewModel.isSubscribed;
+    final String? currentPeriod;
+
+    switch (data.currentPeriod) {
+      case SubscriptionPeriod.annual:
+        currentPeriod = l10n?.annual;
+      case SubscriptionPeriod.monthly:
+        currentPeriod = l10n?.monthly;
+      case SubscriptionPeriod.freeTrial:
+        currentPeriod = l10n?.free_trial;
+      default:
+        currentPeriod = null;
+    }
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -103,7 +132,7 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
           _item(
             styles,
             l10n?.current_period ?? '',
-            isFree ? null : data.currentPeriod,
+            isFree ? null : currentPeriod,
           ),
           _item(
             styles,
@@ -143,6 +172,51 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _restoreBlock(AppLocalizations? l10n, TextTheme styles) {
+    return GestureDetector(
+      onTap: () {
+        widget.viewModel.restore();
+      },
+      child: Container(
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: ColorConstants.surfaceSecondary,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RoundCheckbox(
+              isChecked: true,
+              onTap: (isChecked) {},
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    l10n?.restore_purchases ?? '',
+                    style: styles.bodyLarge
+                        ?.copyWith(color: ColorConstants.onSurfaceWhite),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    l10n?.multiple_subscription ?? '',
+                    softWrap: true,
+                    style: styles.bodySmall
+                        ?.copyWith(color: ColorConstants.onSurfaceWhite),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -6,10 +6,16 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
+enum SubscriptionPeriod {
+  annual,
+  monthly,
+  freeTrial,
+}
+
 class SubscriptionInfo {
-  final String currentPeriod;
-  final String since;
-  final String renewal;
+  final SubscriptionPeriod? currentPeriod;
+  final String? since;
+  final String? renewal;
 
   SubscriptionInfo({
     required this.currentPeriod,
@@ -28,14 +34,21 @@ class SubscriptionsScreenViewModel {
 
   bool get isSubscribed => PurchaseService.instance.isPro;
 
+  late final isLoading = BehaviorSubject<bool>.seeded(false);
+
   SubscriptionsScreenViewModel({required this.provider});
 
   Future<void> subscribe() async {
     await RevenueCatUI.presentPaywallIfNeeded(AppConsts.revenueEntitlement);
   }
 
-  Future<void> restore() async {
-    await Purchases.restorePurchases();
+  void restore() {
+    isLoading.add(true);
+    Purchases.restorePurchases().then(
+      (value) {
+        isLoading.add(false);
+      },
+    );
   }
 
   Future<SubscriptionInfo> _getSubscriptionInfo() async {
@@ -45,14 +58,21 @@ class SubscriptionsScreenViewModel {
     );
     final active = customerInfo.entitlements.active.values.firstOrNull;
 
-    final end = DateTime.parse(active?.expirationDate ?? '');
+    if (active == null) {
+      return SubscriptionInfo(currentPeriod: null, since: null, renewal: null);
+    }
+
+    final end = DateTime.parse(active.expirationDate ?? '');
     final format = DateFormat('MMM dd, yyyy');
     final since = format.format(purchaseDate);
 
-    final period = active?.productIdentifier == 'annual' ? 'Annual' : 'Monthly';
+    final period = active.productIdentifier == 'annual'
+        ? SubscriptionPeriod.annual
+        : SubscriptionPeriod.monthly;
 
-    final type =
-        active?.periodType == PeriodType.normal ? period : 'Free Trial';
+    final type = active.periodType == PeriodType.normal
+        ? period
+        : SubscriptionPeriod.freeTrial;
 
     final renewal = format.format(end);
 

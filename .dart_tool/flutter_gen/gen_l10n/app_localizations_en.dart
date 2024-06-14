@@ -300,4 +300,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get multiple_subscription => 'Allows you to use your subscription on multiple devices at once';
+
+  @override
+  String get annual => 'Annual';
+
+  @override
+  String get monthly => 'Monthly';
+
+  @override
+  String get free_trial => 'Free Trial';
 }
