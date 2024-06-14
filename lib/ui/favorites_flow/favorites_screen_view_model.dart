@@ -15,26 +15,28 @@ import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
+import 'package:rxdart/rxdart.dart';
 
 class FavoritesScreenViewModel {
   final FavoritesProvider provider;
   final VehicleProvider vehicleProvider;
   final int _cellsPerPage = 10;
-
+  late final isLoading = BehaviorSubject<bool>.seeded(false);
   var updateDataStreamController = StreamController<List<FavoritesListItem>>();
   List<FavoritesListItem> fetchedItems = [];
   FavoriteModelType selectedFilter = FavoriteModelType.unit;
   Pagination? pagination;
   bool isLastPage = false;
   int _page = 1;
+  Future? value;
 
   FavoritesScreenViewModel({
     required this.provider,
     required this.vehicleProvider,
   });
-  Future? value;
 
   void getPage() {
+    isLoading.add(true);
     if (value != null) {
       value?.ignore();
     }
@@ -71,8 +73,10 @@ class FavoritesScreenViewModel {
         pagination = page.pagination;
         updateDataStreamController.add(fetchedItems);
         _handlePagination();
+        isLoading.add(false);
       } else {
         updateDataStreamController.add([]);
+        isLoading.add(false);
       }
     });
   }
