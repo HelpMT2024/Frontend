@@ -27,7 +27,7 @@ class FavoritesScreenViewModel {
   FavoriteModelType currentFilter = FavoriteModelType.unit;
   Pagination? pagination;
   UserInfoModel? user;
-  bool isLastPage = false;
+  bool isLastPage = true;
 
   int _page = 1;
 
@@ -37,6 +37,7 @@ class FavoritesScreenViewModel {
   });
 
   void getPage() async {
+    if (!isLoading.value) {
     isLoading.add(true);
     var typeFilters = currentFilter.filterKeys();
     user = await provider.user();
@@ -55,6 +56,7 @@ class FavoritesScreenViewModel {
     _handlePagination();
     updateDataStreamController.add(fetchedItems);
     isLoading.add(false);
+    }
   }
 
   void resetData() {
