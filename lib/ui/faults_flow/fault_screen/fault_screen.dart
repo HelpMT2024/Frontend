@@ -48,13 +48,15 @@ class _FaultScreenState extends State<FaultScreen> {
               appBar: MainNavigationBar(
                 context: context,
                 styles: styles,
-                action: [
-                  VehicleNavBarActions(
-                    integrationId: widget.viewModel.config.id,
-                    type: widget.itemType.filterKey(),
-                    provider: widget.viewModel.favoritesProvider,
-                  )
-                ],
+                action: (snapshot.data?.showAsPdf ?? true)
+                    ? []
+                    : [
+                        VehicleNavBarActions(
+                          integrationId: widget.viewModel.config.id,
+                          type: widget.itemType.filterKey(),
+                          provider: widget.viewModel.favoritesProvider,
+                        )
+                      ],
                 bottom: _navBarTitle(styles, backgroundColor),
                 bgColor: backgroundColor,
               ),
