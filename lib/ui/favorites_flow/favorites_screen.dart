@@ -111,7 +111,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   void handleTabButtonClick(int index) {
     widget.viewModel.currentFilter = FavoriteModelType.values[index];
     widget.viewModel.resetData();
-    setState(() { });
   }
 
   Widget _successBody() {
