@@ -6,16 +6,14 @@ import 'package:help_my_truck/services/API/favorites_provider.dart';
 
 class BookmarkButton extends StatefulWidget {
   FavoritesProvider? provider;
-  String? integrationId;
-  String? type;
+  ContentfulItem? item;
   final double size;
   final bool isFixedState;
   void Function(String)? voidCallback;
 
   BookmarkButton(
     this.size,
-    this.integrationId,
-    this.type,
+    this.item,
     this.provider,
     this.voidCallback,
     this.isFixedState, {
@@ -28,30 +26,18 @@ class BookmarkButton extends StatefulWidget {
 
 class _BookmarkButtonState extends State<BookmarkButton> {
   var _isBookmarked = false;
-  ContentfulItem? item;
 
   @override
   void initState() {
-    checkInFavorites();
+    print('<!> ITEM ${widget.item}');
+    updateIconState(widget.item?.isFavorite ?? false);
 
     super.initState();
   }
 
-  void checkInFavorites() async {
-    await loadItem();
-
-    updateIconState();
-  }
-
-  Future<void> loadItem() async {
-    item = await widget.provider
-        ?.itemWith(widget.integrationId ?? '')
-        .then((value) => value);
-  }
-
-  void updateIconState() {
+  void updateIconState(bool isFavorite) {
     setState(() {
-      _isBookmarked = item?.isFavorite ?? false;
+      _isBookmarked = isFavorite;
     });
   }
 
@@ -76,27 +62,9 @@ class _BookmarkButtonState extends State<BookmarkButton> {
           color: ColorConstants.onSurfaceWhite,
         ),
         onPressed: () {
-          if (item != null) {
-            widget.provider?.change(item?.id ?? 0);
+          if (widget.item != null) {
+            widget.provider?.change(widget.item?.id ?? 0);
             changeIconState();
-          } else {
-            final integrationId = widget.integrationId;
-            final type = widget.type;
-            if (integrationId != null && type != null) {
-              widget.provider
-                  ?.createContentfulItem(integrationId, type)
-                  .then((value) {
-                loadItem().then((value) {
-                  widget.provider?.change(item?.id ?? 0);
-                  changeIconState();
-                });
-              });
-            }
-          }
-
-          final callback = widget.voidCallback;
-          if (callback != null) {
-            callback(widget.integrationId ?? '');
           }
         },
       ),

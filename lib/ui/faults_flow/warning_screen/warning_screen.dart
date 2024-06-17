@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/warning.dart';
 import 'package:help_my_truck/ui/faults_flow/warning_screen/warning_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
@@ -16,7 +15,6 @@ import '../../widgets/nav_bar/nav_bar_page.dart';
 
 class WarningScreen extends StatefulWidget {
   final WarningScreenViewModel viewModel;
-  final FavoriteModelSubType itemType = FavoriteModelSubType.warningLights;
 
   const WarningScreen({super.key, required this.viewModel});
 
@@ -37,8 +35,7 @@ class _WarningScreenState extends State<WarningScreen> {
         title: l10n?.warning_page_title,
         action: [
           VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
+            item: widget.viewModel.favoritesProvider.cachedItem,
             provider: widget.viewModel.favoritesProvider,
           ),
         ],

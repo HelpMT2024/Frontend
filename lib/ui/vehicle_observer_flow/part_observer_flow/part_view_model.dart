@@ -3,6 +3,7 @@ import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -15,6 +16,7 @@ import '../vehicle_navigation_helper.dart';
 class PartViewModel {
   final VehicleProvider provider;
   final FavoritesProvider favoritesProvider;
+  final FavoriteModelType itemType = FavoriteModelType.part;
   final ChildrenPart config;
 
   late final part = BehaviorSubject<Part>()
@@ -48,7 +50,9 @@ class PartViewModel {
     required this.provider,
     required this.favoritesProvider,
     required this.config,
-  });
+  }) {
+    favoritesProvider.processItem(config.id, itemType.filterKey());
+  }
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);

@@ -1,4 +1,5 @@
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
@@ -6,6 +7,7 @@ import 'package:rxdart/rxdart.dart';
 class FaultScreenViewModel {
   final VehicleProvider provider;
   final FavoritesProvider favoritesProvider;
+  final FavoriteModelType itemType = FavoriteModelType.faultCode;
   final ChildFault config;
 
   late final fault = BehaviorSubject<Fault>()
@@ -19,6 +21,8 @@ class FaultScreenViewModel {
   FaultScreenViewModel({
     required this.provider,
     required this.config,
-    required this.favoritesProvider, 
-  });
+    required this.favoritesProvider,
+  }) {
+    favoritesProvider.processItem(config.id, itemType.filterKey());
+  }
 }

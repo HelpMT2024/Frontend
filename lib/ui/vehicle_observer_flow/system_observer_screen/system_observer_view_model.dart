@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
@@ -13,6 +14,7 @@ import 'package:rxdart/rxdart.dart';
 class SystemObserverViewModel {
   final VehicleProvider provider;
   final FavoritesProvider favoritesProvider;
+  final FavoriteModelType itemType = FavoriteModelType.system;
   final ChildrenSystem config;
 
   late final system = BehaviorSubject<System>()
@@ -36,7 +38,9 @@ class SystemObserverViewModel {
     required this.config,
     required this.provider,
     required this.favoritesProvider,
-  });
+  }) {
+    favoritesProvider.processItem(config.id, itemType.filterKey());
+  }
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);

@@ -163,9 +163,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 const SizedBox(width: 8),
                 BookmarkButton(
                   20,
-                  widget.viewModel.fetchedItems[index].integrationId,
                   null,
-                  widget.viewModel.provider,
+                  widget.viewModel.favoritesProvider,
                   null,
                   false,
                 ),

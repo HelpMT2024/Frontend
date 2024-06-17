@@ -7,16 +7,14 @@ import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:share_plus/share_plus.dart';
 
 class VehicleNavBarActions extends StatelessWidget {
-  final String? integrationId;
-  final String? type;
+  final ContentfulItem? item;
   final bool hideBookmark;
   final FavoritesProvider? provider;
 
   const VehicleNavBarActions({
     super.key,
+    this.item,
     this.hideBookmark = false,
-    this.integrationId,
-    this.type,
     this.provider,
   });
 
@@ -59,8 +57,7 @@ class VehicleNavBarActions extends StatelessWidget {
               width: 32,
               child: BookmarkButton(
                 28,
-                integrationId,
-                type,
+                item,
                 provider,
                 null,
                 false,

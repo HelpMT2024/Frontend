@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/custom_floating_button.dart';
@@ -25,7 +24,6 @@ import '../../widgets/pdf_button.dart';
 
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
-  final FavoriteModelType itemType = FavoriteModelType.component;
 
   const ComponentObserverScreen({super.key, required this.viewModel});
 
@@ -46,8 +44,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         title: widget.viewModel.config.name,
         action: [
           VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
+            item: widget.viewModel.favoritesProvider.cachedItem,
             provider: widget.viewModel.favoritesProvider,
           )
         ],

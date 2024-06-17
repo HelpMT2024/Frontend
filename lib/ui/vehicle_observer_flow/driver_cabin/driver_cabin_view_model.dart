@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/favorites_provider.dart';
@@ -13,6 +14,7 @@ import 'package:collection/collection.dart';
 class DriverCabinViewModel {
   final VehicleProvider provider;
   final FavoritesProvider favoritesProvider;
+  final FavoriteModelSubType itemType = FavoriteModelSubType.driverDisplay;
   final ChildrenSystem config;
 
   ChildrenComponent? get warningLightComponent =>
@@ -34,7 +36,9 @@ class DriverCabinViewModel {
     required this.config,
     required this.provider,
     required this.favoritesProvider,
-  });
+  }) {
+    favoritesProvider.processItem(config.id, itemType.filterKey());
+  }
 
   void onModelSelected(String id, BuildContext context) {
     final model = system.value.children.firstWhere(

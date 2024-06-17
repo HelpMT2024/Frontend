@@ -78,7 +78,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     NavBarPage.search: const SizedBox(),
     NavBarPage.favorites: FavoritesScreen(
       viewModel: FavoritesScreenViewModel(
-        provider: FavoritesProvider(
+        favoritesProvider: FavoritesProvider(
           widget.config.restAPINetworkService,
           widget.config.graphQLNetworkService,
         ),

@@ -31,10 +31,26 @@ class UnitObserverScreen extends StatefulWidget {
 }
 
 class _UnitObserverScreenState extends State<UnitObserverScreen> {
+  
+  @override
+  void initState() {
+    print('<!> INIT STATE');
+    load();
+    super.initState();
+  }
+
+  load() async {
+    await widget.viewModel.favoritesProvider.processItem(widget.viewModel.config.id, widget.itemType.filterKey());
+    setState(() {
+      
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
-
+    print('<!> BUILD');
+    print('<!> CACHED ${widget.viewModel.favoritesProvider.cachedItem}');
     return Scaffold(
       appBar: MainNavigationBar(
         context: context,
@@ -42,8 +58,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
         title: widget.viewModel.config.name,
         action: [
           VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
+            item: widget.viewModel.favoritesProvider.cachedItem,
             provider: widget.viewModel.favoritesProvider,
           ),
         ],

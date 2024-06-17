@@ -125,10 +125,37 @@ class FavoritesListItem {
 class FavoritesProvider {
   final RestAPINetworkService restAPINetworkService;
   final GraphQLNetworkService graphQLNetworkService;
+  ContentfulItem? cachedItem;
 
   FavoritesProvider(this.restAPINetworkService, this.graphQLNetworkService);
 
-  Future createContentfulItem(String integrationId, String type) {
+  Future<UserInfoModel> user() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/user',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => UserInfoModel.fromJson(json['data']),
+    );
+  }
+
+  Future<ContentfulItem> item(String integrationId) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/contentful/$integrationId/external',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => ContentfulItem.fromJson(json['data']),
+    );
+  }
+
+  Future add(String integrationId, String type) {
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/contentful/add',
@@ -144,17 +171,13 @@ class FavoritesProvider {
     );
   }
 
-  Future<ContentfulItem> itemWith(String integrationId) {
-    final request = NetworkRequest(
-      type: NetworkRequestType.get,
-      path: '/api/contentful/$integrationId/external',
-      data: const NetworkRequestBody.empty(),
-    );
-
-    return restAPINetworkService.execute(
-      request,
-      (json) => ContentfulItem.fromJson(json['data']),
-    );
+  Future<void> processItem(String integrationId, String type) async {
+    cachedItem = await item(integrationId).then((item) => item);
+    if (cachedItem == null) {
+      await add(integrationId, type).then((value) => value);
+      cachedItem = await item(integrationId).then((item) => item);
+    }
+    print('<!> PROCESS DONE');
   }
 
   Future change(int id) {
@@ -191,19 +214,6 @@ class FavoritesProvider {
     return restAPINetworkService.execute(
       request,
       (json) => FavoritesListModel.fromJson(json['data']),
-    );
-  }
-
-  Future<UserInfoModel> user() {
-    final request = NetworkRequest(
-      type: NetworkRequestType.get,
-      path: '/api/user',
-      data: const NetworkRequestBody.empty(),
-    );
-
-    return restAPINetworkService.execute(
-      request,
-      (json) => UserInfoModel.fromJson(json['data']),
     );
   }
 }
