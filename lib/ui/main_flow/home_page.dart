@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 import 'package:help_my_truck/data/models/engine.dart';
 import 'package:help_my_truck/data/models/truck.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
@@ -78,7 +78,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     NavBarPage.search: const SizedBox(),
     NavBarPage.favorites: FavoritesScreen(
       viewModel: FavoritesScreenViewModel(
-        favoritesProvider: FavoritesProvider(
+        itemProvider: ItemProvider(
           widget.config.restAPINetworkService,
           widget.config.graphQLNetworkService,
         ),

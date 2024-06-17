@@ -2,6 +2,7 @@ import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -16,6 +17,7 @@ import 'package:help_my_truck/ui/widgets/web_view_screen.dart';
 
 class FaultScreen extends StatefulWidget {
   final FaultScreenViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.faultCode;
 
   const FaultScreen({super.key, required this.viewModel});
 
@@ -29,51 +31,59 @@ class _FaultScreenState extends State<FaultScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimaryDark;
 
-    return Stack(
-      children: [
-        Container(
-          color: backgroundColor,
-        ),
-        StreamBuilder<Fault>(
-          stream: widget.viewModel.fault,
-          builder: (context, snapshot) {
-            if (snapshot.data?.showAsPdf == true) {
-              return WebViewScreen(
-                pdfFile: snapshot.data!.pdfFilesCollection.items.first,
-              );
-            }
-            return Scaffold(
-              appBar: MainNavigationBar(
-                context: context,
-                styles: styles,
-                action: (snapshot.data?.showAsPdf ?? true)
-                    ? []
-                    : [
-                        VehicleNavBarActions(
-                          item: widget.viewModel.favoritesProvider.cachedItem,
-                          provider: widget.viewModel.favoritesProvider,
-                        )
-                      ],
-                bottom: _navBarTitle(styles, backgroundColor),
-                bgColor: backgroundColor,
-              ),
-              body: Stack(
-                children: [
-                  Container(color: ColorConstants.surfacePrimaryDark),
-                  if (snapshot.hasData) ...{
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-                      child: _body(snapshot.data!),
-                    ),
-                  } else ...{
-                    Loadable(forceLoad: true, child: Container()),
-                  },
-                ],
-              ),
-            );
-          },
-        ),
-      ],
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
+      ),
+      builder: (context, itemSnapshot) {
+        return Stack(
+          children: [
+            Container(
+              color: backgroundColor,
+            ),
+            StreamBuilder<Fault>(
+              stream: widget.viewModel.fault,
+              builder: (context, snapshot) {
+                if (snapshot.data?.showAsPdf == true) {
+                  return WebViewScreen(
+                    pdfFile: snapshot.data!.pdfFilesCollection.items.first,
+                  );
+                }
+                return Scaffold(
+                  appBar: MainNavigationBar(
+                    context: context,
+                    styles: styles,
+                    action: (snapshot.data?.showAsPdf ?? true)
+                        ? []
+                        : [
+                            VehicleNavBarActions(
+                              item: itemSnapshot.data,
+                              provider: widget.viewModel.itemProvider,
+                            ),
+                          ],
+                    bottom: _navBarTitle(styles, backgroundColor),
+                    bgColor: backgroundColor,
+                  ),
+                  body: Stack(
+                    children: [
+                      Container(color: ColorConstants.surfacePrimaryDark),
+                      if (snapshot.hasData) ...{
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                          child: _body(snapshot.data!),
+                        ),
+                      } else ...{
+                        Loadable(forceLoad: true, child: Container()),
+                      },
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

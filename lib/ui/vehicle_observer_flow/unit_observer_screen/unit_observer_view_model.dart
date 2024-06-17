@@ -4,14 +4,15 @@ import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
 class UnitObserverViewModel {
   final VehicleProvider provider;
-  final FavoritesProvider favoritesProvider;
+  final ItemProvider itemProvider;
+  final FavoriteModelType itemType = FavoriteModelType.unit;
   final ChildrenUnit config;
 
   late final unit = BehaviorSubject<Unit>()
@@ -34,7 +35,7 @@ class UnitObserverViewModel {
   UnitObserverViewModel({
     required this.config,
     required this.provider,
-    required this.favoritesProvider,
+    required this.itemProvider,
   });
 
   void onModelSelected(String id, BuildContext context) {

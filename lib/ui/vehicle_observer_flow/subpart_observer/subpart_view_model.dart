@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -14,9 +13,7 @@ import '../vehicle_navigation_helper.dart';
 
 class SubPartViewModel {
   final VehicleProvider provider;
-  final FavoritesProvider favoritesProvider;
-
-  final FavoriteModelType itemType = FavoriteModelType.subPart;
+  final ItemProvider itemProvider;
   final ChildSubpart config;
 
   late final part = BehaviorSubject<SubPart>()
@@ -49,10 +46,8 @@ class SubPartViewModel {
   SubPartViewModel({
     required this.provider,
     required this.config,
-    required this.favoritesProvider,
-  }) {
-    favoritesProvider.processItem(config.id, itemType.filterKey());
-  }
+    required this.itemProvider,
+  });
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);

@@ -35,12 +35,11 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
     return FutureBuilder(
-      future: widget.viewModel.favoritesProvider.processItem(
+      future: widget.viewModel.itemProvider.processItem(
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
       builder: (context, snapshot) {
-        print('<!> item = ${snapshot.data}');
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -49,7 +48,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
             action: [
               VehicleNavBarActions(
                 item: snapshot.data,
-                provider: widget.viewModel.favoritesProvider,
+                provider: widget.viewModel.itemProvider,
               ),
             ],
           ),

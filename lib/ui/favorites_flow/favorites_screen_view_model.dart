@@ -11,14 +11,14 @@ import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FavoritesScreenViewModel {
-  final FavoritesProvider favoritesProvider;
+  final ItemProvider itemProvider;
   final VehicleProvider vehicleProvider;
   final int _cellsPerPage = 10;
   late final isLoading = BehaviorSubject<bool>.seeded(false);
@@ -32,7 +32,7 @@ class FavoritesScreenViewModel {
   int _page = 1;
 
   FavoritesScreenViewModel({
-    required this.favoritesProvider,
+    required this.itemProvider,
     required this.vehicleProvider,
   });
 
@@ -40,8 +40,8 @@ class FavoritesScreenViewModel {
     if (!isLoading.value) {
     isLoading.add(true);
     var typeFilters = currentFilter.filterKeys();
-    user = await favoritesProvider.user();
-    await favoritesProvider
+    user = await itemProvider.user();
+    await itemProvider
         .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
         .then((page) async {
       await Future.wait(

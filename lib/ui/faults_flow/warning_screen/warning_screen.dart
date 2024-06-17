@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/warning.dart';
 import 'package:help_my_truck/ui/faults_flow/warning_screen/warning_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
@@ -15,6 +16,7 @@ import '../../widgets/nav_bar/nav_bar_page.dart';
 
 class WarningScreen extends StatefulWidget {
   final WarningScreenViewModel viewModel;
+  final FavoriteModelSubType itemType = FavoriteModelSubType.warningLights;
 
   const WarningScreen({super.key, required this.viewModel});
 
@@ -28,41 +30,49 @@ class _WarningScreenState extends State<WarningScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: l10n?.warning_page_title,
-        action: [
-          VehicleNavBarActions(
-            item: widget.viewModel.favoritesProvider.cachedItem,
-            provider: widget.viewModel.favoritesProvider,
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
+      ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: l10n?.warning_page_title,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              ),
+            ],
           ),
-        ],
-      ),
-      bottomNavigationBar: MainBottomBar(
-        selectedPage: NavBarPage.search,
-        onItemTapped: (_) => widget.viewModel.onSearch(context),
-        hideAllExceptSearch: true,
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-            child: StreamBuilder<List<Warning>>(
-              stream: widget.viewModel.warnings,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body();
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+          bottomNavigationBar: MainBottomBar(
+            selectedPage: NavBarPage.search,
+            onItemTapped: (_) => widget.viewModel.onSearch(context),
+            hideAllExceptSearch: true,
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                child: StreamBuilder<List<Warning>>(
+                  stream: widget.viewModel.warnings,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body();
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

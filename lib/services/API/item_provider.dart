@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
@@ -96,6 +98,7 @@ class Pagination {
 
 class FavoritesListItem {
   final int id;
+  final int contentfulId;
   final String integrationId;
   final String type;
   final int ownerId;
@@ -105,6 +108,7 @@ class FavoritesListItem {
 
   FavoritesListItem({
     required this.id,
+    required this.contentfulId,
     required this.integrationId,
     required this.type,
     required this.ownerId,
@@ -115,6 +119,7 @@ class FavoritesListItem {
   factory FavoritesListItem.fromJson(Map<String, dynamic> json) =>
       FavoritesListItem(
         id: json["id"],
+        contentfulId: json["contentful_id"],
         integrationId: json["integration_id"],
         type: json["type"],
         ownerId: json["owner_id"],
@@ -123,12 +128,11 @@ class FavoritesListItem {
       );
 }
 
-class FavoritesProvider {
+class ItemProvider {
   final RestAPINetworkService restAPINetworkService;
   final GraphQLNetworkService graphQLNetworkService;
-  ContentfulItem? cachedItem;
 
-  FavoritesProvider(this.restAPINetworkService, this.graphQLNetworkService);
+  ItemProvider(this.restAPINetworkService, this.graphQLNetworkService);
 
   Future<UserInfoModel> user() {
     final request = NetworkRequest(
@@ -173,26 +177,18 @@ class FavoritesProvider {
   }
 
   Future<ContentfulItem> processItem(String integrationId, String type) async {
-    return await item(integrationId).catchError((error) async {
+    return await item(integrationId)
+        .then((item) => item)
+        .catchError((error) {
       if (error.code == 500) {
-        await add(integrationId, type).then((value) => value);
-        return await item(integrationId).then((item) => item);
+        return handleCatchError(integrationId, type);
       }
     });
-    // .then((item) {
-    //   return item;
-    // }).catchError((error) {
-    //   if (error.code == 500) {
-    //     add(integrationId, type).then((value) => value);
-    //     return item(integrationId).then((item) => item);
-    //   }
-    // });
+  }
 
-    // cachedItem = await item(integrationId).then((item) => item);
-    // if (cachedItem == null) {
-    //   await add(integrationId, type).then((value) => value);
-    //   cachedItem = await item(integrationId).then((item) => item);
-    // }
+  Future<ContentfulItem> handleCatchError(String integrationId, String type) async {
+    await add(integrationId, type);
+    return item(integrationId);
   }
 
   Future change(int id) {

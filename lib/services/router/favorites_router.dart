@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -21,12 +21,12 @@ Route<dynamic>? FavoritesRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final vehicleProvider =
               VehicleProvider(graphQLNetworkService, restAPINetworkService);
           final viewModel = FavoritesScreenViewModel(
-              favoritesProvider: favoritesProvider, vehicleProvider: vehicleProvider);
+              itemProvider: itemProvider, vehicleProvider: vehicleProvider);
 
           return FavoritesScreen(viewModel: viewModel);
         },

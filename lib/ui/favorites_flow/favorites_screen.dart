@@ -4,7 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/const/resource.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:help_my_truck/ui/widgets/filter_tab_bar.dart';
@@ -162,11 +162,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 ),
                 const SizedBox(width: 8),
                 BookmarkButton(
+                  key: UniqueKey(),
                   20,
                   null,
-                  widget.viewModel.favoritesProvider,
-                  null,
-                  false,
+                  model.contentfulId,
+                  widget.viewModel.itemProvider,
+                  true,
                 ),
               ],
             ),

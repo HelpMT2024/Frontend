@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/subpart_observer/subpart_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
@@ -23,6 +24,7 @@ import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 
 class SubPartScreen extends StatefulWidget {
   final SubPartViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.subPart;
 
   const SubPartScreen({super.key, required this.viewModel});
 
@@ -36,38 +38,46 @@ class _SubPartScreenState extends State<SubPartScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimary;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        action: [
-          VehicleNavBarActions(
-            item: widget.viewModel.favoritesProvider.cachedItem,
-            provider: widget.viewModel.favoritesProvider,
-          )
-        ],
-        bottom: _navBarTitle(styles, backgroundColor),
-        toolbarHeight: 52,
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: CustomFloatingButton(
-        onPressed: () => widget.viewModel.onSearch(context),
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          StreamBuilder<SubPart>(
-            stream: widget.viewModel.part,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return _body(snapshot.data!);
-              } else {
-                return Loadable(forceLoad: true, child: Container());
-              }
-            },
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
+            bottom: _navBarTitle(styles, backgroundColor),
+            toolbarHeight: 52,
           ),
-        ],
-      ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: CustomFloatingButton(
+            onPressed: () => widget.viewModel.onSearch(context),
+          ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              StreamBuilder<SubPart>(
+                stream: widget.viewModel.part,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _body(snapshot.data!);
+                  } else {
+                    return Loadable(forceLoad: true, child: Container());
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

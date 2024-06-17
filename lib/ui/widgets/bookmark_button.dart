@@ -2,21 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 
 class BookmarkButton extends StatefulWidget {
-  FavoritesProvider? provider;
+  ItemProvider? provider;
   ContentfulItem? item;
+  final int? contentfulId;
   final double size;
-  final bool isFixedState;
-  void Function(String)? voidCallback;
+  final bool isInitMarked;
 
   BookmarkButton(
     this.size,
     this.item,
+    this.contentfulId,
     this.provider,
-    this.voidCallback,
-    this.isFixedState, {
+    this.isInitMarked, {
     super.key,
   });
 
@@ -28,24 +28,21 @@ class _BookmarkButtonState extends State<BookmarkButton> {
   var _isBookmarked = false;
 
   @override
-  void setState(VoidCallback fn) {
-    print('<!> ITEM ${widget.item}');
-    updateIconState(widget.item?.isFavorite ?? false);
-    super.setState(fn);
+  void initState() {
+    updateIconState();
+    super.initState();
   }
 
-  void updateIconState(bool isFavorite) {
+  void updateIconState() {
     setState(() {
-      _isBookmarked = isFavorite;
+     _isBookmarked = widget.isInitMarked ? true : widget.item?.isFavorite ?? false;
     });
   }
 
   void changeIconState() {
-    if (!widget.isFixedState) {
-      setState(() {
-        _isBookmarked = !_isBookmarked;
-      });
-    }
+    setState(() {
+      _isBookmarked = !_isBookmarked;
+    });
   }
 
   @override
@@ -57,17 +54,16 @@ class _BookmarkButtonState extends State<BookmarkButton> {
         alignment: Alignment.center,
         padding: EdgeInsets.zero,
         icon: Icon(
-          widget.item?.isFavorite ?? false
-              ? Icons.bookmark
-              : Icons.bookmark_border_outlined,
-          //_isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
+          _isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
           color: ColorConstants.onSurfaceWhite,
         ),
         onPressed: () {
           if (widget.item != null) {
             widget.provider?.change(widget.item?.id ?? 0);
-            changeIconState();
+          } else if (widget.contentfulId != null) {
+            widget.provider?.change(widget.contentfulId ?? 0);
           }
+          changeIconState();
         },
       ),
     );

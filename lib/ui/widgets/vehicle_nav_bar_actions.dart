@@ -2,14 +2,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/widgets/bookmark_button.dart';
 import 'package:share_plus/share_plus.dart';
 
 class VehicleNavBarActions extends StatelessWidget {
   final ContentfulItem? item;
   final bool hideBookmark;
-  final FavoritesProvider? provider;
+  final ItemProvider? provider;
 
   const VehicleNavBarActions({
     super.key,
@@ -56,10 +56,11 @@ class VehicleNavBarActions extends StatelessWidget {
             SizedBox(
               width: 32,
               child: BookmarkButton(
+                key: UniqueKey(),
                 28,
                 item,
-                provider,
                 null,
+                provider,
                 false,
               ),
             ),

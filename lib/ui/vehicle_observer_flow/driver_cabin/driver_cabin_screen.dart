@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
@@ -13,6 +14,7 @@ import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart'
 
 class DriverCabinScreen extends StatefulWidget {
   final DriverCabinViewModel viewModel;
+  final FavoriteModelSubType itemType = FavoriteModelSubType.driverDisplay;
 
   const DriverCabinScreen({super.key, required this.viewModel});
 
@@ -25,34 +27,44 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: widget.viewModel.config.name,
-        action: [VehicleNavBarActions(
-          item: widget.viewModel.favoritesProvider.cachedItem,
-          provider: widget.viewModel.favoritesProvider,
-        )],
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-            child: StreamBuilder<System>(
-              stream: widget.viewModel.system,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: widget.viewModel.config.name,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                child: StreamBuilder<System>(
+                  stream: widget.viewModel.system,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body(snapshot.data!);
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

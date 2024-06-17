@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/custom_floating_button.dart';
@@ -24,6 +25,7 @@ import '../../widgets/pdf_button.dart';
 
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
+  final FavoriteModelType itemType = FavoriteModelType.component;
 
   const ComponentObserverScreen({super.key, required this.viewModel});
 
@@ -37,41 +39,49 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: widget.viewModel.config.name,
-        action: [
-          VehicleNavBarActions(
-            item: widget.viewModel.favoritesProvider.cachedItem,
-            provider: widget.viewModel.favoritesProvider,
-          )
-        ],
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: CustomFloatingButton(
-        onPressed: () => widget.viewModel.onSearch(context),
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: AppConsts.componentObserverPadding(
-                isNeedTop: widget.viewModel.hasImage),
-            child: StreamBuilder<Component>(
-              stream: widget.viewModel.component,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: widget.viewModel.config.name,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
           ),
-        ],
-      ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: CustomFloatingButton(
+            onPressed: () => widget.viewModel.onSearch(context),
+          ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: AppConsts.componentObserverPadding(
+                    isNeedTop: widget.viewModel.hasImage),
+                child: StreamBuilder<Component>(
+                  stream: widget.viewModel.component,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body(snapshot.data!);
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
