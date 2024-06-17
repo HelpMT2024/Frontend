@@ -31,61 +31,53 @@ class UnitObserverScreen extends StatefulWidget {
 }
 
 class _UnitObserverScreenState extends State<UnitObserverScreen> {
-  
-  @override
-  void initState() {
-    print('<!> INIT STATE');
-    load();
-    super.initState();
-  }
-
-  load() async {
-    await widget.viewModel.favoritesProvider.processItem(widget.viewModel.config.id, widget.itemType.filterKey());
-    setState(() {
-      
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
-    print('<!> BUILD');
-    print('<!> CACHED ${widget.viewModel.favoritesProvider.cachedItem}');
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: widget.viewModel.config.name,
-        action: [
-          VehicleNavBarActions(
-            item: widget.viewModel.favoritesProvider.cachedItem,
-            provider: widget.viewModel.favoritesProvider,
+    return FutureBuilder(
+      future: widget.viewModel.favoritesProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
+      ),
+      builder: (context, snapshot) {
+        print('<!> item = ${snapshot.data}');
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: widget.viewModel.config.name,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.favoritesProvider,
+              ),
+            ],
           ),
-        ],
-      ),
-      bottomNavigationBar: CustomBottomBar(
-        selectedPage: NavBarPage.home,
-        onItemTapped: (item) => VehicleNavigationHelper.navigateTo(
-            NavBarPage.fromPage(item), context, false),
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
-            child: StreamBuilder<Unit>(
-              stream: widget.viewModel.unit,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+          bottomNavigationBar: CustomBottomBar(
+            selectedPage: NavBarPage.home,
+            onItemTapped: (item) => VehicleNavigationHelper.navigateTo(
+                NavBarPage.fromPage(item), context, false),
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(12, 24, 12, 0),
+                child: StreamBuilder<Unit>(
+                  stream: widget.viewModel.unit,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body(snapshot.data!);
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

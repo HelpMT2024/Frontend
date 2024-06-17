@@ -28,11 +28,10 @@ class _BookmarkButtonState extends State<BookmarkButton> {
   var _isBookmarked = false;
 
   @override
-  void initState() {
+  void setState(VoidCallback fn) {
     print('<!> ITEM ${widget.item}');
     updateIconState(widget.item?.isFavorite ?? false);
-
-    super.initState();
+    super.setState(fn);
   }
 
   void updateIconState(bool isFavorite) {
@@ -58,7 +57,10 @@ class _BookmarkButtonState extends State<BookmarkButton> {
         alignment: Alignment.center,
         padding: EdgeInsets.zero,
         icon: Icon(
-          _isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
+          widget.item?.isFavorite ?? false
+              ? Icons.bookmark
+              : Icons.bookmark_border_outlined,
+          //_isBookmarked ? Icons.bookmark : Icons.bookmark_border_outlined,
           color: ColorConstants.onSurfaceWhite,
         ),
         onPressed: () {

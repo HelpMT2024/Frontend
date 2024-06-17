@@ -47,7 +47,8 @@ class ContentfulItem {
 class FavoritesListModel {
   Pagination pagination;
   List<FavoritesListItem> items;
-  FavoriteModelType? get type => FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type];
+  FavoriteModelType? get type =>
+      FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type];
 
   FavoritesListModel({
     required this.pagination,
@@ -171,13 +172,27 @@ class FavoritesProvider {
     );
   }
 
-  Future<void> processItem(String integrationId, String type) async {
-    cachedItem = await item(integrationId).then((item) => item);
-    if (cachedItem == null) {
-      await add(integrationId, type).then((value) => value);
-      cachedItem = await item(integrationId).then((item) => item);
-    }
-    print('<!> PROCESS DONE');
+  Future<ContentfulItem> processItem(String integrationId, String type) async {
+    return await item(integrationId).catchError((error) async {
+      if (error.code == 500) {
+        await add(integrationId, type).then((value) => value);
+        return await item(integrationId).then((item) => item);
+      }
+    });
+    // .then((item) {
+    //   return item;
+    // }).catchError((error) {
+    //   if (error.code == 500) {
+    //     add(integrationId, type).then((value) => value);
+    //     return item(integrationId).then((item) => item);
+    //   }
+    // });
+
+    // cachedItem = await item(integrationId).then((item) => item);
+    // if (cachedItem == null) {
+    //   await add(integrationId, type).then((value) => value);
+    //   cachedItem = await item(integrationId).then((item) => item);
+    // }
   }
 
   Future change(int id) {
@@ -187,16 +202,16 @@ class FavoritesProvider {
       data: const NetworkRequestBody.empty(),
     );
 
-    return restAPINetworkService.execute(
-        request, (json) => null);
+    return restAPINetworkService.execute(request, (json) => null);
   }
 
-  Future<FavoritesListModel> favoritesList(int? id, List<String> typeFilters, int page, int size) {
+  Future<FavoritesListModel> favoritesList(
+      int? id, List<String> typeFilters, int page, int size) {
     Map<String, dynamic> queryParameters = {
-        'filter[owner_id]': id,
-        'page': page,
-        'size': size,
-      };
+      'filter[owner_id]': id,
+      'page': page,
+      'size': size,
+    };
 
     var index = 0;
     for (var typeFilter in typeFilters) {
