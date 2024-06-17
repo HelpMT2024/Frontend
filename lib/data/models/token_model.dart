@@ -9,7 +9,7 @@ class TokenModel {
   ) {
     return TokenModel(
       json['token'],
-      json['refreshToken'],
+      json['refresh_token'],
     );
   }
 }
