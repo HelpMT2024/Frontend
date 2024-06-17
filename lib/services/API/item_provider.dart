@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
@@ -181,12 +179,12 @@ class ItemProvider {
         .then((item) => item)
         .catchError((error) {
       if (error.code == 500) {
-        return handleCatchError(integrationId, type);
+        return _handleCatchError(integrationId, type);
       }
     });
   }
 
-  Future<ContentfulItem> handleCatchError(String integrationId, String type) async {
+  Future<ContentfulItem> _handleCatchError(String integrationId, String type) async {
     await add(integrationId, type);
     return item(integrationId);
   }

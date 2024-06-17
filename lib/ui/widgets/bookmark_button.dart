@@ -35,7 +35,8 @@ class _BookmarkButtonState extends State<BookmarkButton> {
 
   void updateIconState() {
     setState(() {
-     _isBookmarked = widget.isInitMarked ? true : widget.item?.isFavorite ?? false;
+      _isBookmarked =
+          widget.isInitMarked ? true : widget.item?.isFavorite ?? false;
     });
   }
 
@@ -43,6 +44,11 @@ class _BookmarkButtonState extends State<BookmarkButton> {
     setState(() {
       _isBookmarked = !_isBookmarked;
     });
+  }
+
+  void change(int id) {
+    widget.provider?.change(id);
+    changeIconState();
   }
 
   @override
@@ -59,11 +65,10 @@ class _BookmarkButtonState extends State<BookmarkButton> {
         ),
         onPressed: () {
           if (widget.item != null) {
-            widget.provider?.change(widget.item?.id ?? 0);
+            change(widget.item?.id ?? 0);
           } else if (widget.contentfulId != null) {
-            widget.provider?.change(widget.contentfulId ?? 0);
+            change(widget.contentfulId ?? 0);
           }
-          changeIconState();
         },
       ),
     );

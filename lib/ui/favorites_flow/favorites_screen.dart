@@ -54,18 +54,17 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         stream: widget.viewModel.isLoading,
         builder: (context, snapshot) {
           return Stack(
-            children: [     
+            children: [
               _body(),
               if (snapshot.data ?? false)
                 Loadable(
                   forceLoad: true,
                   child: Container(),
-                )
+                ),
             ],
           );
         },
       ),
-      
     );
   }
 
@@ -91,18 +90,20 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             height: 24,
           ),
           StreamBuilder<List<FavoritesListItem>>(
-              stream: widget.viewModel.updateDataStreamController.stream,
-              builder: (context, AsyncSnapshot snapshot) {
-                if (snapshot.data?.length == 0 && widget.viewModel.isLoading.value == false) {
-                  return _placeholder();
-                } else if (snapshot.hasData) {
-                  return _successBody();
-                } else if (snapshot.hasError) {
-                  return Text('Error ${snapshot.hasData}');
-                } else {
-                  return Container();
-                }
-              }),
+            stream: widget.viewModel.updateDataStreamController.stream,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.data?.length == 0 &&
+                  widget.viewModel.isLoading.value == false) {
+                return _placeholder();
+              } else if (snapshot.hasData) {
+                return _successBody();
+              } else if (snapshot.hasError) {
+                return Text('Error ${snapshot.hasData}');
+              } else {
+                return Container();
+              }
+            },
+          ),
         ],
       ),
     );
@@ -188,7 +189,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 86,),
+            const SizedBox(
+              height: 86,
+            ),
             SvgPicture.asset(
               R.ASSETS_BOOKMARK_SVG,
               height: 128,
