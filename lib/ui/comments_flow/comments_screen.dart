@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/ui/widgets/send_button.dart';
 
-// test test test
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({super.key});
 
@@ -19,37 +20,28 @@ class _CommentsScreenState extends State<CommentsScreen> {
   static const coefficient = 0.9;
 
   final _controller = TextEditingController();
-  final GlobalKey _textFieldKey = GlobalKey();
-  double? _height;
+  final _focusNode = FocusNode();
 
-  void _updateHeight() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_textFieldKey.currentContext != null) {
-        final RenderBox renderBox =
-            _textFieldKey.currentContext!.findRenderObject() as RenderBox;
-        final newHeight = renderBox.size.height;
-        if (newHeight != _height) {
-          setState(() {
-            print('<!> height = $newHeight');
-            _height = newHeight;
-          });
-        }
+  bool _isFocused = false;
+
+  void _onFocusChange() {
+    setState(() {
+      if (_focusNode.hasFocus) {
+        _isFocused = true;
+      } else {
+        _isFocused = false;
       }
     });
-    setState(() {});
   }
 
   @override
   void initState() {
-    super.initState();
-    _controller.addListener(_updateHeight);
-  }
+    _controller.addListener(() {
+      setState(() {});
+    });
 
-  @override
-  void dispose() {
-    _controller.removeListener(_updateHeight);
-    _controller.dispose();
-    super.dispose();
+    _focusNode.addListener(_onFocusChange);
+    super.initState();
   }
 
   @override
@@ -173,19 +165,20 @@ class _CommentsScreenState extends State<CommentsScreen> {
     BuildContext context,
   ) {
     return Container(
-      //key: _textFieldKey,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(8),
         ),
         border: Border.all(
           width: 0.5,
-          color: ColorConstants.stroke,
+          color: _isFocused
+              ? ColorConstants.onSurfacePrimaryLighter
+              : ColorConstants.stroke,
         ),
         color: ColorConstants.surfaceSecondary,
         shape: BoxShape.rectangle,
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: const EdgeInsets.fromLTRB(12, 0, 8, 0),
       constraints: BoxConstraints(
         maxHeight: (MediaQuery.of(context).size.height -
                 MediaQuery.of(context).viewInsets.bottom -
@@ -194,99 +187,55 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 footerInsets) *
             coefficient,
       ),
-      child: Scrollbar(
-        child: SingleChildScrollView(
-          key: _textFieldKey,
-          scrollDirection: Axis.vertical,
-          reverse: true,
-          child: PlatformTextField(
-            style: styles.bodyMedium?.merge(
-              TextStyle(color: ColorConstants.onSurfaceWhite),
-            ),
-            scrollPadding: EdgeInsets.zero,
-            hintText: 'Add a comment...',
-            controller: _controller,
-            expands: true,
-            maxLines: null,
-            minLines: null,
-            cupertino: (context, platform) {
-              return CupertinoTextFieldData(
+      child: Stack(
+        children: [
+          Scrollbar(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              reverse: true,
+              child: PlatformTextField(
+                style: styles.bodyMedium?.merge(
+                  TextStyle(color: ColorConstants.onSurfaceWhite),
+                ),
+                focusNode: _focusNode,
+                scrollPadding: EdgeInsets.zero,
+                hintText: 'Add a comment...',
                 controller: _controller,
-                suffixMode: OverlayVisibilityMode.editing,
-                suffix: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    if (_height != null) SizedBox(height: _height! - 36),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(6)),
-                          color: ColorConstants.surfaceWhite,
-                        ),
-                        child: Flexible(
-                          child: Icon(
-                            Icons.send,
-                            size: 16,
-                            color: ColorConstants.surfacePrimaryDark,
-                          ),
-                        ),
+                expands: true,
+                maxLines: null,
+                minLines: null,
+                cupertino: (context, platform) {
+                  return CupertinoTextFieldData(
+                    controller: _controller,
+                    textAlignVertical: TextAlignVertical.center,
+                    decoration: const BoxDecoration(color: Colors.transparent),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    placeholderStyle: styles.bodyMedium?.merge(
+                      TextStyle(color: ColorConstants.onSurfaceWhite80),
+                    ),
+                  );
+                },
+                material: (context, platform) {
+                  return MaterialTextFieldData(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                      hintStyle: styles.bodyMedium?.merge(
+                        TextStyle(color: ColorConstants.onSurfaceMedium),
                       ),
                     ),
-                  ],
-                ),
-                textAlignVertical: TextAlignVertical.center,
-                decoration: const BoxDecoration(color: Colors.transparent),
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                placeholderStyle: styles.bodyMedium?.merge(
-                  TextStyle(color: ColorConstants.onSurfaceWhite80),
-                ),
-              );
-            },
-            material: (context, platform) {
-              return MaterialTextFieldData(
-                controller: _controller,
-                decoration: InputDecoration(
-                  suffix: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      if (_height != null) SizedBox(height: _height! - 36),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8),
-                        child: Container(
-                          width: 24,
-                          height: 24,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(6)),
-                            color: ColorConstants.surfaceWhite,
-                          ),
-                          child: Flexible(
-                            child: Icon(
-                              Icons.send,
-                              size: 16,
-                              color: ColorConstants.surfacePrimaryDark,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                  hintStyle: styles.bodyMedium?.merge(
-                    TextStyle(color: ColorConstants.onSurfaceMedium),
-                  ),
-                ),
-              );
-            },
+                  );
+                },
+              ),
+            ),
           ),
-        ),
+          Positioned(
+            right: 0,
+            bottom: 8,
+            child: SendButton(controller: _controller),
+          ),
+        ],
       ),
     );
   }
