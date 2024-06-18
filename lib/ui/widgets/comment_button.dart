@@ -12,7 +12,7 @@ class CommentButton extends StatelessWidget {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) => const CommentsScreen(),
+      builder: (BuildContext context) => CommentsScreen(),
     );
   }
 
