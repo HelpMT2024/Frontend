@@ -4,7 +4,7 @@ import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
@@ -13,7 +13,7 @@ import 'package:rxdart/subjects.dart';
 
 class ComponentObserverViewModel {
   final VehicleProvider provider;
-  final FavoritesProvider favoritesProvider;
+  final ItemProvider itemProvider;
   final ChildrenComponent config;
 
   late final component = BehaviorSubject<Component>()
@@ -38,7 +38,7 @@ class ComponentObserverViewModel {
   ComponentObserverViewModel({
     required this.config,
     required this.provider,
-    required this.favoritesProvider
+    required this.itemProvider
   });
 
   void onSearch(BuildContext context) {

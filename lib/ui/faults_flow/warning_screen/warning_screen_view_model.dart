@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/warning.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/ui/search_flow/search_screen.dart';
@@ -13,7 +13,7 @@ import '../../widgets/nav_bar/nav_bar_page.dart';
 
 class WarningScreenViewModel {
   final VehicleProvider provider;
-  final FavoritesProvider favoritesProvider;
+  final ItemProvider itemProvider;
   final ChildrenComponent config;
 
   late final warnings = BehaviorSubject<List<Warning>>()
@@ -23,7 +23,7 @@ class WarningScreenViewModel {
 
   WarningScreenViewModel({
     required this.provider,
-    required this.favoritesProvider,
+    required this.itemProvider,
     required this.config,
   });
 

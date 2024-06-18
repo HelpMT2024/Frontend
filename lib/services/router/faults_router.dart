@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/system.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -34,11 +34,11 @@ Route<dynamic>? FaultsRouter(
         builder: (context) {
           final provider =
               VehicleProvider(graphQLNetworkService, restAPINetworkService);
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = WarningScreenViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider, 
+            itemProvider: itemProvider, 
             config: setting.arguments as ChildrenComponent,
           );
 
@@ -52,11 +52,11 @@ Route<dynamic>? FaultsRouter(
           final config = setting.arguments as ChildProblem;
           final provider =
               VehicleProvider(graphQLNetworkService, restAPINetworkService);
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = ProblemCaseScreenViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: config,
           );
 
@@ -70,11 +70,11 @@ Route<dynamic>? FaultsRouter(
           final config = setting.arguments as ChildFault;
           final provider =
               VehicleProvider(graphQLNetworkService, restAPINetworkService);
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = FaultScreenViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: config,
           );
 

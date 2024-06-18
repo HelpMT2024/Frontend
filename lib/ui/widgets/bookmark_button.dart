@@ -2,23 +2,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 
 class BookmarkButton extends StatefulWidget {
-  FavoritesProvider? provider;
-  String? integrationId;
-  String? type;
+  ItemProvider? provider;
+  ContentfulItem? item;
+  final int? contentfulId;
   final double size;
-  final bool isFixedState;
-  void Function(String)? voidCallback;
+  final bool isInitMarked;
 
   BookmarkButton(
     this.size,
-    this.integrationId,
-    this.type,
+    this.item,
+    this.contentfulId,
     this.provider,
-    this.voidCallback,
-    this.isFixedState, {
+    this.isInitMarked, {
     super.key,
   });
 
@@ -28,39 +26,29 @@ class BookmarkButton extends StatefulWidget {
 
 class _BookmarkButtonState extends State<BookmarkButton> {
   var _isBookmarked = false;
-  ContentfulItem? item;
 
   @override
   void initState() {
-    checkInFavorites();
-
-    super.initState();
-  }
-
-  void checkInFavorites() async {
-    await loadItem();
-
     updateIconState();
-  }
-
-  Future<void> loadItem() async {
-    item = await widget.provider
-        ?.itemWith(widget.integrationId ?? '')
-        .then((value) => value);
+    super.initState();
   }
 
   void updateIconState() {
     setState(() {
-      _isBookmarked = item?.isFavorite ?? false;
+      _isBookmarked =
+          widget.isInitMarked ? true : widget.item?.isFavorite ?? false;
     });
   }
 
   void changeIconState() {
-    if (!widget.isFixedState) {
-      setState(() {
-        _isBookmarked = !_isBookmarked;
-      });
-    }
+    setState(() {
+      _isBookmarked = !_isBookmarked;
+    });
+  }
+
+  void change(int id) {
+    widget.provider?.change(id);
+    changeIconState();
   }
 
   @override
@@ -76,27 +64,10 @@ class _BookmarkButtonState extends State<BookmarkButton> {
           color: ColorConstants.onSurfaceWhite,
         ),
         onPressed: () {
-          if (item != null) {
-            widget.provider?.change(item?.id ?? 0);
-            changeIconState();
-          } else {
-            final integrationId = widget.integrationId;
-            final type = widget.type;
-            if (integrationId != null && type != null) {
-              widget.provider
-                  ?.createContentfulItem(integrationId, type)
-                  .then((value) {
-                loadItem().then((value) {
-                  widget.provider?.change(item?.id ?? 0);
-                  changeIconState();
-                });
-              });
-            }
-          }
-
-          final callback = widget.voidCallback;
-          if (callback != null) {
-            callback(widget.integrationId ?? '');
+          if (widget.item != null) {
+            change(widget.item?.id ?? 0);
+          } else if (widget.contentfulId != null) {
+            change(widget.contentfulId ?? 0);
           }
         },
       ),

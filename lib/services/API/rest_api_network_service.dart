@@ -287,7 +287,7 @@ class RestAPINetworkService {
       path: '/api/user/token/refresh',
       data: NetworkRequestBody.formData(
         {
-          'refresh_token': token.refreshToken,
+          'refreshToken': token.refreshToken,
         },
       ),
     );

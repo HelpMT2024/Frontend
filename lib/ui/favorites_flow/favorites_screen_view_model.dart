@@ -11,14 +11,14 @@ import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FavoritesScreenViewModel {
-  final FavoritesProvider provider;
+  final ItemProvider itemProvider;
   final VehicleProvider vehicleProvider;
   final int _cellsPerPage = 10;
   late final isLoading = BehaviorSubject<bool>.seeded(false);
@@ -32,30 +32,34 @@ class FavoritesScreenViewModel {
   int _page = 1;
 
   FavoritesScreenViewModel({
-    required this.provider,
+    required this.itemProvider,
     required this.vehicleProvider,
   });
 
   void getPage() async {
     if (!isLoading.value) {
-    isLoading.add(true);
-    var typeFilters = currentFilter.filterKeys();
-    user = await provider.user();
-    await provider
-        .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
-        .then((page) async {
-      await Future.wait(
-        page.items.map((item) async {
-          item.name = await itemTitle(item.integrationId);
-          return item;
-        }).toList(),
+      isLoading.add(true);
+      var typeFilters = currentFilter.filterKeys();
+      user = await itemProvider.user();
+      await itemProvider
+          .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
+          .then(
+        (page) async {
+          await Future.wait(
+            page.items.map(
+              (item) async {
+                item.name = await itemTitle(item.integrationId);
+                return item;
+              },
+            ).toList(),
+          );
+          fetchedItems.addAll(page.items);
+          pagination = page.pagination;
+        },
       );
-      fetchedItems.addAll(page.items);
-      pagination = page.pagination;
-    });
-    _handlePagination();
-    updateDataStreamController.add(fetchedItems);
-    isLoading.add(false);
+      _handlePagination();
+      updateDataStreamController.add(fetchedItems);
+      isLoading.add(false);
     }
   }
 
@@ -86,12 +90,16 @@ class FavoritesScreenViewModel {
       case FavoriteModelType.subPart:
         return vehicleProvider.subPart(id).then((subPart) => subPart.name);
       case FavoriteModelType.faultCode:
-        return vehicleProvider.fault(id).then((fault) {
-          final fmiCodes =
-              fault.fmiCodes.toString().replaceAll(']', '').replaceAll('[', '');
+        return vehicleProvider.fault(id).then(
+          (fault) {
+            final fmiCodes = fault.fmiCodes
+                .toString()
+                .replaceAll(']', '')
+                .replaceAll('[', '');
 
-          return 'SPN ${fault.spnCode}, FMI $fmiCodes';
-        });
+            return 'SPN ${fault.spnCode}, FMI $fmiCodes';
+          },
+        );
       case FavoriteModelType.problemCase:
         return vehicleProvider
             .problemCase(id)
@@ -112,9 +120,11 @@ class FavoritesScreenViewModel {
           VehicleSelectorRouteKeys.unitObserver,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
       case FavoriteModelType.system:
         final driverDisplayTypeKey =
             FavoriteModelSubType.driverDisplay.filterKey();
@@ -135,9 +145,11 @@ class FavoritesScreenViewModel {
           routeKey,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
       case FavoriteModelType.component:
         final warningsTypeKey = FavoriteModelSubType.warningLights.filterKey();
         final child = ChildrenComponent(
@@ -157,9 +169,11 @@ class FavoritesScreenViewModel {
           routeKey,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
       case FavoriteModelType.part:
         final child = ChildrenPart(
           id: model.integrationId,
@@ -171,9 +185,11 @@ class FavoritesScreenViewModel {
           VehicleSelectorRouteKeys.partObserver,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
       case FavoriteModelType.subPart:
         final child = ChildSubpart(
           id: model.integrationId,
@@ -185,9 +201,11 @@ class FavoritesScreenViewModel {
           VehicleSelectorRouteKeys.subPartObserver,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
       case FavoriteModelType.faultCode:
         final child = ChildFault(
           id: model.integrationId,
@@ -200,9 +218,11 @@ class FavoritesScreenViewModel {
           FaultsRouteKeys.faultScreen,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
       case FavoriteModelType.problemCase:
         final child = ChildProblem(
           id: model.integrationId,
@@ -213,9 +233,11 @@ class FavoritesScreenViewModel {
           FaultsRouteKeys.problemCaseScreen,
           arguments: child,
         )
-            .then((value) {
-          resetData();
-        });
+            .then(
+          (value) {
+            resetData();
+          },
+        );
     }
   }
 }

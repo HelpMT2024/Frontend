@@ -7,7 +7,7 @@ import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/truck.dart';
 import 'package:help_my_truck/data/models/unit.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -54,13 +54,13 @@ Route<dynamic>? VehicleSelectorRouter(
             graphQLNetworkService,
             restAPINetworkService,
           );
-          final favoritesProvider = FavoritesProvider(
+          final itemProvider = ItemProvider(
             restAPINetworkService,
             graphQLNetworkService,
           );
           final viewModel = SubPartViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: setting.arguments as ChildSubpart,
           );
 
@@ -75,11 +75,11 @@ Route<dynamic>? VehicleSelectorRouter(
             graphQLNetworkService,
             restAPINetworkService,
           );
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = DriverCabinViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: setting.arguments as ChildrenSystem,
           );
 
@@ -94,11 +94,11 @@ Route<dynamic>? VehicleSelectorRouter(
             graphQLNetworkService,
             restAPINetworkService,
           );
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = ComponentObserverViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: setting.arguments as ChildrenComponent,
           );
 
@@ -113,11 +113,11 @@ Route<dynamic>? VehicleSelectorRouter(
             graphQLNetworkService,
             restAPINetworkService,
           );
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = SystemObserverViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: setting.arguments as ChildrenSystem,
           );
 
@@ -133,11 +133,11 @@ Route<dynamic>? VehicleSelectorRouter(
             graphQLNetworkService,
             restAPINetworkService,
           );
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = UnitObserverViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: setting.arguments as ChildrenUnit,
           );
 
@@ -153,11 +153,11 @@ Route<dynamic>? VehicleSelectorRouter(
             graphQLNetworkService,
             restAPINetworkService,
           );
-          final favoritesProvider =
-              FavoritesProvider(restAPINetworkService, graphQLNetworkService);
+          final itemProvider =
+              ItemProvider(restAPINetworkService, graphQLNetworkService);
           final viewModel = PartViewModel(
             provider: provider,
-            favoritesProvider: favoritesProvider,
+            itemProvider: itemProvider,
             config: setting.arguments as ChildrenPart,
           );
 

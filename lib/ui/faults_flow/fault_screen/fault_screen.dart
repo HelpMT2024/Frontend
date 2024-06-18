@@ -31,52 +31,59 @@ class _FaultScreenState extends State<FaultScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimaryDark;
 
-    return Stack(
-      children: [
-        Container(
-          color: backgroundColor,
-        ),
-        StreamBuilder<Fault>(
-          stream: widget.viewModel.fault,
-          builder: (context, snapshot) {
-            if (snapshot.data?.showAsPdf == true) {
-              return WebViewScreen(
-                pdfFile: snapshot.data!.pdfFilesCollection.items.first,
-              );
-            }
-            return Scaffold(
-              appBar: MainNavigationBar(
-                context: context,
-                styles: styles,
-                action: (snapshot.data?.showAsPdf ?? true)
-                    ? []
-                    : [
-                        VehicleNavBarActions(
-                          integrationId: widget.viewModel.config.id,
-                          type: widget.itemType.filterKey(),
-                          provider: widget.viewModel.favoritesProvider,
-                        )
-                      ],
-                bottom: _navBarTitle(styles, backgroundColor),
-                bgColor: backgroundColor,
-              ),
-              body: Stack(
-                children: [
-                  Container(color: ColorConstants.surfacePrimaryDark),
-                  if (snapshot.hasData) ...{
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-                      child: _body(snapshot.data!),
-                    ),
-                  } else ...{
-                    Loadable(forceLoad: true, child: Container()),
-                  },
-                ],
-              ),
-            );
-          },
-        ),
-      ],
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
+      ),
+      builder: (context, itemSnapshot) {
+        return Stack(
+          children: [
+            Container(
+              color: backgroundColor,
+            ),
+            StreamBuilder<Fault>(
+              stream: widget.viewModel.fault,
+              builder: (context, snapshot) {
+                if (snapshot.data?.showAsPdf == true) {
+                  return WebViewScreen(
+                    pdfFile: snapshot.data!.pdfFilesCollection.items.first,
+                  );
+                }
+                return Scaffold(
+                  appBar: MainNavigationBar(
+                    context: context,
+                    styles: styles,
+                    action: (snapshot.data?.showAsPdf ?? true)
+                        ? []
+                        : [
+                            VehicleNavBarActions(
+                              item: itemSnapshot.data,
+                              provider: widget.viewModel.itemProvider,
+                            ),
+                          ],
+                    bottom: _navBarTitle(styles, backgroundColor),
+                    bgColor: backgroundColor,
+                  ),
+                  body: Stack(
+                    children: [
+                      Container(color: ColorConstants.surfacePrimaryDark),
+                      if (snapshot.hasData) ...{
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                          child: _body(snapshot.data!),
+                        ),
+                      } else ...{
+                        Loadable(forceLoad: true, child: Container()),
+                      },
+                    ],
+                  ),
+                );
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 

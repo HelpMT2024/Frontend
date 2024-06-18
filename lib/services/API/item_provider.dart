@@ -47,7 +47,8 @@ class ContentfulItem {
 class FavoritesListModel {
   Pagination pagination;
   List<FavoritesListItem> items;
-  FavoriteModelType? get type => FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type];
+  FavoriteModelType? get type =>
+      FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type];
 
   FavoritesListModel({
     required this.pagination,
@@ -95,6 +96,7 @@ class Pagination {
 
 class FavoritesListItem {
   final int id;
+  final int contentfulId;
   final String integrationId;
   final String type;
   final int ownerId;
@@ -104,6 +106,7 @@ class FavoritesListItem {
 
   FavoritesListItem({
     required this.id,
+    required this.contentfulId,
     required this.integrationId,
     required this.type,
     required this.ownerId,
@@ -114,6 +117,7 @@ class FavoritesListItem {
   factory FavoritesListItem.fromJson(Map<String, dynamic> json) =>
       FavoritesListItem(
         id: json["id"],
+        contentfulId: json["contentful_id"],
         integrationId: json["integration_id"],
         type: json["type"],
         ownerId: json["owner_id"],
@@ -122,13 +126,39 @@ class FavoritesListItem {
       );
 }
 
-class FavoritesProvider {
+class ItemProvider {
   final RestAPINetworkService restAPINetworkService;
   final GraphQLNetworkService graphQLNetworkService;
 
-  FavoritesProvider(this.restAPINetworkService, this.graphQLNetworkService);
+  ItemProvider(this.restAPINetworkService, this.graphQLNetworkService);
 
-  Future createContentfulItem(String integrationId, String type) {
+  Future<UserInfoModel> user() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/user',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => UserInfoModel.fromJson(json['data']),
+    );
+  }
+
+  Future<ContentfulItem> item(String integrationId) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/contentful/$integrationId/external',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => ContentfulItem.fromJson(json['data']),
+    );
+  }
+
+  Future add(String integrationId, String type) {
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/contentful/add',
@@ -144,17 +174,19 @@ class FavoritesProvider {
     );
   }
 
-  Future<ContentfulItem> itemWith(String integrationId) {
-    final request = NetworkRequest(
-      type: NetworkRequestType.get,
-      path: '/api/contentful/$integrationId/external',
-      data: const NetworkRequestBody.empty(),
-    );
+  Future<ContentfulItem> processItem(String integrationId, String type) async {
+    return await item(integrationId)
+        .then((item) => item)
+        .catchError((error) {
+      if (error.code == 500) {
+        return _handleCatchError(integrationId, type);
+      }
+    });
+  }
 
-    return restAPINetworkService.execute(
-      request,
-      (json) => ContentfulItem.fromJson(json['data']),
-    );
+  Future<ContentfulItem> _handleCatchError(String integrationId, String type) async {
+    await add(integrationId, type);
+    return item(integrationId);
   }
 
   Future change(int id) {
@@ -164,16 +196,16 @@ class FavoritesProvider {
       data: const NetworkRequestBody.empty(),
     );
 
-    return restAPINetworkService.execute(
-        request, (json) => null);
+    return restAPINetworkService.execute(request, (json) => null);
   }
 
-  Future<FavoritesListModel> favoritesList(int? id, List<String> typeFilters, int page, int size) {
+  Future<FavoritesListModel> favoritesList(
+      int? id, List<String> typeFilters, int page, int size) {
     Map<String, dynamic> queryParameters = {
-        'filter[owner_id]': id,
-        'page': page,
-        'size': size,
-      };
+      'filter[owner_id]': id,
+      'page': page,
+      'size': size,
+    };
 
     var index = 0;
     for (var typeFilter in typeFilters) {
@@ -191,19 +223,6 @@ class FavoritesProvider {
     return restAPINetworkService.execute(
       request,
       (json) => FavoritesListModel.fromJson(json['data']),
-    );
-  }
-
-  Future<UserInfoModel> user() {
-    final request = NetworkRequest(
-      type: NetworkRequestType.get,
-      path: '/api/user',
-      data: const NetworkRequestBody.empty(),
-    );
-
-    return restAPINetworkService.execute(
-      request,
-      (json) => UserInfoModel.fromJson(json['data']),
     );
   }
 }

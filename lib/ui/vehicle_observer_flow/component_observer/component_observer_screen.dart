@@ -39,42 +39,49 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: widget.viewModel.config.name,
-        action: [
-          VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
-            provider: widget.viewModel.favoritesProvider,
-          )
-        ],
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: CustomFloatingButton(
-        onPressed: () => widget.viewModel.onSearch(context),
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: AppConsts.componentObserverPadding(
-                isNeedTop: widget.viewModel.hasImage),
-            child: StreamBuilder<Component>(
-              stream: widget.viewModel.component,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: widget.viewModel.config.name,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
           ),
-        ],
-      ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: CustomFloatingButton(
+            onPressed: () => widget.viewModel.onSearch(context),
+          ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: AppConsts.componentObserverPadding(
+                    isNeedTop: widget.viewModel.hasImage),
+                child: StreamBuilder<Component>(
+                  stream: widget.viewModel.component,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body(snapshot.data!);
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

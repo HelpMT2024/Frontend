@@ -4,7 +4,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -13,7 +13,7 @@ import '../vehicle_navigation_helper.dart';
 
 class SubPartViewModel {
   final VehicleProvider provider;
-  final FavoritesProvider favoritesProvider;
+  final ItemProvider itemProvider;
   final ChildSubpart config;
 
   late final part = BehaviorSubject<SubPart>()
@@ -46,7 +46,7 @@ class SubPartViewModel {
   SubPartViewModel({
     required this.provider,
     required this.config,
-    required this.favoritesProvider,
+    required this.itemProvider,
   });
 
   void onSearch(BuildContext context) {

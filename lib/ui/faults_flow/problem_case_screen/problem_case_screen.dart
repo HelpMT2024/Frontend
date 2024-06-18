@@ -33,39 +33,46 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimaryDark;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        bottom: _navBarTitle(styles, backgroundColor),
-        bgColor: ColorConstants.surfacePrimaryDark,
-        action: [
-          VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
-            provider: widget.viewModel.favoritesProvider,
-          )
-        ],
-        toolbarHeight: 52,
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      body: Stack(
-        children: [
-          Container(color: backgroundColor),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-            child: StreamBuilder<ProblemCase>(
-              stream: widget.viewModel.problem,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return SingleChildScrollView(child: _body());
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            bottom: _navBarTitle(styles, backgroundColor),
+            bgColor: ColorConstants.surfacePrimaryDark,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
+            toolbarHeight: 52,
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              Container(color: backgroundColor),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                child: StreamBuilder<ProblemCase>(
+                  stream: widget.viewModel.problem,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return SingleChildScrollView(child: _body());
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

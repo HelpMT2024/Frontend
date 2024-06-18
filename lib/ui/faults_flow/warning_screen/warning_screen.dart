@@ -30,42 +30,49 @@ class _WarningScreenState extends State<WarningScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: l10n?.warning_page_title,
-        action: [
-          VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
-            provider: widget.viewModel.favoritesProvider,
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
+      ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: l10n?.warning_page_title,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              ),
+            ],
           ),
-        ],
-      ),
-      bottomNavigationBar: MainBottomBar(
-        selectedPage: NavBarPage.search,
-        onItemTapped: (_) => widget.viewModel.onSearch(context),
-        hideAllExceptSearch: true,
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-            child: StreamBuilder<List<Warning>>(
-              stream: widget.viewModel.warnings,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body();
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+          bottomNavigationBar: MainBottomBar(
+            selectedPage: NavBarPage.search,
+            onItemTapped: (_) => widget.viewModel.onSearch(context),
+            hideAllExceptSearch: true,
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                child: StreamBuilder<List<Warning>>(
+                  stream: widget.viewModel.warnings,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body();
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

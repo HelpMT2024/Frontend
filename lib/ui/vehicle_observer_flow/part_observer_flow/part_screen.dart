@@ -38,39 +38,46 @@ class _PartScreenState extends State<PartScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimary;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        action: [
-          VehicleNavBarActions(
-            integrationId: widget.viewModel.config.id,
-            type: widget.itemType.filterKey(),
-            provider: widget.viewModel.favoritesProvider,
-          )
-        ],
-        bottom: _navBarTitle(styles, backgroundColor),
-        toolbarHeight: 48,
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: CustomFloatingButton(
-        onPressed: () => widget.viewModel.onSearch(context),
-      ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          StreamBuilder<Part>(
-            stream: widget.viewModel.part,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return _body(snapshot.data!);
-              } else {
-                return Loadable(forceLoad: true, child: Container());
-              }
-            },
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
+            bottom: _navBarTitle(styles, backgroundColor),
+            toolbarHeight: 48,
           ),
-        ],
-      ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: CustomFloatingButton(
+            onPressed: () => widget.viewModel.onSearch(context),
+          ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              StreamBuilder<Part>(
+                stream: widget.viewModel.part,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return _body(snapshot.data!);
+                  } else {
+                    return Loadable(forceLoad: true, child: Container());
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

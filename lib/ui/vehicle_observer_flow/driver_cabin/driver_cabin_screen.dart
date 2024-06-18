@@ -27,35 +27,44 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return Scaffold(
-      appBar: MainNavigationBar(
-        context: context,
-        styles: styles,
-        title: widget.viewModel.config.name,
-        action: [VehicleNavBarActions(
-          integrationId: widget.viewModel.config.id,
-          type: widget.itemType.filterKey(),
-          provider: widget.viewModel.favoritesProvider,
-        )],
+    return FutureBuilder(
+      future: widget.viewModel.itemProvider.processItem(
+        widget.viewModel.config.id,
+        widget.itemType.filterKey(),
       ),
-      body: Stack(
-        children: [
-          Container(decoration: appGradientBgDecoration),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-            child: StreamBuilder<System>(
-              stream: widget.viewModel.system,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return _body(snapshot.data!);
-                } else {
-                  return Loadable(forceLoad: true, child: Container());
-                }
-              },
-            ),
+      builder: (context, snapshot) {
+        return Scaffold(
+          appBar: MainNavigationBar(
+            context: context,
+            styles: styles,
+            title: widget.viewModel.config.name,
+            action: [
+              VehicleNavBarActions(
+                item: snapshot.data,
+                provider: widget.viewModel.itemProvider,
+              )
+            ],
           ),
-        ],
-      ),
+          body: Stack(
+            children: [
+              Container(decoration: appGradientBgDecoration),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+                child: StreamBuilder<System>(
+                  stream: widget.viewModel.system,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return _body(snapshot.data!);
+                    } else {
+                      return Loadable(forceLoad: true, child: Container());
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 

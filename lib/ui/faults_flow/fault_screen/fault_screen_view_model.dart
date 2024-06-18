@@ -1,11 +1,11 @@
 import 'package:help_my_truck/data/models/fault.dart';
-import 'package:help_my_truck/services/API/favorites_provider.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class FaultScreenViewModel {
   final VehicleProvider provider;
-  final FavoritesProvider favoritesProvider;
+  final ItemProvider itemProvider;
   final ChildFault config;
 
   late final fault = BehaviorSubject<Fault>()
@@ -19,6 +19,6 @@ class FaultScreenViewModel {
   FaultScreenViewModel({
     required this.provider,
     required this.config,
-    required this.favoritesProvider, 
+    required this.itemProvider,
   });
 }
