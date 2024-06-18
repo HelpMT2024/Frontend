@@ -47,8 +47,6 @@ class ContentfulItem {
 class FavoritesListModel {
   Pagination pagination;
   List<FavoritesListItem> items;
-  FavoriteModelType? get type =>
-      FavoriteModelTypesExtension.itemTypeByString[items.firstOrNull?.type];
 
   FavoritesListModel({
     required this.pagination,
@@ -64,6 +62,30 @@ class FavoritesListModel {
         itemsJson.map((i) => FavoritesListItem.fromJson(i)).toList();
 
     return FavoritesListModel(
+      pagination: pagination,
+      items: items,
+    );
+  }
+}
+
+class CommentsListModel {
+  Pagination pagination;
+  List<CommentsListItem> items;
+
+  CommentsListModel({
+    required this.pagination,
+    required this.items,
+  });
+
+  factory CommentsListModel.fromJson(Map<String, dynamic> json) {
+    var paginationJson = json['pagination'];
+    var itemsJson = json['items'] as List;
+
+    Pagination pagination = Pagination.fromJson(paginationJson);
+    List<CommentsListItem> items =
+        itemsJson.map((i) => CommentsListItem.fromJson(i)).toList();
+
+    return CommentsListModel(
       pagination: pagination,
       items: items,
     );
@@ -126,6 +148,37 @@ class FavoritesListItem {
       );
 }
 
+class CommentsListItem {
+  final int id;
+  final String text;
+  final int reported;
+  final String integrationId;
+  final int ownerId;
+  final String ownerUsername;
+  final String createdAt;
+
+  CommentsListItem({
+    required this.id,
+    required this.text,
+    required this.reported,
+    required this.integrationId,
+    required this.ownerId,
+    required this.ownerUsername,
+    required this.createdAt,
+  });
+
+  factory CommentsListItem.fromJson(Map<String, dynamic> json) =>
+      CommentsListItem(
+        id: json["id"],
+        text: json["text"],
+        reported: json["reported"],
+        integrationId: json["integration_id"],
+        ownerId: json["owner_id"],
+        ownerUsername: json["owner_username"],
+        createdAt: json["created_at"],
+      );
+}
+
 class ItemProvider {
   final RestAPINetworkService restAPINetworkService;
   final GraphQLNetworkService graphQLNetworkService;
@@ -175,16 +228,15 @@ class ItemProvider {
   }
 
   Future<ContentfulItem> processItem(String integrationId, String type) async {
-    return await item(integrationId)
-        .then((item) => item)
-        .catchError((error) {
+    return await item(integrationId).then((item) => item).catchError((error) {
       if (error.code == 500) {
         return _handleCatchError(integrationId, type);
       }
     });
   }
 
-  Future<ContentfulItem> _handleCatchError(String integrationId, String type) async {
+  Future<ContentfulItem> _handleCatchError(
+      String integrationId, String type) async {
     await add(integrationId, type);
     return item(integrationId);
   }
@@ -200,9 +252,13 @@ class ItemProvider {
   }
 
   Future<FavoritesListModel> favoritesList(
-      int? id, List<String> typeFilters, int page, int size) {
+    int? ownerId,
+    List<String> typeFilters,
+    int page,
+    int size,
+  ) {
     Map<String, dynamic> queryParameters = {
-      'filter[owner_id]': id,
+      'filter[owner_id]': ownerId,
       'page': page,
       'size': size,
     };
@@ -223,6 +279,59 @@ class ItemProvider {
     return restAPINetworkService.execute(
       request,
       (json) => FavoritesListModel.fromJson(json['data']),
+    );
+  }
+
+  Future<CommentsListModel> commentsList(
+    int contentfulId,
+    int? ownerId,
+    int page,
+    int size,
+  ) {
+    Map<String, dynamic> queryParameters = {
+      'filter[owner_id]': ownerId,
+      'page': page,
+      'size': size,
+    };
+
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/contentful/$contentfulId/comment/list',
+      data: const NetworkRequestBody.empty(),
+      queryParams: queryParameters,
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => CommentsListModel.fromJson(json['data']),
+    );
+  }
+
+  Future addComment(int contentfulId, String text) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.post,
+      path: '/api/contentful/$contentfulId/comment/add',
+      data: NetworkRequestBody.formData({
+        'text': text,
+      }),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => null,
+    );
+  }
+
+  Future report(int contentfulId, int commentId) {
+    final request = NetworkRequest(
+      type: NetworkRequestType.post,
+      path: '/api/contentful/$contentfulId/comment/$commentId/report',
+      data: NetworkRequestBody.empty(),
+    );
+
+    return restAPINetworkService.execute(
+      request,
+      (json) => null,
     );
   }
 }
