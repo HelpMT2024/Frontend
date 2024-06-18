@@ -7,7 +7,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 class VehicleLinesDrawer {
   static Paint linePaint = Paint()
     ..color = ColorConstants.surfaceWhite
-    ..strokeWidth = 2
+    ..strokeWidth = 1
     ..style = PaintingStyle.stroke;
 
   final List<GlobalObjectKey> buttonKeys;
