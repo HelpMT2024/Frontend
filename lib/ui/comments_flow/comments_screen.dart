@@ -5,31 +5,50 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentsScreen extends StatefulWidget {
-  final _controller = TextEditingController();
-
-  CommentsScreen({super.key});
+  const CommentsScreen({super.key});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
 }
 
 class _CommentsScreenState extends State<CommentsScreen> {
+  static const bottomSheetTopOffset = 122;
+  static const headerHeight = 72;
+  static const footerInsets = 32;
+  static const coefficient = 0.9;
+
+  final _controller = TextEditingController();
   final GlobalKey _textFieldKey = GlobalKey();
   double? _height;
 
-  void _afterLayout(_) {
-    final RenderBox renderBox =
-        _textFieldKey.currentContext!.findRenderObject() as RenderBox;
-    setState(() {
-      _height = renderBox.size.height;
+  void _updateHeight() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_textFieldKey.currentContext != null) {
+        final RenderBox renderBox =
+            _textFieldKey.currentContext!.findRenderObject() as RenderBox;
+        final newHeight = renderBox.size.height;
+        if (newHeight != _height) {
+          setState(() {
+            print('<!> height = $newHeight');
+            _height = newHeight;
+          });
+        }
+      }
     });
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
+    _controller.addListener(_updateHeight);
+  }
 
-    WidgetsBinding.instance.addPostFrameCallback(_afterLayout);
+  @override
+  void dispose() {
+    _controller.removeListener(_updateHeight);
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -54,7 +73,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         children: [
           _header(l10n, styles),
           const Expanded(child: SingleChildScrollView()),
-          _footer(l10n, styles),
+          _footer(l10n, styles, context),
           SizedBox(height: keyBoardHeight),
         ],
       ),
@@ -90,7 +109,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
     );
   }
 
-  Widget _footer(AppLocalizations? l10n, TextTheme styles) {
+  Widget _footer(
+    AppLocalizations? l10n,
+    TextTheme styles,
+    BuildContext context,
+  ) {
     return Container(
       decoration: BoxDecoration(
         color: ColorConstants.surfacePrimaryDark,
@@ -102,7 +125,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ),
       ),
       padding: const EdgeInsets.all(16),
-      child: _textField(l10n, styles),
+      child: _textField(l10n, styles, context),
     );
   }
 
@@ -143,9 +166,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
     );
   }
 
-  Widget _textField(AppLocalizations? l10n, TextTheme styles) {
+  Widget _textField(
+    AppLocalizations? l10n,
+    TextTheme styles,
+    BuildContext context,
+  ) {
     return Container(
-      key: _textFieldKey,
+      //key: _textFieldKey,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
           Radius.circular(8),
@@ -158,75 +185,107 @@ class _CommentsScreenState extends State<CommentsScreen> {
         shape: BoxShape.rectangle,
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: PlatformTextField(
-        style: styles.bodyMedium?.merge(
-          TextStyle(color: ColorConstants.onSurfaceWhite),
-        ),
-        scrollPadding: EdgeInsets.zero,
-        hintText: 'Add a comment...',
-        controller: widget._controller,
-        expands: true,
-        maxLines: null,
-        minLines: null,
-        cupertino: (context, platform) {
-          return CupertinoTextFieldData(
-            controller: widget._controller,
-            suffixMode: OverlayVisibilityMode.editing,
-            suffix: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                if (_height != null) SizedBox(height: _height!),
-                Container(
-                  width: 24,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(6)),
-                    color: ColorConstants.surfaceWhite,
-                  ),
-                  child: Flexible(
-                    child: Icon(
-                      Icons.send,
-                      size: 16,
-                      color: ColorConstants.surfacePrimaryDark,
+      constraints: BoxConstraints(
+        maxHeight: (MediaQuery.of(context).size.height -
+                MediaQuery.of(context).viewInsets.bottom -
+                bottomSheetTopOffset -
+                headerHeight -
+                footerInsets) *
+            coefficient,
+      ),
+      child: Scrollbar(
+        child: SingleChildScrollView(
+          key: _textFieldKey,
+          scrollDirection: Axis.vertical,
+          reverse: true,
+          child: PlatformTextField(
+            style: styles.bodyMedium?.merge(
+              TextStyle(color: ColorConstants.onSurfaceWhite),
+            ),
+            scrollPadding: EdgeInsets.zero,
+            hintText: 'Add a comment...',
+            controller: _controller,
+            expands: true,
+            maxLines: null,
+            minLines: null,
+            cupertino: (context, platform) {
+              return CupertinoTextFieldData(
+                controller: _controller,
+                suffixMode: OverlayVisibilityMode.editing,
+                suffix: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    if (_height != null) SizedBox(height: _height! - 36),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(6)),
+                          color: ColorConstants.surfaceWhite,
+                        ),
+                        child: Flexible(
+                          child: Icon(
+                            Icons.send,
+                            size: 16,
+                            color: ColorConstants.surfacePrimaryDark,
+                          ),
+                        ),
+                      ),
                     ),
+                  ],
+                ),
+                textAlignVertical: TextAlignVertical.center,
+                decoration: const BoxDecoration(color: Colors.transparent),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                placeholderStyle: styles.bodyMedium?.merge(
+                  TextStyle(color: ColorConstants.onSurfaceWhite80),
+                ),
+              );
+            },
+            material: (context, platform) {
+              return MaterialTextFieldData(
+                controller: _controller,
+                decoration: InputDecoration(
+                  suffix: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      if (_height != null) SizedBox(height: _height! - 36),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(6)),
+                            color: ColorConstants.surfaceWhite,
+                          ),
+                          child: Flexible(
+                            child: Icon(
+                              Icons.send,
+                              size: 16,
+                              color: ColorConstants.surfacePrimaryDark,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  hintStyle: styles.bodyMedium?.merge(
+                    TextStyle(color: ColorConstants.onSurfaceMedium),
                   ),
                 ),
-              ],
-            ),
-            textAlignVertical: TextAlignVertical.center,
-            decoration: const BoxDecoration(color: Colors.transparent),
-            padding: const EdgeInsets.symmetric(vertical: 10),
-            placeholderStyle: styles.bodyMedium?.merge(
-              TextStyle(color: ColorConstants.onSurfaceWhite80),
-            ),
-          );
-        },
-        material: (context, platform) {
-          return MaterialTextFieldData(
-            controller: widget._controller,
-            decoration: InputDecoration(
-              suffix: Container(
-                width: 24,
-                height: 24,
-                decoration: BoxDecoration(
-                  borderRadius: const BorderRadius.all(Radius.circular(6)),
-                  color: ColorConstants.surfaceWhite,
-                ),
-                child: Icon(
-                  Icons.send,
-                  size: 16,
-                  color: ColorConstants.surfacePrimaryDark,
-                ),
-              ),
-              border: InputBorder.none,
-              contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-              hintStyle: styles.bodyMedium?.merge(
-                TextStyle(color: ColorConstants.onSurfaceMedium),
-              ),
-            ),
-          );
-        },
+              );
+            },
+          ),
+        ),
       ),
     );
   }
