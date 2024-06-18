@@ -4,8 +4,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/ui/widgets/send_button.dart';
 
-// test test test
 class CommentsScreen extends StatefulWidget {
   const CommentsScreen({super.key});
 
@@ -20,6 +20,29 @@ class _CommentsScreenState extends State<CommentsScreen> {
   static const coefficient = 0.9;
 
   final _controller = TextEditingController();
+  final _focusNode = FocusNode();
+
+  bool _isFocused = false;
+
+  void _onFocusChange() {
+    setState(() {
+      if (_focusNode.hasFocus) {
+        _isFocused = true;
+      } else {
+        _isFocused = false;
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    _controller.addListener(() {
+      setState(() {});
+    });
+
+    _focusNode.addListener(_onFocusChange);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +171,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ),
         border: Border.all(
           width: 0.5,
-          color: ColorConstants.stroke,
+          color: _isFocused
+              ? ColorConstants.onSurfacePrimaryLighter
+              : ColorConstants.stroke,
         ),
         color: ColorConstants.surfaceSecondary,
         shape: BoxShape.rectangle,
@@ -172,6 +197,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 style: styles.bodyMedium?.merge(
                   TextStyle(color: ColorConstants.onSurfaceWhite),
                 ),
+                focusNode: _focusNode,
                 scrollPadding: EdgeInsets.zero,
                 hintText: 'Add a comment...',
                 controller: _controller,
@@ -207,43 +233,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
           Positioned(
             right: 0,
             bottom: 8,
-            child: Container(
-              width: 24,
-              height: 24,
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(6)),
-                color: ColorConstants.surfaceWhite,
-              ),
-              child: Flexible(
-                child: Icon(
-                  Icons.send,
-                  size: 16,
-                  color: ColorConstants.surfacePrimaryDark,
-                ),
-              ),
-            ),
+            child: SendButton(controller: _controller),
           ),
         ],
       ),
     );
   }
 }
-
-/*
-Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(6)),
-                          color: ColorConstants.surfaceWhite,
-                        ),
-                        child: Flexible(
-                          child: Icon(
-                            Icons.send,
-                            size: 16,
-                            color: ColorConstants.surfacePrimaryDark,
-                          ),
-                        ),
-                      ),
-*/
