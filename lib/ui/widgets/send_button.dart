@@ -3,14 +3,18 @@ import 'package:help_my_truck/const/colors.dart';
 
 class SendButton extends StatelessWidget {
   final TextEditingController controller;
-  const SendButton({super.key, required this.controller});
+  final VoidCallback onTap;
+
+  const SendButton({super.key, required this.controller, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Visibility(
       visible: controller.text.isNotEmpty,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          onTap();
+        },
         child: Container(
           width: 24,
           height: 24,

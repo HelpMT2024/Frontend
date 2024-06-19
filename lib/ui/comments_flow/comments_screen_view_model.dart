@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -27,7 +28,7 @@ class CommentsScreenViewModel {
       isLoading.add(true);
       await itemProvider.addComment(contentfulId!, text).then((value) {
         isLoading.add(false);
-        getPage();
+        resetData();
       });
     }
   }
