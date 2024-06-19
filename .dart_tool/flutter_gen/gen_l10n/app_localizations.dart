@@ -702,6 +702,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Free Trial'**
   String get free_trial;
+
+  /// No description provided for @read_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Read More'**
+  String get read_more;
+
+  /// No description provided for @collapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get collapse;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

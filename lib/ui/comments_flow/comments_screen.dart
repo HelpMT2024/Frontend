@@ -72,6 +72,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
           topLeft: Radius.circular(24),
           topRight: Radius.circular(24),
         ),
+        boxShadow: [
+          BoxShadow(
+            spreadRadius: 1,
+            color: ColorConstants.surfacePrimaryDark,
+          ),
+        ],
         color: ColorConstants.surfacePrimaryDark,
       ),
       child: Column(
@@ -239,7 +245,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 scrollPadding: EdgeInsets.zero,
                 hintText: 'Add a comment...',
                 controller: _controller,
-                expands: true,
                 maxLines: null,
                 minLines: null,
                 cupertino: (context, platform) {

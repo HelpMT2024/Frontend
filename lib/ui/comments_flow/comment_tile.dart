@@ -1,18 +1,27 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 
-class CommentTile extends StatelessWidget {
+class CommentTile extends StatefulWidget {
   final CommentsListItem item;
 
   const CommentTile({super.key, required this.item});
 
+  @override
+  State<CommentTile> createState() => _CommentTileState();
+}
+
+class _CommentTileState extends State<CommentTile> {
+  bool isCollapsed = true;
+
   String formattedDateDifference(DateTime pastDate) {
+    final toLocalDifference = pastDate.toLocal().timeZoneOffset;
+    pastDate = pastDate.add(toLocalDifference);
     DateTime currentDate = DateTime.now();
     Duration difference = currentDate.difference(pastDate);
-    print('<!> currentDate = $currentDate');
-    print('<!> pastDate = $pastDate');
 
     int years = currentDate.year - pastDate.year;
     if (pastDate.month > currentDate.month ||
@@ -68,7 +77,7 @@ class CommentTile extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      item.ownerUsername,
+                      widget.item.ownerUsername,
                       style: styles.labelLarge?.copyWith(
                         color: ColorConstants.onSurfaceWhite,
                       ),
@@ -76,7 +85,7 @@ class CommentTile extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      formattedDateDifference(item.createdAt),
+                      formattedDateDifference(widget.item.createdAt),
                       style: styles.bodySmall?.copyWith(
                         color: ColorConstants.onSurfaceWhite80,
                       ),
@@ -85,12 +94,25 @@ class CommentTile extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-                Text(
-                  item.text,
-                  style: styles.bodyMedium?.copyWith(
-                    color: ColorConstants.onSurfaceWhite,
-                  ),
-                ),
+                LayoutBuilder(builder: (context, constraints) {
+                  final span = TextSpan(
+                      text: widget.item.text, style: styles.bodyMedium);
+                  final tp =
+                      TextPainter(text: span, textDirection: TextDirection.ltr);
+                  tp.layout(maxWidth: constraints.maxWidth);
+                  final numLines = tp.computeLineMetrics().length;
+
+                  if (numLines > 4) {
+                    return Column(
+                      children: [
+                        _content(),
+                        _showMoreButton(context),
+                      ],
+                    );
+                  } else {
+                    return _content();
+                  }
+                }),
               ],
             ),
           ),
@@ -106,6 +128,47 @@ class CommentTile extends StatelessWidget {
                 color: ColorConstants.onSurfaceMedium,
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _content() {
+    final styles = Theme.of(context).textTheme;
+
+    return Text(
+      maxLines: isCollapsed ? 4 : null,
+      overflow: isCollapsed ? TextOverflow.ellipsis : null,
+      widget.item.text,
+      style: styles.bodyMedium?.copyWith(
+        color: ColorConstants.onSurfaceWhite,
+      ),
+    );
+  }
+
+  Widget _showMoreButton(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    var text = isCollapsed ? l10n!.read_more : l10n!.collapse;
+    return InkWell(
+      onTap: () {
+        setState(() {
+          isCollapsed = !isCollapsed;
+        });
+      },
+      child: Row(
+        children: [
+          Text(
+            text,
+            style: styles.labelMedium?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
+          Icon(
+            isCollapsed ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+            color: ColorConstants.onSurfaceWhite,
           ),
         ],
       ),
