@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
@@ -13,7 +16,10 @@ import 'package:rxdart/rxdart.dart';
 class SystemObserverViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelType itemType = FavoriteModelType.system;
   final ChildrenSystem config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final system = BehaviorSubject<System>()
     ..addStream(
@@ -36,7 +42,22 @@ class SystemObserverViewModel {
     required this.config,
     required this.provider,
     required this.itemProvider,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);
@@ -46,9 +67,15 @@ class SystemObserverViewModel {
     final model =
         system.value.children.firstWhere((element) => element.id == id);
 
-    Navigator.of(context).pushNamed(
+    Navigator.of(context)
+        .pushNamed(
       VehicleSelectorRouteKeys.componentObserver,
       arguments: model,
+    )
+        .then(
+      (value) {
+        item();
+      },
     );
   }
 }

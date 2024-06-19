@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/problem_case.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -9,7 +12,10 @@ import 'package:rxdart/rxdart.dart';
 class ProblemCaseScreenViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelType itemType = FavoriteModelType.problemCase;
   final ChildProblem config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final problem = BehaviorSubject<ProblemCase>()
     ..addStream(Stream.fromFuture(provider.problemCase(config.id)));
@@ -35,5 +41,20 @@ class ProblemCaseScreenViewModel {
     required this.provider,
     required this.config,
     required this.itemProvider,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 }

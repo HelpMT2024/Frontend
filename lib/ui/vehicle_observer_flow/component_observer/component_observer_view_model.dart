@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -14,7 +17,10 @@ import 'package:rxdart/subjects.dart';
 class ComponentObserverViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelType itemType = FavoriteModelType.component;
   final ChildrenComponent config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final component = BehaviorSubject<Component>()
     ..addStream(
@@ -35,11 +41,25 @@ class ComponentObserverViewModel {
   List<PdfFile> get pdfFiles => component.valueOrNull?.pdfFiles.items ?? [];
   bool get hasPDF => pdfFiles.isNotEmpty;
 
-  ComponentObserverViewModel({
-    required this.config,
-    required this.provider,
-    required this.itemProvider
-  });
+  ComponentObserverViewModel(
+      {required this.config,
+      required this.provider,
+      required this.itemProvider}) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);
@@ -50,9 +70,15 @@ class ComponentObserverViewModel {
       (element) => element.id == id,
     );
 
-    Navigator.of(context).pushNamed(
+    Navigator.of(context)
+        .pushNamed(
       VehicleSelectorRouteKeys.partObserver,
       arguments: model,
+    )
+        .then(
+      (value) {
+        item();
+      },
     );
   }
 }

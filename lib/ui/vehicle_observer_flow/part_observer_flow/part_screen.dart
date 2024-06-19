@@ -1,9 +1,9 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
@@ -24,7 +24,6 @@ import 'package:help_my_truck/ui/widgets/warning_lights_row.dart';
 
 class PartScreen extends StatefulWidget {
   final PartViewModel viewModel;
-  final FavoriteModelType itemType = FavoriteModelType.part;
 
   const PartScreen({super.key, required this.viewModel});
 
@@ -38,12 +37,9 @@ class _PartScreenState extends State<PartScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimary;
 
-    return FutureBuilder(
-      future: widget.viewModel.itemProvider.processItem(
-        widget.viewModel.config.id,
-        widget.itemType.filterKey(),
-      ),
-      builder: (context, snapshot) {
+    return StreamBuilder<ContentfulItem>(
+      stream: widget.viewModel.itemStreamController.stream,
+      builder: (context, AsyncSnapshot snapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,

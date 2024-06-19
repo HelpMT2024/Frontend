@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
@@ -14,6 +16,8 @@ class UnitObserverViewModel {
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.unit;
   final ChildrenUnit config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final unit = BehaviorSubject<Unit>()
     ..addStream(
@@ -36,19 +40,46 @@ class UnitObserverViewModel {
     required this.config,
     required this.provider,
     required this.itemProvider,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onModelSelected(String id, BuildContext context) {
     final model = unit.value.children.firstWhere((element) => element.id == id);
     if (model.isDriverDisplay) {
-      Navigator.of(context).pushNamed(
+      Navigator.of(context)
+          .pushNamed(
         VehicleSelectorRouteKeys.driverCabin,
         arguments: model,
+      )
+          .then(
+        (value) {
+          item();
+        },
       );
     } else {
-      Navigator.of(context).pushNamed(
+      Navigator.of(context)
+          .pushNamed(
         VehicleSelectorRouteKeys.systemObserver,
         arguments: model,
+      )
+          .then(
+        (value) {
+          item();
+        },
       );
     }
   }

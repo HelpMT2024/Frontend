@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/bottom_reusable_container.dart';
@@ -14,7 +14,6 @@ import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart'
 
 class DriverCabinScreen extends StatefulWidget {
   final DriverCabinViewModel viewModel;
-  final FavoriteModelSubType itemType = FavoriteModelSubType.driverDisplay;
 
   const DriverCabinScreen({super.key, required this.viewModel});
 
@@ -27,12 +26,9 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return FutureBuilder(
-      future: widget.viewModel.itemProvider.processItem(
-        widget.viewModel.config.id,
-        widget.itemType.filterKey(),
-      ),
-      builder: (context, snapshot) {
+    return StreamBuilder<ContentfulItem>(
+      stream: widget.viewModel.itemStreamController.stream,
+      builder: (context, AsyncSnapshot snapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,

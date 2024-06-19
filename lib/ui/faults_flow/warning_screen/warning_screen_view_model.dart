@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/warning.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
@@ -14,7 +17,10 @@ import '../../widgets/nav_bar/nav_bar_page.dart';
 class WarningScreenViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelSubType itemType = FavoriteModelSubType.warningLights;
   final ChildrenComponent config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final warnings = BehaviorSubject<List<Warning>>()
     ..addStream(
@@ -25,7 +31,22 @@ class WarningScreenViewModel {
     required this.provider,
     required this.itemProvider,
     required this.config,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onModelSelected(Warning model, BuildContext context) {
     final fault = SearchFault.fromWarning(model);

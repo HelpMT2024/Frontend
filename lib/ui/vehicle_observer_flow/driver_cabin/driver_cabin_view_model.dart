@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
@@ -13,7 +16,10 @@ import 'package:collection/collection.dart';
 class DriverCabinViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelSubType itemType = FavoriteModelSubType.driverDisplay;
   final ChildrenSystem config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   ChildrenComponent? get warningLightComponent =>
       system.valueOrNull?.children.firstWhereOrNull(
@@ -34,7 +40,22 @@ class DriverCabinViewModel {
     required this.config,
     required this.provider,
     required this.itemProvider,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onModelSelected(String id, BuildContext context) {
     final model = system.value.children.firstWhere(
@@ -42,9 +63,15 @@ class DriverCabinViewModel {
     );
 
     if (model.type == ChildType.warningLight) {
-      Navigator.of(context).pushNamed(
+      Navigator.of(context)
+          .pushNamed(
         FaultsRouteKeys.warningScreen,
         arguments: model,
+      )
+          .then(
+        (value) {
+          item();
+        },
       );
     } else {
       VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);

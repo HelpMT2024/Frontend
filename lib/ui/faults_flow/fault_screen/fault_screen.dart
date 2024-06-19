@@ -2,7 +2,7 @@ import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/fault.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -17,7 +17,6 @@ import 'package:help_my_truck/ui/widgets/web_view_screen.dart';
 
 class FaultScreen extends StatefulWidget {
   final FaultScreenViewModel viewModel;
-  final FavoriteModelType itemType = FavoriteModelType.faultCode;
 
   const FaultScreen({super.key, required this.viewModel});
 
@@ -31,12 +30,9 @@ class _FaultScreenState extends State<FaultScreen> {
     final styles = Theme.of(context).textTheme;
     final backgroundColor = ColorConstants.surfacePrimaryDark;
 
-    return FutureBuilder(
-      future: widget.viewModel.itemProvider.processItem(
-        widget.viewModel.config.id,
-        widget.itemType.filterKey(),
-      ),
-      builder: (context, itemSnapshot) {
+    return StreamBuilder<ContentfulItem>(
+      stream: widget.viewModel.itemStreamController.stream,
+      builder: (context, AsyncSnapshot itemSnapshot) {
         return Stack(
           children: [
             Container(

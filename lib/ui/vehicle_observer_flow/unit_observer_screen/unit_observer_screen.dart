@@ -1,7 +1,6 @@
 import 'package:contentful_rich_text/contentful_rich_text.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
@@ -23,7 +22,6 @@ import 'package:help_my_truck/ui/widgets/videos/horizontal_video_container.dart'
 
 class UnitObserverScreen extends StatefulWidget {
   final UnitObserverViewModel viewModel;
-  final FavoriteModelType itemType = FavoriteModelType.unit;
 
   const UnitObserverScreen({super.key, required this.viewModel});
 
@@ -35,12 +33,9 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
-    return FutureBuilder(
-      future: widget.viewModel.itemProvider.processItem(
-        widget.viewModel.config.id,
-        widget.itemType.filterKey(),
-      ),
-      builder: (context, itemSnapshot) {
+    return StreamBuilder<ContentfulItem>(
+      stream: widget.viewModel.itemStreamController.stream,
+      builder: (context, AsyncSnapshot itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
