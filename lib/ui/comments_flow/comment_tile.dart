@@ -9,10 +9,10 @@ class CommentTile extends StatelessWidget {
   const CommentTile({super.key, required this.item});
 
   String formattedDateDifference(DateTime pastDate) {
+    final toLocalDifference = pastDate.toLocal().timeZoneOffset;
+    pastDate = pastDate.add(toLocalDifference);
     DateTime currentDate = DateTime.now();
     Duration difference = currentDate.difference(pastDate);
-    print('<!> currentDate = $currentDate');
-    print('<!> pastDate = $pastDate');
 
     int years = currentDate.year - pastDate.year;
     if (pastDate.month > currentDate.month ||

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -239,7 +240,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 scrollPadding: EdgeInsets.zero,
                 hintText: 'Add a comment...',
                 controller: _controller,
-                expands: true,
                 maxLines: null,
                 minLines: null,
                 cupertino: (context, platform) {
@@ -271,7 +271,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
           Positioned(
             right: 0,
             bottom: 8,
-            child: SendButton(controller: _controller),
+            child: SendButton(
+              controller: _controller,
+              onTap: () {
+                widget.viewModel.addComment(_controller.text);
+                _controller.text = '';
+              },
+            ),
           ),
         ],
       ),
@@ -300,19 +306,18 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   Widget _successBody() {
     return PaginatedList<CommentsListItem>(
-      scrollDirection: Axis.vertical,
-      controller: _scrollController,
-      loadingIndicator: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        child: Center(child: Loadable(forceLoad: true, child: Container())),
-      ),
-      items: widget.viewModel.fetchedItems,
-      isRecentSearch: false,
-      isLastPage: widget.viewModel.isLastPage,
-      onLoadMore: (index) {
-        widget.viewModel.getPage();
-      },
-      builder: (item, index) => CommentTile(item: item),
-    );
+        scrollDirection: Axis.vertical,
+        controller: _scrollController,
+        loadingIndicator: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Center(child: Loadable(forceLoad: true, child: Container())),
+        ),
+        items: widget.viewModel.fetchedItems,
+        isRecentSearch: false,
+        isLastPage: widget.viewModel.isLastPage,
+        onLoadMore: (index) {
+          widget.viewModel.getPage();
+        },
+        builder: (item, index) => CommentTile(item: item));
   }
 }
