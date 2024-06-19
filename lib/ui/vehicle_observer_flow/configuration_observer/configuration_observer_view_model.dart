@@ -8,6 +8,7 @@ import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:purchases_ui_flutter/purchases_ui_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -34,11 +35,8 @@ class ConfigurationObserverViewModel {
   void onModelSelected(String id, BuildContext context) async {
     final model =
         configuration.value.children.firstWhere((element) => element.id == id);
-    if (PurchaseService.instance.isPro || kDebugMode) {
-      _navigateToChild(context, model);
-    } else {
-      await RevenueCatUI.presentPaywallIfNeeded(AppConsts.revenueEntitlement);
-    }
+    VehicleNavigationHelper.processAfterPayment(
+        () => _navigateToChild(context, model), context);
   }
 
   void _navigateToChild(BuildContext context, ConfigurationChild model) {
