@@ -132,7 +132,7 @@ Future<NetworkResponse<Model>> _executeRequest<Model>(
         );
       }
       switch (errorText.code) {
-        case 407:
+        case 401 || 407:
           final options = responseError.requestOptions.extra;
           final isRefreshed = options['newToken'];
 
