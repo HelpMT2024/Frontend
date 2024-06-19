@@ -108,7 +108,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
               data.pdfFilesCollection.items.isEmpty &&
               data.problems.isEmpty)
             const SizedBox(height: 16),
-          const CommentButton(),
+          //CommentButton(id:),
           if (widget.viewModel.hasVideos) _horizontalVideoWidget(),
           const SizedBox(height: 24),
         ],

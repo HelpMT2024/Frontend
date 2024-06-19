@@ -1,13 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/widgets/send_button.dart';
 
 class CommentsScreen extends StatefulWidget {
-  const CommentsScreen({super.key});
+  final int id;
+
+  const CommentsScreen({super.key, required this.id});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
@@ -51,7 +51,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
 
     return Container(
-      height: MediaQuery.of(context).size.height - 122,
+      height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
@@ -65,7 +65,12 @@ class _CommentsScreenState extends State<CommentsScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(l10n, styles),
-          const Expanded(child: SingleChildScrollView()),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ListView.builder(itemBuilder: (context, index) {}),
+            ),
+          ),
           _footer(l10n, styles, context),
           SizedBox(height: keyBoardHeight),
         ],

@@ -186,7 +186,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             !widget.viewModel.hasProblems &&
             !widget.viewModel.hasDescription)
           const SizedBox(height: 32),
-        const CommentButton(disableFlex: true),
+        //CommentButton(disableFlex: true),
       ],
     );
   }

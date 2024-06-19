@@ -51,11 +51,13 @@ class ChildrenUnit {
 }
 
 class Configuration {
+  final String id;
   final String name;
   final IDPImageView imageView;
   final List<ConfigurationChild> children;
 
   Configuration({
+    required this.id,
     required this.name,
     required this.imageView,
     required this.children,
@@ -65,6 +67,7 @@ class Configuration {
     final List<dynamic> children = json['childrenCollection']['items'];
 
     return Configuration(
+      id: json['sys']['id'],
       name: json['name'],
       imageView: IDPImageView.fromJson(json['imageView']),
       children:

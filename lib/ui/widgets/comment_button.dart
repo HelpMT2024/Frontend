@@ -6,13 +6,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentButton extends StatelessWidget {
   final bool disableFlex;
-  const CommentButton({super.key, this.disableFlex = false});
+  final int id;
+
+  const CommentButton({super.key, this.disableFlex = false, required this.id});
 
   void _showCommentsModal(BuildContext context) {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context,
-      builder: (BuildContext context) => CommentsScreen(),
+      builder: (BuildContext context) => CommentsScreen(id: id),
     );
   }
 

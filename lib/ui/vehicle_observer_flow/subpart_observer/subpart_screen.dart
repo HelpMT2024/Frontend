@@ -210,7 +210,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
       buttons: [
         ...buttons,
         const SizedBox(height: 8),
-        const CommentButton(disableFlex: true)
+        //const CommentButton(disableFlex: true)
       ],
     );
   }

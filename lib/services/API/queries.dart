@@ -204,6 +204,9 @@ faultCodesCollection {
     limit: 1
   ) {
     items {
+      sys {
+        id
+      }
       name
       childrenCollection {
         items {

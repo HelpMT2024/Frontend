@@ -83,7 +83,7 @@ class _WarningScreenState extends State<WarningScreen> {
         children: [
           _lights(),
           const SizedBox(height: 32),
-          const CommentButton(),
+          //CommentButton(),
         ],
       ),
     );

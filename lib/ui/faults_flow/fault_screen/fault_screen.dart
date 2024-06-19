@@ -110,7 +110,7 @@ class _FaultScreenState extends State<FaultScreen> {
   Widget _buttons(Fault fault, AppLocalizations? l10n) {
     final buttons = [
       ...fault.pdfFilesCollection.items.map((e) => PDFButton(file: e)),
-      const CommentButton(disableFlex: true),
+      //CommentButton(disableFlex: true),
     ];
 
     return ButtonGroup(buttons: buttons);

@@ -229,7 +229,7 @@ class _PartScreenState extends State<PartScreen> {
       buttons: [
         ...buttons,
         const SizedBox(height: 8),
-        const CommentButton(disableFlex: true)
+        //const CommentButton(disableFlex: true)
       ],
     );
   }

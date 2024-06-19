@@ -75,7 +75,7 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
         children: [
           if (_content(data) != null) _content(data)!,
           const SizedBox(height: 32),
-          const CommentButton(),
+          //const CommentButton(),
           HorizontalVideoContainer(videos: data.videos ?? []),
           const SizedBox(height: 32),
         ],

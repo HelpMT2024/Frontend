@@ -112,7 +112,9 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     }).toList();
 
     return ButtonGroup(
-      buttons: [...buttons, const CommentButton(disableFlex: true)],
+      buttons: [
+        ...buttons, //CommentButton(disableFlex: true)
+      ],
     );
   }
 
