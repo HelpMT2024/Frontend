@@ -6,7 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CommentButton extends StatelessWidget {
   final bool disableFlex;
-  final int id;
+  final int? id;
 
   const CommentButton({super.key, this.disableFlex = false, required this.id});
 

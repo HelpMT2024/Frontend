@@ -287,7 +287,7 @@ class RestAPINetworkService {
       path: '/api/user/token/refresh',
       data: NetworkRequestBody.formData(
         {
-          'refresh_token': token.refreshToken,
+          'refreshToken': token.refreshToken,
         },
       ),
     );
@@ -324,7 +324,8 @@ class RestAPINetworkService {
       _dio ??= await _getDefaultDioClient()
         ..interceptors.add(
           QueuedInterceptorsWrapper(onError: (e, handler) async {
-            if (e.response?.statusCode == 407) {
+            final code = e.response?.statusCode;
+            if (code == 407 || code == 401) {
               final options = e.requestOptions;
               final token = options.extra['token'];
               final newToken = await _processRefresh(token);
