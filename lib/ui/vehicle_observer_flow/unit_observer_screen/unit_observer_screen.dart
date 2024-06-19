@@ -111,7 +111,10 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
               data.pdfFilesCollection.items.isEmpty &&
               data.problems.isEmpty)
             const SizedBox(height: 16),
-          CommentButton(id: item?.id),
+          CommentButton(
+            itemProvider: widget.viewModel.itemProvider,
+            id: item?.id,
+          ),
           if (widget.viewModel.hasVideos) _horizontalVideoWidget(),
           const SizedBox(height: 24),
         ],

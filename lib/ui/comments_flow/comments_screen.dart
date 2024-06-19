@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
+import 'package:help_my_truck/ui/comments_flow/comment_tile.dart';
+import 'package:help_my_truck/ui/comments_flow/comments_screen_view_model.dart';
+import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/send_button.dart';
+import 'package:paginated_list/paginated_list.dart';
 
 class CommentsScreen extends StatefulWidget {
-  final int? id;
+  final CommentsScreenViewModel viewModel;
 
-  const CommentsScreen({super.key, required this.id});
+  const CommentsScreen({super.key, required this.viewModel});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
@@ -19,6 +24,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   static const footerInsets = 32;
   static const coefficient = 0.9;
 
+  final _scrollController = ScrollController();
   final _controller = TextEditingController();
   final _focusNode = FocusNode();
 
@@ -41,7 +47,16 @@ class _CommentsScreenState extends State<CommentsScreen> {
     });
 
     _focusNode.addListener(_onFocusChange);
+    widget.viewModel.resetData();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _scrollController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -65,10 +80,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _header(l10n, styles),
-          Expanded(
+          Flexible(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: ListView.builder(itemBuilder: (context, index) {}),
+              child: _table(),
             ),
           ),
           _footer(l10n, styles, context),
@@ -104,6 +119,24 @@ class _CommentsScreenState extends State<CommentsScreen> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _table() {
+    return StreamBuilder(
+      stream: widget.viewModel.isLoading,
+      builder: (context, snapshot) {
+        return Stack(
+          children: [
+            _body(),
+            if (snapshot.data ?? false)
+              Loadable(
+                forceLoad: true,
+                child: Container(),
+              )
+          ],
+        );
+      },
     );
   }
 
@@ -242,6 +275,44 @@ class _CommentsScreenState extends State<CommentsScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _body() {
+    return StreamBuilder(
+      stream: widget.viewModel.updateDataStreamController.stream,
+      builder: (context, snapshot) {
+        if ((snapshot.data?.isEmpty ?? true) &&
+            widget.viewModel.isLoading.value == false) {
+          return _placeholder();
+        } else if (snapshot.hasData) {
+          return _successBody();
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget _placeholder() {
+    return Container(color: Colors.purple);
+  }
+
+  Widget _successBody() {
+    return PaginatedList<CommentsListItem>(
+      scrollDirection: Axis.vertical,
+      controller: _scrollController,
+      loadingIndicator: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Center(child: Loadable(forceLoad: true, child: Container())),
+      ),
+      items: widget.viewModel.fetchedItems,
+      isRecentSearch: false,
+      isLastPage: widget.viewModel.isLastPage,
+      onLoadMore: (index) {
+        widget.viewModel.getPage();
+      },
+      builder: (item, index) => CommentTile(item: item),
     );
   }
 }

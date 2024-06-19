@@ -4,7 +4,9 @@ import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommentsScreenViewModel {
+  final int? contentfulId;
   final ItemProvider itemProvider;
+
   final int _cellsPerPage = 10;
   late final isLoading = BehaviorSubject<bool>.seeded(false);
   var updateDataStreamController = StreamController<List<CommentsListItem>>();
@@ -17,12 +19,13 @@ class CommentsScreenViewModel {
 
   CommentsScreenViewModel({
     required this.itemProvider,
+    required this.contentfulId,
   });
 
   void addComment(String text) async {
-    if (!isLoading.value) {
+    if (contentfulId != null && !isLoading.value) {
       isLoading.add(true);
-      await itemProvider.addComment(141, text).then((value) {
+      await itemProvider.addComment(contentfulId!, text).then((value) {
         isLoading.add(false);
         getPage();
       });
@@ -41,7 +44,7 @@ class CommentsScreenViewModel {
       isLoading.add(true);
       user = await itemProvider.user();
       await itemProvider
-          .commentsList(141, user!.id, _page, _cellsPerPage)
+          .commentsList(contentfulId!, user!.id, _page, _cellsPerPage)
           .then((page) => {
                 fetchedItems.addAll(page.items),
                 pagination = page.pagination,
