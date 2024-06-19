@@ -143,7 +143,7 @@ class _UnitObserverScreenState extends State<UnitObserverScreen> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 4),
+        const SizedBox(height: 6),
         _text(styles),
       ],
     );
