@@ -5,6 +5,7 @@ import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/subpart_observer/subpart_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
@@ -43,14 +44,14 @@ class _SubPartScreenState extends State<SubPartScreen> {
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
-      builder: (context, snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
             styles: styles,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               )
             ],
@@ -68,7 +69,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
                 stream: widget.viewModel.part,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return _body(snapshot.data!);
+                    return _body(snapshot.data!, itemSnapshot.data);
                   } else {
                     return Loadable(forceLoad: true, child: Container());
                   }
@@ -89,7 +90,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
     );
   }
 
-  Widget _body(SubPart data) {
+  Widget _body(SubPart data, ContentfulItem? item) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
 
@@ -127,7 +128,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
               const SizedBox(height: 8),
               _title(l10n?.instructions_title, styles),
             },
-            _instructionsButtons(styles),
+            _instructionsButtons(styles, item),
             if (widget.viewModel.hasVideos && widget.viewModel.hasImage)
               _horizontalVideoWidget()
           ],
@@ -200,7 +201,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
     );
   }
 
-  Widget _instructionsButtons(TextTheme styles) {
+  Widget _instructionsButtons(TextTheme styles, ContentfulItem? item) {
     final viewModel = widget.viewModel;
     final buttons = viewModel.pdfFiles.map((e) {
       return PDFButton(file: e);
@@ -210,7 +211,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
       buttons: [
         ...buttons,
         const SizedBox(height: 8),
-        //const CommentButton(disableFlex: true)
+        CommentButton(id: item?.id, disableFlex: true)
       ],
     );
   }

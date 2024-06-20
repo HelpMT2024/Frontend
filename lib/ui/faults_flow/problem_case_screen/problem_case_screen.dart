@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/problem_case.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/problem_case_screen/problem_case_view_model.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -38,7 +39,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
-      builder: (context, snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -47,7 +48,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
             bgColor: ColorConstants.surfacePrimaryDark,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               )
             ],
@@ -62,7 +63,10 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
                   stream: widget.viewModel.problem,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return SingleChildScrollView(child: _body());
+                      return SingleChildScrollView(
+                          child: _body(
+                        itemSnapshot.data,
+                      ));
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }
@@ -76,7 +80,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     );
   }
 
-  Widget _body() {
+  Widget _body(ContentfulItem? item) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
 
@@ -97,7 +101,7 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
           _text(Theme.of(context).textTheme),
           const SizedBox(height: 16),
         },
-        _instructionsButtons(),
+        _instructionsButtons(item),
         if (widget.viewModel.hasVideos) ...{
           HorizontalVideoContainer(videos: widget.viewModel.videos)
         }
@@ -105,16 +109,14 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
     );
   }
 
-  Widget _instructionsButtons() {
+  Widget _instructionsButtons(ContentfulItem? item) {
     final viewModel = widget.viewModel;
     final buttons = viewModel.pdfFiles.map((e) {
       return PDFButton(file: e);
     }).toList();
 
     return ButtonGroup(
-      buttons: [
-        ...buttons, //CommentButton(disableFlex: true)
-      ],
+      buttons: [...buttons, CommentButton(id: item?.id, disableFlex: true)],
     );
   }
 

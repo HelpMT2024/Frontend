@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/bottom_reusable_container.dart';
@@ -32,7 +33,7 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
-      builder: (context, snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -40,7 +41,7 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
             title: widget.viewModel.config.name,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               )
             ],
@@ -54,7 +55,7 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
                   stream: widget.viewModel.system,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return _body(snapshot.data!);
+                      return _body(snapshot.data!, itemSnapshot.data);
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }
@@ -68,14 +69,14 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
     );
   }
 
-  Widget _body(System data) {
+  Widget _body(System data, ContentfulItem? item) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (_content(data) != null) _content(data)!,
           const SizedBox(height: 32),
-          //const CommentButton(),
+          CommentButton(id: item?.id),
           HorizontalVideoContainer(videos: data.videos ?? []),
           const SizedBox(height: 32),
         ],

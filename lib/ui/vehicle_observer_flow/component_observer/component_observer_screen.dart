@@ -4,6 +4,7 @@ import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/custom_floating_button.dart';
@@ -44,7 +45,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
-      builder: (context, snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -52,7 +53,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             title: widget.viewModel.config.name,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               )
             ],
@@ -71,7 +72,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
                   stream: widget.viewModel.component,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return _body(snapshot.data!);
+                      return _body(snapshot.data!, itemSnapshot.data);
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }
@@ -85,7 +86,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     );
   }
 
-  Widget _body(Component data) {
+  Widget _body(Component data, ContentfulItem? item) {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
@@ -120,7 +121,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             const SizedBox(height: 8),
             _title(l10n?.instructions_title, styles),
           },
-          _instructionsButtons(styles, data),
+          _instructionsButtons(styles, data, item),
           const SizedBox(height: 4),
           if (widget.viewModel.hasImage) ...{
             HorizontalVideoContainer(videos: widget.viewModel.videos),
@@ -170,7 +171,11 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
     );
   }
 
-  Widget _instructionsButtons(TextTheme styles, Component data) {
+  Widget _instructionsButtons(
+    TextTheme styles,
+    Component data,
+    ContentfulItem? item,
+  ) {
     final viewModel = widget.viewModel;
     final buttons = viewModel.pdfFiles.map((e) {
       return PDFButton(file: e);
@@ -186,7 +191,7 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             !widget.viewModel.hasProblems &&
             !widget.viewModel.hasDescription)
           const SizedBox(height: 32),
-        //CommentButton(disableFlex: true),
+        CommentButton(id: item?.id, disableFlex: true),
       ],
     );
   }

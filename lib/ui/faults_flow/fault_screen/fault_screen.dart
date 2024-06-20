@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/fault_screen/fault_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -71,7 +72,7 @@ class _FaultScreenState extends State<FaultScreen> {
                       if (snapshot.hasData) ...{
                         Padding(
                           padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
-                          child: _body(snapshot.data!),
+                          child: _body(snapshot.data!, itemSnapshot.data),
                         ),
                       } else ...{
                         Loadable(forceLoad: true, child: Container()),
@@ -87,7 +88,7 @@ class _FaultScreenState extends State<FaultScreen> {
     );
   }
 
-  Widget _body(Fault model) {
+  Widget _body(Fault model, ContentfulItem? item) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
 
@@ -100,17 +101,17 @@ class _FaultScreenState extends State<FaultScreen> {
           },
           if (model.description != null) _description(styles, model),
           const SizedBox(height: 24),
-          _buttons(model, l10n),
+          _buttons(model, l10n, item),
           HorizontalVideoContainer(videos: model.videosCollection.items),
         ],
       ),
     );
   }
 
-  Widget _buttons(Fault fault, AppLocalizations? l10n) {
+  Widget _buttons(Fault fault, AppLocalizations? l10n, ContentfulItem? item) {
     final buttons = [
       ...fault.pdfFilesCollection.items.map((e) => PDFButton(file: e)),
-      //CommentButton(disableFlex: true),
+      CommentButton(id: item?.id, disableFlex: true),
     ];
 
     return ButtonGroup(buttons: buttons);

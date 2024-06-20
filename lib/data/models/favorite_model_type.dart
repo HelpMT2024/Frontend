@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum FavoriteModelType {
+  configuration,
   unit,
   system,
   component,
@@ -13,6 +14,7 @@ enum FavoriteModelType {
 
 extension FavoriteModelTypesExtension on FavoriteModelType {
   static Map<String, FavoriteModelType> itemTypeByString = {
+    "configuration": FavoriteModelType.configuration,
     "unit": FavoriteModelType.unit,
     "system": FavoriteModelType.system,
     "driver_display": FavoriteModelType.system,
@@ -27,6 +29,8 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
   String title(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     switch (this) {
+      case FavoriteModelType.configuration:
+        return l10n?.favorites_item_type_configurations ?? '';
       case FavoriteModelType.unit:
         return l10n?.favorites_item_type_units ?? '';
       case FavoriteModelType.system:
@@ -46,6 +50,8 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
 
   String filterKey() {
     switch (this) {
+      case FavoriteModelType.configuration:
+        return 'configuration';
       case FavoriteModelType.unit:
         return 'unit';
       case FavoriteModelType.system:
@@ -65,6 +71,8 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
 
   List<String> filterKeys() {
     switch (this) {
+      case FavoriteModelType.configuration:
+        return ['configuration'];
       case FavoriteModelType.unit:
         return ['unit'];
       case FavoriteModelType.system:

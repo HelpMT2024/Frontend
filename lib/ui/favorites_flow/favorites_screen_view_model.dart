@@ -77,6 +77,8 @@ class FavoritesScreenViewModel {
 
   Future<String> itemTitle(String id) async {
     switch (currentFilter) {
+      case FavoriteModelType.configuration:
+        return '';
       case FavoriteModelType.unit:
         return vehicleProvider.unit(id).then((unit) => unit.name);
       case FavoriteModelType.system:
@@ -109,6 +111,8 @@ class FavoritesScreenViewModel {
 
   void handleClick(FavoritesListItem model, BuildContext context) {
     switch (currentFilter) {
+      case FavoriteModelType.configuration:
+        break;
       case FavoriteModelType.unit:
         final child = ChildrenUnit(
           id: model.integrationId,

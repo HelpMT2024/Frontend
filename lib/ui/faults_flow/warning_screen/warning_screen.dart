@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/warning.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/warning_screen/warning_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -35,7 +36,7 @@ class _WarningScreenState extends State<WarningScreen> {
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
-      builder: (context, snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -43,7 +44,7 @@ class _WarningScreenState extends State<WarningScreen> {
             title: l10n?.warning_page_title,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               ),
             ],
@@ -62,7 +63,7 @@ class _WarningScreenState extends State<WarningScreen> {
                   stream: widget.viewModel.warnings,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return _body();
+                      return _body(itemSnapshot.data);
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }
@@ -76,14 +77,14 @@ class _WarningScreenState extends State<WarningScreen> {
     );
   }
 
-  Widget _body() {
+  Widget _body(ContentfulItem? item) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _lights(),
           const SizedBox(height: 32),
-          //CommentButton(),
+          CommentButton(id: item?.id),
         ],
       ),
     );

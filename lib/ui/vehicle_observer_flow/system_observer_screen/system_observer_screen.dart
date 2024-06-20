@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/button_group.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -38,7 +39,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
         widget.viewModel.config.id,
         widget.itemType.filterKey(),
       ),
-      builder: (context, snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -46,7 +47,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
             title: widget.viewModel.config.name,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               )
             ],
@@ -64,7 +65,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
                   stream: widget.viewModel.system,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return _body(snapshot.data!);
+                      return _body(snapshot.data!, itemSnapshot.data);
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }
@@ -78,7 +79,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
     );
   }
 
-  Widget _body(System data) {
+  Widget _body(System data, ContentfulItem? item) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
 
@@ -108,7 +109,7 @@ class _SystemObserverScreenState extends State<SystemObserverScreen> {
               data.pdfFilesCollection.items.isEmpty &&
               data.problems.isEmpty)
             const SizedBox(height: 16),
-          //CommentButton(id:),
+          CommentButton(id: item?.id),
           if (widget.viewModel.hasVideos) _horizontalVideoWidget(),
           const SizedBox(height: 24),
         ],

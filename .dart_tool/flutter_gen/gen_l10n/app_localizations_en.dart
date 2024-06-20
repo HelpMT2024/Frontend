@@ -311,8 +311,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get free_trial => 'Free Trial';
 
   @override
-  String get read_more => 'Read More';
+  String get read_more => 'Read more';
 
   @override
   String get collapse => 'Collapse';
+
+  @override
+  String get favorites_item_type_configurations => 'Configurations';
 }

@@ -706,7 +706,7 @@ abstract class AppLocalizations {
   /// No description provided for @read_more.
   ///
   /// In en, this message translates to:
-  /// **'Read More'**
+  /// **'Read more'**
   String get read_more;
 
   /// No description provided for @collapse.
@@ -714,6 +714,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Collapse'**
   String get collapse;
+
+  /// No description provided for @favorites_item_type_configurations.
+  ///
+  /// In en, this message translates to:
+  /// **'Configurations'**
+  String get favorites_item_type_configurations;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

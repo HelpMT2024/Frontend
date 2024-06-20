@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
+import 'package:help_my_truck/services/router/router.dart';
 import 'package:rxdart/rxdart.dart';
 
 class CommentsScreenViewModel {
   final int? contentfulId;
-  final ItemProvider itemProvider;
+  final itemProvider = ItemProvider(restAPIService, graphQLService);
 
   final int _cellsPerPage = 10;
   late final isLoading = BehaviorSubject<bool>.seeded(false);
@@ -19,7 +19,6 @@ class CommentsScreenViewModel {
   int _page = 1;
 
   CommentsScreenViewModel({
-    required this.itemProvider,
     required this.contentfulId,
   });
 
