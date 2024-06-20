@@ -318,4 +318,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get favorites_item_type_configurations => 'Configurations';
+
+  @override
+  String get ago => 'ago';
+
+  @override
+  String get year => 'year';
+
+  @override
+  String get years => 'years';
+
+  @override
+  String get month => 'month';
+
+  @override
+  String get months => 'months';
+
+  @override
+  String get week => 'week';
+
+  @override
+  String get weeks => 'weeks';
+
+  @override
+  String get day => 'day';
+
+  @override
+  String get days => 'days';
+
+  @override
+  String get hour => 'hour';
+
+  @override
+  String get hours => 'hours';
+
+  @override
+  String get minute => 'minute';
+
+  @override
+  String get minutes => 'minutes';
 }

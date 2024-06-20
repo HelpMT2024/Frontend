@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
@@ -17,7 +15,7 @@ class CommentTile extends StatefulWidget {
 class _CommentTileState extends State<CommentTile> {
   bool isCollapsed = true;
 
-  String formattedDateDifference(DateTime pastDate) {
+  String formattedDateDifference(DateTime pastDate, AppLocalizations? l10n) {
     final toLocalDifference = pastDate.toLocal().timeZoneOffset;
     pastDate = pastDate.add(toLocalDifference);
     DateTime currentDate = DateTime.now();
@@ -29,7 +27,8 @@ class _CommentTileState extends State<CommentTile> {
             pastDate.day > currentDate.day)) {
       years--;
     }
-    if (years > 0) return "$years ${years == 1 ? 'year' : 'years'} ago";
+    if (years > 0)
+      return "$years ${years == 1 ? l10n?.year : l10n?.years} ${l10n?.ago}";
 
     int months = (currentDate.year - pastDate.year) * 12 +
         currentDate.month -
@@ -37,19 +36,23 @@ class _CommentTileState extends State<CommentTile> {
     if (currentDate.day < pastDate.day) {
       months--;
     }
-    if (months > 0) return "$months ${months == 1 ? 'month' : 'months'} ago";
+    if (months > 0)
+      return "$months ${months == 1 ? l10n?.month : l10n?.months} ${l10n?.ago}";
 
     int weeks = difference.inDays ~/ 7;
-    if (weeks > 0) return "$weeks ${weeks == 1 ? 'week' : 'weeks'} ago";
+    if (weeks > 0)
+      return "$weeks ${weeks == 1 ? l10n?.week : l10n?.weeks} ${l10n?.ago}";
 
     int days = difference.inDays;
-    if (days > 0) return "$days ${days == 1 ? 'day' : 'days'} ago";
+    if (days > 0)
+      return "$days ${days == 1 ? l10n?.day : l10n?.days} ${l10n?.ago}";
 
     int hours = difference.inHours;
-    if (hours > 0) return "$hours ${hours == 1 ? 'hour' : 'hours'} ago";
+    if (hours > 0)
+      return "$hours ${hours == 1 ? l10n?.hour : l10n?.hours} ${l10n?.ago}";
 
     int minutes = difference.inMinutes;
-    return "$minutes ${minutes == 1 ? 'minute' : 'minutes'} ago";
+    return "$minutes ${minutes == 1 ? l10n?.minute : l10n?.minutes} ${l10n?.ago}";
   }
 
   @override
@@ -85,7 +88,7 @@ class _CommentTileState extends State<CommentTile> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      formattedDateDifference(widget.item.createdAt),
+                      formattedDateDifference(widget.item.createdAt, l10n),
                       style: styles.bodySmall?.copyWith(
                         color: ColorConstants.onSurfaceWhite80,
                       ),
