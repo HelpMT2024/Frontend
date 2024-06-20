@@ -94,12 +94,9 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
     final model = ReusableObserverWidgetConfig(
       imageView: data.imageView!,
       models: models,
-      onModelSelected: (_) => {},
-    );
-
-    return BottomReusableContainer(
-      config: model,
       onModelSelected: (model) => vm.onModelSelected(model.id, context),
     );
+
+    return ReusableObserverWidget(config: model);
   }
 }

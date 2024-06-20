@@ -8,6 +8,7 @@ import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
+import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:rxdart/rxdart.dart';
@@ -65,16 +66,29 @@ class DriverCabinViewModel {
     if (model.type == ChildType.warningLight) {
       Navigator.of(context)
           .pushNamed(
-        FaultsRouteKeys.warningScreen,
-        arguments: model,
-      )
-          .then(
-        (value) {
-          item();
-        },
-      );
-    } else {
+            FaultsRouteKeys.warningScreen,
+            arguments: model,
+          )
+          .then((value) => item());
+    } else if (model.type == ChildType.search) {
       VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);
+    } else {
+      final name = model.isSystem
+          ? VehicleSelectorRouteKeys.systemObserver
+          : VehicleSelectorRouteKeys.componentObserver;
+
+      final child = !model.isSystem
+          ? model
+          : ChildrenSystem(
+              id: id,
+              name: model.name,
+              image: model.image,
+              types: [],
+            );
+
+      Navigator.of(context)
+          .pushNamed(name, arguments: child)
+          .then((value) => item());
     }
   }
 }
