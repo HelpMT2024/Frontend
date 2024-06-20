@@ -357,4 +357,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get minutes => 'minutes';
+
+  @override
+  String get no_comments_title => 'There are no comments here yet';
+
+  @override
+  String get no_comments_description => 'In this section, you can leave comments, share suggestions, or detail your experiences with this part or component to help and inform other users.';
+
+  @override
+  String get report => 'Report';
 }

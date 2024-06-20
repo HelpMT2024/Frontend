@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
+import 'package:help_my_truck/ui/widgets/pop_over_button.dart';
 
 class CommentTile extends StatefulWidget {
   final CommentsListItem item;
+  final Function(int) reportCallback;
 
-  const CommentTile({super.key, required this.item});
+  const CommentTile({
+    super.key,
+    required this.item,
+    required this.reportCallback,
+  });
 
   @override
   State<CommentTile> createState() => _CommentTileState();
@@ -119,19 +125,9 @@ class _CommentTileState extends State<CommentTile> {
               ],
             ),
           ),
-          InkWell(
-            onTap: () {},
-            child: Container(
-              width: 24,
-              height: 24,
-              padding: const EdgeInsets.all(2),
-              child: Icon(
-                Icons.more_vert,
-                size: 20,
-                color: ColorConstants.onSurfaceMedium,
-              ),
-            ),
-          ),
+          PopOverButton(callback: () {
+            widget.reportCallback(widget.item.id);
+          })
         ],
       ),
     );

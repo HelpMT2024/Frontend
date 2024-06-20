@@ -312,18 +312,26 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   Widget _successBody() {
     return PaginatedList<CommentsListItem>(
-        scrollDirection: Axis.vertical,
-        controller: _scrollController,
-        loadingIndicator: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
-          child: Center(child: Loadable(forceLoad: true, child: Container())),
-        ),
-        items: widget.viewModel.fetchedItems,
-        isRecentSearch: false,
-        isLastPage: widget.viewModel.isLastPage,
-        onLoadMore: (index) {
-          widget.viewModel.getPage();
-        },
-        builder: (item, index) => CommentTile(item: item));
+      scrollDirection: Axis.vertical,
+      controller: _scrollController,
+      loadingIndicator: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Center(child: Loadable(forceLoad: true, child: Container())),
+      ),
+      items: widget.viewModel.fetchedItems,
+      isRecentSearch: false,
+      isLastPage: widget.viewModel.isLastPage,
+      onLoadMore: (index) {
+        widget.viewModel.getPage();
+      },
+      builder: (item, index) => CommentTile(
+          item: item,
+          reportCallback: (commentId) {
+            if (widget.viewModel.contentfulId != null) {
+              widget.viewModel
+                  .sendReport(widget.viewModel.contentfulId!, commentId);
+            }
+          }),
+    );
   }
 }

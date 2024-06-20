@@ -798,6 +798,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'minutes'**
   String get minutes;
+
+  /// No description provided for @no_comments_title.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no comments here yet'**
+  String get no_comments_title;
+
+  /// No description provided for @no_comments_description.
+  ///
+  /// In en, this message translates to:
+  /// **'In this section, you can leave comments, share suggestions, or detail your experiences with this part or component to help and inform other users.'**
+  String get no_comments_description;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
