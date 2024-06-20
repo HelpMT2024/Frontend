@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -13,7 +12,6 @@ import 'package:rxdart/rxdart.dart';
 class ConfigurationObserverViewModel {
   late final VehicleProvider provider;
   late final ItemProvider itemProvider;
-  final FavoriteModelType itemType = FavoriteModelType.configuration;
   final MainPageConfig config;
 
   late final configuration = BehaviorSubject<Configuration>()
