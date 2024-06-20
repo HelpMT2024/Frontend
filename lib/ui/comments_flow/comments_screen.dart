@@ -307,7 +307,40 @@ class _CommentsScreenState extends State<CommentsScreen> {
   }
 
   Widget _placeholder() {
-    return Container(color: Colors.purple);
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    return Expanded(
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          color: ColorConstants.surfacePrimaryDark,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(
+                height: 23,
+              ),
+              Text(
+                l10n?.no_comments_title ?? '',
+                textAlign: TextAlign.center,
+                style: styles.titleLarge
+                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
+              ),
+              const SizedBox(
+                height: 12,
+              ),
+              Text(
+                l10n?.no_comments_description ?? '',
+                textAlign: TextAlign.center,
+                style: styles.bodyMedium
+                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _successBody() {
