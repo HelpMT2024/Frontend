@@ -11,13 +11,14 @@ import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FavoritesScreenViewModel {
+class FavoritesScreenViewModel with ViewModelErrorHandable {
   final ItemProvider itemProvider;
   final VehicleProvider vehicleProvider;
   final int _cellsPerPage = 10;
@@ -36,7 +37,7 @@ class FavoritesScreenViewModel {
     required this.vehicleProvider,
   });
 
-  void getPage() async {
+  void getPage(BuildContext context) async {
     if (!isLoading.value) {
       isLoading.add(true);
       var typeFilters = currentFilter.filterKeys();
@@ -56,18 +57,21 @@ class FavoritesScreenViewModel {
           fetchedItems.addAll(page.items);
           pagination = page.pagination;
         },
-      );
+      ).catchError((error) {
+        isLoading.add(false);
+        showAlertDialog(context, error.message);
+      });
       _handlePagination();
       updateDataStreamController.add(fetchedItems);
       isLoading.add(false);
     }
   }
 
-  void resetData() {
+  void resetData(BuildContext context) {
     _page = 1;
     fetchedItems.clear();
     updateDataStreamController = StreamController<List<FavoritesListItem>>();
-    getPage();
+    getPage(context);
   }
 
   void _handlePagination() {
@@ -96,7 +100,6 @@ class FavoritesScreenViewModel {
                 .toString()
                 .replaceAll(']', '')
                 .replaceAll('[', '');
-
             return 'SPN ${fault.spnCode}, FMI $fmiCodes';
           },
         );
@@ -117,12 +120,12 @@ class FavoritesScreenViewModel {
         );
         Navigator.of(context)
             .pushNamed(
-          VehicleSelectorRouteKeys.unitObserver,
-          arguments: child,
-        )
+              VehicleSelectorRouteKeys.unitObserver,
+              arguments: child,
+            )
             .then(
           (value) {
-            resetData();
+            resetData(context);
           },
         );
       case FavoriteModelType.system:
@@ -142,14 +145,12 @@ class FavoritesScreenViewModel {
         }
         Navigator.of(context)
             .pushNamed(
-          routeKey,
-          arguments: child,
-        )
-            .then(
-          (value) {
-            resetData();
-          },
-        );
+              routeKey,
+              arguments: child,
+            )
+            .then((value) {
+          resetData(context);
+        });
       case FavoriteModelType.component:
         final warningsTypeKey = FavoriteModelSubType.warningLights.filterKey();
         final child = ChildrenComponent(
@@ -167,14 +168,12 @@ class FavoritesScreenViewModel {
         }
         Navigator.of(context)
             .pushNamed(
-          routeKey,
-          arguments: child,
-        )
-            .then(
-          (value) {
-            resetData();
-          },
-        );
+              routeKey,
+              arguments: child,
+            )
+            .then((value) {
+          resetData(context);
+        });
       case FavoriteModelType.part:
         final child = ChildrenPart(
           id: model.integrationId,
@@ -183,14 +182,12 @@ class FavoritesScreenViewModel {
         );
         Navigator.of(context)
             .pushNamed(
-          VehicleSelectorRouteKeys.partObserver,
-          arguments: child,
-        )
-            .then(
-          (value) {
-            resetData();
-          },
-        );
+              VehicleSelectorRouteKeys.partObserver,
+              arguments: child,
+            )
+            .then((value) {
+          resetData(context);
+        });
       case FavoriteModelType.subPart:
         final child = ChildSubpart(
           id: model.integrationId,
@@ -199,14 +196,12 @@ class FavoritesScreenViewModel {
         );
         Navigator.of(context)
             .pushNamed(
-          VehicleSelectorRouteKeys.subPartObserver,
-          arguments: child,
-        )
-            .then(
-          (value) {
-            resetData();
-          },
-        );
+              VehicleSelectorRouteKeys.subPartObserver,
+              arguments: child,
+            )
+            .then((value) {
+          resetData(context);
+        });
       case FavoriteModelType.faultCode:
         final child = ChildFault(
           id: model.integrationId,
@@ -216,14 +211,12 @@ class FavoritesScreenViewModel {
         );
         Navigator.of(context)
             .pushNamed(
-          FaultsRouteKeys.faultScreen,
-          arguments: child,
-        )
-            .then(
-          (value) {
-            resetData();
-          },
-        );
+              FaultsRouteKeys.faultScreen,
+              arguments: child,
+            )
+            .then((value) {
+          resetData(context);
+        });
       case FavoriteModelType.problemCase:
         final child = ChildProblem(
           id: model.integrationId,
@@ -231,14 +224,12 @@ class FavoritesScreenViewModel {
         );
         Navigator.of(context)
             .pushNamed(
-          FaultsRouteKeys.problemCaseScreen,
-          arguments: child,
-        )
-            .then(
-          (value) {
-            resetData();
-          },
-        );
+              FaultsRouteKeys.problemCaseScreen,
+              arguments: child,
+            )
+            .then((value) {
+          resetData(context);
+        });
     }
   }
 }
