@@ -4,7 +4,6 @@ import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/driver_cabin/driver_cabin_view_model.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/reusable_observer_screen.dart';
-import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/bottom_reusable_container.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';

@@ -8,6 +8,7 @@ import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -45,42 +46,33 @@ class UnitObserverViewModel {
   }
 
   item() {
-    itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+    itemProvider.processItem(config.id, itemType.filterKey()).then((item) {
+      itemStreamController.add(item);
+    });
   }
 
   void onModelSelected(String id, BuildContext context) {
     final model = unit.value.children.firstWhere((element) => element.id == id);
-    if (model.isDriverDisplay) {
-      Navigator.of(context)
-          .pushNamed(
-        VehicleSelectorRouteKeys.driverCabin,
-        arguments: model,
-      )
-          .then(
-        (value) {
-          item();
-        },
-      );
-    } else {
-      Navigator.of(context)
-          .pushNamed(
-        VehicleSelectorRouteKeys.systemObserver,
-        arguments: model,
-      )
-          .then(
-        (value) {
-          item();
-        },
-      );
-    }
+
+    PurchaseService.processAfterPayment(
+      () {
+        if (model.isDriverDisplay) {
+          Navigator.of(context)
+              .pushNamed(
+                VehicleSelectorRouteKeys.driverCabin,
+                arguments: model,
+              )
+              .then((value) => item());
+        } else {
+          Navigator.of(context)
+              .pushNamed(
+                VehicleSelectorRouteKeys.systemObserver,
+                arguments: model,
+              )
+              .then((value) => item());
+        }
+      },
+      context,
+    );
   }
 }

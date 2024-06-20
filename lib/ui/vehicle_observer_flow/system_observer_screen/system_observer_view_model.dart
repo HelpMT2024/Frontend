@@ -8,6 +8,7 @@ import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
@@ -72,9 +73,11 @@ class SystemObserverViewModel {
             image: model.image,
             types: [],
           );
-
-    Navigator.of(context)
-        .pushNamed(name, arguments: child)
-        .then((value) => item());
+    PurchaseService.processAfterPayment(
+      () => Navigator.of(context)
+          .pushNamed(name, arguments: child)
+          .then((value) => item()),
+      context,
+    );
   }
 }

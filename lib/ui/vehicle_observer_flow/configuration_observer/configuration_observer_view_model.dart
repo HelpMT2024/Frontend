@@ -37,8 +37,7 @@ class ConfigurationObserverViewModel {
   void onModelSelected(String id, BuildContext context) async {
     final model =
         configuration.value.children.firstWhere((element) => element.id == id);
-    PurchaseService.processAfterPayment(
-        () => _navigateToChild(context, model), context);
+    _navigateToChild(context, model);
   }
 
   void _navigateToChild(BuildContext context, ConfigurationChild model) {

@@ -7,6 +7,7 @@ import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen.dart';
 import 'package:help_my_truck/ui/favorites_flow/favorites_screen_view_model.dart';
 import 'package:help_my_truck/ui/profile_flow/profile_screen/profile_screen.dart';
@@ -122,10 +123,20 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     final pageStatus = NavBarPage.fromPage(index);
 
     if (pageStatus != NavBarPage.search) {
-      setState(() {
-        controller._selectedPage = pageStatus;
-        pageController.jumpToPage(index);
-      });
+      if (pageStatus == NavBarPage.favorites) {
+        PurchaseService.processAfterPayment(
+          () => setState(() {
+            controller._selectedPage = pageStatus;
+            pageController.jumpToPage(index);
+          }),
+          context,
+        );
+      } else {
+        setState(() {
+          controller._selectedPage = pageStatus;
+          pageController.jumpToPage(index);
+        });
+      }
     } else {
       _showSearch();
     }
@@ -134,13 +145,15 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
   void _showSearch() async {
     final search = SearchScreen(searchModalController: searchModalController);
 
-    showModalBottomSheet(
-      isScrollControlled: true,
-      context: context,
-      builder: (BuildContext bc) => Wrap(
-        children: [search],
-      ),
-    );
+    PurchaseService.processAfterPayment(
+        () => showModalBottomSheet(
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext bc) => Wrap(
+                children: [search],
+              ),
+            ),
+        context);
   }
 
   @override

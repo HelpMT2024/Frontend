@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
 import 'package:help_my_truck/ui/search_flow/search_screen.dart';
