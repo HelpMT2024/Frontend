@@ -33,7 +33,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   void initState() {
     widget.viewModel.currentFilter = FavoriteModelType.unit;
-    widget.viewModel.resetData();
+    widget.viewModel.resetData(context);
 
     super.initState();
   }
@@ -111,7 +111,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   void handleTabButtonClick(int index) {
     widget.viewModel.currentFilter = FavoriteModelType.values[index];
-    widget.viewModel.resetData();
+    widget.viewModel.resetData(context);
   }
 
   Widget _successBody() {
@@ -127,7 +127,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         isRecentSearch: false,
         isLastPage: widget.viewModel.isLastPage,
         onLoadMore: (index) {
-          widget.viewModel.getPage();
+          widget.viewModel.getPage(context);
         },
         builder: (item, index) => listViewCell(item, index),
       ),
