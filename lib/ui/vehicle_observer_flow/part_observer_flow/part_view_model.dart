@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/component.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
@@ -15,7 +18,10 @@ import '../vehicle_navigation_helper.dart';
 class PartViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelType itemType = FavoriteModelType.part;
   final ChildrenPart config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final part = BehaviorSubject<Part>()
     ..addStream(Stream.fromFuture(provider.part(config.id)));
@@ -48,7 +54,22 @@ class PartViewModel {
     required this.provider,
     required this.itemProvider,
     required this.config,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);
@@ -59,9 +80,15 @@ class PartViewModel {
       (element) => element.id == id,
     );
 
-    Navigator.of(context).pushNamed(
+    Navigator.of(context)
+        .pushNamed(
       VehicleSelectorRouteKeys.subPartObserver,
       arguments: model,
+    )
+        .then(
+      (value) {
+        item();
+      },
     );
   }
 }

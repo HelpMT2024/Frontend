@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
@@ -14,7 +17,10 @@ import '../vehicle_navigation_helper.dart';
 class SubPartViewModel {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
+  final FavoriteModelType itemType = FavoriteModelType.subPart;
   final ChildSubpart config;
+
+  var itemStreamController = StreamController<ContentfulItem>();
 
   late final part = BehaviorSubject<SubPart>()
     ..addStream(Stream.fromFuture(provider.subPart(config.id)));
@@ -47,7 +53,22 @@ class SubPartViewModel {
     required this.provider,
     required this.config,
     required this.itemProvider,
-  });
+  }) {
+    item();
+  }
+
+  item() {
+    itemProvider
+        .processItem(
+      config.id,
+      itemType.filterKey(),
+    )
+        .then(
+      (item) {
+        itemStreamController.add(item);
+      },
+    );
+  }
 
   void onSearch(BuildContext context) {
     VehicleNavigationHelper.navigateTo(NavBarPage.search, context, true);

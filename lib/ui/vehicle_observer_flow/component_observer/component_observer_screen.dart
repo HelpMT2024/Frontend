@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/component.dart';
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
@@ -26,7 +25,6 @@ import '../../widgets/pdf_button.dart';
 
 class ComponentObserverScreen extends StatefulWidget {
   final ComponentObserverViewModel viewModel;
-  final FavoriteModelType itemType = FavoriteModelType.component;
 
   const ComponentObserverScreen({super.key, required this.viewModel});
 
@@ -40,11 +38,8 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
 
-    return FutureBuilder(
-      future: widget.viewModel.itemProvider.processItem(
-        widget.viewModel.config.id,
-        widget.itemType.filterKey(),
-      ),
+    return StreamBuilder<ContentfulItem>(
+      stream: widget.viewModel.itemStreamController.stream,
       builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
