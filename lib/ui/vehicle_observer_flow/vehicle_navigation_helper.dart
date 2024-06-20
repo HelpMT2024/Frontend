@@ -16,7 +16,10 @@ class VehicleNavigationHelper {
       return;
     }
     if (tab == NavBarPage.search) {
-      _showSearchModal(context);
+      PurchaseService.processAfterPayment(
+        () => _showSearchModal(context),
+        context,
+      );
     } else {
       Navigator.of(context).popUntil((route) => route.isFirst);
       mainPageController.selectedPage = tab;

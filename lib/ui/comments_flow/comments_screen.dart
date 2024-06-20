@@ -65,6 +65,15 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
+    double bottomInset = 0.0;
+
+    final newBottomInset = MediaQuery.of(context).viewInsets.bottom;
+    if (newBottomInset != bottomInset) {
+      widget.viewModel.resetData();
+      setState(() {
+        bottomInset = newBottomInset;
+      });
+    }
 
     return Container(
       height: MediaQuery.of(context).size.height - bottomSheetTopOffset,

@@ -16,7 +16,6 @@ class PurchaseService {
     Function() callback,
     BuildContext context,
   ) async {
-    print('<!> PROCESS AFTER PAYMENT');
     if (PurchaseService.instance.isPro || kDebugMode) {
       callback();
     } else {

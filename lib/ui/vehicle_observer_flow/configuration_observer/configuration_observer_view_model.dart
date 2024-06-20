@@ -4,7 +4,6 @@ import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/unit.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
-import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
 import 'package:rxdart/rxdart.dart';

@@ -35,7 +35,9 @@ class CommentsScreenViewModel {
   void sendReport(int contentfulId, int commentId) async {
     if (!isLoading.value) {
       isLoading.add(true);
-      await itemProvider.report(contentfulId, commentId).then((value) => value);
+      await itemProvider
+          .report(contentfulId, commentId)
+          .then((value) => isLoading.add(false));
     }
   }
 
@@ -43,12 +45,12 @@ class CommentsScreenViewModel {
     if (!isLoading.value) {
       isLoading.add(true);
       user = await itemProvider.user();
-      await itemProvider
-          .commentsList(contentfulId!, user!.id, _page, _cellsPerPage)
-          .then((page) => {
-                fetchedItems.addAll(page.items),
-                pagination = page.pagination,
-              });
+      final page = await itemProvider.commentsList(
+          contentfulId!, user!.id, _page, _cellsPerPage);
+      // .then((page) => {
+      fetchedItems.addAll(page.items);
+      pagination = page.pagination;
+      //     });
       _handlePagination();
       updateDataStreamController.add(fetchedItems);
       isLoading.add(false);
@@ -59,6 +61,7 @@ class CommentsScreenViewModel {
     _page = 1;
     fetchedItems.clear();
     updateDataStreamController = StreamController<List<CommentsListItem>>();
+    isLoading.add(false);
     getPage();
   }
 
