@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum FavoriteModelType {
-  configuration,
   unit,
   system,
   component,
@@ -14,7 +13,6 @@ enum FavoriteModelType {
 
 extension FavoriteModelTypesExtension on FavoriteModelType {
   static Map<String, FavoriteModelType> itemTypeByString = {
-    "configuration": FavoriteModelType.configuration,
     "unit": FavoriteModelType.unit,
     "system": FavoriteModelType.system,
     "driver_display": FavoriteModelType.system,
@@ -29,8 +27,6 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
   String title(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     switch (this) {
-      case FavoriteModelType.configuration:
-        return l10n?.favorites_item_type_configurations ?? '';
       case FavoriteModelType.unit:
         return l10n?.favorites_item_type_units ?? '';
       case FavoriteModelType.system:
@@ -50,8 +46,6 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
 
   String filterKey() {
     switch (this) {
-      case FavoriteModelType.configuration:
-        return 'configuration';
       case FavoriteModelType.unit:
         return 'unit';
       case FavoriteModelType.system:
@@ -71,8 +65,6 @@ extension FavoriteModelTypesExtension on FavoriteModelType {
 
   List<String> filterKeys() {
     switch (this) {
-      case FavoriteModelType.configuration:
-        return ['configuration'];
       case FavoriteModelType.unit:
         return ['unit'];
       case FavoriteModelType.system:
@@ -103,6 +95,38 @@ extension FavoriteModelSubTypeExtension on FavoriteModelSubType {
         return 'driver_display';
       case FavoriteModelSubType.warningLights:
         return 'warning_lights';
+    }
+  }
+}
+
+enum NonFavoriteModelType {
+  configuration,
+}
+
+extension NonFavoriteModelTypesExtension on NonFavoriteModelType {
+  static Map<String, NonFavoriteModelType> itemTypeByString = {
+    "configuration": NonFavoriteModelType.configuration,
+  };
+
+  String title(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (this) {
+      case NonFavoriteModelType.configuration:
+        return l10n?.favorites_item_type_configurations ?? '';
+    }
+  }
+
+  String filterKey() {
+    switch (this) {
+      case NonFavoriteModelType.configuration:
+        return 'configuration';
+    }
+  }
+
+  List<String> filterKeys() {
+    switch (this) {
+      case NonFavoriteModelType.configuration:
+        return ['configuration'];
     }
   }
 }

@@ -12,7 +12,7 @@ import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 
 class ConfigurationObserverScreen extends StatefulWidget {
   final ConfigurationObserverViewModel viewModel;
-  final FavoriteModelType itemType = FavoriteModelType.configuration;
+  final NonFavoriteModelType itemType = NonFavoriteModelType.configuration;
 
   const ConfigurationObserverScreen({super.key, required this.viewModel});
 
