@@ -297,8 +297,14 @@ faultCodesCollection {
           id
         }
         childrenCollection {
+        
           items {
-            type
+            ... on Component {
+              type
+            }
+            ... on System {
+              __typename
+            }
           }
         }
         name
@@ -404,14 +410,27 @@ query System(\$id: String = "$id") {
     $problemsCollection
     childrenCollection {
       items {
-        sys {
-          id
+        ... on Component {
+          __typename
+          sys {
+            id
+          }
+          type
+          name
+          icon {
+            $image
+          } 
         }
-        type
-        name
-        icon {
-          $image
-        } 
+        ... on System {
+          __typename
+          sys {
+            id
+          }
+          name
+          icon {
+            $image
+          } 
+        }
       }
     }
     pdfFilesCollection {

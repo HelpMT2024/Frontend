@@ -7,12 +7,15 @@ class ChildrenComponent {
   final String name;
   final IDPIcon? image;
   final ChildType type;
+  // need only for system level screen, for check where need to navigate
+  final bool isSystem;
 
   ChildrenComponent({
     required this.id,
     required this.name,
     required this.image,
     required this.type,
+    required this.isSystem,
   });
 
   factory ChildrenComponent.fromJson(Map<String, dynamic> json) {
@@ -20,7 +23,8 @@ class ChildrenComponent {
       id: json['sys']['id'],
       name: json['name'],
       image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
-      type: childTypeFromJson(json['type']),
+      type: childTypeFromJson(json['__typename'] ?? json['type']),
+      isSystem: json['__typename'] == 'System',
     );
   }
 }

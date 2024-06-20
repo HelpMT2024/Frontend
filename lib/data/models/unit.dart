@@ -27,7 +27,7 @@ class ChildrenSystem {
       name: json['name'],
       image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
       types: json['childrenCollection']['items'].map<ChildType>((e) {
-        return childTypeFromJson(e['type']);
+        return childTypeFromJson(e['__typename'] ?? e['type']);
       }).toList(),
     );
   }

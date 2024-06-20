@@ -231,6 +231,7 @@ class _SearchScreenState extends State<SearchScreen> {
               name: e.name,
               image: null,
               type: ChildType.standart,
+              isSystem: false,
             );
             Navigator.of(context).pushNamed(
               VehicleSelectorRouteKeys.componentObserver,

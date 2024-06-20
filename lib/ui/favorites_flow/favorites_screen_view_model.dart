@@ -156,6 +156,7 @@ class FavoritesScreenViewModel {
           id: model.integrationId,
           name: model.name ?? '',
           image: null,
+          isSystem: false,
           type: ChildType.standart,
         );
         String routeKey;

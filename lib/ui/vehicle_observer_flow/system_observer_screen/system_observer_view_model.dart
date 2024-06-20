@@ -46,17 +46,10 @@ class SystemObserverViewModel {
     item();
   }
 
-  item() {
+  void item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 
   void onSearch(BuildContext context) {
@@ -67,15 +60,21 @@ class SystemObserverViewModel {
     final model =
         system.value.children.firstWhere((element) => element.id == id);
 
+    final name = model.isSystem
+        ? VehicleSelectorRouteKeys.systemObserver
+        : VehicleSelectorRouteKeys.componentObserver;
+
+    final child = !model.isSystem
+        ? model
+        : ChildrenSystem(
+            id: id,
+            name: model.name,
+            image: model.image,
+            types: [],
+          );
+
     Navigator.of(context)
-        .pushNamed(
-      VehicleSelectorRouteKeys.componentObserver,
-      arguments: model,
-    )
-        .then(
-      (value) {
-        item();
-      },
-    );
+        .pushNamed(name, arguments: child)
+        .then((value) => item());
   }
 }

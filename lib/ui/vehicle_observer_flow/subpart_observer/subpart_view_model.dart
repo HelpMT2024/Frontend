@@ -9,10 +9,9 @@ import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
+import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
+import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:rxdart/rxdart.dart';
-
-import '../../widgets/nav_bar/nav_bar_page.dart';
-import '../vehicle_navigation_helper.dart';
 
 class SubPartViewModel {
   final VehicleProvider provider;
@@ -57,17 +56,13 @@ class SubPartViewModel {
     item();
   }
 
-  item() {
+  void item() {
     itemProvider
         .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+          config.id,
+          itemType.filterKey(),
+        )
+        .then((item) => itemStreamController.add(item));
   }
 
   void onSearch(BuildContext context) {
