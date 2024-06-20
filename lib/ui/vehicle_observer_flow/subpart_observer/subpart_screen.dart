@@ -39,14 +39,14 @@ class _SubPartScreenState extends State<SubPartScreen> {
 
     return StreamBuilder<ContentfulItem>(
       stream: widget.viewModel.itemStreamController.stream,
-      builder: (context, AsyncSnapshot snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
             styles: styles,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               )
             ],
@@ -64,7 +64,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
                 stream: widget.viewModel.part,
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    return _body(snapshot.data!);
+                    return _body(snapshot.data!, itemSnapshot.data);
                   } else {
                     return Loadable(forceLoad: true, child: Container());
                   }
@@ -85,7 +85,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
     );
   }
 
-  Widget _body(SubPart data) {
+  Widget _body(SubPart data, ContentfulItem? item) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
 
@@ -123,7 +123,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
               const SizedBox(height: 8),
               _title(l10n?.instructions_title, styles),
             },
-            _instructionsButtons(styles),
+            _instructionsButtons(styles, item),
             if (widget.viewModel.hasVideos && widget.viewModel.hasImage)
               _horizontalVideoWidget()
           ],
@@ -196,7 +196,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
     );
   }
 
-  Widget _instructionsButtons(TextTheme styles) {
+  Widget _instructionsButtons(TextTheme styles, ContentfulItem? item) {
     final viewModel = widget.viewModel;
     final buttons = viewModel.pdfFiles.map((e) {
       return PDFButton(file: e);
@@ -206,7 +206,7 @@ class _SubPartScreenState extends State<SubPartScreen> {
       buttons: [
         ...buttons,
         const SizedBox(height: 8),
-        //const CommentButton(disableFlex: true)
+        CommentButton(id: item?.id, disableFlex: true)
       ],
     );
   }

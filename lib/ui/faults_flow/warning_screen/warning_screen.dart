@@ -31,7 +31,7 @@ class _WarningScreenState extends State<WarningScreen> {
 
     return StreamBuilder<ContentfulItem>(
       stream: widget.viewModel.itemStreamController.stream,
-      builder: (context, AsyncSnapshot snapshot) {
+      builder: (context, itemSnapshot) {
         return Scaffold(
           appBar: MainNavigationBar(
             context: context,
@@ -39,7 +39,7 @@ class _WarningScreenState extends State<WarningScreen> {
             title: l10n?.warning_page_title,
             action: [
               VehicleNavBarActions(
-                item: snapshot.data,
+                item: itemSnapshot.data,
                 provider: widget.viewModel.itemProvider,
               ),
             ],
@@ -58,7 +58,7 @@ class _WarningScreenState extends State<WarningScreen> {
                   stream: widget.viewModel.warnings,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      return _body();
+                      return _body(itemSnapshot.data);
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }
@@ -72,14 +72,14 @@ class _WarningScreenState extends State<WarningScreen> {
     );
   }
 
-  Widget _body() {
+  Widget _body(ContentfulItem? item) {
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _lights(),
           const SizedBox(height: 32),
-          //CommentButton(),
+          CommentButton(id: item?.id),
         ],
       ),
     );

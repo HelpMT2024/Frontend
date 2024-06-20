@@ -98,3 +98,35 @@ extension FavoriteModelSubTypeExtension on FavoriteModelSubType {
     }
   }
 }
+
+enum NonFavoriteModelType {
+  configuration,
+}
+
+extension NonFavoriteModelTypesExtension on NonFavoriteModelType {
+  static Map<String, NonFavoriteModelType> itemTypeByString = {
+    "configuration": NonFavoriteModelType.configuration,
+  };
+
+  String title(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    switch (this) {
+      case NonFavoriteModelType.configuration:
+        return l10n?.favorites_item_type_configurations ?? '';
+    }
+  }
+
+  String filterKey() {
+    switch (this) {
+      case NonFavoriteModelType.configuration:
+        return 'configuration';
+    }
+  }
+
+  List<String> filterKeys() {
+    switch (this) {
+      case NonFavoriteModelType.configuration:
+        return ['configuration'];
+    }
+  }
+}

@@ -702,6 +702,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Free Trial'**
   String get free_trial;
+
+  /// No description provided for @read_more.
+  ///
+  /// In en, this message translates to:
+  /// **'Read more'**
+  String get read_more;
+
+  /// No description provided for @collapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Collapse'**
+  String get collapse;
+
+  /// No description provided for @favorites_item_type_configurations.
+  ///
+  /// In en, this message translates to:
+  /// **'Configurations'**
+  String get favorites_item_type_configurations;
+
+  /// No description provided for @ago.
+  ///
+  /// In en, this message translates to:
+  /// **'ago'**
+  String get ago;
+
+  /// No description provided for @year.
+  ///
+  /// In en, this message translates to:
+  /// **'year'**
+  String get year;
+
+  /// No description provided for @years.
+  ///
+  /// In en, this message translates to:
+  /// **'years'**
+  String get years;
+
+  /// No description provided for @month.
+  ///
+  /// In en, this message translates to:
+  /// **'month'**
+  String get month;
+
+  /// No description provided for @months.
+  ///
+  /// In en, this message translates to:
+  /// **'months'**
+  String get months;
+
+  /// No description provided for @week.
+  ///
+  /// In en, this message translates to:
+  /// **'week'**
+  String get week;
+
+  /// No description provided for @weeks.
+  ///
+  /// In en, this message translates to:
+  /// **'weeks'**
+  String get weeks;
+
+  /// No description provided for @day.
+  ///
+  /// In en, this message translates to:
+  /// **'day'**
+  String get day;
+
+  /// No description provided for @days.
+  ///
+  /// In en, this message translates to:
+  /// **'days'**
+  String get days;
+
+  /// No description provided for @hour.
+  ///
+  /// In en, this message translates to:
+  /// **'hour'**
+  String get hour;
+
+  /// No description provided for @hours.
+  ///
+  /// In en, this message translates to:
+  /// **'hours'**
+  String get hours;
+
+  /// No description provided for @minute.
+  ///
+  /// In en, this message translates to:
+  /// **'minute'**
+  String get minute;
+
+  /// No description provided for @minutes.
+  ///
+  /// In en, this message translates to:
+  /// **'minutes'**
+  String get minutes;
+
+  /// No description provided for @no_comments_title.
+  ///
+  /// In en, this message translates to:
+  /// **'There are no comments here yet'**
+  String get no_comments_title;
+
+  /// No description provided for @no_comments_description.
+  ///
+  /// In en, this message translates to:
+  /// **'In this section, you can leave comments, share suggestions, or detail your experiences with this part or component to help and inform other users.'**
+  String get no_comments_description;
+
+  /// No description provided for @report.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get report;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

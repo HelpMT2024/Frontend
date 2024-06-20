@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
+import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
@@ -10,6 +12,7 @@ import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
 
 class ConfigurationObserverScreen extends StatefulWidget {
   final ConfigurationObserverViewModel viewModel;
+  final NonFavoriteModelType itemType = NonFavoriteModelType.configuration;
 
   const ConfigurationObserverScreen({super.key, required this.viewModel});
 
@@ -27,6 +30,7 @@ class _ConfigurationObserverScreenState
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
+
     return Scaffold(
       appBar: MainNavigationBar(
         context: context,
@@ -43,7 +47,14 @@ class _ConfigurationObserverScreenState
               stream: widget.viewModel.configuration,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return _body(snapshot.data!);
+                  return FutureBuilder(
+                      future: widget.viewModel.itemProvider.processItem(
+                        snapshot.data!.id,
+                        widget.itemType.filterKey(),
+                      ),
+                      builder: (context, itemSnapshot) {
+                        return _body(snapshot.data!, itemSnapshot.data);
+                      });
                 } else {
                   return Loadable(forceLoad: true, child: Container());
                 }
@@ -55,13 +66,13 @@ class _ConfigurationObserverScreenState
     );
   }
 
-  Widget _body(Configuration data) {
+  Widget _body(Configuration data, ContentfulItem? item) {
     return SingleChildScrollView(
       child: Column(
         children: [
           _content(data),
           const SizedBox(height: 32),
-          //CommentButton(id:),
+          CommentButton(id: item?.id),
           const SizedBox(height: 24),
         ],
       ),

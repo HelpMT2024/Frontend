@@ -1,4 +1,3 @@
-import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 
@@ -155,7 +154,7 @@ class CommentsListItem {
   final String integrationId;
   final int ownerId;
   final String ownerUsername;
-  final String createdAt;
+  final DateTime createdAt;
 
   CommentsListItem({
     required this.id,
@@ -175,7 +174,7 @@ class CommentsListItem {
         integrationId: json["integration_id"],
         ownerId: json["owner_id"],
         ownerUsername: json["owner_username"],
-        createdAt: json["created_at"],
+        createdAt: DateTime.parse(json["created_at"]),
       );
 }
 
@@ -289,7 +288,7 @@ class ItemProvider {
     int size,
   ) {
     Map<String, dynamic> queryParameters = {
-      'filter[owner_id]': ownerId,
+      //'filter[owner_id]': ownerId,
       'page': page,
       'size': size,
     };
