@@ -23,7 +23,7 @@ class ChildrenComponent {
       id: json['sys']['id'],
       name: json['name'],
       image: json['icon'] != null ? IDPIcon.fromJson(json['icon']) : null,
-      type: childTypeFromJson(json['__typename'] ?? json['type']),
+      type: childTypeFromJson(json['type'] ?? json['__typename']),
       isSystem: json['__typename'] == 'System',
     );
   }
