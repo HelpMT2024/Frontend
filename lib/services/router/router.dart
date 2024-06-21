@@ -15,7 +15,7 @@ final restAPIService =
     RestAPINetworkService(baseUrl: RestAPINetworkService.mainURL);
 
 Route<dynamic>? AppRouter(RouteSettings setting) {
-  var route = AuthRouter(setting, restAPIService) ??
+  var route = AuthRouter(setting, restAPIService, graphQLService) ??
       HomeRouter(setting, graphQLService) ??
       VehicleSelectorRouter(setting, restAPIService, graphQLService) ??
       FaultsRouter(setting, restAPIService, graphQLService) ??

@@ -366,4 +366,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get report => 'Report';
+
+  @override
+  String get loading_assets => 'Loading Assets...';
 }

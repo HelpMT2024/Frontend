@@ -1,3 +1,5 @@
+// ignore_for_file: body_might_complete_normally_nullable, non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
