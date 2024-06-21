@@ -20,6 +20,20 @@ class TruckSelectorScreen extends StatefulWidget {
 }
 
 class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
+  bool isNextButtonVisible = true;
+  bool isInitialPageComingSoon = true;
+  int _initialPage = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        isNextButtonVisible = !isInitialPageComingSoon;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
@@ -33,6 +47,7 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
           stream: widget.viewModel.trucks,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              isInitialPageComingSoon = snapshot.data![_initialPage].comingSoon;
               return _body(snapshot.data!);
             } else {
               return Loadable(forceLoad: true, child: Container());
@@ -57,14 +72,18 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-          child: CustomButton(
-            title: CustomButtonTitle(text: l10n?.next ?? ''),
-            state: CustomButtonStates.filled,
-            mainColor: ColorConstants.surfaceWhite,
-            textColor: ColorConstants.onSurfaceHigh,
-            height: 48,
-            onPressed: () => widget.viewModel.selectTruck(context),
-          ),
+          child: isNextButtonVisible
+              ? CustomButton(
+                  title: CustomButtonTitle(text: l10n?.next ?? ''),
+                  state: CustomButtonStates.filled,
+                  mainColor: ColorConstants.surfaceWhite,
+                  textColor: ColorConstants.onSurfaceHigh,
+                  height: 48,
+                  onPressed: () => widget.viewModel.selectTruck(context),
+                )
+              : Container(
+                  height: 48,
+                ),
         ),
       ],
     );
@@ -114,12 +133,13 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         onPageChanged: (index, reason) {
           setState(() {
             widget.viewModel.currentTruckIndex = index;
+            isNextButtonVisible = !data[index].comingSoon;
           });
         },
         enableInfiniteScroll: true,
         enlargeCenterPage: true,
         viewportFraction: 0.6,
-        initialPage: 0,
+        initialPage: _initialPage,
       ),
     );
   }
