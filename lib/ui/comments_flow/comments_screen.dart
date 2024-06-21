@@ -322,25 +322,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
               );
             },
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8.0),
-                child: SendButton(
-                  controller: _controller,
-                  onTap: () {
-                    if (_controller.text.isNotEmpty &&
-                        !RegExp(r'^\s*$').hasMatch(_controller.text)) {
-                      widget.viewModel.addComment(_controller.text);
-                      _controller.text = '';
-                    }
-                  },
-                ),
+          Positioned(
+            right: 0,
+            bottom: 8,
+            child: SizedBox(
+              width: 24,
+              height: 24,
+              child: SendButton(
+                controller: _controller,
+                onTap: () {
+                  if (_controller.text.isNotEmpty &&
+                      !RegExp(r'^\s*$').hasMatch(_controller.text)) {
+                    widget.viewModel.addComment(_controller.text);
+                    _controller.text = '';
+                  }
+                },
               ),
-            ],
+            ),
           ),
         ],
       ),
