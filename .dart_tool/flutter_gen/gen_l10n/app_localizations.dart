@@ -822,6 +822,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Loading Assets...'**
   String get loading_assets;
+
+  /// No description provided for @thank_you.
+  ///
+  /// In en, this message translates to:
+  /// **'Thank you!'**
+  String get thank_you;
+
+  /// No description provided for @check_comment.
+  ///
+  /// In en, this message translates to:
+  /// **'Our team will check if this comment goes against our Community guidelines'**
+  String get check_comment;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -369,4 +369,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading_assets => 'Loading Assets...';
+
+  @override
+  String get thank_you => 'Thank you!';
+
+  @override
+  String get check_comment => 'Our team will check if this comment goes against our Community guidelines';
 }

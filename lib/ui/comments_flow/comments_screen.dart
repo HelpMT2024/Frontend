@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -43,6 +44,39 @@ class _CommentsScreenState extends State<CommentsScreen> {
     });
   }
 
+  void _showReportAlert(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PlatformAlertDialog(
+          title: Text(
+            l10n?.thank_you ?? '',
+            style: styles.bodyLarge?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
+          content: Text(
+            l10n?.check_comment ?? '',
+            style: styles.bodySmall?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     _controller.addListener(() {
@@ -77,57 +111,57 @@ class _CommentsScreenState extends State<CommentsScreen> {
       });
     }
 
-    return Container(
-      height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
-      padding: const EdgeInsets.only(bottom: footerBottomOffset),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
+    return KeyboardDismissOnTap(
+      dismissOnCapturedTaps: true,
+      child: Container(
+        height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
+        padding: const EdgeInsets.only(bottom: footerBottomOffset),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
+          ),
+          boxShadow: [
+            BoxShadow(
+              spreadRadius: 1,
+              color: ColorConstants.surfacePrimaryDark,
+            ),
+          ],
+          color: ColorConstants.surfacePrimaryDark,
         ),
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 1,
-            color: ColorConstants.surfacePrimaryDark,
-          ),
-        ],
-        color: ColorConstants.surfacePrimaryDark,
-      ),
-      child: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _header(l10n, styles),
-              Flexible(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: _table(),
-                ),
-              ),
-            ],
-          ),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                _footer(l10n, styles, context),
-                SizedBox(
-                  height: keyBoardHeight == 0
-                      ? 0
-                      : keyBoardHeight - footerBottomOffset,
+                _header(l10n, styles),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 72),
+                    child: _table(),
+                  ),
                 ),
               ],
             ),
-          )
-        ],
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  _footer(l10n, styles, context),
+                  if (keyBoardHeight > footerBottomOffset)
+                    SizedBox(height: keyBoardHeight - footerBottomOffset),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -260,9 +294,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
       child: Stack(
         children: [
           Scrollbar(
-            // child: SingleChildScrollView(
-            //   scrollDirection: Axis.vertical,
-            //   reverse: true,
             child: PlatformTextField(
               style: styles.bodyMedium?.merge(
                 TextStyle(color: ColorConstants.onSurfaceWhite),
@@ -297,7 +328,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 );
               },
             ),
-            //),
           ),
           Positioned(
             right: 0,
@@ -305,8 +335,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
             child: SendButton(
               controller: _controller,
               onTap: () {
-                widget.viewModel.addComment(_controller.text);
-                _controller.text = '';
+                if (_controller.text.isNotEmpty &&
+                    !RegExp(r'^\s*$').hasMatch(_controller.text)) {
+                  widget.viewModel.addComment(_controller.text);
+                  _controller.text = '';
+                }
               },
             ),
           ),
@@ -372,7 +405,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return PaginatedList<CommentsListItem>(
       scrollDirection: Axis.vertical,
       controller: _scrollController,
-      loadingIndicator: Padding(
+      loadingIndicator: Container(
+        width: 50,
+        height: 50,
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Center(child: Loadable(forceLoad: true, child: Container())),
       ),
@@ -387,7 +422,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
           reportCallback: (commentId) {
             if (widget.viewModel.contentfulId != null) {
               widget.viewModel
-                  .sendReport(widget.viewModel.contentfulId!, commentId);
+                  .sendReport(widget.viewModel.contentfulId!, commentId, () {
+                _showReportAlert(context);
+              });
             }
           }),
     );

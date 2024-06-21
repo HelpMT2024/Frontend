@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/router/router.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,12 +33,14 @@ class CommentsScreenViewModel {
     }
   }
 
-  void sendReport(int contentfulId, int commentId) async {
+  void sendReport(
+      int contentfulId, int commentId, VoidCallback callback) async {
     if (!isLoading.value) {
       isLoading.add(true);
-      await itemProvider
-          .report(contentfulId, commentId)
-          .then((value) => isLoading.add(false));
+      await itemProvider.report(contentfulId, commentId).then((value) {
+        isLoading.add(false);
+        callback();
+      });
     }
   }
 
