@@ -18,16 +18,15 @@ class SendButton extends StatelessWidget {
         child: Container(
           width: 24,
           height: 24,
+          //padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(6)),
             color: ColorConstants.surfaceWhite,
           ),
-          child: Flexible(
-            child: Icon(
-              Icons.send,
-              size: 16,
-              color: ColorConstants.surfacePrimaryDark,
-            ),
+          child: Icon(
+            Icons.send,
+            size: 16,
+            color: ColorConstants.surfacePrimaryDark,
           ),
         ),
       ),
