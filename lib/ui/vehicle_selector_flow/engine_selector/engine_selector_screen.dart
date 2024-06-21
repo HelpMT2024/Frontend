@@ -91,28 +91,31 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
     return CarouselSlider.builder(
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
-        final truck = data[index];
+        final engine = data[index];
         return GestureDetector(
-          onTap: () => widget.viewModel.selectEngine(context),
+          onTap: () =>
+              engine.comingSoon ? null : widget.viewModel.selectEngine(context),
           child: Column(
             children: [
               SizedBox(
                 height: 240,
                 width: 240,
-                child: Image.network(truck.image.url),
+                child: Image.network(engine.image.url),
               ),
               Text(
-                truck.name.toUpperCase(),
+                engine.name.toUpperCase(),
                 style: styles.titleMedium?.copyWith(
                   color: ColorConstants.surfaceWhite,
                 ),
               ),
+              const SizedBox(height: 8),
+              engine.comingSoon ? _comingSoonLabel(styles) : Container(),
             ],
           ),
         );
       },
       options: CarouselOptions(
-        height: 336,
+        height: 366,
         onPageChanged: (index, reason) {
           setState(() {
             widget.viewModel.currentEngineIndex = index;
@@ -123,6 +126,26 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
         viewportFraction: 0.6,
         initialPage: 0,
       ),
+    );
+  }
+
+  Widget _comingSoonLabel(TextTheme styles) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      height: 20,
+      width: 110,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: ColorConstants.onSurfaceSecondary,
+      ),
+      child: Center(
+          child: Text(
+        l10n?.coming_soon ?? '',
+        style: styles.labelSmall?.copyWith(
+          color: ColorConstants.onSurfaceWhite,
+          fontSize: 11,
+        ),
+      )),
     );
   }
 

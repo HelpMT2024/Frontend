@@ -834,6 +834,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Our team will check if this comment goes against our Community guidelines'**
   String get check_comment;
+
+  /// No description provided for @coming_soon.
+  ///
+  /// In en, this message translates to:
+  /// **'COMING SOON'**
+  String get coming_soon;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
