@@ -20,19 +20,10 @@ class EngineSelectorScreen extends StatefulWidget {
 }
 
 class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
-  bool isNextButtonVisible = true;
-  bool isInitialPageComingSoon = true;
-  int _initialPage = 0;
+  final int _initialPage = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        isNextButtonVisible = !isInitialPageComingSoon;
-      });
-    });
-  }
+  bool isNextButtonVisible = true;
+  bool isInitBuild = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +38,9 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
           stream: widget.viewModel.engines,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              isInitialPageComingSoon = snapshot.data![_initialPage].comingSoon;
+              if (isInitBuild) {
+                isNextButtonVisible = !snapshot.data![_initialPage].comingSoon;
+              }
               return _body(snapshot.data!);
             } else {
               return Loadable(forceLoad: true, child: Container());
@@ -60,7 +53,6 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
 
   Widget _body(List<Engine> data) {
     final styles = Theme.of(context).textTheme;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -137,6 +129,7 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
         height: 366,
         onPageChanged: (index, reason) {
           setState(() {
+            isInitBuild = false;
             widget.viewModel.currentEngineIndex = index;
             isNextButtonVisible = !data[index].comingSoon;
           });

@@ -20,19 +20,10 @@ class TruckSelectorScreen extends StatefulWidget {
 }
 
 class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
+  final int _initialPage = 0;
+  
   bool isNextButtonVisible = true;
-  bool isInitialPageComingSoon = true;
-  int _initialPage = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        isNextButtonVisible = !isInitialPageComingSoon;
-      });
-    });
-  }
+  bool isInitBuild = true;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +38,9 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
           stream: widget.viewModel.trucks,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              isInitialPageComingSoon = snapshot.data![_initialPage].comingSoon;
+              if (isInitBuild) {
+                isNextButtonVisible = !snapshot.data![_initialPage].comingSoon;
+              }
               return _body(snapshot.data!);
             } else {
               return Loadable(forceLoad: true, child: Container());
@@ -61,7 +54,6 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
   Widget _body(List<Truck> data) {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -132,6 +124,7 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         height: 366,
         onPageChanged: (index, reason) {
           setState(() {
+            isInitBuild = false;
             widget.viewModel.currentTruckIndex = index;
             isNextButtonVisible = !data[index].comingSoon;
           });
