@@ -149,15 +149,17 @@ class _CommentsScreenState extends State<CommentsScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _footer(l10n, styles, context),
-                  if (keyBoardHeight > footerBottomOffset)
-                    SizedBox(height: keyBoardHeight - footerBottomOffset),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _footer(l10n, styles, context),
+                    if (keyBoardHeight > footerBottomOffset)
+                      SizedBox(height: keyBoardHeight - footerBottomOffset),
+                  ],
+                ),
               ),
             )
           ],
@@ -293,41 +295,39 @@ class _CommentsScreenState extends State<CommentsScreen> {
       constraints: const BoxConstraints(maxHeight: 110),
       child: Stack(
         children: [
-          Scrollbar(
-            child: PlatformTextField(
-              style: styles.bodyMedium?.merge(
-                TextStyle(color: ColorConstants.onSurfaceWhite),
-              ),
-              focusNode: _focusNode,
-              scrollPadding: EdgeInsets.zero,
-              hintText: 'Add a comment...',
-              controller: _controller,
-              maxLines: null,
-              minLines: null,
-              cupertino: (context, platform) {
-                return CupertinoTextFieldData(
-                  controller: _controller,
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: const BoxDecoration(color: Colors.transparent),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  placeholderStyle: styles.bodyMedium?.merge(
-                    TextStyle(color: ColorConstants.onSurfaceWhite80),
-                  ),
-                );
-              },
-              material: (context, platform) {
-                return MaterialTextFieldData(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    hintStyle: styles.bodyMedium?.merge(
-                      TextStyle(color: ColorConstants.onSurfaceMedium),
-                    ),
-                  ),
-                );
-              },
+          PlatformTextField(
+            style: styles.bodyMedium?.merge(
+              TextStyle(color: ColorConstants.onSurfaceWhite),
             ),
+            focusNode: _focusNode,
+            scrollPadding: EdgeInsets.zero,
+            hintText: 'Add a comment...',
+            controller: _controller,
+            maxLines: null,
+            minLines: null,
+            cupertino: (context, platform) {
+              return CupertinoTextFieldData(
+                controller: _controller,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: const BoxDecoration(color: Colors.transparent),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                placeholderStyle: styles.bodyMedium?.merge(
+                  TextStyle(color: ColorConstants.onSurfaceWhite80),
+                ),
+              );
+            },
+            material: (context, platform) {
+              return MaterialTextFieldData(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  hintStyle: styles.bodyMedium?.merge(
+                    TextStyle(color: ColorConstants.onSurfaceMedium),
+                  ),
+                ),
+              );
+            },
           ),
           Positioned(
             right: 0,
@@ -368,32 +368,29 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(
-              height: 23,
-            ),
-            Text(
-              l10n?.no_comments_title ?? '',
-              textAlign: TextAlign.center,
-              style: styles.titleLarge
-                  ?.copyWith(color: ColorConstants.onSurfaceWhite),
-            ),
-            const SizedBox(
-              height: 12,
-            ),
-            Text(
-              l10n?.no_comments_description ?? '',
-              textAlign: TextAlign.center,
-              style: styles.bodyMedium
-                  ?.copyWith(color: ColorConstants.onSurfaceWhite),
-            ),
-          ],
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Spacer(),
+          Text(
+            l10n?.no_comments_title ?? '',
+            textAlign: TextAlign.center,
+            style: styles.titleLarge
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Text(
+            l10n?.no_comments_description ?? '',
+            textAlign: TextAlign.center,
+            style: styles.bodyMedium
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
+          ),
+          const Spacer(),
+        ],
       ),
     );
   }
