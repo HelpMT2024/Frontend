@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/colors.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 
 class BookmarkButton extends StatefulWidget {
@@ -24,7 +25,7 @@ class BookmarkButton extends StatefulWidget {
   State<BookmarkButton> createState() => _BookmarkButtonState();
 }
 
-class _BookmarkButtonState extends State<BookmarkButton> {
+class _BookmarkButtonState extends State<BookmarkButton> with ErrorHandable {
   var _isBookmarked = false;
 
   @override
@@ -47,7 +48,9 @@ class _BookmarkButtonState extends State<BookmarkButton> {
   }
 
   void change(int id) {
-    widget.provider?.change(id);
+    widget.provider?.change(id).catchError((error) {
+        showAlertDialog(null, error.message);
+      });
     changeIconState();
   }
 

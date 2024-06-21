@@ -7,13 +7,14 @@ import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
 import 'package:help_my_truck/data/models/subpart.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SubPartViewModel {
+class SubPartViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.subPart;
@@ -22,7 +23,11 @@ class SubPartViewModel {
   var itemStreamController = StreamController<ContentfulItem>();
 
   late final part = BehaviorSubject<SubPart>()
-    ..addStream(Stream.fromFuture(provider.subPart(config.id)));
+    ..addStream(Stream.fromFuture(
+      provider.subPart(config.id).catchError((error) {
+        showAlertDialog(null, error.message);
+      }),
+    ));
 
   bool get hasImage =>
       part.valueOrNull?.imageView != null &&
@@ -58,10 +63,7 @@ class SubPartViewModel {
 
   void item() {
     itemProvider
-        .processItem(
-          config.id,
-          itemType.filterKey(),
-        )
+        .processItem(config.id, itemType.filterKey())
         .then((item) => itemStreamController.add(item));
   }
 

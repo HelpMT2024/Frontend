@@ -4,7 +4,7 @@ import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ForgotPasswordScreenViewModel with ViewModelErrorHandable {
+class ForgotPasswordScreenViewModel with ErrorHandable {
   final AuthProvider provider;
 
   String? _email;
