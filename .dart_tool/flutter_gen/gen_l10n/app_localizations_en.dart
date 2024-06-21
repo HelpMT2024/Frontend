@@ -375,4 +375,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get check_comment => 'Our team will check if this comment goes against our Community guidelines';
+
+  @override
+  String get coming_soon => 'COMING SOON';
 }

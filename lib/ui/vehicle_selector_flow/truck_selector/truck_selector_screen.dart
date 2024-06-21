@@ -88,7 +88,8 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
         return GestureDetector(
-          onTap: () => widget.viewModel.selectTruck(context),
+          onTap: () =>
+              truck.comingSoon ? null : widget.viewModel.selectTruck(context),
           child: Column(
             children: [
               SizedBox(
@@ -102,12 +103,14 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
                   color: ColorConstants.surfaceWhite,
                 ),
               ),
+              const SizedBox(height: 8),
+              truck.comingSoon ? _comingSoonLabel(styles) : Container(),
             ],
           ),
         );
       },
       options: CarouselOptions(
-        height: 336,
+        height: 366,
         onPageChanged: (index, reason) {
           setState(() {
             widget.viewModel.currentTruckIndex = index;
@@ -118,6 +121,26 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         viewportFraction: 0.6,
         initialPage: 0,
       ),
+    );
+  }
+
+  Widget _comingSoonLabel(TextTheme styles) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      height: 20,
+      width: 110,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: ColorConstants.onSurfaceSecondary,
+      ),
+      child: Center(
+          child: Text(
+        l10n?.coming_soon ?? '',
+        style: styles.labelSmall?.copyWith(
+          color: ColorConstants.onSurfaceWhite,
+          fontSize: 11,
+        ),
+      )),
     );
   }
 

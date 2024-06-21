@@ -179,6 +179,7 @@ faultCodesCollection {
         id
       }
       name
+      comingSoon
       image {
         $image
       }
@@ -195,6 +196,7 @@ faultCodesCollection {
         id
       }
       name
+      comingSoon
       image {
         $image
       }
