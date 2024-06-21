@@ -22,7 +22,7 @@ class WelcomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
     final l10n = AppLocalizations.of(context);
-    final future = Future.delayed(Duration(seconds: 2));
+    final future = Future.delayed(const Duration(seconds: 2));
 
     return Scaffold(
       body: FutureBuilder(
@@ -40,7 +40,14 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               if (snapshot.connectionState != ConnectionState.done)
-                Image.asset(R.ASSETS_SPLASH_SCREEN_PNG),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  child: Image.asset(
+                    R.ASSETS_SPLASH_SCREEN_PNG,
+                    fit: BoxFit.cover,
+                  ),
+                ),
             ],
           );
         },

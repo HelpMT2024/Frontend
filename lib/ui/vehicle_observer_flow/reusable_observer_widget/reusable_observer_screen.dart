@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gif/gif.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/services/gifs_loader.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/bottom_reusable_container.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/chess_reusable_container.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/left_aligned_reusable_container.dart';
@@ -108,15 +109,26 @@ class _ReusableObserverWidgetState extends State<ReusableObserverWidget>
   }
 
   Widget _gif() {
-    return Gif(
-      image: NetworkImage(_preview ?? ''),
-      controller: _animationController,
-      autostart: Autostart.once,
-      placeholder: (context) => const Loadable(
-        forceLoad: true,
-        child: SizedBox(height: 40, width: 40),
-      ),
-      onFetchCompleted: () {},
+    if (_preview == null) {
+      return Container();
+    }
+    return StreamBuilder<ImageProvider>(
+      stream: GifsLoader().imageProvider(_preview ?? '').asStream(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return const SizedBox();
+        }
+        return Gif(
+          image: snapshot.data!,
+          controller: _animationController,
+          autostart: Autostart.once,
+          placeholder: (context) => const Loadable(
+            forceLoad: true,
+            child: SizedBox(height: 40, width: 40),
+          ),
+          onFetchCompleted: () {},
+        );
+      },
     );
   }
 

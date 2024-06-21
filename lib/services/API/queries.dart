@@ -1,4 +1,14 @@
 abstract class Queries {
+  static String getAllGifs = '''
+query AllGifs {
+  assetCollection(where: { contentType: "image/gif" }) {
+    items {
+      url
+    }
+  }
+}
+''';
+
   static String pdfFilesCollection = '''
   pdfFilesCollection {
           items {

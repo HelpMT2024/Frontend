@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +11,6 @@ import 'package:help_my_truck/const/text_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/services/purchase_service.dart';
-import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -104,7 +102,8 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: GoogleFonts.interTextTheme(textTheme()),
         cupertinoOverrideTheme: CupertinoThemeData(
-            barBackgroundColor: ColorConstants.surfacePrimaryDark),
+          barBackgroundColor: ColorConstants.surfacePrimaryDark,
+        ),
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith((states) {
             return BorderSide(
@@ -115,9 +114,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       navigatorKey: NavigationService.navigatorKey,
-      initialRoute: SharedPreferencesWrapper.getToken() == null
-          ? AuthRouteKeys.welcomeScreen
-          : VehicleSelectorRouteKeys.truckSelector,
+      initialRoute: AuthRouteKeys.gifLoader,
       onGenerateRoute: AppRouter,
     );
   }
