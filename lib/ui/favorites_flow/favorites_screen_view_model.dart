@@ -18,7 +18,7 @@ import 'package:help_my_truck/services/router/faults_router.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FavoritesScreenViewModel with ViewModelErrorHandable {
+class FavoritesScreenViewModel with ErrorHandable {
   final ItemProvider itemProvider;
   final VehicleProvider vehicleProvider;
   final int _cellsPerPage = 10;
@@ -41,7 +41,10 @@ class FavoritesScreenViewModel with ViewModelErrorHandable {
     if (!isLoading.value) {
       isLoading.add(true);
       var typeFilters = currentFilter.filterKeys();
-      user = await itemProvider.user();
+      user = await itemProvider.user().catchError((error) {
+        isLoading.add(false);
+        showAlertDialog(context, error.message);
+      });
       await itemProvider
           .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
           .then(

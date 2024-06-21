@@ -7,6 +7,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/part.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
@@ -15,7 +16,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../widgets/nav_bar/nav_bar_page.dart';
 import '../vehicle_navigation_helper.dart';
 
-class PartViewModel {
+class PartViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.part;
@@ -24,7 +25,11 @@ class PartViewModel {
   var itemStreamController = StreamController<ContentfulItem>();
 
   late final part = BehaviorSubject<Part>()
-    ..addStream(Stream.fromFuture(provider.part(config.id)));
+    ..addStream(Stream.fromFuture(
+      provider.part(config.id).catchError((error) {
+        showAlertDialog(null, error.message);
+      }),
+    ));
 
   bool get hasImage =>
       part.valueOrNull?.imageView != null &&
@@ -60,15 +65,8 @@ class PartViewModel {
 
   item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 
   void onSearch(BuildContext context) {
@@ -82,13 +80,9 @@ class PartViewModel {
 
     Navigator.of(context)
         .pushNamed(
-      VehicleSelectorRouteKeys.subPartObserver,
-      arguments: model,
-    )
-        .then(
-      (value) {
-        item();
-      },
-    );
+          VehicleSelectorRouteKeys.subPartObserver,
+          arguments: model,
+        )
+        .then((value) => item());
   }
 }

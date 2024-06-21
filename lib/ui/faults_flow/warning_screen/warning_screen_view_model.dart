@@ -5,6 +5,7 @@ import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/warning.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/router.dart';
@@ -14,7 +15,7 @@ import 'package:rxdart/rxdart.dart';
 import '../../vehicle_observer_flow/vehicle_navigation_helper.dart';
 import '../../widgets/nav_bar/nav_bar_page.dart';
 
-class WarningScreenViewModel {
+class WarningScreenViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelSubType itemType = FavoriteModelSubType.warningLights;
@@ -24,7 +25,11 @@ class WarningScreenViewModel {
 
   late final warnings = BehaviorSubject<List<Warning>>()
     ..addStream(
-      Stream.fromFuture(provider.warnings()),
+      Stream.fromFuture(
+        provider.warnings().catchError((error) {
+          showAlertDialog(null, error.message);
+        }),
+      ),
     );
 
   WarningScreenViewModel({
@@ -37,15 +42,8 @@ class WarningScreenViewModel {
 
   item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 
   void onModelSelected(Warning model, BuildContext context) {

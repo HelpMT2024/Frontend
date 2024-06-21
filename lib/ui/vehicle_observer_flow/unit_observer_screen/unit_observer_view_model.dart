@@ -6,13 +6,14 @@ import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/purchase_service.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class UnitObserverViewModel {
+class UnitObserverViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.unit;
@@ -22,7 +23,11 @@ class UnitObserverViewModel {
 
   late final unit = BehaviorSubject<Unit>()
     ..addStream(
-      Stream.fromFuture(provider.unit(config.id)),
+      Stream.fromFuture(
+        provider.unit(config.id).catchError((error) {
+          showAlertDialog(null, error.message);
+        }),
+      ),
     );
 
   List<ChildProblem> get problems => unit.valueOrNull?.problems ?? [];
@@ -46,9 +51,9 @@ class UnitObserverViewModel {
   }
 
   item() {
-    itemProvider.processItem(config.id, itemType.filterKey()).then((item) {
-      itemStreamController.add(item);
-    });
+    itemProvider
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 
   void onModelSelected(String id, BuildContext context) {
