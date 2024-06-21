@@ -149,15 +149,17 @@ class _CommentsScreenState extends State<CommentsScreen> {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _footer(l10n, styles, context),
-                  if (keyBoardHeight > footerBottomOffset)
-                    SizedBox(height: keyBoardHeight - footerBottomOffset),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    _footer(l10n, styles, context),
+                    if (keyBoardHeight > footerBottomOffset)
+                      SizedBox(height: keyBoardHeight - footerBottomOffset),
+                  ],
+                ),
               ),
             )
           ],
