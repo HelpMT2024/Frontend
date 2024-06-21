@@ -177,14 +177,11 @@ Future<NetworkResponse<Model>> _executeRequest<Model>(
 
 class RestAPINetworkService {
   static String mainURL = () {
-    // if (kDebugMode || flavor == 'Firebase') {
-    //   return 'https://cbone-dev.idap.pro';
-    // } else if (kReleaseMode) {
-    //   return 'https://api.cbone.io';
-    // } else {
-    //   return 'https://cbone-stage.idap.pro';
-    // }
-    return 'https://helpmytrack-dev.idap.pro';
+    if (kDebugMode || flavor == 'Firebase') {
+      return 'https://helpmytrack-dev.idap.pro';
+    } else {
+      return 'https://helpmytrack-prod.idap.pro';
+    }
   }();
 
   RestAPINetworkService({
