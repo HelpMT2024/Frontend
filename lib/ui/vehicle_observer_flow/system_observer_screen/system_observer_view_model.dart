@@ -23,9 +23,7 @@ class SystemObserverViewModel {
   var itemStreamController = StreamController<ContentfulItem>();
 
   late final system = BehaviorSubject<System>()
-    ..addStream(
-      Stream.fromFuture(provider.system(config.id)),
-    );
+    ..addStream(Stream.fromFuture(provider.system(config.id)));
 
   List<ChildProblem> get problems => system.valueOrNull?.problems ?? [];
   bool get hasProblems => problems.isNotEmpty;

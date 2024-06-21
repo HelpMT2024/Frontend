@@ -816,6 +816,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Report'**
   String get report;
+
+  /// No description provided for @loading_assets.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading Assets...'**
+  String get loading_assets;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

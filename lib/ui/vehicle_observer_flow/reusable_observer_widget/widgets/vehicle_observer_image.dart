@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gif/gif.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/contentfull_entnities.dart';
+import 'package:help_my_truck/services/gifs_loader.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/reusable_observer_widget/widgets/vehicle_point_drawer.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/mesure_size.dart';
@@ -233,15 +234,23 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
       maintainSize: true,
       maintainSemantics: true,
       visible: needHide,
-      child: Gif(
-        image: NetworkImage(url),
-        controller: controller,
-        autostart: Autostart.no,
-        placeholder: (context) => const Loadable(
-          forceLoad: true,
-          child: SizedBox(height: 40, width: 40),
-        ),
-        onFetchCompleted: () {},
+      child: StreamBuilder<ImageProvider>(
+        stream: GifsLoader().imageProvider(url).asStream(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const SizedBox();
+          }
+          return Gif(
+            image: snapshot.data!,
+            controller: controller,
+            autostart: Autostart.no,
+            placeholder: (context) => const Loadable(
+              forceLoad: true,
+              child: SizedBox(height: 40, width: 40),
+            ),
+            onFetchCompleted: () {},
+          );
+        },
       ),
     );
   }

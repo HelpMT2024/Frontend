@@ -1,11 +1,14 @@
 // ignore_for_file: body_might_complete_normally_nullable, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen_view_model.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/terms_of_service_screen.dart';
+import 'package:help_my_truck/ui/gif_loading_flow/gif_loading_screen.dart';
+import 'package:help_my_truck/ui/gif_loading_flow/gif_loading_screen_view_model.dart';
 import 'package:native_page_route/native_page_route.dart';
 import 'package:help_my_truck/ui/auth_flow/auth_screen/auth_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/auth_screen/auth_screen_view_model.dart';
@@ -19,6 +22,7 @@ import 'package:help_my_truck/ui/auth_flow/welcome_screen.dart';
 import 'package:help_my_truck/services/API/auth_provider.dart';
 
 abstract class AuthRouteKeys {
+  static const String gifLoader = 'gifLoader';
   static const String welcomeScreen = 'welcomeScreen';
   static const String authScreen = 'authScreen';
   static const String loginScreen = 'loginScreen';
@@ -31,10 +35,21 @@ abstract class AuthRouteKeys {
 }
 
 Route<dynamic>? AuthRouter(
-    RouteSettings setting, RestAPINetworkService service) {
+  RouteSettings setting,
+  RestAPINetworkService service,
+  GraphQLNetworkService graphQLService,
+) {
   final provider = AuthProvider(service);
 
   switch (setting.name) {
+    case AuthRouteKeys.gifLoader:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final viewModel = GifLoadingScreenViewModel(graphQLService);
+          return GifLoadingScreen(viewModel: viewModel);
+        },
+      );
     case AuthRouteKeys.welcomeScreen:
       return nativePageRoute(
         settings: setting,
