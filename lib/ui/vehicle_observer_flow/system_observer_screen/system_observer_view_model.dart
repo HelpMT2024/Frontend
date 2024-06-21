@@ -6,6 +6,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/purchase_service.dart';
@@ -14,7 +15,7 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:rxdart/rxdart.dart';
 
-class SystemObserverViewModel {
+class SystemObserverViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.system;
@@ -24,7 +25,11 @@ class SystemObserverViewModel {
 
   late final system = BehaviorSubject<System>()
     ..addStream(
-      Stream.fromFuture(provider.system(config.id)),
+      Stream.fromFuture(
+        provider.system(config.id).catchError((error) {
+          showAlertDialog(null, error.message);
+        }),
+      ),
     );
 
   List<ChildProblem> get problems => system.valueOrNull?.problems ?? [];

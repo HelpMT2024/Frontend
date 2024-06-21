@@ -7,6 +7,7 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
@@ -14,7 +15,7 @@ import 'package:help_my_truck/ui/vehicle_observer_flow/vehicle_navigation_helper
 import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:rxdart/subjects.dart';
 
-class ComponentObserverViewModel {
+class ComponentObserverViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.component;
@@ -24,7 +25,11 @@ class ComponentObserverViewModel {
 
   late final component = BehaviorSubject<Component>()
     ..addStream(
-      Stream.fromFuture(provider.component(config.id)),
+      Stream.fromFuture(
+        provider.component(config.id).catchError((error) {
+          showAlertDialog(null, error.message);
+        }),
+      ),
     );
 
   List<ChildFault> get faults => component.valueOrNull?.faults ?? [];
@@ -50,15 +55,8 @@ class ComponentObserverViewModel {
 
   item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 
   void onSearch(BuildContext context) {
@@ -72,13 +70,9 @@ class ComponentObserverViewModel {
 
     Navigator.of(context)
         .pushNamed(
-      VehicleSelectorRouteKeys.partObserver,
-      arguments: model,
-    )
-        .then(
-      (value) {
-        item();
-      },
-    );
+          VehicleSelectorRouteKeys.partObserver,
+          arguments: model,
+        )
+        .then((value) => item());
   }
 }

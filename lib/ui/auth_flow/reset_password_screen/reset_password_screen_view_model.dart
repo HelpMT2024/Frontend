@@ -4,7 +4,7 @@ import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ResetPasswordScreenViewModel with ViewModelErrorHandable {
+class ResetPasswordScreenViewModel with ErrorHandable {
   final AuthProvider provider;
 
   String? _password;

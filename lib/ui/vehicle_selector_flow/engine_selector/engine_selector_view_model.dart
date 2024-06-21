@@ -8,7 +8,7 @@ import 'package:help_my_truck/services/router/home_router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EngineSelectorViewModel with ViewModelErrorHandable {
+class EngineSelectorViewModel with ErrorHandable {
   final Truck truck;
   late final engines = BehaviorSubject<List<Engine>>()
     ..addStream(Stream.fromFuture(provider.engines()));

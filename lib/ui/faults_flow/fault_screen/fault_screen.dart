@@ -69,6 +69,8 @@ class _FaultScreenState extends State<FaultScreen> {
                           padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
                           child: _body(snapshot.data!, itemSnapshot.data),
                         ),
+                      } else if (snapshot.hasError) ...{
+                        Container(),
                       } else ...{
                         Loadable(forceLoad: true, child: Container()),
                       },

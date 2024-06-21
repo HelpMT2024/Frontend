@@ -3,7 +3,7 @@ import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/profile_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class EditUsernameScreenViewModel with ViewModelErrorHandable {
+class EditUsernameScreenViewModel with ErrorHandable {
   final ProfileProvider provider;
 
   late final isLoading = BehaviorSubject<bool>.seeded(false);

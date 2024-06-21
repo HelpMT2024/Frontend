@@ -62,6 +62,8 @@ class _ProblemCaseScreenState extends State<ProblemCaseScreen> {
                           child: _body(
                         itemSnapshot.data,
                       ));
+                    } else if (snapshot.hasError) {
+                      return Container();
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }

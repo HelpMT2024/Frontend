@@ -6,7 +6,7 @@ import 'package:help_my_truck/services/API/profile_provider.dart';
 import 'package:help_my_truck/services/router/profile_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ProfileScreenViewModel with ViewModelErrorHandable {
+class ProfileScreenViewModel with ErrorHandable {
   final ProfileProvider provider;
 
   late final info = BehaviorSubject<bool>.seeded(false);
