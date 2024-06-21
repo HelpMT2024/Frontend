@@ -31,8 +31,11 @@ class GifLoadingScreenViewModel {
     final list = (result.data?['assetCollection']['items'] as List)
         .map<String>((e) => e['url'])
         .toList();
-
-    await loader.loadList(list);
+    try {
+      await loader.loadList(list);
+    } catch (e) {
+      _startLoading();
+    }
 
     final route = SharedPreferencesWrapper.getToken() == null
         ? AuthRouteKeys.welcomeScreen
