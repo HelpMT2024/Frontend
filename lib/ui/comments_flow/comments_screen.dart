@@ -328,20 +328,20 @@ class _CommentsScreenState extends State<CommentsScreen> {
               );
             },
           ),
-          Positioned(
-            right: 0,
-            bottom: 8,
-            child: SendButton(
-              controller: _controller,
-              onTap: () {
-                if (_controller.text.isNotEmpty &&
-                    !RegExp(r'^\s*$').hasMatch(_controller.text)) {
-                  widget.viewModel.addComment(_controller.text);
-                  _controller.text = '';
-                }
-              },
-            ),
-          ),
+          // Positioned(
+          //   right: 0,
+          //   bottom: 8,
+          //   child: SendButton(
+          //     controller: _controller,
+          //     onTap: () {
+          //       if (_controller.text.isNotEmpty &&
+          //           !RegExp(r'^\s*$').hasMatch(_controller.text)) {
+          //         widget.viewModel.addComment(_controller.text);
+          //         _controller.text = '';
+          //       }
+          //     },
+          //   ),
+          // ),
         ],
       ),
     );
