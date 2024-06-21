@@ -145,20 +145,22 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 ),
               ],
             ),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  _footer(l10n, styles, context),
-                  if (keyBoardHeight > footerBottomOffset)
-                    SizedBox(height: keyBoardHeight - footerBottomOffset),
-                ],
-              ),
-            )
+            // Positioned(
+            //   left: 0,
+            //   right: 0,
+            //   bottom: 0,
+            //   child: Column(
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Spacer(),
+                _footer(l10n, styles, context),
+                if (keyBoardHeight > footerBottomOffset)
+                  SizedBox(height: keyBoardHeight - footerBottomOffset),
+              ],
+            ),
+            // )
           ],
         ),
       ),
@@ -292,41 +294,39 @@ class _CommentsScreenState extends State<CommentsScreen> {
       constraints: const BoxConstraints(maxHeight: 110),
       child: Stack(
         children: [
-          Flexible(
-            child: PlatformTextField(
-              style: styles.bodyMedium?.merge(
-                TextStyle(color: ColorConstants.onSurfaceWhite),
-              ),
-              focusNode: _focusNode,
-              scrollPadding: EdgeInsets.zero,
-              hintText: 'Add a comment...',
-              controller: _controller,
-              maxLines: null,
-              minLines: null,
-              cupertino: (context, platform) {
-                return CupertinoTextFieldData(
-                  controller: _controller,
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: const BoxDecoration(color: Colors.transparent),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  placeholderStyle: styles.bodyMedium?.merge(
-                    TextStyle(color: ColorConstants.onSurfaceWhite80),
-                  ),
-                );
-              },
-              material: (context, platform) {
-                return MaterialTextFieldData(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                    hintStyle: styles.bodyMedium?.merge(
-                      TextStyle(color: ColorConstants.onSurfaceMedium),
-                    ),
-                  ),
-                );
-              },
+          PlatformTextField(
+            style: styles.bodyMedium?.merge(
+              TextStyle(color: ColorConstants.onSurfaceWhite),
             ),
+            focusNode: _focusNode,
+            scrollPadding: EdgeInsets.zero,
+            hintText: 'Add a comment...',
+            controller: _controller,
+            maxLines: null,
+            minLines: null,
+            cupertino: (context, platform) {
+              return CupertinoTextFieldData(
+                controller: _controller,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: const BoxDecoration(color: Colors.transparent),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                placeholderStyle: styles.bodyMedium?.merge(
+                  TextStyle(color: ColorConstants.onSurfaceWhite80),
+                ),
+              );
+            },
+            material: (context, platform) {
+              return MaterialTextFieldData(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  hintStyle: styles.bodyMedium?.merge(
+                    TextStyle(color: ColorConstants.onSurfaceMedium),
+                  ),
+                ),
+              );
+            },
           ),
           Positioned(
             right: 0,
