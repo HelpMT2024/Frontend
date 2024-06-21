@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
@@ -21,6 +22,7 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
   static const bottomSheetTopOffset = 122;
+  static const footerBottomOffset = 21.0;
   static const headerHeight = 72;
   static const footerInsets = 32;
   static const coefficient = 0.9;
@@ -77,6 +79,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
     return Container(
       height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
+      padding: const EdgeInsets.only(bottom: footerBottomOffset),
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(24),
@@ -90,20 +93,40 @@ class _CommentsScreenState extends State<CommentsScreen> {
         ],
         color: ColorConstants.surfacePrimaryDark,
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Stack(
         children: [
-          _header(l10n, styles),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _table(),
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _header(l10n, styles),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: _table(),
+                ),
+              ),
+            ],
           ),
-          _footer(l10n, styles, context),
-          SizedBox(height: keyBoardHeight),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _footer(l10n, styles, context),
+                SizedBox(
+                  height: keyBoardHeight == 0
+                      ? 0
+                      : keyBoardHeight - footerBottomOffset,
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );
@@ -233,55 +256,48 @@ class _CommentsScreenState extends State<CommentsScreen> {
         shape: BoxShape.rectangle,
       ),
       padding: const EdgeInsets.fromLTRB(12, 0, 8, 0),
-      constraints: BoxConstraints(
-        maxHeight: (MediaQuery.of(context).size.height -
-                MediaQuery.of(context).viewInsets.bottom -
-                bottomSheetTopOffset -
-                headerHeight -
-                footerInsets) *
-            coefficient,
-      ),
+      constraints: const BoxConstraints(maxHeight: 110),
       child: Stack(
         children: [
           Scrollbar(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              child: PlatformTextField(
-                style: styles.bodyMedium?.merge(
-                  TextStyle(color: ColorConstants.onSurfaceWhite),
-                ),
-                focusNode: _focusNode,
-                scrollPadding: EdgeInsets.zero,
-                hintText: 'Add a comment...',
-                controller: _controller,
-                maxLines: null,
-                minLines: null,
-                cupertino: (context, platform) {
-                  return CupertinoTextFieldData(
-                    controller: _controller,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: const BoxDecoration(color: Colors.transparent),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    placeholderStyle: styles.bodyMedium?.merge(
-                      TextStyle(color: ColorConstants.onSurfaceWhite80),
-                    ),
-                  );
-                },
-                material: (context, platform) {
-                  return MaterialTextFieldData(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      hintStyle: styles.bodyMedium?.merge(
-                        TextStyle(color: ColorConstants.onSurfaceMedium),
-                      ),
-                    ),
-                  );
-                },
+            // child: SingleChildScrollView(
+            //   scrollDirection: Axis.vertical,
+            //   reverse: true,
+            child: PlatformTextField(
+              style: styles.bodyMedium?.merge(
+                TextStyle(color: ColorConstants.onSurfaceWhite),
               ),
+              focusNode: _focusNode,
+              scrollPadding: EdgeInsets.zero,
+              hintText: 'Add a comment...',
+              controller: _controller,
+              maxLines: null,
+              minLines: null,
+              cupertino: (context, platform) {
+                return CupertinoTextFieldData(
+                  controller: _controller,
+                  textAlignVertical: TextAlignVertical.center,
+                  decoration: const BoxDecoration(color: Colors.transparent),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  placeholderStyle: styles.bodyMedium?.merge(
+                    TextStyle(color: ColorConstants.onSurfaceWhite80),
+                  ),
+                );
+              },
+              material: (context, platform) {
+                return MaterialTextFieldData(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                    hintStyle: styles.bodyMedium?.merge(
+                      TextStyle(color: ColorConstants.onSurfaceMedium),
+                    ),
+                  ),
+                );
+              },
             ),
+            //),
           ),
           Positioned(
             right: 0,
