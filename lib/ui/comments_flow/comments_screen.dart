@@ -84,7 +84,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
     });
 
     _focusNode.addListener(_onFocusChange);
-    widget.viewModel.resetData();
     super.initState();
   }
 
@@ -103,13 +102,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
     double bottomInset = 0.0;
 
-    final newBottomInset = MediaQuery.of(context).viewInsets.bottom;
-    if (newBottomInset != bottomInset) {
-      widget.viewModel.resetData();
-      setState(() {
-        bottomInset = newBottomInset;
-      });
-    }
+    // final newBottomInset = MediaQuery.of(context).viewInsets.bottom;
+    // if (newBottomInset != bottomInset) {
+    //   widget.viewModel.resetData();
+    //   setState(() {
+    //     bottomInset = newBottomInset;
+    //   });
+    // }
 
     return KeyboardDismissOnTap(
       dismissOnCapturedTaps: true,
@@ -285,7 +284,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
         shape: BoxShape.rectangle,
       ),
       padding: const EdgeInsets.fromLTRB(12, 0, 8, 0),
-      constraints: const BoxConstraints(maxHeight: 110),
+      constraints: const BoxConstraints(maxHeight: 116),
       child: Stack(
         children: [
           PlatformTextField(
@@ -330,7 +329,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
               onTap: () {
                 if (_controller.text.isNotEmpty &&
                     !RegExp(r'^\s*$').hasMatch(_controller.text)) {
-                  widget.viewModel.addComment(_controller.text);
+                  widget.viewModel.addComment(_controller.text).then((value) {
+                    setState(() {});
+                  });
                   _controller.text = '';
                 }
               },
@@ -343,12 +344,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   Widget _body() {
     return StreamBuilder(
-      stream: widget.viewModel.updateDataStreamController.stream,
+      stream: widget.viewModel.commentsList,
       builder: (context, snapshot) {
-        if ((snapshot.data?.isEmpty ?? true) &&
+        if ((snapshot.data?.items.isEmpty ?? true) &&
             widget.viewModel.isLoading.value == false) {
           return _placeholder();
         } else if (snapshot.hasData) {
+          widget.viewModel.checkIfLastPage(snapshot.requireData);
           return _successBody();
         } else {
           return Container();
@@ -393,12 +395,10 @@ class _CommentsScreenState extends State<CommentsScreen> {
       scrollDirection: Axis.vertical,
       controller: _scrollController,
       loadingIndicator: Container(
-        width: 50,
-        height: 50,
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Center(child: Loadable(forceLoad: true, child: Container())),
       ),
-      items: widget.viewModel.fetchedItems,
+      items: widget.viewModel.commentsList.valueOrNull?.items ?? [],
       isRecentSearch: false,
       isLastPage: widget.viewModel.isLastPage,
       onLoadMore: (index) {
