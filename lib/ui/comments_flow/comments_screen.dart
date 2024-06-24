@@ -24,9 +24,6 @@ class CommentsScreen extends StatefulWidget {
 class _CommentsScreenState extends State<CommentsScreen> {
   static const bottomSheetTopOffset = 122;
   static const footerBottomOffset = 21.0;
-  static const headerHeight = 72;
-  static const footerInsets = 32;
-  static const coefficient = 0.9;
 
   final _scrollController = ScrollController();
   final _controller = TextEditingController();
@@ -100,15 +97,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
-    double bottomInset = 0.0;
-
-    // final newBottomInset = MediaQuery.of(context).viewInsets.bottom;
-    // if (newBottomInset != bottomInset) {
-    //   widget.viewModel.resetData();
-    //   setState(() {
-    //     bottomInset = newBottomInset;
-    //   });
-    // }
 
     return KeyboardDismissOnTap(
       dismissOnCapturedTaps: true,
