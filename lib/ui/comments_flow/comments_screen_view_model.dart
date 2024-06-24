@@ -78,12 +78,3 @@ class CommentsScreenViewModel {
     }
   }
 }
-
-//   void resetData() {
-//     page = 1;
-//     var tempValue = commentsList.value;
-//     tempValue.items.clear();
-//     commentsList.add(tempValue);
-//     isLoading.add(false);
-//     getPage();
-//   }
