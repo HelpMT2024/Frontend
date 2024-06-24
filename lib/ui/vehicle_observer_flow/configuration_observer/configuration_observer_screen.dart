@@ -55,6 +55,8 @@ class _ConfigurationObserverScreenState
                       builder: (context, itemSnapshot) {
                         return _body(snapshot.data!, itemSnapshot.data);
                       });
+                } else if (snapshot.hasError) {
+                  return Container();
                 } else {
                   return Loadable(forceLoad: true, child: Container());
                 }

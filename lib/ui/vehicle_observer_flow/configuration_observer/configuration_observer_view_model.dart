@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/configuration.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:help_my_truck/ui/main_flow/home_page.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ConfigurationObserverViewModel {
+class ConfigurationObserverViewModel with ErrorHandable {
   late final VehicleProvider provider;
   late final ItemProvider itemProvider;
   final MainPageConfig config;
@@ -16,7 +17,9 @@ class ConfigurationObserverViewModel {
   late final configuration = BehaviorSubject<Configuration>()
     ..addStream(
       Stream.fromFuture(
-        provider.configuration(config.engine, config.truck),
+        provider.configuration(config.engine, config.truck).catchError((error) {
+          showAlertDialog(null, error.message);
+        }),
       ),
     );
 

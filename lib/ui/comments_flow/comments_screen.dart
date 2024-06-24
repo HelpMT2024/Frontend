@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:help_my_truck/const/colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,6 +23,7 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
   static const bottomSheetTopOffset = 122;
+  static const footerBottomOffset = 21.0;
   static const headerHeight = 72;
   static const footerInsets = 32;
   static const coefficient = 0.9;
@@ -41,6 +44,39 @@ class _CommentsScreenState extends State<CommentsScreen> {
     });
   }
 
+  void _showReportAlert(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return PlatformAlertDialog(
+          title: Text(
+            l10n?.thank_you ?? '',
+            style: styles.bodyLarge?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
+          content: Text(
+            l10n?.check_comment ?? '',
+            style: styles.bodySmall?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     _controller.addListener(() {
@@ -48,7 +84,6 @@ class _CommentsScreenState extends State<CommentsScreen> {
     });
 
     _focusNode.addListener(_onFocusChange);
-    widget.viewModel.resetData();
     super.initState();
   }
 
@@ -67,44 +102,60 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final keyBoardHeight = MediaQuery.of(context).viewInsets.bottom;
     double bottomInset = 0.0;
 
-    final newBottomInset = MediaQuery.of(context).viewInsets.bottom;
-    if (newBottomInset != bottomInset) {
-      widget.viewModel.resetData();
-      setState(() {
-        bottomInset = newBottomInset;
-      });
-    }
+    // final newBottomInset = MediaQuery.of(context).viewInsets.bottom;
+    // if (newBottomInset != bottomInset) {
+    //   widget.viewModel.resetData();
+    //   setState(() {
+    //     bottomInset = newBottomInset;
+    //   });
+    // }
 
-    return Container(
-      height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(24),
-          topRight: Radius.circular(24),
-        ),
-        boxShadow: [
-          BoxShadow(
-            spreadRadius: 1,
-            color: ColorConstants.surfacePrimaryDark,
+    return KeyboardDismissOnTap(
+      dismissOnCapturedTaps: true,
+      child: Container(
+        height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
+        padding: const EdgeInsets.only(bottom: footerBottomOffset),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24),
+            topRight: Radius.circular(24),
           ),
-        ],
-        color: ColorConstants.surfacePrimaryDark,
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _header(l10n, styles),
-          Flexible(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: _table(),
+          boxShadow: [
+            BoxShadow(
+              spreadRadius: 1,
+              color: ColorConstants.surfacePrimaryDark,
             ),
-          ),
-          _footer(l10n, styles, context),
-          SizedBox(height: keyBoardHeight),
-        ],
+          ],
+          color: ColorConstants.surfacePrimaryDark,
+        ),
+        child: Stack(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _header(l10n, styles),
+                Flexible(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 72),
+                    child: _table(),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Spacer(),
+                _footer(l10n, styles, context),
+                if (keyBoardHeight > footerBottomOffset)
+                  SizedBox(height: keyBoardHeight - footerBottomOffset),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -233,55 +284,42 @@ class _CommentsScreenState extends State<CommentsScreen> {
         shape: BoxShape.rectangle,
       ),
       padding: const EdgeInsets.fromLTRB(12, 0, 8, 0),
-      constraints: BoxConstraints(
-        maxHeight: (MediaQuery.of(context).size.height -
-                MediaQuery.of(context).viewInsets.bottom -
-                bottomSheetTopOffset -
-                headerHeight -
-                footerInsets) *
-            coefficient,
-      ),
+      constraints: const BoxConstraints(maxHeight: 116),
       child: Stack(
         children: [
-          Scrollbar(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              reverse: true,
-              child: PlatformTextField(
-                style: styles.bodyMedium?.merge(
-                  TextStyle(color: ColorConstants.onSurfaceWhite),
-                ),
-                focusNode: _focusNode,
-                scrollPadding: EdgeInsets.zero,
-                hintText: 'Add a comment...',
-                controller: _controller,
-                maxLines: null,
-                minLines: null,
-                cupertino: (context, platform) {
-                  return CupertinoTextFieldData(
-                    controller: _controller,
-                    textAlignVertical: TextAlignVertical.center,
-                    decoration: const BoxDecoration(color: Colors.transparent),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    placeholderStyle: styles.bodyMedium?.merge(
-                      TextStyle(color: ColorConstants.onSurfaceWhite80),
-                    ),
-                  );
-                },
-                material: (context, platform) {
-                  return MaterialTextFieldData(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
-                      hintStyle: styles.bodyMedium?.merge(
-                        TextStyle(color: ColorConstants.onSurfaceMedium),
-                      ),
-                    ),
-                  );
-                },
-              ),
+          PlatformTextField(
+            style: styles.bodyMedium?.merge(
+              TextStyle(color: ColorConstants.onSurfaceWhite),
             ),
+            focusNode: _focusNode,
+            scrollPadding: EdgeInsets.zero,
+            hintText: 'Add a comment...',
+            controller: _controller,
+            maxLines: null,
+            minLines: null,
+            cupertino: (context, platform) {
+              return CupertinoTextFieldData(
+                controller: _controller,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: const BoxDecoration(color: Colors.transparent),
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                placeholderStyle: styles.bodyMedium?.merge(
+                  TextStyle(color: ColorConstants.onSurfaceWhite80),
+                ),
+              );
+            },
+            material: (context, platform) {
+              return MaterialTextFieldData(
+                controller: _controller,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                  hintStyle: styles.bodyMedium?.merge(
+                    TextStyle(color: ColorConstants.onSurfaceMedium),
+                  ),
+                ),
+              );
+            },
           ),
           Positioned(
             right: 0,
@@ -289,8 +327,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
             child: SendButton(
               controller: _controller,
               onTap: () {
-                widget.viewModel.addComment(_controller.text);
-                _controller.text = '';
+                if (_controller.text.isNotEmpty &&
+                    !RegExp(r'^\s*$').hasMatch(_controller.text)) {
+                  widget.viewModel.addComment(_controller.text).then((value) {
+                    setState(() {});
+                  });
+                  _controller.text = '';
+                }
               },
             ),
           ),
@@ -301,12 +344,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
 
   Widget _body() {
     return StreamBuilder(
-      stream: widget.viewModel.updateDataStreamController.stream,
+      stream: widget.viewModel.commentsList,
       builder: (context, snapshot) {
-        if ((snapshot.data?.isEmpty ?? true) &&
+        if ((snapshot.data?.items.isEmpty ?? true) &&
             widget.viewModel.isLoading.value == false) {
           return _placeholder();
         } else if (snapshot.hasData) {
+          widget.viewModel.checkIfLastPage(snapshot.requireData);
           return _successBody();
         } else {
           return Container();
@@ -319,35 +363,29 @@ class _CommentsScreenState extends State<CommentsScreen> {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
 
-    return Expanded(
-      child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          color: ColorConstants.surfacePrimaryDark,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 23,
-              ),
-              Text(
-                l10n?.no_comments_title ?? '',
-                textAlign: TextAlign.center,
-                style: styles.titleLarge
-                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
-              ),
-              const SizedBox(
-                height: 12,
-              ),
-              Text(
-                l10n?.no_comments_description ?? '',
-                textAlign: TextAlign.center,
-                style: styles.bodyMedium
-                    ?.copyWith(color: ColorConstants.onSurfaceWhite),
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Spacer(),
+          Text(
+            l10n?.no_comments_title ?? '',
+            textAlign: TextAlign.center,
+            style: styles.titleLarge
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
           ),
-        ),
+          const SizedBox(
+            height: 12,
+          ),
+          Text(
+            l10n?.no_comments_description ?? '',
+            textAlign: TextAlign.center,
+            style: styles.bodyMedium
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
+          ),
+          const Spacer(),
+        ],
       ),
     );
   }
@@ -356,11 +394,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return PaginatedList<CommentsListItem>(
       scrollDirection: Axis.vertical,
       controller: _scrollController,
-      loadingIndicator: Padding(
+      loadingIndicator: Container(
         padding: const EdgeInsets.symmetric(vertical: 20),
         child: Center(child: Loadable(forceLoad: true, child: Container())),
       ),
-      items: widget.viewModel.fetchedItems,
+      items: widget.viewModel.commentsList.valueOrNull?.items ?? [],
       isRecentSearch: false,
       isLastPage: widget.viewModel.isLastPage,
       onLoadMore: (index) {
@@ -371,7 +409,9 @@ class _CommentsScreenState extends State<CommentsScreen> {
           reportCallback: (commentId) {
             if (widget.viewModel.contentfulId != null) {
               widget.viewModel
-                  .sendReport(widget.viewModel.contentfulId!, commentId);
+                  .sendReport(widget.viewModel.contentfulId!, commentId, () {
+                _showReportAlert(context);
+              });
             }
           }),
     );

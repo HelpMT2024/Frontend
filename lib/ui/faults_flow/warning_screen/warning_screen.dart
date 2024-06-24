@@ -59,6 +59,8 @@ class _WarningScreenState extends State<WarningScreen> {
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return _body(itemSnapshot.data);
+                    } else if (snapshot.hasError) {
+                      return Container();
                     } else {
                       return Loadable(forceLoad: true, child: Container());
                     }

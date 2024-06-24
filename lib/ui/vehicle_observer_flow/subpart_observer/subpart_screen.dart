@@ -65,6 +65,8 @@ class _SubPartScreenState extends State<SubPartScreen> {
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return _body(snapshot.data!, itemSnapshot.data);
+                  } else if (snapshot.hasError) {
+                    return Container();
                   } else {
                     return Loadable(forceLoad: true, child: Container());
                   }

@@ -20,6 +20,11 @@ class TruckSelectorScreen extends StatefulWidget {
 }
 
 class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
+  final int _initialPage = 0;
+  
+  bool isNextButtonVisible = true;
+  bool isInitBuild = true;
+
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
@@ -33,6 +38,9 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
           stream: widget.viewModel.trucks,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              if (isInitBuild) {
+                isNextButtonVisible = !snapshot.data![_initialPage].comingSoon;
+              }
               return _body(snapshot.data!);
             } else {
               return Loadable(forceLoad: true, child: Container());
@@ -46,7 +54,6 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
   Widget _body(List<Truck> data) {
     final l10n = AppLocalizations.of(context);
     final styles = Theme.of(context).textTheme;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -57,14 +64,18 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
         const Spacer(),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-          child: CustomButton(
-            title: CustomButtonTitle(text: l10n?.next ?? ''),
-            state: CustomButtonStates.filled,
-            mainColor: ColorConstants.surfaceWhite,
-            textColor: ColorConstants.onSurfaceHigh,
-            height: 48,
-            onPressed: () => widget.viewModel.selectTruck(context),
-          ),
+          child: isNextButtonVisible
+              ? CustomButton(
+                  title: CustomButtonTitle(text: l10n?.next ?? ''),
+                  state: CustomButtonStates.filled,
+                  mainColor: ColorConstants.surfaceWhite,
+                  textColor: ColorConstants.onSurfaceHigh,
+                  height: 48,
+                  onPressed: () => widget.viewModel.selectTruck(context),
+                )
+              : Container(
+                  height: 48,
+                ),
         ),
       ],
     );
@@ -88,7 +99,8 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
       itemBuilder: (context, index, realIndex) {
         final truck = data[index];
         return GestureDetector(
-          onTap: () => widget.viewModel.selectTruck(context),
+          onTap: () =>
+              truck.comingSoon ? null : widget.viewModel.selectTruck(context),
           child: Column(
             children: [
               SizedBox(
@@ -102,22 +114,46 @@ class _TruckSelectorScreenState extends State<TruckSelectorScreen> {
                   color: ColorConstants.surfaceWhite,
                 ),
               ),
+              const SizedBox(height: 8),
+              truck.comingSoon ? _comingSoonLabel(styles) : Container(),
             ],
           ),
         );
       },
       options: CarouselOptions(
-        height: 336,
+        height: 366,
         onPageChanged: (index, reason) {
           setState(() {
+            isInitBuild = false;
             widget.viewModel.currentTruckIndex = index;
+            isNextButtonVisible = !data[index].comingSoon;
           });
         },
         enableInfiniteScroll: true,
         enlargeCenterPage: true,
         viewportFraction: 0.6,
-        initialPage: 0,
+        initialPage: _initialPage,
       ),
+    );
+  }
+
+  Widget _comingSoonLabel(TextTheme styles) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      height: 20,
+      width: 110,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: ColorConstants.onSurfaceSecondary,
+      ),
+      child: Center(
+          child: Text(
+        l10n?.coming_soon ?? '',
+        style: styles.labelSmall?.copyWith(
+          color: ColorConstants.onSurfaceWhite,
+          fontSize: 11,
+        ),
+      )),
     );
   }
 

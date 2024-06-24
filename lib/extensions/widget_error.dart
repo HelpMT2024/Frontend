@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:help_my_truck/main.dart';
 import '../const/colors.dart';
 import '../services/router/auth_router.dart';
 import '../services/shared_preferences_wrapper.dart';
@@ -101,12 +102,15 @@ extension StateErrorHandable on State {
   }
 }
 
-mixin ViewModelErrorHandable {
-  void showAlertDialog(BuildContext context, String error) {
-    final l10n = AppLocalizations.of(context);
+mixin ErrorHandable {
+  void showAlertDialog(BuildContext? context, String error) {
+    final globalContext = NavigationService.navigatorKey.currentContext;
+
+    if (globalContext != null) {
+    final l10n = AppLocalizations.of(context ?? globalContext);
 
     showDialog(
-      context: context,
+      context: context ?? globalContext,
       builder: (BuildContext context) {
         return PlatformAlertDialog(
           title: Text(l10n?.error ?? ''),
@@ -122,5 +126,6 @@ mixin ViewModelErrorHandable {
         );
       },
     );
+    }
   }
 }

@@ -4,7 +4,7 @@ import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class VerificationScreenViewModel with ViewModelErrorHandable {
+class VerificationScreenViewModel with ErrorHandable {
   final AuthProvider provider;
   final Credentials credentials;
 

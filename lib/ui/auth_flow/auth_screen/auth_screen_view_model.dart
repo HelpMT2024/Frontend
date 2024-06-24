@@ -6,7 +6,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:help_my_truck/services/router/auth_router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
-class AuthScreenViewModel with ViewModelErrorHandable {
+class AuthScreenViewModel with ErrorHandable {
   final AuthProvider provider;
 
   String? passwordRepeatError;

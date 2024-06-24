@@ -5,11 +5,12 @@ import 'package:help_my_truck/data/models/contentfull_entnities.dart';
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/problem_case.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class ProblemCaseScreenViewModel {
+class ProblemCaseScreenViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.problemCase;
@@ -18,7 +19,11 @@ class ProblemCaseScreenViewModel {
   var itemStreamController = StreamController<ContentfulItem>();
 
   late final problem = BehaviorSubject<ProblemCase>()
-    ..addStream(Stream.fromFuture(provider.problemCase(config.id)));
+    ..addStream(Stream.fromFuture(
+      provider.problemCase(config.id).catchError((error) {
+        showAlertDialog(null, error.message);
+      }),
+    ));
 
   List<IDPVideo> get videos => problem.valueOrNull?.videos ?? [];
   bool get hasVideos => videos.isNotEmpty;
@@ -47,14 +52,7 @@ class ProblemCaseScreenViewModel {
 
   item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 }

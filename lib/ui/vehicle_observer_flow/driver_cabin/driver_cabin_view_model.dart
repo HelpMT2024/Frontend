@@ -5,6 +5,7 @@ import 'package:help_my_truck/data/models/child_type.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
 import 'package:help_my_truck/data/models/system.dart';
 import 'package:help_my_truck/data/models/unit.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:help_my_truck/services/router/faults_router.dart';
@@ -14,7 +15,7 @@ import 'package:help_my_truck/ui/widgets/nav_bar/nav_bar_page.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:collection/collection.dart';
 
-class DriverCabinViewModel {
+class DriverCabinViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelSubType itemType = FavoriteModelSubType.driverDisplay;
@@ -34,7 +35,11 @@ class DriverCabinViewModel {
 
   late final system = BehaviorSubject<System>()
     ..addStream(
-      Stream.fromFuture(provider.system(config.id)),
+      Stream.fromFuture(
+        provider.system(config.id).catchError((error) {
+          showAlertDialog(null, error.message);
+        }),
+      ),
     );
 
   DriverCabinViewModel({
@@ -47,15 +52,8 @@ class DriverCabinViewModel {
 
   item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 
   void onModelSelected(String id, BuildContext context) {

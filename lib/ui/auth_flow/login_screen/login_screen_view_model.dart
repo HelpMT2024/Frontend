@@ -4,7 +4,7 @@ import 'package:help_my_truck/services/API/auth_provider.dart';
 import 'package:help_my_truck/services/router/vehicle_selector_router.dart';
 import 'package:rxdart/rxdart.dart';
 
-class LoginScreenViewModel with ViewModelErrorHandable {
+class LoginScreenViewModel with ErrorHandable {
   final AuthProvider provider;
 
   String? _email;

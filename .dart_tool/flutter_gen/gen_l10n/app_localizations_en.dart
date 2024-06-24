@@ -369,4 +369,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get loading_assets => 'Loading Assets...';
+
+  @override
+  String get thank_you => 'Thank you!';
+
+  @override
+  String get check_comment => 'Our team will check if this comment goes against our Community guidelines';
+
+  @override
+  String get coming_soon => 'COMING SOON';
+
+  @override
+  String get coming_soon_title_ellipsis => 'Coming soon...';
+
+  @override
+  String get coming_soon_top_description => 'We are working on this section.';
+
+  @override
+  String get coming_soon_bottom_description => 'It will be available soon';
 }

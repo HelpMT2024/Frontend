@@ -22,12 +22,10 @@ class SendButton extends StatelessWidget {
             borderRadius: const BorderRadius.all(Radius.circular(6)),
             color: ColorConstants.surfaceWhite,
           ),
-          child: Flexible(
-            child: Icon(
-              Icons.send,
-              size: 16,
-              color: ColorConstants.surfacePrimaryDark,
-            ),
+          child: Icon(
+            Icons.send,
+            size: 16,
+            color: ColorConstants.surfacePrimaryDark,
           ),
         ),
       ),

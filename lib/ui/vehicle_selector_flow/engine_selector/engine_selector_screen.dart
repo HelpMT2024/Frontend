@@ -20,6 +20,11 @@ class EngineSelectorScreen extends StatefulWidget {
 }
 
 class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
+  final int _initialPage = 0;
+
+  bool isNextButtonVisible = true;
+  bool isInitBuild = true;
+
   @override
   Widget build(BuildContext context) {
     final styles = Theme.of(context).textTheme;
@@ -33,6 +38,9 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
           stream: widget.viewModel.engines,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              if (isInitBuild) {
+                isNextButtonVisible = !snapshot.data![_initialPage].comingSoon;
+              }
               return _body(snapshot.data!);
             } else {
               return Loadable(forceLoad: true, child: Container());
@@ -45,7 +53,6 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
 
   Widget _body(List<Engine> data) {
     final styles = Theme.of(context).textTheme;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -64,14 +71,18 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
-      child: CustomButton(
-        title: CustomButtonTitle(text: l10n?.next ?? ''),
-        state: CustomButtonStates.filled,
-        mainColor: ColorConstants.surfaceWhite,
-        textColor: ColorConstants.onSurfaceHigh,
-        height: 48,
-        onPressed: () => widget.viewModel.selectEngine(context),
-      ),
+      child: isNextButtonVisible
+          ? CustomButton(
+              title: CustomButtonTitle(text: l10n?.next ?? ''),
+              state: CustomButtonStates.filled,
+              mainColor: ColorConstants.surfaceWhite,
+              textColor: ColorConstants.onSurfaceHigh,
+              height: 48,
+              onPressed: () => widget.viewModel.selectEngine(context),
+            )
+          : Container(
+              height: 48,
+            ),
     );
   }
 
@@ -91,38 +102,63 @@ class _EngineSelectorScreenState extends State<EngineSelectorScreen> {
     return CarouselSlider.builder(
       itemCount: data.length,
       itemBuilder: (context, index, realIndex) {
-        final truck = data[index];
+        final engine = data[index];
         return GestureDetector(
-          onTap: () => widget.viewModel.selectEngine(context),
+          onTap: () =>
+              engine.comingSoon ? null : widget.viewModel.selectEngine(context),
           child: Column(
             children: [
               SizedBox(
                 height: 240,
                 width: 240,
-                child: Image.network(truck.image.url),
+                child: Image.network(engine.image.url),
               ),
               Text(
-                truck.name.toUpperCase(),
+                engine.name.toUpperCase(),
                 style: styles.titleMedium?.copyWith(
                   color: ColorConstants.surfaceWhite,
                 ),
               ),
+              const SizedBox(height: 8),
+              engine.comingSoon ? _comingSoonLabel(styles) : Container(),
             ],
           ),
         );
       },
       options: CarouselOptions(
-        height: 336,
+        height: 366,
         onPageChanged: (index, reason) {
           setState(() {
+            isInitBuild = false;
             widget.viewModel.currentEngineIndex = index;
+            isNextButtonVisible = !data[index].comingSoon;
           });
         },
         enableInfiniteScroll: true,
         enlargeCenterPage: true,
         viewportFraction: 0.6,
-        initialPage: 0,
+        initialPage: _initialPage,
       ),
+    );
+  }
+
+  Widget _comingSoonLabel(TextTheme styles) {
+    final l10n = AppLocalizations.of(context);
+    return Container(
+      height: 20,
+      width: 110,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: ColorConstants.onSurfaceSecondary,
+      ),
+      child: Center(
+          child: Text(
+        l10n?.coming_soon ?? '',
+        style: styles.labelSmall?.copyWith(
+          color: ColorConstants.onSurfaceWhite,
+          fontSize: 11,
+        ),
+      )),
     );
   }
 

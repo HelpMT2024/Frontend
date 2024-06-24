@@ -8,7 +8,7 @@ import 'package:help_my_truck/services/router/profile_router.dart';
 import 'package:help_my_truck/services/router/router.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 
-class SettingsScreenViewModel with ViewModelErrorHandable {
+class SettingsScreenViewModel with ErrorHandable {
   final ProfileProvider provider;
 
   SettingsScreenViewModel({required this.provider});

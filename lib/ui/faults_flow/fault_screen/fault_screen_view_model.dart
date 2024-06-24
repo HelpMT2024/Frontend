@@ -2,11 +2,12 @@ import 'dart:async';
 
 import 'package:help_my_truck/data/models/fault.dart';
 import 'package:help_my_truck/data/models/favorite_model_type.dart';
+import 'package:help_my_truck/extensions/widget_error.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/services/API/vehicle_provider.dart';
 import 'package:rxdart/rxdart.dart';
 
-class FaultScreenViewModel {
+class FaultScreenViewModel with ErrorHandable {
   final VehicleProvider provider;
   final ItemProvider itemProvider;
   final FavoriteModelType itemType = FavoriteModelType.faultCode;
@@ -15,7 +16,11 @@ class FaultScreenViewModel {
   var itemStreamController = StreamController<ContentfulItem>();
 
   late final fault = BehaviorSubject<Fault>()
-    ..addStream(Stream.fromFuture(provider.fault(config.id)));
+    ..addStream(Stream.fromFuture(
+      provider.fault(config.id).catchError((error) {
+        showAlertDialog(null, error.message);
+      }),
+    ));
 
   bool get hasPDF =>
       fault.valueOrNull?.pdfFilesCollection.items.isNotEmpty ?? false;
@@ -32,14 +37,7 @@ class FaultScreenViewModel {
 
   item() {
     itemProvider
-        .processItem(
-      config.id,
-      itemType.filterKey(),
-    )
-        .then(
-      (item) {
-        itemStreamController.add(item);
-      },
-    );
+        .processItem(config.id, itemType.filterKey())
+        .then((item) => itemStreamController.add(item));
   }
 }

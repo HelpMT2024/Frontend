@@ -20,6 +20,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_screen.dart';
 import 'package:help_my_truck/ui/vehicle_observer_flow/configuration_observer/configuration_observer_view_model.dart';
 import 'package:help_my_truck/ui/search_flow/search_screen.dart';
+import 'package:help_my_truck/ui/widgets/people_coming_soon_placeholder.dart';
 
 class MainPageConfig {
   final Engine engine;
@@ -75,7 +76,7 @@ class _MainPageState extends State<MainPage> with WidgetsBindingObserver {
     NavBarPage.home: ConfigurationObserverScreen(
       viewModel: ConfigurationObserverViewModel(config: widget.config),
     ),
-    NavBarPage.people: const SizedBox(),
+    NavBarPage.people: const PeopleComingSoonPlaceHolder(),
     NavBarPage.search: const SizedBox(),
     NavBarPage.favorites: FavoritesScreen(
       viewModel: FavoritesScreenViewModel(
