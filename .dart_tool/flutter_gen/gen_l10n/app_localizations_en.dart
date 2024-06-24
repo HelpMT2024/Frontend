@@ -387,4 +387,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get coming_soon_bottom_description => 'It will be available soon';
+
+  @override
+  String get disclaimer => 'Disclaimer';
 }

@@ -858,6 +858,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'It will be available soon'**
   String get coming_soon_bottom_description;
+
+  /// No description provided for @disclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimer'**
+  String get disclaimer;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
