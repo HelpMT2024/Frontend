@@ -840,6 +840,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'COMING SOON'**
   String get coming_soon;
+
+  /// No description provided for @coming_soon_title_ellipsis.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon...'**
+  String get coming_soon_title_ellipsis;
+
+  /// No description provided for @coming_soon_top_description.
+  ///
+  /// In en, this message translates to:
+  /// **'We are working on this section.'**
+  String get coming_soon_top_description;
+
+  /// No description provided for @coming_soon_bottom_description.
+  ///
+  /// In en, this message translates to:
+  /// **'It will be available soon'**
+  String get coming_soon_bottom_description;
+
+  /// No description provided for @disclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'Disclaimer'**
+  String get disclaimer;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
