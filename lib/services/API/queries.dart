@@ -660,6 +660,13 @@ query Subpart(\$id: String = "$id") {
                 id
               }
             }
+            ... on ProblemCase {
+              __typename
+              name
+              sys {
+                id
+              }
+            }
           }
         }
       }
