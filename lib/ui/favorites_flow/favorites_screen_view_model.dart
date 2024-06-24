@@ -46,7 +46,7 @@ class FavoritesScreenViewModel with ErrorHandable {
         showAlertDialog(context, error.message);
       });
       await itemProvider
-          .favoritesList(user!.id, typeFilters, _page, _cellsPerPage)
+          .favoritesList(user?.id, typeFilters, _page, _cellsPerPage)
           .then(
         (page) async {
           await Future.wait(

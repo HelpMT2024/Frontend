@@ -862,8 +862,14 @@ abstract class AppLocalizations {
   /// No description provided for @disclaimer.
   ///
   /// In en, this message translates to:
-  /// **'Disclaimer'**
+  /// **''**
   String get disclaimer;
+
+  /// No description provided for @warnings_screen_description.
+  ///
+  /// In en, this message translates to:
+  /// **'ⓘ Clicking on any warning light icon will direct you to a page detailing issues related to that specific light.'**
+  String get warnings_screen_description;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

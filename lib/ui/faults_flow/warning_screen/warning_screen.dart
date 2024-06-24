@@ -1,4 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:help_my_truck/const/colors.dart';
 import 'package:help_my_truck/data/models/child_problem.dart';
 import 'package:help_my_truck/data/models/warning.dart';
 import 'package:help_my_truck/services/API/item_provider.dart';
@@ -75,14 +78,41 @@ class _WarningScreenState extends State<WarningScreen> {
   }
 
   Widget _body(ContentfulItem? item) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _lights(),
-          const SizedBox(height: 32),
-          CommentButton(id: item?.id),
-        ],
+    return Column(
+      children: [
+        _description(),
+        const SizedBox(height: 16),
+        _content(item),
+      ],
+    );
+  }
+
+  Widget _description() {
+    final l10n = AppLocalizations.of(context);
+    final styles = Theme.of(context).textTheme;
+
+    return DefaultTextStyle.merge(
+      style: styles.labelLarge?.merge(
+        TextStyle(
+          color: ColorConstants.onSurfaceWhite.withAlpha(210),
+        ),
+      ),
+      child: Text(l10n?.warnings_screen_description ?? ''),
+    );
+  }
+
+  Widget _content(ContentfulItem? item) {
+    return Expanded(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _lights(),
+            const SizedBox(height: 32),
+            CommentButton(id: item?.id),
+          ],
+        ),
       ),
     );
   }
