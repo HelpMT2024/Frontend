@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -23,7 +25,7 @@ class CommentsScreen extends StatefulWidget {
 
 class _CommentsScreenState extends State<CommentsScreen> {
   static const bottomSheetTopOffset = 122;
-  static const footerBottomOffset = 21.0;
+  static final double footerBottomOffset = Platform.isAndroid ? 0 : 21.0;
 
   final _scrollController = ScrollController();
   final _controller = TextEditingController();
@@ -48,28 +50,57 @@ class _CommentsScreenState extends State<CommentsScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return PlatformAlertDialog(
-          title: Text(
-            l10n?.thank_you ?? '',
-            style: styles.bodyLarge?.copyWith(
-              color: ColorConstants.onSurfaceWhite,
+        if (Platform.isAndroid) {
+          return AlertDialog(
+            title: Text(
+              l10n?.thank_you ?? '',
+              style: styles.bodyLarge?.copyWith(
+                color: ColorConstants.onSurfaceWhite,
+              ),
             ),
-          ),
-          content: Text(
-            l10n?.check_comment ?? '',
-            style: styles.bodySmall?.copyWith(
-              color: ColorConstants.onSurfaceWhite,
+            content: Text(
+              l10n?.check_comment ?? '',
+              style: styles.bodySmall?.copyWith(
+                color: ColorConstants.onSurfaceWhite,
+              ),
             ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+            backgroundColor: const Color.fromARGB(210, 37, 37, 37),
+          );
+        } else {
+          return Theme(
+            data: ThemeData.dark(),
+            child: CupertinoAlertDialog(
+              title: Text(
+                l10n?.thank_you ?? '',
+                style: styles.bodyLarge?.copyWith(
+                  color: ColorConstants.onSurfaceWhite,
+                ),
+              ),
+              content: Text(
+                l10n?.check_comment ?? '',
+                style: styles.bodySmall?.copyWith(
+                  color: ColorConstants.onSurfaceWhite,
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
             ),
-          ],
-        );
+          );
+        }
       },
     );
   }
@@ -102,7 +133,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
       dismissOnCapturedTaps: true,
       child: Container(
         height: MediaQuery.of(context).size.height - bottomSheetTopOffset,
-        padding: const EdgeInsets.only(bottom: footerBottomOffset),
+        padding: EdgeInsets.only(bottom: footerBottomOffset),
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(24),
@@ -334,14 +365,21 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return StreamBuilder(
       stream: widget.viewModel.commentsList,
       builder: (context, snapshot) {
-        if ((snapshot.data?.items.isEmpty ?? true) &&
-            widget.viewModel.isLoading.value == false) {
-          return _placeholder();
-        } else if (snapshot.hasData) {
-          widget.viewModel.checkIfLastPage(snapshot.requireData);
-          return _successBody();
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Loadable(
+            forceLoad: true,
+            child: Container(),
+          );
         } else {
-          return Container();
+          if ((snapshot.data?.items.isEmpty ?? true) &&
+              widget.viewModel.isLoading.value == false) {
+            return _placeholder();
+          } else if (snapshot.hasData) {
+            widget.viewModel.checkIfLastPage(snapshot.requireData);
+            return _successBody();
+          } else {
+            return Container();
+          }
         }
       },
     );

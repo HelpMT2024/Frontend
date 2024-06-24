@@ -26,8 +26,7 @@ class CommentsScreenViewModel {
     if (contentfulId != null && !isLoading.value) {
       isLoading.add(true);
       await itemProvider.addComment(contentfulId!, text);
-      isLoading.add(false);
-      resetData();
+      await resetData();
       return;
     }
   }
@@ -43,7 +42,7 @@ class CommentsScreenViewModel {
     }
   }
 
-  void getPage() async {
+  Future<void> getPage() async {
     if (!isLoading.value) {
       isLoading.add(true);
       _page++;
@@ -59,17 +58,18 @@ class CommentsScreenViewModel {
       tempValue.items.addAll(commentPage.items);
       isLoading.add(false);
       commentsList.add(tempValue);
+      return;
     }
   }
 
-  void resetData() {
+  Future<void> resetData() async {
     _page = 0;
     var tempValue = commentsList.value;
-    tempValue.items.clear;
-    isLoading.add(false);
+    tempValue.items.clear();
     commentsList.add(tempValue);
     isLoading.add(false);
-    getPage();
+    await getPage();
+    return;
   }
 
   void checkIfLastPage(CommentsListModel data) {
