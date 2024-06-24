@@ -13,45 +13,43 @@ class PeopleComingSoonPlaceHolder extends StatelessWidget {
     final styles = Theme.of(context).textTheme;
 
     return Center(
-      child: Expanded(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SvgPicture.asset(
-              R.ASSETS_PEOPLE_COMING_SOON_SVG,
-              height: 80,
-              width: 80,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset(
+            R.ASSETS_PEOPLE_COMING_SOON_SVG,
+            height: 80,
+            width: 80,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Text(
+            l10n?.coming_soon_title_ellipsis ?? '',
+            textAlign: TextAlign.center,
+            style: styles.headlineMedium
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
+          ),
+          const SizedBox(
+            height: 6,
+          ),
+          Text(
+            l10n?.coming_soon_top_description ?? '',
+            textAlign: TextAlign.center,
+            style: styles.bodyLarge?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+              fontSize: 16,
             ),
-            const SizedBox(
-              height: 12,
+          ),
+          Text(
+            l10n?.coming_soon_bottom_description ?? '',
+            textAlign: TextAlign.center,
+            style: styles.bodyLarge?.copyWith(
+              color: ColorConstants.onSurfaceWhite,
+              fontSize: 16,
             ),
-            Text(
-              l10n?.coming_soon_title_ellipsis ?? '',
-              textAlign: TextAlign.center,
-              style: styles.headlineMedium
-                  ?.copyWith(color: ColorConstants.onSurfaceWhite),
-            ),
-            const SizedBox(
-              height: 6,
-            ),
-            Text(
-              l10n?.coming_soon_top_description ?? '',
-              textAlign: TextAlign.center,
-              style: styles.bodyLarge?.copyWith(
-                color: ColorConstants.onSurfaceWhite,
-                fontSize: 16,
-              ),
-            ),
-            Text(
-              l10n?.coming_soon_bottom_description ?? '',
-              textAlign: TextAlign.center,
-              style: styles.bodyLarge?.copyWith(
-                color: ColorConstants.onSurfaceWhite,
-                fontSize: 16,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
