@@ -111,6 +111,10 @@ class _ComponentObserverScreenState extends State<ComponentObserverScreen> {
             const SizedBox(height: 4),
             if (widget.viewModel.hasFaults)
               VehicleTitle(text: l10n?.favorites_item_type_fault_codes),
+            if (!widget.viewModel.hasFaults &&
+                !widget.viewModel.hasDescription &&
+                !widget.viewModel.hasProblems)
+              const SizedBox(height: 12),
             _warningIcons(),
             faults(),
           },

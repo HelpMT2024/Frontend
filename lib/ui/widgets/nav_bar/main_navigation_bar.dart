@@ -34,14 +34,11 @@ class MainNavigationBar extends AppBar {
         );
 
   static Widget _title(String? title, TextTheme styles) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 6.7),
-      child: Text(
-        title ?? '',
-        style: styles.titleLarge?.merge(
-          TextStyle(
-            color: ColorConstants.surfaceWhite,
-          ),
+    return Text(
+      title ?? '',
+      style: styles.titleLarge?.merge(
+        TextStyle(
+          color: ColorConstants.surfaceWhite,
         ),
       ),
     );

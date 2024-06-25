@@ -348,9 +348,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
               onTap: () {
                 if (_controller.text.isNotEmpty &&
                     !RegExp(r'^\s*$').hasMatch(_controller.text)) {
-                  widget.viewModel.addComment(_controller.text).then((value) {
-                    setState(() {});
-                  });
+                  widget.viewModel.addComment(_controller.text);
                   _controller.text = '';
                 }
               },

@@ -118,6 +118,10 @@ class _SubPartScreenState extends State<SubPartScreen> {
               const SizedBox(height: 4),
               if (widget.viewModel.hasFaults)
                 _title(l10n?.favorites_item_type_fault_codes, styles),
+              if (!widget.viewModel.hasFaults &&
+                  !widget.viewModel.hasDescription &&
+                  !widget.viewModel.hasProblems)
+                const SizedBox(height: 12),
               _warningIcons(),
               _faultCodeSection(),
             },
