@@ -33,14 +33,41 @@ class WarningLightCell extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 2),
+          const Spacer(),
           SvgPicture.network(
             warning.icon?.url ?? '',
             height: 30,
             width: 30,
           ),
-          const SizedBox(height: 2),
-          Flexible(child: Text(warning.name, style: style)),
+          const Spacer(),
+          LayoutBuilder(builder: (context, constraints) {
+            final span = TextSpan(text: warning.name, style: style);
+            final tp =
+                TextPainter(text: span, textDirection: TextDirection.ltr);
+            tp.layout(maxWidth: constraints.maxWidth);
+            final numLines = tp.computeLineMetrics().length;
+            if (numLines > 2) {
+              return Flexible(
+                child: Text(
+                  warning.name,
+                  maxLines: fixedWidth != null ? 2 : 1,
+                  style: style,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              );
+            } else {
+              return Flexible(
+                child: Text(
+                  warning.name,
+                  maxLines: fixedWidth != null ? 2 : 1,
+                  textAlign: TextAlign.center,
+                  style: style,
+                  overflow: TextOverflow.visible,
+                ),
+              );
+            }
+          }),
+          const Spacer(),
         ],
       ),
     );
