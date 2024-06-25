@@ -14,7 +14,7 @@ class WarningLightsRow extends StatelessWidget {
       runSpacing: 4,
       children: [
         ...warnings.map((e) {
-          return WarningLightCell(warning: e, fixedWidth: 80, fixedHeight: 70);
+          return WarningLightCell(warning: e);
         }),
       ],
     );

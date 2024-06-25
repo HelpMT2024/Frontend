@@ -136,7 +136,10 @@ class _WarningScreenState extends State<WarningScreen> {
       onTap: () => widget.viewModel.onModelSelected(e, context),
       child: SizedBox(
         height: 70,
-        child: WarningLightCell(warning: warning),
+        child: WarningLightCell(
+          warning: warning,
+          fixedWidth: (MediaQuery.of(context).size.width - 56) / 4,
+        ),
       ),
     );
   }
