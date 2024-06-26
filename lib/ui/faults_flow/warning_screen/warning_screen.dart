@@ -36,6 +36,7 @@ class _WarningScreenState extends State<WarningScreen> {
       stream: widget.viewModel.itemStreamController.stream,
       builder: (context, itemSnapshot) {
         return Scaffold(
+          extendBody: true,
           appBar: MainNavigationBar(
             context: context,
             styles: styles,

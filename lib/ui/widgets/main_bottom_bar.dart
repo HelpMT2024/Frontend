@@ -25,7 +25,7 @@ class MainBottomBar extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return PlatformNavBar(
-      backgroundColor: ColorConstants.surfacePrimaryDark,
+      backgroundColor: Colors.transparent,
       material: (_, __) => MaterialNavBarData(
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
@@ -36,14 +36,14 @@ class MainBottomBar extends StatelessWidget {
         return MaterialNavigationBarData(
           height: 68,
           elevation: 0,
-          backgroundColor: ColorConstants.surfacePrimaryDark,
-          indicatorColor: ColorConstants.surfacePrimaryDark,
+          backgroundColor: hideAllExceptSearch ? Colors.transparent : ColorConstants.surfacePrimaryDark,
+          indicatorColor: hideAllExceptSearch ? Colors.transparent : ColorConstants.surfacePrimaryDark,
           labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         );
       },
       cupertino: (context, platform) => CupertinoTabBarData(
         height: 60,
-        backgroundColor: ColorConstants.surfacePrimaryDark,
+        backgroundColor: hideAllExceptSearch ? Colors.transparent : ColorConstants.surfacePrimaryDark,
       ),
       items: [
         _customIcon(

@@ -31,7 +31,7 @@ class CustomNavigationBarIcon extends StatelessWidget {
             : ColorConstants.onSurfaceWhite64;
     final bgColor = isCenterItem
         ? ColorConstants.statesDanger
-        : ColorConstants.surfacePrimaryDark;
+        : Colors.transparent;
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: isCenterItem ? 2.0 : 4.0),
