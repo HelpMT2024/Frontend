@@ -1,12 +1,15 @@
 // ignore_for_file: body_might_complete_normally_nullable, non_constant_identifier_names
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen_view_model.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen_view_model.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/terms_of_service_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/terms_screens/terms_of_service_screen_view_model.dart';
 import 'package:help_my_truck/ui/gif_loading_flow/gif_loading_screen.dart';
 import 'package:help_my_truck/ui/gif_loading_flow/gif_loading_screen_view_model.dart';
 import 'package:native_page_route/native_page_route.dart';
@@ -110,7 +113,8 @@ Route<dynamic>? AuthRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          return const TermsOfServiceScreen();
+          final viewModel = TermsOfServiceScreenViewModel(provider: provider);
+          return TermsOfServiceScreen(viewModel: viewModel);
         },
       );
 
@@ -118,7 +122,8 @@ Route<dynamic>? AuthRouter(
       return nativePageRoute(
         settings: setting,
         builder: (context) {
-          return const PrivacyPolicyScreen();
+          final viewModel = PrivacyPolicyScreenViewModel(provider: provider);
+          return PrivacyPolicyScreen(viewModel: viewModel);
         },
       );
 

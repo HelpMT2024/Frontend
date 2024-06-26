@@ -168,4 +168,24 @@ class AuthProvider {
 
     return service.execute(request, (data) {});
   }
+
+  Future<String> termsOfService() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/user/terms-conditions',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return service.execute(request, (json) => json['data']['text']);
+  }
+
+  Future<String> policy() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/user/policy',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return service.execute(request, (json) => json['data']['text']);
+  }
 }
