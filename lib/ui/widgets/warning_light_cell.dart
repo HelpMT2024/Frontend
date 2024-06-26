@@ -47,23 +47,19 @@ class WarningLightCell extends StatelessWidget {
             tp.layout(maxWidth: constraints.maxWidth);
             final numLines = tp.computeLineMetrics().length;
             if (numLines > 2) {
-              return Flexible(
-                child: Text(
-                  warning.name,
-                  maxLines: fixedWidth != null ? 2 : 1,
-                  style: style,
-                  overflow: TextOverflow.ellipsis,
-                ),
+              return Text(
+                warning.name,
+                maxLines: fixedWidth != null ? 2 : 1,
+                style: style,
+                overflow: TextOverflow.ellipsis,
               );
             } else {
-              return Flexible(
-                child: Text(
-                  warning.name,
-                  maxLines: fixedWidth != null ? 2 : 1,
-                  textAlign: TextAlign.center,
-                  style: style,
-                  overflow: TextOverflow.visible,
-                ),
+              return Text(
+                warning.name,
+                maxLines: fixedWidth != null ? 2 : 1,
+                textAlign: TextAlign.center,
+                style: style,
+                overflow: TextOverflow.visible,
               );
             }
           }),
