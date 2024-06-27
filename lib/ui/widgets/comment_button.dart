@@ -19,11 +19,11 @@ class CommentButton extends StatelessWidget {
   void _showCommentsModal(BuildContext context) {
     PurchaseService.processAfterPayment(
       () {
+        final viewModel = CommentsScreenViewModel(contentfulId: id);
         showModalBottomSheet(
           isScrollControlled: true,
           context: context,
           builder: (BuildContext context) {
-            final viewModel = CommentsScreenViewModel(contentfulId: id);
             return CommentsScreen(viewModel: viewModel);
           },
         );
