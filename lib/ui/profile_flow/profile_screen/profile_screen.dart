@@ -147,16 +147,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _settings() {
-    return Padding(
-      padding: const EdgeInsets.only(right: 16),
-      child: IconButton(
-        icon: Icon(
-          Icons.settings,
-          color: ColorConstants.onSurfaceWhite,
-          size: 24,
-        ),
-        onPressed: () => widget.viewModel.settings(context),
+    return IconButton(
+      icon: Icon(
+        Icons.settings,
+        color: ColorConstants.onSurfaceWhite,
+        size: 24,
       ),
+      onPressed: () => widget.viewModel.settings(context),
     );
   }
 
