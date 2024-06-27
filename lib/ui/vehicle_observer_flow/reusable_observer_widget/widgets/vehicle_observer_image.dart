@@ -178,9 +178,20 @@ class _VehicleObserverImageState extends State<VehicleObserverImage>
     if (widget.lineDrawer == null) {
       return const SizedBox();
     }
-    final imageHeight = widget.image.imageFront.height;
-    final imageWidth = widget.image.imageFront.width;
-    final aspectRatio = imageWidth / imageHeight;
+
+    final double aspectRatio;
+    final int imageHeight;
+    final int imageWidth;
+
+    if (widget.image.preview != null) {
+      imageHeight = widget.image.preview!.height;
+      imageWidth = widget.image.preview!.width;
+    } else {
+      imageHeight = widget.image.imageFront.height;
+      imageWidth = widget.image.imageFront.width;
+    }
+
+    aspectRatio = imageWidth / imageHeight;
 
     final renderBox = _imageKey.currentContext?.findRenderObject()
         as MeasureSizeRenderObject?;
