@@ -219,7 +219,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 fontWeight: FontWeight.bold),
             recognizer: TapGestureRecognizer()
               ..onTap = () {
-                Navigator.of(context).pushNamed(AuthRouteKeys.privacyPolicy);
+                Navigator.of(context).pushNamed(AuthRouteKeys.disclaimer);
               },
           ),
           TextSpan(
