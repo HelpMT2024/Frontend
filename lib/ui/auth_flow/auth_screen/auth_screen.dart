@@ -193,12 +193,27 @@ class _AuthScreenState extends State<AuthScreen> {
                   Navigator.of(context).pushNamed(AuthRouteKeys.termsOfService);
                 }),
           TextSpan(
-            text: l10n?.and,
+            text: ', ',
             style: styles.bodySmall
                 ?.copyWith(color: ColorConstants.onSurfaceWhite),
           ),
           TextSpan(
             text: l10n?.privacy_policy ?? '',
+            style: styles.bodySmall?.copyWith(
+                color: ColorConstants.onSurfaceWhite,
+                fontWeight: FontWeight.bold),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                Navigator.of(context).pushNamed(AuthRouteKeys.privacyPolicy);
+              },
+          ),
+          TextSpan(
+            text: l10n?.and,
+            style: styles.bodySmall
+                ?.copyWith(color: ColorConstants.onSurfaceWhite),
+          ),
+          TextSpan(
+            text: l10n?.disclaimer ?? '',
             style: styles.bodySmall?.copyWith(
                 color: ColorConstants.onSurfaceWhite,
                 fontWeight: FontWeight.bold),

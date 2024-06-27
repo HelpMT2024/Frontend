@@ -188,4 +188,14 @@ class AuthProvider {
 
     return service.execute(request, (json) => json['data']['text']);
   }
+
+  Future<String> disclaimer() {
+    final request = NetworkRequest(
+      type: NetworkRequestType.get,
+      path: '/api/user/disclaimer',
+      data: const NetworkRequestBody.empty(),
+    );
+
+    return service.execute(request, (json) => json['data']['text']);
+  }
 }

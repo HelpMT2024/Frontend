@@ -862,7 +862,7 @@ abstract class AppLocalizations {
   /// No description provided for @disclaimer.
   ///
   /// In en, this message translates to:
-  /// **''**
+  /// **'Disclaimer'**
   String get disclaimer;
 
   /// No description provided for @warnings_screen_description.

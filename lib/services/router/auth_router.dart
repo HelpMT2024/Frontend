@@ -6,6 +6,8 @@ import 'package:help_my_truck/services/API/graph_ql_network_service.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/forgot_password_screen/forgot_password_screen_view_model.dart';
+import 'package:help_my_truck/ui/auth_flow/terms_screens/disclaimer_screen.dart';
+import 'package:help_my_truck/ui/auth_flow/terms_screens/disclaimer_screen_view_model.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/privacy_policy_screen_view_model.dart';
 import 'package:help_my_truck/ui/auth_flow/terms_screens/terms_of_service_screen.dart';
@@ -35,6 +37,7 @@ abstract class AuthRouteKeys {
   static const String termsOfService = 'termsOfService';
   static const String privacyPolicy = 'privacyPolicy';
   static const String forgotPassword = 'forgotPassword';
+  static const String disclaimer = 'disclaimer';
 }
 
 Route<dynamic>? AuthRouter(
@@ -124,6 +127,15 @@ Route<dynamic>? AuthRouter(
         builder: (context) {
           final viewModel = PrivacyPolicyScreenViewModel(provider: provider);
           return PrivacyPolicyScreen(viewModel: viewModel);
+        },
+      );
+
+    case AuthRouteKeys.disclaimer:
+      return nativePageRoute(
+        settings: setting,
+        builder: (context) {
+          final viewModel = DisclaimerScreenViewModel(provider: provider);
+          return DisclaimerScreen(viewModel: viewModel);
         },
       );
 

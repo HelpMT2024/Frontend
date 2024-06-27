@@ -389,7 +389,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get coming_soon_bottom_description => 'It will be available soon';
 
   @override
-  String get disclaimer => '';
+  String get disclaimer => 'Disclaimer';
 
   @override
   String get warnings_screen_description => 'ⓘ Clicking on any warning light icon will direct you to a page detailing issues related to that specific light.';

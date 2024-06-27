@@ -51,6 +51,12 @@ class _LegalAndPoliciesScreenState extends State<LegalAndPoliciesScreen> {
               icon: null,
               onTap: () => widget.viewModel.privacyPolicy(context),
             ),
+            const SizedBox(height: 8),
+            SettingsItem(
+              title: l10n?.disclaimer ?? '',
+              icon: null,
+              onTap: () => widget.viewModel.disclaimer(context),
+            ),
           ],
         ),
       ),

@@ -15,4 +15,8 @@ class LegalAndPoliciesScreenViewModel with ErrorHandable {
   void privacyPolicy(BuildContext context) {
     Navigator.of(context).pushNamed(AuthRouteKeys.privacyPolicy);
   }
+
+  void disclaimer(BuildContext context) {
+    Navigator.of(context).pushNamed(AuthRouteKeys.disclaimer);
+  }
 }
