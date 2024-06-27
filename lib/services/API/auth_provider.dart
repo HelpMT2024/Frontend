@@ -2,6 +2,7 @@ import 'package:help_my_truck/data/models/token_model.dart';
 import 'package:help_my_truck/services/API/rest_api_network_service.dart';
 import 'package:help_my_truck/services/shared_preferences_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class UserID {
   final int id;
@@ -89,7 +90,8 @@ class AuthProvider {
     return service
         .execute(request, (json) => UserID.fromJson(json['data']))
         .then((value) async {
-      await Purchases.logIn(email);
+      await Purchases.logIn(const Uuid().v4());
+      await Purchases.setEmail(email);
       return value;
     });
   }
@@ -120,7 +122,8 @@ class AuthProvider {
       (json) => TokenModel.fromJson(json['data']),
     )
         .then((value) async {
-      await Purchases.logIn(email);
+      await Purchases.logIn(const Uuid().v4());
+      await Purchases.setEmail(email);
       return value;
     });
   }

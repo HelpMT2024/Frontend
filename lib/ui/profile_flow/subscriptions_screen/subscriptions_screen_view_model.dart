@@ -53,9 +53,11 @@ class SubscriptionsScreenViewModel {
 
   Future<SubscriptionInfo> _getSubscriptionInfo() async {
     final customerInfo = await Purchases.getCustomerInfo();
-    final purchaseDate = DateTime.parse(
-      customerInfo.originalPurchaseDate ?? '',
-    );
+    final date = customerInfo.originalPurchaseDate;
+    if (date == null) {
+      return SubscriptionInfo(currentPeriod: null, since: null, renewal: null);
+    }
+    final purchaseDate = DateTime.parse(date);
     final active = customerInfo.entitlements.active.values.firstOrNull;
 
     if (active == null) {
