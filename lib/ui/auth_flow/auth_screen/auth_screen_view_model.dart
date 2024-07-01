@@ -71,7 +71,7 @@ class AuthScreenViewModel with ErrorHandable {
       provider
           .register(
         username: _username!,
-        email: _email!,
+        email: _email!.toLowerCase(),
         password: _password!,
         passwordRepeat: _passwordRepeat!,
       )

@@ -153,6 +153,7 @@ class AuthorizationField extends FormField<String> {
               ),
               scrollPadding: EdgeInsets.zero,
               hintText: placeholder,
+              autocorrect: false,
               cupertino: (context, platform) {
                 return CupertinoTextFieldData(
                     textAlignVertical: TextAlignVertical.center,

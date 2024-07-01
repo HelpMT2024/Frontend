@@ -37,7 +37,7 @@ class LoginScreenViewModel with ErrorHandable {
       isLoading.add(true);
       provider
           .login(
-        email: _email ?? '',
+        email: _email?.toLowerCase() ?? '',
         password: _password ?? '',
       )
           .then(

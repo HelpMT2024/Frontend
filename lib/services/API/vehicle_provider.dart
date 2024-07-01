@@ -184,12 +184,6 @@ class VehicleProvider {
     required String truckId,
     required String engineId,
   }) {
-    final truckId = '2BV4LcsvZp3ivuHXGKTeXX';
-    final engineId = '7zuQJb6lwiqWgPPKuuyzOY';
-    /*
-      For the MVP period, a strictly defined truck ID is sent,
-      in the future the lines above must be deleted
-    */
     final request = NetworkRequest(
       type: NetworkRequestType.post,
       path: '/api/truck/add',
