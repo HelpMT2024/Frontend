@@ -83,7 +83,7 @@ class AuthScreenViewModel with ErrorHandable {
           AuthRouteKeys.verificationScreen,
           arguments: Credentials(
               username: _username ?? '',
-              email: _email ?? '',
+              email: _email?.toLowerCase() ?? '',
               password: _password ?? '',
               acceptId: value.acceptId),
         );
