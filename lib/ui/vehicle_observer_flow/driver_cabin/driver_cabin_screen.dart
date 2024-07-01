@@ -85,7 +85,11 @@ class _DriverCabinScreenState extends State<DriverCabinScreen> {
       return null;
     }
     final vm = widget.viewModel;
-    final models = [vm.searchComponent, vm.warningLightComponent]
+    final models = [
+      vm.searchComponent,
+      vm.warningLightComponent,
+      vm.defaultComponent
+    ]
         .where((e) => e != null)
         .map((e) => ReusableModel(id: e!.id, name: e.name, icon: e.image))
         .toList();

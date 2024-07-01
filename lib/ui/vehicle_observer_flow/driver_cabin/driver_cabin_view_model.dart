@@ -33,6 +33,11 @@ class DriverCabinViewModel with ErrorHandable {
         (element) => element.type == ChildType.search,
       );
 
+  ChildrenComponent? get defaultComponent =>
+      system.valueOrNull?.children.firstWhereOrNull(
+        (element) => element.type == ChildType.standart,
+      );
+
   late final system = BehaviorSubject<System>()
     ..addStream(
       Stream.fromFuture(
