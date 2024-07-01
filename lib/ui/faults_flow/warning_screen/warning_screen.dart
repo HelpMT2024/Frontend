@@ -8,6 +8,7 @@ import 'package:help_my_truck/services/API/item_provider.dart';
 import 'package:help_my_truck/ui/faults_flow/warning_screen/warning_screen_view_model.dart';
 import 'package:help_my_truck/ui/widgets/app_gradient_bg_decorator.dart';
 import 'package:help_my_truck/ui/widgets/comment_button.dart';
+import 'package:help_my_truck/ui/widgets/custom_floating_button.dart';
 import 'package:help_my_truck/ui/widgets/loadable.dart';
 import 'package:help_my_truck/ui/widgets/nav_bar/main_navigation_bar.dart';
 import 'package:help_my_truck/ui/widgets/vehicle_nav_bar_actions.dart';
@@ -48,10 +49,9 @@ class _WarningScreenState extends State<WarningScreen> {
               ),
             ],
           ),
-          bottomNavigationBar: MainBottomBar(
-            selectedPage: NavBarPage.search,
-            onItemTapped: (_) => widget.viewModel.onSearch(context),
-            hideAllExceptSearch: true,
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          floatingActionButton: CustomFloatingButton(
+            onPressed: () => widget.viewModel.onSearch(context),
           ),
           body: Stack(
             children: [
