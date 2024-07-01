@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:help_my_truck/const/app_consts.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -16,7 +15,7 @@ class PurchaseService {
     Function() callback,
     BuildContext context,
   ) async {
-    if (PurchaseService.instance.isPro || kDebugMode) {
+    if (PurchaseService.instance.isPro) {
       callback();
     } else {
       await RevenueCatUI.presentPaywallIfNeeded(AppConsts.revenueEntitlement);
@@ -24,7 +23,12 @@ class PurchaseService {
   }
 
   Future<void> _initPlatformState() async {
-    await Purchases.restorePurchases();
+    try {
+      await Purchases.restorePurchases();
+    } catch (e) {
+      // Error restoring purchases
+    }
+
     CustomerInfo customerInfo = await Purchases.getCustomerInfo();
     isPro = customerInfo.entitlements.all.isNotEmpty;
 
