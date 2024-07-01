@@ -44,11 +44,15 @@ class SubscriptionsScreenViewModel {
 
   void restore() {
     isLoading.add(true);
-    Purchases.restorePurchases().then(
-      (value) {
-        isLoading.add(false);
-      },
-    );
+    try {
+      Purchases.restorePurchases().then(
+        (value) {
+          isLoading.add(false);
+        },
+      );
+    } catch (e) {
+      isLoading.add(false);
+    }
   }
 
   Future<SubscriptionInfo> _getSubscriptionInfo() async {
