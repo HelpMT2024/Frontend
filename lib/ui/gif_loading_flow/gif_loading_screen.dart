@@ -27,13 +27,11 @@ class _GifLoadingScreenState extends State<GifLoadingScreen>
           elevation: 0,
         ),
       ),
-      body: SafeArea(
-        child: Stack(
-          children: [
-            _background(context),
-            _progressIndicator(context),
-          ],
-        ),
+      body: Stack(
+        children: [
+          _background(context),
+          _progressIndicator(context),
+        ],
       ),
     );
   }
