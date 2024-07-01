@@ -18,7 +18,7 @@ class FaultScreenViewModel with ErrorHandable {
   late final fault = BehaviorSubject<Fault>()
     ..addStream(Stream.fromFuture(
       provider.fault(config.id).catchError((error) {
-        showAlertDialog(null, error.message);
+        showAlertDialog(null, error);
       }),
     ));
 

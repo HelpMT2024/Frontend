@@ -24,11 +24,10 @@ class SystemObserverViewModel with ErrorHandable {
   var itemStreamController = StreamController<ContentfulItem>();
 
   late final system = BehaviorSubject<System>()
-
     ..addStream(
       Stream.fromFuture(
         provider.system(config.id).catchError((error) {
-          showAlertDialog(null, error.message);
+          showAlertDialog(null, error);
         }),
       ),
     );

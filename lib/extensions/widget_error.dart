@@ -103,29 +103,30 @@ extension StateErrorHandable on State {
 }
 
 mixin ErrorHandable {
-  void showAlertDialog(BuildContext? context, String error) {
-    final globalContext = NavigationService.navigatorKey.currentContext;
+  void showAlertDialog(BuildContext? context, dynamic error) {
+    final globalContext =
+        context ?? NavigationService.navigatorKey.currentContext;
 
     if (globalContext != null) {
-    final l10n = AppLocalizations.of(context ?? globalContext);
+      final l10n = AppLocalizations.of(context ?? globalContext);
 
-    showDialog(
-      context: context ?? globalContext,
-      builder: (BuildContext context) {
-        return PlatformAlertDialog(
-          title: Text(l10n?.error ?? ''),
-          content: Text(error),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+      showDialog(
+        context: context ?? globalContext,
+        builder: (BuildContext context) {
+          return PlatformAlertDialog(
+            title: Text(l10n?.error ?? ''),
+            content: Text(error.toString()),
+            actions: <Widget>[
+              TextButton(
+                child: const Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 }

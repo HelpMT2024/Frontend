@@ -25,7 +25,7 @@ class UnitObserverViewModel with ErrorHandable {
     ..addStream(
       Stream.fromFuture(
         provider.unit(config.id).catchError((error) {
-          showAlertDialog(null, error.message);
+          showAlertDialog(null, error);
         }),
       ),
     );

@@ -21,7 +21,7 @@ class ProblemCaseScreenViewModel with ErrorHandable {
   late final problem = BehaviorSubject<ProblemCase>()
     ..addStream(Stream.fromFuture(
       provider.problemCase(config.id).catchError((error) {
-        showAlertDialog(null, error.message);
+        showAlertDialog(null, error);
       }),
     ));
 

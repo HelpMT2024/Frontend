@@ -9,7 +9,7 @@ class TermsOfServiceScreenViewModel with ErrorHandable {
     ..addStream(Stream.fromFuture(
       // ignore: body_might_complete_normally_catch_error
       provider.termsOfService().catchError((error) {
-        showAlertDialog(null, error.message);
+        showAlertDialog(null, error);
       }),
     ));
 

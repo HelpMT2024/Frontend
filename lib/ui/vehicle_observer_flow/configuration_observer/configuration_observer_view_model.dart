@@ -18,7 +18,7 @@ class ConfigurationObserverViewModel with ErrorHandable {
     ..addStream(
       Stream.fromFuture(
         provider.configuration(config.engine, config.truck).catchError((error) {
-          showAlertDialog(null, error.message);
+          showAlertDialog(null, error);
         }),
       ),
     );

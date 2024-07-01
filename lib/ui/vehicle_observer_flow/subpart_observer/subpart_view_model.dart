@@ -25,7 +25,7 @@ class SubPartViewModel with ErrorHandable {
   late final part = BehaviorSubject<SubPart>()
     ..addStream(Stream.fromFuture(
       provider.subPart(config.id).catchError((error) {
-        showAlertDialog(null, error.message);
+        showAlertDialog(null, error);
       }),
     ));
 

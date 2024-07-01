@@ -49,8 +49,8 @@ class _BookmarkButtonState extends State<BookmarkButton> with ErrorHandable {
 
   void change(int id) {
     widget.provider?.change(id).catchError((error) {
-        showAlertDialog(null, error.message);
-      });
+      showAlertDialog(null, error);
+    });
     changeIconState();
   }
 

@@ -27,7 +27,7 @@ class ComponentObserverViewModel with ErrorHandable {
     ..addStream(
       Stream.fromFuture(
         provider.component(config.id).catchError((error) {
-          showAlertDialog(null, error.message);
+          showAlertDialog(null, error);
         }),
       ),
     );

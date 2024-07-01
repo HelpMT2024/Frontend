@@ -27,7 +27,7 @@ class WarningScreenViewModel with ErrorHandable {
     ..addStream(
       Stream.fromFuture(
         provider.warnings().catchError((error) {
-          showAlertDialog(null, error.message);
+          showAlertDialog(null, error);
         }),
       ),
     );
